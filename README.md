@@ -1,41 +1,57 @@
-# Website
+# KORLINX Wiki
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Documentation website for KORLINX IoT networking products, built with [Docusaurus 3.9.2](https://docusaurus.io/).
 
-## Installation
+Covers Cellular, LPWAN, WiFi, Bluetooth, Ethernet, and Satellite connectivity modules — including product overviews, quick starts, AT command references, and tutorials.
 
-```bash
-yarn
-```
+## Requirements
 
-## Local Development
+- Node.js >= 20.0
+- Yarn
 
-```bash
-yarn start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
+## Getting Started
 
 ```bash
-yarn build
+yarn          # Install dependencies
+yarn start    # Dev server at http://localhost:3000
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+> **Note:** If port 3000 is already in use, run on a different port:
+> ```bash
+> yarn docusaurus start --port 3001
+> ```
 
-## Deployment
+## Commands
 
-Using SSH:
+```bash
+yarn start        # Start dev server with hot reload
+yarn build        # Build static output to ./build
+yarn serve        # Serve production build locally
+yarn clear        # Clear Docusaurus cache
+```
+
+## Deployment (GitHub Pages)
 
 ```bash
 USE_SSH=true yarn deploy
 ```
 
-Not using SSH:
+Builds the site and pushes to the `gh-pages` branch.
 
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
+## Documentation Structure
+
 ```
+docs/Network/
+├── Cellular/        LTE-M, NB-IoT, LTE Cat-1, 5G
+├── LPWAN/           LoRaWAN, Sigfox, Zigbee
+├── WiFi/            WiFi 4/5/6, WiFi HaLow
+├── Bluetooth/       BLE, Bluetooth Mesh
+├── Ethernet/        Industrial Ethernet, PoE
+└── Satellite/       LEO, GEO satellite IoT
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+tutorials/
+├── Getting_Started/
+├── Cloud_Integration/
+├── Industrial/
+└── Advanced/
+```
