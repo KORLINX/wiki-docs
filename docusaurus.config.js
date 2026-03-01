@@ -15,7 +15,7 @@ const config = {
   baseUrl: '/',
 
   organizationName: 'KORLINX',
-  projectName: 'korlinx-wiki',
+  projectName: 'wiki-dev',
 
   onBrokenLinks: 'throw',
 
