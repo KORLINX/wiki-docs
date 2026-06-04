@@ -85,7 +85,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Korlinx Wiki',
+        title: 'Korlinx',
         logo: {
           alt: 'Korlinx Logo',
           src: 'img/logo.svg',
@@ -154,7 +154,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} KORLINX. All rights reserved.`,
+        copyright: `Copyright © ${new Date().getFullYear()} KORLINX. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,

@@ -73,7 +73,12 @@ function Hero() {
     <div className={styles.hero}>
       <div className="container">
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>KORLINX</h1>
+          {/* <h1 className={styles.heroTitle}>KORLINX</h1> */}
+          <img
+            src="/wiki-docs/img/img-banner.svg"
+            alt="Korlinx"
+            className={styles.heroLogo}
+          />
           <p className={styles.heroTagline}>{siteConfig.tagline}</p>
           <p className={styles.heroDescription}>
             Comprehensive documentation for KORLINX IoT networking products.
