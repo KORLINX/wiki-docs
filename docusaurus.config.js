@@ -85,7 +85,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Korlinx',
+        //title: 'Korlinx',
         logo: {
           alt: 'Korlinx Logo',
           src: 'img/logo.svg',
