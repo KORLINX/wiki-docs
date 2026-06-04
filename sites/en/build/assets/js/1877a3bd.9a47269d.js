@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunken=self.webpackChunken||[]).push([["6777"],{3646(e){e.exports=JSON.parse('{"metadata":{"permalink":"/Korlinx-Wiki/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);

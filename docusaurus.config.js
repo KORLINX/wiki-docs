@@ -1,60 +1,44 @@
 // @ts-check
+// `@type` JSDoc annotations allow editor autocompletion and type checking
+// (when paired with `@ts-check`).
+// There are various equivalent ways to declare your Docusaurus config.
+// See: https://docusaurus.io/docs/api/docusaurus-config
+
 import {themes as prismThemes} from 'prism-react-renderer';
+
+// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'KORLINX Wiki',
-  tagline: 'AIoT Connectivity Solutions',
-  favicon: 'img/favicon.svg',
+  title: 'Korlinx Wiki',
+  tagline: 'Korlinx Studio Wiki',
+  favicon: 'img/favicon.ico',
 
+  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true,
+    v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  url: 'https://www.korlinx.com/',
-  baseUrl: '/',
+  // Set the production url of your site here
+  url: 'https://lt2410.github.io',
+  // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: '/Korlinx-Wiki/',
 
-  organizationName: 'KORLINX',
-  projectName: 'wiki-dev',
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
+  organizationName: 'LT2410', // Usually your GitHub org/user name.
+  projectName: 'Korlinx-Wiki', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
+  // Even if you don't use internationalization, you can use this field to set
+  // useful metadata like html lang. For example, if your site is Chinese, you
+  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'ko'],
-    localeConfigs: {
-      en: {
-        label: 'English',
-        htmlLang: 'en',
-      },
-      ko: {
-        label: '한국어',
-        htmlLang: 'ko',
-      },
-    },
+    locales: ['en'],
   },
-
-  themes: [
-    [
-      '@easyops-cn/docusaurus-search-local',
-      {
-        hashed: true,
-        language: ['en', 'ko'],
-      },
-    ],
-  ],
-
-  plugins: [
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'tutorials',
-        path: 'tutorials',
-        routeBasePath: 'tutorials',
-        sidebarPath: './sidebarsTutorials.js',
-      },
-    ],
-  ],
 
   presets: [
     [
@@ -62,14 +46,25 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: './sidebars.js',
+          path: './sites/en/docs',
+          sidebarPath: './sites/en/sidebars.js',
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
+          path: '../../blog',
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
           },
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -84,45 +79,35 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       colorMode: {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: '',
+        title: 'Korlinx Wiki',
         logo: {
-          alt: 'KORLINX Logo',
+          alt: 'Korlinx Logo',
           src: 'img/logo.svg',
-          srcDark: 'img/logo-dark.svg',
         },
         items: [
           {
-            type: 'dropdown',
-            label: 'Products',
+            type: 'docSidebar',
+            sidebarId: 'networkSidebar',
             position: 'left',
-            items: [
-              { label: 'Network', to: '/docs/Network/Network_Intro' },
-            ],
+            label: 'Documentation',
           },
           {
+            type: 'docSidebar',
+            sidebarId: 'tutorialsSidebar',
+            position: 'left',
             label: 'Tutorials',
-            to: '/tutorials/Tutorials_Intro',
-            position: 'left',
           },
+          {to: './blog', label: 'Blog', position: 'left'},
           {
-            to: '/blog',
-            label: 'Blog',
-            position: 'left',
-          },
-          {
-            type: 'localeDropdown',
+            href: 'https://github.com/LT2410/Korlinx-Wiki',
+            label: 'GitHub',
             position: 'right',
-          },
-          {
-            href: 'https://github.com/KORLINX',
-            position: 'right',
-            className: 'header-github-link',
-            'aria-label': 'GitHub repository',
           },
         ],
       },
@@ -130,33 +115,46 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Products',
+            title: 'Docs',
             items: [
-              { label: 'Network Overview', to: '/docs/Network/Network_Intro' },
-              { label: 'Cellular', to: '/docs/Network/Cellular/Cellular_Intro' },
-              { label: 'LPWAN', to: '/docs/Network/LPWAN/LPWAN_Intro' },
-              { label: 'WiFi', to: '/docs/Network/WiFi/WiFi_Intro' },
-              { label: 'Bluetooth', to: '/docs/Network/Bluetooth/Bluetooth_Intro' },
-              { label: 'Ethernet', to: '/docs/Network/Ethernet/Ethernet_Intro' },
-              { label: 'Satellite', to: '/docs/Network/Satellite/Satellite_Intro' },
+              {
+                label: 'Network',
+                to: '/docs/Network',
+              },
             ],
           },
           {
-            title: 'Learn',
+            title: 'Community',
             items: [
-              { label: 'Tutorials', to: '/tutorials/Tutorials_Intro' },
-              { label: 'Blog', to: '/blog' },
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              },
+              {
+                label: 'Discord',
+                href: 'https://discordapp.com/invite/docusaurus',
+              },
+              {
+                label: 'X',
+                href: 'https://x.com/docusaurus',
+              },
             ],
           },
           {
-            title: 'Company',
+            title: 'More',
             items: [
-              { label: 'KORLINX.com', href: 'https://www.korlinx.com' },
-              { label: 'GitHub', href: 'https://github.com/KORLINX' },
+              {
+                label: 'Blog',
+                to: '/blog',
+              },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/LT2410/Korlinx-Wiki',
+              },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} KORLINX, Inc.`,
+        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,

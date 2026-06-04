@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunken=self.webpackChunken||[]).push([["3220"],{1912(e){e.exports=JSON.parse('{"blogBasePath":"/Korlinx-Wiki/blog","blogTitle":"Blog","authorsListPath":"/Korlinx-Wiki/blog/authors"}')}}]);

@@ -82,13 +82,13 @@ function Hero() {
           <div className={styles.heroButtons}>
             <Link
               className={clsx('button button--primary button--lg', styles.heroBtn)}
-              to="/docs/Network/Network_Intro"
+              to="/docs/Network/"
             >
               Browse Products
             </Link>
             <Link
               className={clsx('button button--outline button--lg', styles.heroBtnOutline)}
-              to="/tutorials/Tutorials_Intro"
+              to="/docs/Tutorials/Tutorials_Intro"
             >
               Tutorials
             </Link>
