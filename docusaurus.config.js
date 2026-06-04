@@ -12,7 +12,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'Korlinx Wiki',
   tagline: 'AIoT Connectivity Solutions',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -53,22 +53,22 @@ const config = {
           editUrl:
             'https://github.com/KORLINX/wiki-dev/tree/main/',
         },
-        blog: {
-          path: './blog',
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        // blog: {
+        //   path: './blog',
+        //   showReadingTime: true,
+        //   feedOptions: {
+        //     type: ['rss', 'atom'],
+        //     xslt: true,
+        //   },
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl:
+        //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        //   // Useful options to enforce blogging best practices
+        //   onInlineTags: 'warn',
+        //   onInlineAuthors: 'warn',
+        //   onUntruncatedBlogPosts: 'warn',
+        // },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -103,7 +103,7 @@ const config = {
             position: 'left',
             label: 'Tutorials',
           },
-          {to: './blog', label: 'Blog', position: 'left'},
+          // {to: './blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/KORLINX/wiki-docs',
             label: 'GitHub',
@@ -143,10 +143,10 @@ const config = {
           {
             title: 'More',
             items: [
-              {
-                label: 'Blog',
-                to: './blog',
-              },
+              // {
+              //   label: 'Blog',
+              //   to: './blog',
+              // },
               {
                 label: 'GitHub',
                 href: 'https://github.com/KORLINX/wiki-docs',

@@ -41,7 +41,7 @@
 }
 
 /* Navbar layout */
-.navbar__inner {
+/* .navbar__inner {
   position: relative;
   flex-wrap: nowrap;
 }
@@ -54,7 +54,7 @@
 .navbar__logo img {
   height: 32px;
   width: auto;
-}
+} */
 
 /* Center the search bar container */
 [class*="navbarSearchContainer"] {
