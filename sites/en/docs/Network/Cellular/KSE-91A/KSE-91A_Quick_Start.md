@@ -7,6 +7,12 @@ keywords: [KSE-91A, quick start, LTE-M, NB-IoT, AT commands, serial terminal]
 
 # KSE-91A Quick start
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 This guide takes you from unboxing to a live cellular data connection in under 15 minutes.
 
 **What you'll accomplish:**
@@ -340,3 +346,5 @@ A successful ping confirms end-to-end cellular data connectivity.
 | Cloud integration tutorials | [Cloud Integration](/docs/Tutorials/Cloud_Integration/Cloud_Intro) |
 | Power optimization (PSM / eDRX) | [Advanced Topics](/docs/Tutorials/Advanced/Advanced_Intro) |
 | MQTT over cellular | [KSE-91A AT Commands](./KSE-91A_AT_Commands) |
+
+*/}

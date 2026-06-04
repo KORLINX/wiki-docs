@@ -7,6 +7,12 @@ keywords: [LPWAN, LoRaWAN, Sigfox, Zigbee, low-power, IoT, KORLINX]
 
 # LPWAN Overview
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 Low Power Wide Area Network (LPWAN) technologies are designed for battery-powered IoT devices that need to transmit small payloads over long distances — often for years without changing a battery.
 
 ## LPWAN Technologies
@@ -52,3 +58,5 @@ LPWAN devices commonly achieve **5–10 years** on a single AA battery pair, ena
 
 - [Network Overview](../)
 - [Cellular Overview](../Cellular/Cellular_Intro) — compare with cellular technologies
+
+*/}

@@ -7,6 +7,12 @@ keywords: [satellite, LEO, GEO, satellite IoT, remote connectivity, KORLINX]
 
 # Satellite Overview
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 KORLINX satellite modules provide IoT connectivity anywhere on Earth — critical for remote, off-grid, or mobile deployments where terrestrial networks are unavailable or unreliable.
 
 ## Satellite Orbit Types
@@ -58,3 +64,5 @@ KORLINX satellite modules provide IoT connectivity anywhere on Earth — critica
 
 - [Network Overview](../)
 - [Cellular Overview](../Cellular/Cellular_Intro) — use cellular as primary, satellite as backup
+
+*/}

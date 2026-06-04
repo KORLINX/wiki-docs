@@ -7,6 +7,12 @@ keywords: [WiFi, 802.11, WiFi 6, WiFi HaLow, IoT, KORLINX]
 
 # WiFi Overview
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 KORLINX WiFi modules support the full IEEE 802.11 family — from classic 802.11n (WiFi 4) to the latest 802.11ax (WiFi 6) and the long-range 802.11ah (WiFi HaLow) standard.
 
 ## WiFi Standards
@@ -46,3 +52,5 @@ All KORLINX WiFi modules support:
 
 - [Network Overview](../)
 - [Bluetooth Overview](../Bluetooth/Bluetooth_Intro) — complement WiFi with BLE
+
+*/}

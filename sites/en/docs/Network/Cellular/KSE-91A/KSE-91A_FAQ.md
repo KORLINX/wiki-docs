@@ -7,6 +7,12 @@ keywords: [KSE-91A, FAQ, troubleshooting, error codes, LTE-M, NB-IoT]
 
 # KSE-91A FAQ & troubleshooting
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 :::info Coming soon
 A full troubleshooting guide with error code tables is in development. Common issues and solutions are listed below.
 :::
@@ -122,3 +128,5 @@ Wait 10–30 seconds, then check `AT+CEREG?` again.
 - [Overview](./KSE-91A_Overview)
 - [Quick Start](./KSE-91A_Quick_Start)
 - [AT Commands](./KSE-91A_AT_Commands)
+
+*/}

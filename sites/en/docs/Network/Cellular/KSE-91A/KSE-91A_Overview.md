@@ -7,6 +7,12 @@ keywords: [KSE-91A, LTE-M, NB-IoT, nRF9160, IoT module, AT commands, KORLINX]
 
 # KSE-91A overview
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 The KSE-91A is a compact, plug-and-play LTE-M/NB-IoT communication module designed for rapid IoT deployment. Based on Nordic Semiconductor's nRF9160 System-in-Package (SiP), it runs the Nordic Serial LTE Modem (SLM) firmware and exposes a standard AT command interface — making it immediately compatible with any host system that has a UART, USB, RS485, or RS232 port.
 
 No custom RF design required. Connect your SIM, attach the antenna, and start sending AT commands.
@@ -170,3 +176,5 @@ No custom RF design required. Connect your SIM, attach the antenna, and start se
 | Cellular overview | [Cellular Overview](../Cellular_Intro) |
 | Nordic SLM documentation | [Nordic Developer Academy](https://academy.nordicsemi.com/) |
 | nRF9160 product page | [Nordic Semiconductor](https://www.nordicsemi.com/products/nrf9160) |
+
+*/}

@@ -7,6 +7,12 @@ keywords: [Bluetooth, BLE, Bluetooth Mesh, BLE 5, IoT, KORLINX]
 
 # Bluetooth Overview
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 KORLINX Bluetooth modules support Bluetooth Low Energy (BLE) 5.x and Bluetooth Mesh — enabling low-power, short-range sensor networks and device-to-gateway links.
 
 ## Bluetooth Technologies
@@ -52,3 +58,5 @@ Bluetooth Mesh creates self-healing, many-to-many networks suitable for:
 
 - [Network Overview](../)
 - [WiFi Overview](../WiFi/WiFi_Intro) — pair BLE with WiFi for gateway solutions
+
+*/}

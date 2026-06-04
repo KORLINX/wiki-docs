@@ -7,6 +7,13 @@ keywords: [cellular, LTE-M, NB-IoT, LTE Cat-1, 5G, IoT module, KORLINX]
 
 # Cellular Overview
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
+
 KORLINX cellular modules deliver reliable wide-area IoT connectivity over licensed cellular spectrum — no private infrastructure required.
 
 ## Cellular IoT Technologies
@@ -46,3 +53,5 @@ Both operate in licensed spectrum and support PSM/eDRX sleep modes. Choose **LTE
 
 - [Network Overview](../) — compare all connectivity technologies
 - [Tutorials](/docs/Tutorials/Tutorials_Intro) — step-by-step guides for cellular setup
+
+*/}

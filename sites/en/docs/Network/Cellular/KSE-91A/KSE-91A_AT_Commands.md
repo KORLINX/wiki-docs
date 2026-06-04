@@ -7,6 +7,12 @@ keywords: [KSE-91A, AT commands, Nordic SLM, LTE-M, NB-IoT, MQTT, TCP, TLS]
 
 # KSE-91A AT command reference
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 :::info Coming soon
 The full AT command reference for the KSE-91A is in development. This page will contain the complete command set including general, network, socket, MQTT, HTTP, TLS, and power-saving commands.
 :::
@@ -39,3 +45,5 @@ The following command groups will be documented here:
 - [Overview](./KSE-91A_Overview)
 - [Quick Start](./KSE-91A_Quick_Start)
 - [FAQ](./KSE-91A_FAQ)
+
+*/}

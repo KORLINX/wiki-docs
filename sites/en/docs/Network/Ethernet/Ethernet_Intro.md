@@ -7,6 +7,12 @@ keywords: [Ethernet, Industrial Ethernet, PoE, EtherNet/IP, Modbus TCP, KORLINX]
 
 # Ethernet Overview
 
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
 KORLINX Ethernet solutions provide deterministic, high-reliability wired connectivity for industrial IoT — from standard Fast/Gigabit Ethernet to industrial protocols with Power over Ethernet (PoE).
 
 ## Ethernet for Industrial IoT
@@ -53,3 +59,5 @@ KORLINX Ethernet modules support bridging to common industrial protocols:
 
 - [Network Overview](../)
 - [Cellular Overview](../Cellular/Cellular_Intro) — add cellular backup to wired installations
+
+*/}
