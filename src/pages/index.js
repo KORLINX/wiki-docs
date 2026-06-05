@@ -75,7 +75,7 @@ function Hero() {
         <div className={styles.heroContent}>
           {/* <h1 className={styles.heroTitle}>KORLINX</h1> */}
           <img
-            src="/wiki-docs/img/img-banner.svg"
+            src="/img/logo-dark.svg"
             alt="Korlinx"
             className={styles.heroLogo}
           />
