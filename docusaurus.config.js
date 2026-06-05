@@ -40,6 +40,20 @@ const config = {
     locales: ['en'],
   },
 
+  //Plugin Search
+  plugins: [
+  [
+    require.resolve('@easyops-cn/docusaurus-search-local'),
+    {
+      hashed: true,
+      language: ['en'],
+      indexDocs: true,
+      indexPages: true,
+      indexBlog: false,
+    },
+  ],
+],
+
   presets: [
     [
       'classic',
@@ -50,8 +64,8 @@ const config = {
           sidebarPath: './sites/en/sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/KORLINX/wiki-dev/tree/main/',
+          // editUrl:
+          //   'https://github.com/KORLINX/wiki-dev/tree/main/',
         },
         // blog: {
         //   path: './blog',
@@ -82,7 +96,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       colorMode: {
-        respectPrefersColorScheme: true,
+        respectPrefersColorScheme: false,
       },
       navbar: {
         //title: 'Korlinx',
@@ -106,7 +120,12 @@ const config = {
           // {to: './blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/KORLINX/wiki-docs',
-            label: 'GitHub',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
+          },
+          {
+            type: 'search',
             position: 'right',
           },
         ],
