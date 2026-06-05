@@ -1,0 +1,8 @@
+{
+  "label": "Cloud Integration",
+  "position": 1,
+  "link": {
+    "type": "doc",
+    "id": "Tutorials/Cloud_Integration/Cloud_Intro"
+  }
+}

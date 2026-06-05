@@ -1,0 +1,212 @@
+/* ============================================================
+   Hero Section
+   ============================================================ */
+
+.hero {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 40%, #2563eb 70%, #3b82f6 100%);
+  padding: 5rem 0 4.5rem;
+  text-align: center;
+  color: white;
+}
+
+.heroContent {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.heroLogo {
+  width: 350px;
+  max-width: 90%;
+  height: auto;
+}
+
+.heroTitle {
+  font-size: 3.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.4rem;
+  color: white;
+  line-height: 1.1;
+}
+
+.heroTagline {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1rem;
+}
+
+.heroDescription {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 2.25rem;
+  line-height: 1.75;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 0.875rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.heroBtn {
+  font-size: 1rem !important;
+  padding: 0.7rem 1.75rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+.heroBtnOutline {
+  font-size: 1rem !important;
+  padding: 0.7rem 1.75rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  background: transparent !important;
+}
+
+.heroBtnOutline:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: white !important;
+  color: white !important;
+}
+
+/* ============================================================
+   Browse by Technology Section
+   ============================================================ */
+
+.browseSection {
+  padding: 4rem 0 5rem;
+  background: var(--ifm-background-color);
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-font-color-base);
+}
+
+.sectionSubtitle {
+  font-size: 1.05rem;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0;
+}
+
+/* ============================================================
+   Technology Grid
+   ============================================================ */
+
+.techGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 996px) {
+  .techGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .techGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroTitle {
+    font-size: 2.6rem;
+  }
+
+  .hero {
+    padding: 3.5rem 0 3rem;
+  }
+}
+
+/* ============================================================
+   Technology Card
+   ============================================================ */
+
+.techCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.4rem;
+  border-radius: 12px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color, var(--ifm-background-color));
+  text-decoration: none !important;
+  color: var(--ifm-font-color-base) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.techCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.13);
+  border-color: var(--ifm-color-primary);
+  text-decoration: none !important;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.cardIcon {
+  font-size: 1.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--ifm-color-primary);
+}
+
+.cardDescription {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.cardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: auto;
+}
+
+.cardTag {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--ifm-color-primary-darkest);
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+}
+
+[data-theme='dark'] .cardTag {
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--ifm-color-primary-lighter);
+  border-color: rgba(96, 165, 250, 0.2);
+}
+
+[data-theme='dark'] .techCard {
+  background: var(--ifm-background-surface-color, #1e293b);
+}

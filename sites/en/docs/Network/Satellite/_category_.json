@@ -1,0 +1,8 @@
+{
+  "label": "Satellite",
+  "position": 6,
+  "link": {
+    "type": "doc",
+    "id": "Network/Satellite/Satellite_Intro"
+  }
+}
