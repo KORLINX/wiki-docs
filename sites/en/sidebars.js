@@ -20,6 +20,10 @@ const sidebars = {
           label: 'KSE-91A',
           collapsed: false,
           collapsible: true,
+          link: { type: 'generated-index',
+                  title: 'KSE-91A',
+                  description: 'KSE-91A documentation',
+                },
           items: [
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Overview', label: 'Overview' },
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Quick_Start', label: 'Quick Start' },
