@@ -126,18 +126,18 @@ const config = {
           {
             title: 'Community',
             items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
+              // {
+              //   label: 'Stack Overflow',
+              //   href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              // },
               {
                 label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                href: 'https://discord.com/invite/UtDkh9ED4Q',
               },
-              {
-                label: 'X',
-                href: 'https://x.com/docusaurus',
-              },
+              // {
+              //   label: 'X',
+              //   href: 'https://x.com/docusaurus',
+              // },
             ],
           },
           {
