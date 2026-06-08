@@ -47,29 +47,6 @@ sites/en/docs/
     └── Satellite/       LEO, GEO satellite IoT
 ```
 
-## Planned Documentation Categories
-
-```text
-Network/
-├── Cellular
-├── LPWAN
-├── WiFi
-├── Bluetooth
-├── Ethernet
-└── Satellite
-
-```
-
-## Branches
-
-```text
-main
-└── Stable documentation
-
-trung-huy-docs
-└── Active development branch
-```
-
 ## Project Status
 
 🚧 Documentation platform under active development.

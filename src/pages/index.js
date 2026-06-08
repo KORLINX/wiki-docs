@@ -4,39 +4,40 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import styles from './index.module.css';
+import BluetoothIcon from '@site/static/img/bluetooth.svg';
 
 const TECH_CATEGORIES = [
   {
     title: 'Cellular',
-    icon: '📡',
+    icon: '📶',
     description: 'LTE-M, NB-IoT, LTE Cat-1, and 5G modules for wide-area IoT connectivity over licensed spectrum.',
     link: '/docs/Network/Cellular/Cellular_Intro',
     tags: ['LTE-M', 'NB-IoT', '5G'],
   },
   {
     title: 'LPWAN',
-    icon: '🔗',
+    icon: '📡',
     description: 'Low-power wide-area networking with LoRaWAN, Sigfox, and Zigbee for battery-powered sensors.',
     link: '/docs/Network/LPWAN/LPWAN_Intro',
     tags: ['LoRaWAN', 'Sigfox', 'Zigbee'],
   },
   {
     title: 'WiFi',
-    icon: '📶',
+    icon: '🛜',
     description: 'WiFi 4/5/6 and long-range WiFi HaLow modules for high-throughput local connectivity.',
     link: '/docs/Network/WiFi/WiFi_Intro',
     tags: ['WiFi 6', 'WiFi HaLow', 'WPA3'],
   },
   {
     title: 'Bluetooth',
-    icon: '🔵',
+    icon: <BluetoothIcon />,
     description: 'BLE 5.x and Bluetooth Mesh for low-power short-range sensor networks and device links.',
     link: '/docs/Network/Bluetooth/Bluetooth_Intro',
     tags: ['BLE 5.x', 'Mesh', 'Beacon'],
   },
   {
     title: 'Ethernet',
-    icon: '🔌',
+    icon: '🖧',
     description: 'Industrial Ethernet and PoE solutions for reliable wired IoT infrastructure.',
     link: '/docs/Network/Ethernet/Ethernet_Intro',
     tags: ['Industrial', 'PoE', 'Modbus TCP'],
