@@ -12,7 +12,7 @@ import DocItemContent from '@theme/DocItem/Content';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import ContentVisibility from '@theme/ContentVisibility';
 import styles from './styles.module.css';
-
+import GiscusComments from '@site/src/components/GiscusComments';
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -35,6 +35,9 @@ function useDocTOC() {
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
   const {metadata} = useDoc();
+
+  const isFaqPage = metadata?.id?.endsWith('_FAQ');
+
   return (
     <div className="row">
       <div className={clsx('col', !docTOC.hidden && styles.docItemCol)}>
@@ -50,6 +53,7 @@ export default function DocItemLayout({children}) {
           </article>
           <DocItemPaginator />
           
+          {isFaqPage && <GiscusComments />}
         </div>
       </div>
       {docTOC.desktop && <div className="col col--3">{docTOC.desktop}</div>}
