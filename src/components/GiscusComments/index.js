@@ -1,6 +1,6 @@
 import React from "react";
 import Giscus from "@giscus/react";
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 export default function GiscusComments() {
   return (
