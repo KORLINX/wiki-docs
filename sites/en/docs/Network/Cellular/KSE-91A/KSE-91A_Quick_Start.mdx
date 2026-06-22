@@ -1,0 +1,330 @@
+---
+sidebar_position: 11
+title: KSE-91A Quick start
+description: Connect the KSE-91A to your computer and send your first data in under 15 minutes.
+keywords: [KSE-91A, quick start, LTE-M, NB-IoT, AT commands, serial terminal, Cellular]
+---
+
+# KSE-91A Quick Start
+
+The KSE-91A is a cellular communication module based on the **nRF9151** platform. This guide helps you quickly understand the LCD display, one-button operation, connection states, Location screen, Diagnostics pages, and host interface configuration.
+
+
+## Hardware Overview
+
+The KSE-91A hardware provides an external LTE/GNSS antenna connection, a host equipment connector, a front LCD display, and a single button for screen navigation and configuration.
+
+### Antenna Connectors
+
+<img
+  src="/img/KSE-91A/KSE-91A_sma_connectors.jpg"
+  alt="KSE-91A SMA antenna connectors"
+  className="blog-first-image"
+/>
+
+| Part | Description |
+| ---| ---|
+| SMA antenna connectors | Used for external LTE and GNSS antenna connection |
+| Antenna type           | SMA type external LTE and GNSS antenna            |
+
+### Function Key Diagram
+
+<img
+  src="/img/KSE-91A/function-key-diagram.jpg"
+  alt="KSE-91A function key diagram"
+  className="blog-first-image"
+/>
+
+- The setting button is used to select communication mode when the module starts.
+- Press and hold reset button for 7s to reset module.
+
+### Connect module
+
+<img
+  src="/img/KSE-91A/usb-type-C.jpg"
+  alt="KSE-91A usb type C"
+  className="blog-first-image"
+/>
+
+The KSE-91A also supports communication with a PC through the USB Type-C connector.
+
+| Item      | Description                                          |
+| --------- | ---------------------------------------------------- |
+| Connector | USB Type-C                                           |
+| Usage     | Connect the KSE-91A module to a PC for communication |
+| Location  | Side connector on the KSE-91A enclosure              |
+
+To use USB Type-C, connect the KSE-91A to the PC using a USB Type-C cable, then open the corresponding serial/communication port on the PC.
+
+The USB Type-C section is based on the older User Manual. Keep the latest catalog as the primary source for product specifications.
+
+### Host Connector
+
+<img
+  src="/img/KSE-91A/KSE-91A_host_connector.jpg"
+  alt="KSE-91A host connector"
+  className="blog-first-image"
+/>
+
+| Part | Description |
+| --- | --- |
+| Host connector | 12-pin connector |
+| Connector pitch | 2 mm |
+| Supported host interfaces | UART, RS485, RS232, USB-C depending on model |
+
+**Pin List**
+
+| Pin | Function |
+| ---| ---|
+| 1 | Power (5 - 28V) |
+| 2 | GND |
+| 3 | Vcc_ex |
+| 4 | Power enable (3V3) |
+| 5 | Reset |
+| 6 | UART TX |
+| 7 | UART RX |
+| 8 | RS232 TX |
+| 9 | RS232 RX |
+| 10 | RS-485 (A+) |
+| 11 | RS-485 (B-) |
+| 12 | RS485 GND |
+
+
+## Specification
+
+### General
+
+| Item | Specification |
+| --- | --- |
+| Model name | KSE-91A |
+| Product type | External type industrial LTE-M product |
+| Display | 1.06" IPS Display |
+| MCU | 64 MHz Arm Cortex-M33 |
+| Memory | 1 MB flash + 256 KB RAM, EXT 4 MB flash |
+| Modem | Multimode LTE-M / NB-IoT modem |
+| Protocol | MQTT, CoAP, HTTP, LwM2M |
+| Control | AT-COMMAND |
+| Firmware update | FOTA via LTE |
+| GNSS | Supported |
+| USIM | Nano USIM, Supported Global and KT (scheduled) |
+| Antenna | SMA type external LTE and GNSS antenna |
+| Input voltage | 5–28V DC |
+| Connector | 12-pin connector, pitch 2 mm |
+| Frequency | 700–2200 MHz LTE band support |
+| LTE Cat-M1 bands | B3, B5, B8 |
+| LTE NB-IoT bands | B3, B5 |
+| Size | 69.4 × 46.7 × 15.9 mm |
+| Certification | KC |
+| Security | Arm TrustZone + Arm CryptoCell 310 |
+
+### Interface Variants
+
+| Model | Interface | Control |
+| --- | --- | --- |
+| KSE-91A-UART | UART, USB-C | AT-COMMAND (UART) |
+| KSE-91A-485 | UART, RS485, USB-C | AT-COMMAND (UART, RS485) |
+| KSE-91A-232 | UART, RS232, USB-C | AT-COMMAND (UART, RS232) |
+| KSE-91A | UART, RS485, RS232, USB-C | AT-COMMAND (UART, RS485, RS232) |
+
+### Current Consumption
+
+| Mode | Specification |
+| --- | --- |
+| Current consumption (Tx) | About 120 mA average in LTE-M mode, varies by band and output level |
+| Current consumption (LP) | About 40 µA in PSM (power-saving mode) |
+| eDRX @ 81.92 s | 60 µA in Cat-M1, 80 µA in Cat-NB1, UICC included |
+
+
+## Startup and Connection Screens
+
+<img
+  src="/img/KSE-91A/screen.png"
+  alt="KSE-91A screens"
+  className="blog-first-image"
+/>
+
+The module displays several screens during power-on and cellular network attachment.
+
+| Screen | Meaning | User Action |
+| --- | --- | --- |
+| Boot | Module is powering up and shows product branding, platform, and firmware version | No action needed |
+| Starting | Modem is being initialized | Wait |
+| Connecting | Module is searching for and attaching to the mobile network | Wait; this may take up to about one minute |
+| Connected | Module is online and attached to the network | Normal operating state |
+| No Signal | No mobile coverage is available | Move the module or antenna to a better reception area |
+| Check SIM | SIM card is not detected | Power off, reseat SIM, then power on again |
+| Service Error | Network reached, but service was refused or failed | Check SIM plan/service and collect Diagnostics information |
+
+### Home Screen
+
+<img
+  src="/img/KSE-91A/KSE-91A_home.png"
+  alt="KSE-91A-connected"
+  className="blog-first-image"
+/>
+
+When the module is online, the **Connected** screen shows the following information:
+
+| Field | Meaning |
+| --- | --- |
+| Network | Mobile operator currently used |
+| Type | Cellular connection type, such as `LTE-M` |
+| Signal | Signal quality with technical value |
+| IP | IP address assigned by the mobile network |
+| Uptime | How long the module has been connected |
+
+## Button Operation and Screen Actions
+
+KSE-91A uses a single button. The button behavior depends on the screen currently shown on the LCD.
+
+| Action | How to Perform | General Meaning |
+| --- | --- | --- |
+| Short press | Press and release quickly | Move to the next screen or next selectable item |
+| Long press | Press and hold for about 2 seconds | Enter, select, or exit depending on the current screen |
+| Hold at power-on | Hold the button while powering on the module | Enter Interface Configuration |
+
+:::note
+The button action is **context-based**. Always check the current screen before pressing the button.
+:::
+
+### Action on Current Screen
+
+| Current Screen / Mode | Short Press | Long Press | Note |
+| --- | --- | --- | --- |
+| Home / Connected | Switch to Location | Open Diagnostics | Main operating screen |
+| Location | Switch back to Home / Connected | Open Diagnostics | Shows GPS information |
+| Diagnostics | Move to the next Diagnostics page | Exit Diagnostics | Last page loops back to the first page |
+| Interface Configuration | Move to the highlight to the next option | Select the highlighted option | Show press never commits a change |
+| Fault screen, such as Check SIM or Service Error | No required | Open Diagnostics if available | Fault screens appear automatically |
+| No input in Diagnostics | - | - | Automatically exits after about 30 seconds |
+
+
+:::note
+Fault screens interrupt automatically. If a problem occurs, such as **Check SIM** or **Service Error**, the module shows the fault screen regardless of which screen you were viewing.
+:::
+
+### Location
+
+<img
+  src="/img/KSE-91A/KSE-91A_location.png"
+  alt="KSE-91A-location"
+  className="blog-first-image"
+/>
+:::tip
+Action on this screen
+- To open **Location**, **short press** from **Home / Connected**.
+- To return to **Home / Connected**, **short press** from **Location**.
+:::
+
+The **Location** screen shows GPS-related information in one fixed layout. The displayed values and the top-right status word change depending on the GPS state.
+
+
+#### Displayed fields
+
+| Field | Meaning |
+| --- | --- |
+| Lat | Latitude |
+| Lon | Longitude |
+| Altitude | Height above sea level |
+| Accuracy | Estimated position accuracy in meters |
+
+### Diagnostics
+
+<img
+  src="/img/KSE-91A/diagnostics.png"
+  alt="KSE-91A-diagnostics"
+  className="blog-first-image"
+/>
+
+:::tip
+Action on this screen
+- To open **Diagnostics**, **long press** from either **Home / Connected** or **Location**.
+- Inside **Diagnostics**, **short press** to move to the next page and **long press** to exit.
+:::
+
+Diagnostics provide **read-only** technical values for installers and support.
+
+#### Entering Diagnostics
+
+| To reach | Action |
+| --- | --- |
+| Diagnostics | Long press from Home / Connected or Location |
+| Next Diagnotics page | Short press while in Diagnostics |
+| Exit Diagnostics | Long press while in Diagnostics |
+| Automatic exit | No input for about 30 seconds |
+
+:::note
+Diagnostics are read-only. Opening Diagnostics does not change any module settings.
+:::
+
+#### Action in Diagnostics
+
+| Current Diagnostics Page | Short Press | Long Press |
+| --- | --- | --- |
+| Network | Move to Signal page | Exit Diagnostics |
+| Signal | Move to Link page | Exit Diagnostics |
+| Link | Move to Device page | Exit Diagnostics |
+| Device | Return to Nextwork page | Exit Diagnostics |
+
+
+#### Diagnostics Pages
+
+| Diagnostics Page | Information Shown |
+| --- | --- |
+| Network | Registration state, operator, cellular type, band |
+| Signal | RSRP, RSRQ, SNR, Cell ID |
+| Link | IP, protocol, data state, sent/received data |
+| Device | IMEI, ICCID, host UART, firmware version |
+
+:::info
+Use Diagnostics when you need to collect technical information for installation, field support, or troubleshooting.
+:::
+
+#### Interface Configuration
+Interface Configuration is used to select the host communication interface.
+To enter this mode, **hold the button while powering on the module.**
+
+<img
+  src="/img/KSE-91A/KSE-91A_interface.png"
+  alt="KSE-91A-interface"
+  className="blog-first-image"
+/>
+
+#### Action in Interface Configuration
+
+| Current Screen | Short Press | Long Press |
+| --- | --- | --- |
+| Interface option list | Move to the highlight next option | Select the highlighted option |
+| Rs485 highlighted | Move highlight to RS232 | Select RS485 |
+| RS232 highlighted | Move highlight to UART | Select RS232 |
+| UART highlighted | Move highlight to Cancel | Select UART |
+| Cancel highlighted | Move highlight back to RS485 | Exit without changing anything |
+
+A **short press never commits an interface change**. In Interface Configuration, only a deliberate **long press** selects the highlighted option.
+
+#### Available options
+
+| Option | Meaning |
+| --- | --- |
+| RS485 | Use RS485 host interface |
+| RS232 | Use RS232 host interface |
+| UART | Use UART host interface |
+| Cancel | Exit without changing anything |
+
+
+After selecting a new interface, the module displays a confirmation screen and restarts.
+
+:::caution
+After changing the module interface, configure the host equipment to use the same interface. If the host and module interfaces do not match, communication will not work.
+:::
+
+## Troubleshooting
+
+| Screen / Symptom | Meaning | Recommended Action |
+| --- | --- | --- |
+| No Signal | No mobile coverage | Move to a better reception area and check the antenna |
+| Check SIM | SIM card is not detected | Power off, reseat SIM, then power on again |
+| Service Error | Service refused or unrecoverable network issue | Check SIM service plan and collect Diagnostics information |
+| GPS stays searching | GPS has not acquired a fix | Wait longer and improve antenna/sky visibility |
+| Cannot communicate with host | Interface mismatch | Re-enter Interface Configuration and select the correct RS485/RS232/UART setting for the host |
+| Accidentally entered Diagnostics | Long press was triggered | Long press again to exit, or wait for automatic exit |

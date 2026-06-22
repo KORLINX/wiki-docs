@@ -2,23 +2,35 @@ import React from "react";
 import Giscus from "@giscus/react";
 import styles from "./styles.module.css";
 
-export default function GiscusComments() {
+export default function DocItemLayout({children}) {
+  const docTOC = useDocTOC();
+  const {metadata} = useDoc();
+
+  const isFaqPage =
+    metadata?.id?.endsWith('_FAQ') ||
+    metadata?.permalink?.toLowerCase().includes('faq');
+
   return (
-    <div className={styles.container}>
-      <Giscus
-        repo="KORLINX/wiki-docs"
-        repoId="R_kgDOSwvDqQ"
-        category="Documentation Comments"
-        categoryId="DIC_kwDOSwvDqc4C-ioJ"
-        mapping="pathname"
-        strict="0"
-        reactionsEnabled="1"
-        emitMetadata="0"
-        inputPosition="bottom"
-        theme="preferred_color_scheme"
-        lang="en"
-        loading="lazy"
-      />
+    <div className="row">
+      <div className={clsx('col', !docTOC.hidden && styles.docItemCol)}>
+        <ContentVisibility metadata={metadata} />
+        <DocVersionBanner />
+        <div className={styles.docItemContainer}>
+          <article>
+            <DocBreadcrumbs />
+            <DocVersionBadge />
+            {docTOC.mobile}
+            <DocItemContent>{children}</DocItemContent>
+            <DocItemFooter />
+          </article>
+
+          <DocItemPaginator />
+
+          {isFaqPage && <GiscusComments />}
+        </div>
+      </div>
+
+      {docTOC.desktop && <div className="col col--3">{docTOC.desktop}</div>}
     </div>
   );
 }
