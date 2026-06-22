@@ -3,7 +3,6 @@ import Giscus from "@giscus/react";
 import styles from "./styles.module.css";
 
 export default function DocItemLayout({children}) {
-  const docTOC = useDocTOC();
   const {metadata} = useDoc();
 
   const isFaqPage =
