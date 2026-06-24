@@ -22,4 +22,5 @@ yarn-error.log*
 # Multi-site Docusaurus
 sites/**/node_modules/
 sites/**/.docusaurus/
-sites/**/build/.vscode/
+sites/**/build/
+sites/**/.vscode/
