@@ -1,0 +1,133 @@
+---
+sidebar_position: 13
+title: KSP-N51U FAQ
+enable_comments: true
+description: Troubleshooting guide and frequently asked questions for the KSP-N51U LTE-M/NB-IoT module.
+keywords: [KSP-N51U, FAQ, troubleshooting, error codes, LTE-M, NB-IoT]
+---
+
+# KSP-N51U FAQ & troubleshooting
+
+🚧 Coming Soon
+
+This documentation is currently under development.
+
+{/*
+
+:::info Coming soon
+A full troubleshooting guide with error code tables is in development. Common issues and solutions are listed below.
+:::
+
+---
+
+## Connection issues
+
+### No response to AT commands
+
+**Symptoms:** Typing `AT` in the terminal produces no output.
+
+**Checks:**
+1. Confirm the correct COM port is selected in your terminal.
+2. Verify baud rate is `115200`, data format `8N1`, line ending `CR+LF`.
+3. The **PWR** LED (green) should be solid — if not, check the USB cable and port.
+4. Try pressing **RST** (P3 pin 3) briefly, then retry.
+5. On Linux, confirm your user is in the `dialout` group (`sudo usermod -aG dialout $USER`).
+
+---
+
+### Cannot detect COM port
+
+**Symptoms:** The device does not appear in Device Manager or `/dev/ttyACM*`.
+
+**Checks:**
+1. Try a different USB-C cable — some cables are charge-only with no data lines.
+2. Try a different USB port on your computer.
+3. On Windows 7/8, install the CDC-ACM driver.
+4. Unplug and replug the module.
+
+---
+
+## Network issues
+
+### `+CEREG: 0,0` — not registered, not searching
+
+**Cause:** Modem is in minimum-functionality mode or no bands configured.
+
+**Fix:**
+```at
+AT+CFUN=1
+```
+Wait 10–30 seconds, then check `AT+CEREG?` again.
+
+---
+
+### `+CEREG: 0,2` — searching for a long time
+
+**Cause:** No compatible network in range, incorrect system mode, or APN issue.
+
+**Checks:**
+1. Confirm the SIM supports LTE-M or NB-IoT in your region.
+2. Verify the system mode: `AT%XSYSTEMMODE?`
+3. Check that the antenna is properly connected.
+4. Run `AT+COPS=?` to scan for available operators (takes 2–3 minutes).
+
+---
+
+### `+CEREG: 0,3` — registration denied
+
+**Cause:** SIM not provisioned for LTE-M/NB-IoT, or operator not supported.
+
+**Fix:** Contact your carrier to confirm the SIM is enabled for LTE-M/NB-IoT on the relevant bands.
+
+---
+
+### Weak signal (`AT+CSQ` returns < 10)
+
+**Checks:**
+1. Move the module to a location with better cellular coverage.
+2. Ensure the SMA antenna is connected and upright.
+3. Avoid placing the module near metal enclosures.
+
+---
+
+## Data issues
+
+### Cannot connect to server / ping fails
+
+**Checks:**
+1. Confirm network registration: `AT+CEREG?` must return `0,1` or `0,5`.
+2. Verify the APN: `AT+CGDCONT?`
+3. Activate the PDP context: `AT+CGACT=1,1`
+4. Confirm you have a routable IP: `AT+CGPADDR=1`
+
+---
+
+### MQTT connection fails
+
+**Checks:**
+1. Verify the broker hostname and port are correct.
+2. If using TLS, confirm the CA certificate is provisioned: `AT%CMNG=1,0`
+3. Ensure the PDP context is active before connecting: `AT+CGACT?`
+
+---
+
+## Error code reference
+
+| Code | Description | Common fix |
+|------|-------------|------------|
+| `ERROR` | Generic command error | Check command syntax |
+| `+CME ERROR: 10` | SIM not inserted | Check SIM card seating |
+| `+CME ERROR: 11` | SIM PIN required | Send `AT+CPIN="XXXX"` |
+| `+CME ERROR: 30` | No network service | Check registration, antenna |
+| `+CME ERROR: 65536` | Not registered | Run `AT+CFUN=1` and wait |
+| `+CMS ERROR: 500` | Unknown error | Power cycle the module |
+
+---
+
+## Related resources
+
+- [Overview](./KSP-N51U_Overview)
+- [Quick Start](./KSP-N51U_Quick_Start)
+- [AT Commands](./KSP-N51U_AT_Commands)
+
+*/}
