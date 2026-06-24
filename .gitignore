@@ -23,4 +23,6 @@ yarn-error.log*
 sites/**/node_modules/
 sites/**/.docusaurus/
 sites/**/build/
-sites/**/.vscode/
+
+# VS Code
+.vscode/
