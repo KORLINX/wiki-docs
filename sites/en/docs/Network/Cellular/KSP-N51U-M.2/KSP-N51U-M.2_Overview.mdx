@@ -1,0 +1,154 @@
+---
+sidebar_position: 21
+title: KSP-N51U-M.2 Overview
+description: KSP-N51U-M.2 LTE-M/NB-IoT slot-type module — features, specifications, M.2 interface, and resources.
+keywords: [KSP-N51U-M.2, LTE-M, NB-IoT, M.2, slot type, UART, I2C, U.FL, IoT module, AT commands, KORLINX]
+---
+
+# KSP-N51U-M.2 Overview
+
+<img
+  src="/img/KSP-N51U-M2/KSP-N51U-M2_overview.jpg"
+  alt="KSP-N51U-M.2"
+  className="blog-first-image"
+/>
+
+## Introduction
+
+KSP-N51U-M.2 is a slot-type internal LTE-M and NB-IoT module in the KORLINX industrial LTE-M product series. It is designed for products that require cellular connectivity through an M.2 2230 Key E pluggable form factor.
+
+The module supports LTE-M / NB-IoT communication, GNSS positioning, cloud-oriented IoT protocols, and AT command-based control. With a U.FL antenna connector and M.2 interface, KSP-N51U-M.2 is suitable for systems that require easy module replacement, flexible upgrades, and compact internal integration.
+
+KSP-N51U-M.2 is well suited for industrial gateways, communication platforms, development environments, and IoT products that need a slot-in cellular module.
+
+## Key Features
+
+KSP-N51U-M.2 provides LTE-M / NB-IoT connectivity in a compact M.2 2230 Key E pluggable module format.
+
+<div className="feature-grid">
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/low-power.svg"
+      alt="Low-power connectivity"
+      className="feature-icon-svg"
+    />
+    <h4>Low-power Operation</h4>
+    <p>Under 5 µA in PSM / DRX power-saving mode.</p>
+  </div>
+
+  <div className="feature-card">
+    <img style={{ margin:"25px 0 20px" }}
+      src="/img/icons/M2-slot-type.svg"
+      alt="M.2 slot type"
+      className="feature-icon-svg"
+    />
+    <h4>M.2 Slot Type</h4>
+    <p>M.2 2230 Key E pluggable connection for slot-in integration.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/cloud-device.svg"
+      alt="Protocols supported"
+      className="feature-icon-svg"
+    />
+    <h4>Protocols Supported</h4>
+    <p>MQTT, CoAP, HTTP, and LwM2M.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/gnss.svg"
+      alt="GNSS supported"
+      className="feature-icon-svg"
+    />
+    <h4>GNSS Supported</h4>
+    <p>GNSS support for location-enabled IoT applications.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/security.svg"
+      alt="Security"
+      className="feature-icon-svg"
+    />
+    <h4>Security</h4>
+    <p>Arm TrustZone and Arm CryptoCell 310 support.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/replace.svg"
+      alt="Easy replacement"
+      className="feature-icon-svg"
+    />
+    <h4>Easy Replacement</h4>
+    <p>Slot-in design for module-only replacement and flexible upgrades.</p>
+  </div>
+
+</div>
+
+## Why Choose KSP-N51U-M.2?
+
+KSP-N51U-M.2 is designed for systems that need an internal LTE-M / NB-IoT module with easy replacement and upgrade flexibility.
+
+Compared with fixed internal modules, KSP-N51U-M.2 provides:
+
+- M.2 2230 Key E pluggable connection
+- Easy module replacement
+- No soldering required for module replacement
+- UART and I2C interface support
+- U.FL antenna connection
+- AT command-based control
+- SDK support for common MCU platforms
+
+This makes KSP-N51U-M.2 suitable for products that need cellular connectivity with a slot-in module architecture.
+
+## Typical Applications
+
+KSP-N51U-M.2 can be used in systems where module replacement, testing convenience, and long-term maintenance are important.
+
+Typical use cases include:
+
+- **Industrial gateways** — slot-in LTE-M / NB-IoT connectivity
+- **Communication platforms** — cellular module integration for connected systems
+- **Development and testing environments** — easy module testing and replacement
+- **Remote monitoring systems** — cellular connectivity for field equipment
+- **IoT edge devices** — compact internal modem integration with flexible upgrades
+
+## Technical Highlights
+
+| Item | Specification |
+| --- | --- |
+| Cellular Network | LTE-M / NB-IoT |
+| MCU | 64 MHz Arm Cortex-M33 |
+| Memory | 1 MB Flash + 256 KB RAM |
+| External Flash | 4 MB |
+| Data Rate | Up to 375 kbps (LTE-M Cat-M1) |
+| Tx Power | Up to +23 dBm (LTE-M mode) |
+| Frequency | 700–2200 MHz LTE band support |
+| GNSS | Supported |
+| USIM | Nano USIM, Supported Global and KT |
+| Antenna | U.FL |
+| Interface | UART, I2C |
+| Input Voltage | 3.3 V DC |
+| Connector | M.2 2230 Key E Pluggable |
+| Size | 22 × 30 × 1.0 mm (PCB only) |
+| Protocols | MQTT, CoAP, HTTP, LwM2M |
+| Control | AT-COMMAND (UART) |
+| SDK | ESP32, STM32 Series, nRF52 Series |
+| Security | Arm TrustZone + Arm CryptoCell 310 |
+| Current Consumption (Tx) | ~120 mA average in LTE-M mode, varies by band and output level |
+| Current Consumption (LP) | Under 5 µA in PSM / DRX power-saving mode |
+
+## Hardware Overview
+
+| Part | Description |
+| --- | --- |
+| Host interface | UART, I2C |
+| Antenna connector | U.FL |
+| Host connection | M.2 2230 Key E Pluggable |
+| Power input | 3.3 V DC |
+| Module size | 22 × 30 × 1.0 mm, PCB only |
+

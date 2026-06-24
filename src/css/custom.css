@@ -352,7 +352,7 @@
 }
 
 .feature-icon-svg {
-  max-width: 15%;
+  width: 100px;
   margin-bottom: 12px;
 }
 

@@ -1,0 +1,153 @@
+---
+sidebar_position: 20
+title: KSP-N51U Overview
+description: KSP-N51U internal LTE-M/NB-IoT module — features, specifications, interfaces, and resources.
+keywords: [KSP-N51U, LTE-M, NB-IoT, internal module, UART, U.FL, IoT module, AT commands, KORLINX]
+---
+
+# KSP-N51U Overview
+
+<img
+  src="/img/KSP-N51U/KSP-N51U_overview.jpg"
+  alt="KSP-N51U"
+  className="blog-first-image"
+/>
+
+## Introduction
+
+KSP-N51U is an internal LTE-M and NB-IoT module in the KORLINX industrial LTE-M product series. It is designed for embedded IoT devices that require cellular connectivity, compact PCB-level integration, and AT command-based control through UART.
+
+The module supports LTE-M / NB-IoT communication, GNSS positioning, cloud-oriented IoT protocols, and low-power operation. With a U.FL antenna connector and 2.54 mm header pin connection, KSP-N51U can be integrated into host boards and development platforms that require a compact internal cellular module.
+
+KSP-N51U is suitable for embedded systems, industrial gateways, smart meters, monitoring devices, and development platforms that need reliable cellular communication in a small PCB form factor.
+
+## Key Features
+
+KSP-N51U provides a compact internal LTE-M / NB-IoT solution for embedded IoT development and integration.
+
+<div className="feature-grid">
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/low-power.svg"
+      alt="Low-power connectivity"
+      className="feature-icon-svg"
+    />
+    <h4>Low-power Operation</h4>
+    <p>Under 5 µA in PSM / DRX power-saving mode.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/Naver-Cloud-Solution.svg"
+      alt="UART interface"
+      className="feature-icon-svg"
+    />
+    <h4>UART Interface</h4>
+    <p>UART interface for host communication and AT command control.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/cloud-device.svg"
+      alt="Protocols supported"
+      className="feature-icon-svg"
+    />
+    <h4>Protocols Supported</h4>
+    <p>MQTT, CoAP, HTTP, and LwM2M.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/gnss.svg"
+      alt="GNSS supported"
+      className="feature-icon-svg"
+    />
+    <h4>GNSS Supported</h4>
+    <p>GNSS support for location-enabled IoT applications.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/security.svg"
+      alt="Security"
+      className="feature-icon-svg"
+    />
+    <h4>Security</h4>
+    <p>Arm TrustZone and Arm CryptoCell 310 support.</p>
+  </div>
+
+  <div className="feature-card">
+    <img
+      src="/img/icons/embedded.svg"
+      alt="Embedded integration"
+      className="feature-icon-svg"
+    />
+    <h4>Embedded Integration</h4>
+    <p>2.54 mm header pin type connection for internal module integration.</p>
+  </div>
+
+</div>
+
+## Why Choose KSP-N51U?
+
+KSP-N51U is designed for embedded IoT products that need LTE-M / NB-IoT connectivity without using an external modem enclosure.
+
+Compared with plug-and-play external modem products, KSP-N51U provides:
+
+- Smaller PCB-level integration
+- UART-based host communication
+- U.FL antenna connection
+- Low-power LTE-M / NB-IoT operation
+- AT command-based modem control
+- SDK support for common MCU platforms
+
+This makes KSP-N51U suitable for projects that require internal cellular integration while keeping the host hardware compact.
+
+## Typical Applications
+
+KSP-N51U can be used in embedded and industrial IoT applications that require compact LTE-M / NB-IoT connectivity.
+
+Typical use cases include:
+
+- **Smart meter systems** — cellular connectivity for AMI and metering devices
+- **Industrial gateways** — embedded cellular communication for gateway products
+- **Remote monitoring devices** — network connection for distributed field equipment
+- **Development platforms** — LTE-M / NB-IoT testing with MCU-based systems
+- **Asset and equipment monitoring** — location-aware or network-connected IoT devices
+
+## Technical Highlights
+
+| Item | Specification |
+| --- | --- |
+| Cellular Network | LTE-M / NB-IoT |
+| MCU | 64 MHz Arm Cortex-M33 |
+| Memory | 1 MB Flash + 256 KB RAM |
+| External Flash | 4 MB |
+| Data Rate | Up to 375 kbps (LTE-M Cat-M1) |
+| Tx Power | Up to +23 dBm (LTE-M mode) |
+| Frequency | 700–2200 MHz LTE band support |
+| GNSS | Supported |
+| USIM | Nano USIM, Supported Global and KT |
+| Antenna | U.FL |
+| Interface | UART |
+| Input Voltage | 3.3–5 V DC |
+| Connector | 2.54 Header pin type |
+| Size | 21 × 34 × 1.0 mm (PCB only, U.FL) |
+| Protocols | MQTT, CoAP, HTTP, LwM2M |
+| Control | AT-COMMAND (UART) |
+| SDK | ESP32, STM32 Series, nRF52 Series |
+| Security | Arm TrustZone + Arm CryptoCell 310 |
+| Current Consumption (Tx) | ~120 mA average in LTE-M mode, varies by band and output level |
+| Current Consumption (LP) | Under 5 µA in PSM / DRX power-saving mode |
+
+## Hardware Overview
+
+| Part | Description |
+| --- | --- |
+| Host interface | UART |
+| Antenna connector | U.FL |
+| Host connection | 2.54 Header pin type |
+| Power input | 3.3–5 V DC |
+| Module size | 21 × 34 × 1.0 mm, PCB only |
+
