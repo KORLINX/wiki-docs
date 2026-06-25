@@ -1,11 +1,11 @@
 ---
 sidebar_position: 12
-title: KSP-N51U_M.2 AT Commands
+title: KSP-N51U-M.2 AT Commands
 description: Complete AT command reference for the KSP-N51U_M.2 LTE-M/NB-IoT module (Nordic SLM firmware).
 keywords: [KSP-N51U_M.2, AT commands, Nordic SLM, LTE-M, NB-IoT, MQTT, TCP, TLS]
 ---
 
-# KSP-N51U_M.2 AT command reference
+# KSP-N51U-M.2 AT command reference
 
 🚧 Coming Soon
 

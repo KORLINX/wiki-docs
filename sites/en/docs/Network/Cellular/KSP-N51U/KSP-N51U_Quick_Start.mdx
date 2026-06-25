@@ -1,12 +1,238 @@
 ---
 sidebar_position: 11
-title: KSP-N51U Quick start
-description: KSP-N51U internal LTE-M/NB-IoT module — features, specifications, interfaces, and resources.
-keywords: [KSP-N51U, LTE-M, NB-IoT, internal module, UART, U.FL, IoT module, AT commands, KORLINX]
+title: KSP-N51U Quick Start
+description: Prepare the KSP-N51U internal LTE-M/NB-IoT module, connect the antenna and UART host interface, and verify basic AT command communication.
+keywords: [KSP-N51U, quick start, LTE-M, NB-IoT, UART, U.FL, AT commands, Cellular, KORLINX]
 ---
 
 # KSP-N51U Quick Start
 
-🚧 Coming Soon
+The **KSP-N51U** is an internal LTE-M / NB-IoT module in the KORLINX industrial LTE-M product series. This guide helps you prepare the module hardware, connect the U.FL antenna, connect the UART host interface, power the module correctly, and verify basic AT command communication.
 
-This documentation is currently under development.
+Unlike the KSE-91A external modem, KSP-N51U is a PCB-level internal module. This Quick Start focuses on **hardware preparation**, **UART host connection**, **antenna connection**, **USIM preparation**, and **basic communication verification**.
+
+
+## Hardware Overview
+
+The KSP-N51U hardware provides a compact internal LTE-M / NB-IoT module form factor with a U.FL antenna connector and a 2.54 mm header pin type host connection.
+
+### Module Overview
+
+<img
+  src="/img/KSP-N51U/KSP-N51U_quickstart.jpg"
+  alt="KSP-N51U module overview"
+  className="blog-first-image"
+/>
+
+| Part | Description |
+| --- | --- |
+| Module type | Internal LTE-M / NB-IoT module |
+| Host connection | 2.54 header pin type |
+| Antenna connector | U.FL |
+| Control interface | AT-COMMAND over UART |
+
+### Antenna Connector
+
+<img
+  src="/img/KSP-N51U/KSP-N51U_ufl_connector.jpg"
+  alt="KSP-N51U U.FL antenna connector"
+  className="blog-first-image"
+/>
+
+The KSP-N51U uses a **U.FL** antenna connector. Connect the LTE antenna before starting cellular network tests. If your application uses GNSS, make sure the antenna design and placement support the required GNSS performance.
+
+### Host Connection
+
+The module connects to the host system through a **2.54 header pin type** connection. Use the hardware reference or board design file for the exact pin assignment before wiring.
+
+:::caution
+Do not assume the pin order from the product photo alone. Always verify the pinout from the official hardware reference or board design before applying power.
+:::
+
+## Specification
+
+### General
+
+| Item | Specification |
+| --- | --- |
+| Model name | KSP-N51U |
+| Product type | Internal type industrial LTE-M module |
+| Cellular network | LTE-M / NB-IoT |
+| MCU | 64 MHz Arm Cortex-M33 |
+| Memory | 1 MB flash + 256 KB RAM, EXT 4 MB flash |
+| Modem | Multimode LTE-M / NB-IoT modem |
+| Data rate | Up to 375 kbps (LTE-M Cat-M1) |
+| Tx power | Up to +23 dBm (LTE-M mode) |
+| Frequency | 700–2200 MHz LTE band support |
+| Protocol | MQTT, CoAP, HTTP, LwM2M |
+| Control | AT-COMMAND (UART) |
+| SDK | ESP32, STM32 Series, nRF52 Series |
+| GNSS | Supported |
+| USIM | Nano USIM, Supported Global and KT |
+| Security | Arm TrustZone + Arm CryptoCell 310 |
+
+### Hardware
+
+| Item | Specification |
+| --- | --- |
+| Interface | UART |
+| Input voltage | 3.3–5 V DC |
+| Antenna | U.FL |
+| Connection | 2.54 header pin type |
+| Size | 21 × 34 × 1.0 mm (PCB only, U.FL) |
+
+### Current Consumption
+
+| Mode | Specification |
+| --- | --- |
+| Current consumption (Tx) | ~120 mA average in LTE-M mode, varies by band and output level |
+| Current consumption (LP) | Under 5 µA in PSM / DRX power-saving mode |
+
+## Pin List
+
+The KSP-N51U uses two 14-pin header groups for power, UART, I2C, control, and GPIO-related signals.
+
+<img
+  src="/img/KSP-N51U/KSP-N51U_header_pin.jpg"
+  alt="KSP-N51U header pin connection"
+  className="blog-first-image"
+/>
+
+:::note
+The pin list below is based on the uploaded KSP-N51U pin list file. Always verify the pin direction and electrical design with your carrier board schematic before applying power.
+:::
+
+### Pin List
+
+| J1 | Function | J2 | Function |
+| --- | --- | --- | --- |
+| 1 | 3.3–5V | 1 | UART_TX |
+| 2 | 3.3–5V | 2 | UART_RX |
+| 3 | GND | 3 | UART_CTS |
+| 4 | GND | 4 | UART_RTS |
+| 5 | OverCurrent | 5 | PWR_ON |
+| 6 | I2C_SCL | 6 | GPIO0.14 |
+| 7 | I2C_SDA | 7 | nReset |
+| 8 | MAGPIO0 | 8 | COEX2 |
+| 9 | MAGPIO1 | 9 | COEX1 |
+| 10 | MAGPIO2 | 10 | COEX0 |
+| 11 | GPIO0.20 | 11 | GPIO0.29 |
+| 12 | GPIO0.21 | 12 | GPIO0.28 |
+| 13 | GPIO0.23 | 13 | GPIO0.27 |
+| 14 | GPIO0.15 | 14 | GPIO0.26 |
+
+
+## Before You Start
+
+Prepare the following items before wiring the module.
+
+| Item | Description |
+| --- | --- |
+| KSP-N51U module | Main LTE-M / NB-IoT internal module |
+| Host board or MCU | Host system with UART support |
+| Stable DC power source | 3.3–5 V DC input according to the module specification |
+| LTE antenna | Antenna connected through U.FL |
+| Nano USIM | Active SIM profile for cellular network access |
+| Serial terminal | PC tool or host software used to send AT commands |
+
+:::caution
+Before powering on, confirm the supply voltage and wiring. Incorrect power wiring may damage the module.
+:::
+
+
+## Connect the Hardware
+
+### 1. Connect the Antenna
+
+Connect the LTE antenna to the **U.FL** antenna connector before running network tests.
+
+:::tip
+For better signal quality, keep the antenna away from large metal objects and place it where cellular reception is available.
+:::
+
+### 2. Prepare the Nano USIM
+
+Install or connect the **Nano USIM** according to your host board or product design.
+
+| Check Item | Recommended Action |
+| --- | --- |
+| SIM format | Use Nano USIM |
+| SIM service | Confirm that the SIM plan supports the target cellular network |
+| SIM contact | Make sure the SIM is seated correctly in the host design |
+
+### 3. Connect the UART Host Interface
+
+KSP-N51U is controlled by **AT-COMMAND (UART)**. Connect the module UART interface to the host UART interface.
+
+| KSP-N51U Signal | Connect To |
+| --- | --- |
+| UART TX | Host UART RX |
+| UART RX | Host UART TX |
+| GND | Host GND |
+
+:::note
+The exact physical pin location depends on your carrier board or product design. Use the official pinout before wiring.
+:::
+
+### 4. Apply Power
+
+Apply stable **3.3–5 V DC** power to the module. After power is applied, open the host UART port from your PC tool or host firmware.
+
+
+## Verify AT Command Communication
+
+After wiring and powering the module, verify that the UART communication path is working.
+
+### Basic Communication Check
+
+Send a basic AT command from your serial terminal or host application:
+
+```text
+AT
+```
+
+A normal AT command interface should return an `OK` response when the host UART communication is working.
+
+:::tip
+If there is no response, check power, common GND, UART TX/RX direction, and the serial port settings used by your host firmware or test tool.
+:::
+
+
+## Network Connection Check
+
+After the AT command interface responds, continue with your AT command workflow to initialize the modem, configure the network profile, and attach to the LTE-M / NB-IoT network.
+
+| Check Item | What to Confirm |
+| --- | --- |
+| Antenna | LTE antenna is connected to the U.FL connector |
+| SIM | Nano USIM is installed and active |
+| Network | The SIM plan supports the target LTE-M / NB-IoT network |
+| Signal | The device is located in an area with cellular coverage |
+| Host interface | UART communication is stable |
+
+:::note
+For command details, continue with the KSP-N51U AT Commands page.
+:::
+
+
+## GNSS Preparation
+
+KSP-N51U supports GNSS. For location-related applications, make sure the antenna design and product placement support GNSS reception.
+
+| Item | Recommendation |
+| --- | --- |
+| Antenna path | Verify the LTE/GNSS antenna design used by your product |
+| Placement | Avoid shielding the antenna with metal enclosure parts |
+| First fix | Allow enough time for first GNSS acquisition during testing |
+
+
+## Troubleshooting
+
+| Symptom | Possible Cause | Recommended Action |
+| --- | --- | --- |
+| No AT response | Power, UART wiring, GND, or serial setting issue | Check power input, common GND, TX/RX direction, and serial configuration |
+| Module does not power on | Incorrect supply voltage or unstable power | Confirm 3.3–5 V DC input and power source capacity |
+| Cannot attach to network | SIM, antenna, coverage, or network profile issue | Check Nano USIM, LTE antenna, cellular coverage, and AT command configuration |
+| Weak signal | Poor antenna placement or low coverage | Reposition the antenna or test in a better coverage area |
+| GNSS does not get a fix | Antenna placement or sky visibility issue | Improve antenna placement and allow more time for first fix |
+| Unstable communication | UART wiring or host timing issue | Check UART wiring, ground connection, and host firmware handling |
