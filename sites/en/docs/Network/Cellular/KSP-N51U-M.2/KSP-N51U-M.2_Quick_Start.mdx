@@ -11,6 +11,29 @@ The **KSP-N51U-M.2** is a slot-type internal LTE-M / NB-IoT module in the KORLIN
 
 Unlike the KSE-91A external modem, KSP-N51U-M.2 is an internal slot-in module. This Quick Start focuses on **M.2 installation**, **antenna connection**, **host interface preparation**, **USIM preparation**, and **basic communication verification**.
 
+---
+
+## Quick Start Flow
+
+Use the following flow for first-time bring-up.
+
+| Step | Action | Expected Result |
+| --- | --- | --- |
+| 1 | Review the hardware overview and M.2 pin list | You can identify the M.2 connection, U.FL antenna connector, power pins, GND pins, and UART pins |
+| 2 | Power off the host board | The module can be installed safely |
+| 3 | Insert and secure the M.2 module | Module is seated correctly in the M.2 2230 Key E socket |
+| 4 | Connect the LTE antenna | Antenna is securely connected to the U.FL connector |
+| 5 | Prepare the Nano USIM | SIM is ready for cellular network access |
+| 6 | Power on the host board | Module receives stable 3.3 V power |
+| 7 | Open the host UART port | Serial terminal or host firmware is ready |
+| 8 | Send `AT` | Module returns `OK` if communication is working |
+| 9 | Continue network and GNSS checks | Module is ready for LTE-M / NB-IoT testing |
+
+:::tip
+For the first bring-up, verify the UART path first. A simple `AT` → `OK` response confirms that the module is powered and the host UART path is working.
+:::
+
+---
 
 ## Hardware Overview
 
@@ -31,18 +54,84 @@ The KSP-N51U-M.2 hardware provides a compact M.2 slot-type LTE-M / NB-IoT module
 | Antenna connector | U.FL |
 | Control interface | AT-COMMAND over UART |
 
-### M.2 Connector
-
-KSP-N51U-M.2 uses an **M.2 2230 Key E pluggable** connection. It is intended for host boards that provide a compatible M.2 socket and 3.3 V power.
 
 ### Antenna Connector
 
 The module uses a **U.FL** antenna connector. Connect the LTE antenna before starting cellular network tests.
 
-:::caution
-Do not apply power until the module is fully inserted and secured in the M.2 socket.
+:::tip
+Use proper U.FL handling tools or careful hand pressure when connecting the antenna cable. Avoid twisting or lifting the connector at an angle.
 :::
 
+### M.2 Connector
+
+KSP-N51U-M.2 uses an **M.2 2230 Key E pluggable** connection. It is intended for host boards that provide a compatible M.2 socket and stable 3.3 V power.
+
+| Item | Description |
+| --- | --- |
+| M.2 form factor | 2230 |
+| Key type | Key E |
+| Host connection | Pluggable M.2 slot |
+| Power input | 3.3 V DC from the host board |
+
+:::caution
+Do not insert or remove the module while the host board is powered. Power off the host board before installing, removing, or reseating the M.2 module.
+:::
+
+## Pin List
+
+The KSP-N51U-M.2 uses the M.2 connector for power, UART, I2C, control, and GPIO-related signals.
+
+<img
+  src="/img/KSP-N51U-M2/KSP-N51U-M.2_pin_list.png"
+  alt="KSP-N51U-M.2 pin list"
+  className="blog-first-image"
+/>
+
+### M.2 2230 Pin List
+
+| M.2 Pin | Function |
+| --- | --- |
+| 1, 7, 18, 33, 39, 45, 51, 57, 63, 69, 75 | GND |
+| 2, 4, 72, 74 | 3V3 |
+| 20 | OverCurrent Flag |
+| 22 | UART_TX |
+| 32 | UART_RX |
+| 34 | UART_RTS |
+| 36 | UART_CTS |
+| 38 | MAGPIO0 |
+| 40 | MAGPIO1 |
+| 42 | MAGPIO2 |
+| 44 | COEX1 |
+| 46 | COEX2 |
+| 48 | GPIO0.14 |
+| 54 | nReset |
+| 56 | PWR_EN |
+| 58 | I2C_SDA |
+| 60 | I2C_SCL |
+
+### Essential Pins for Quick Start
+
+Use these pins for a basic power and UART communication test.
+
+| Purpose | M.2 Pin | Signal | Connect To / Usage |
+| --- | --- | --- | --- |
+| Power input | 2, 4, 72, 74 | 3V3 | 3.3 V supply from the host board |
+| Ground | 1, 7, 18, 33, 39, 45, 51, 57, 63, 69, 75 | GND | Host board ground |
+| UART transmit | 22 | UART_TX | Host UART RX |
+| UART receive | 32 | UART_RX | Host UART TX |
+| UART flow control | 34 | UART_RTS | Host UART CTS, if used |
+| UART flow control | 36 | UART_CTS | Host UART RTS, if used |
+| Power control | 56 | PWR_EN | Host power enable control, if used |
+| Reset | 54 | nReset | Host reset control, if used |
+| I2C data | 58 | I2C_SDA | Host I2C SDA, if used |
+| I2C clock | 60 | I2C_SCL | Host I2C SCL, if used |
+
+:::caution
+Confirm the M.2 socket orientation and carrier board schematic before applying power. Incorrect 3.3 V or GND routing may damage the module.
+:::
+
+---
 
 ## Specification
 
@@ -83,42 +172,7 @@ Do not apply power until the module is fully inserted and secured in the M.2 soc
 | Current consumption (Tx) | ~120 mA average in LTE-M mode, varies by band and output level |
 | Current consumption (LP) | Under 5 µA in PSM / DRX power-saving mode |
 
-## Pin List
-
-The KSP-N51U-M.2 uses an M.2 2230 Key E pluggable connection. The table below lists the pins specified in the KSP-N51U pin list file.
-
-<img
-  src="/img/KSP-N51U-M2/KSP-N51U-M2_m2_connector.jpg"
-  alt="KSP-N51U-M.2 M.2 connector"
-  className="blog-first-image"
-/>
-
-:::note
-The pin list below is based on the uploaded KSP-N51U pin list file. Only the listed pins are included here. Always verify the M.2 socket wiring with your carrier board schematic before applying power.
-:::
-
-### M.2 2230 Pin List
-
-| M.2 Pin | Function |
-| --- | --- |
-| 1, 7, 18, 33, 39, 45, 51, 57, 63, 69, 75 | GND |
-| 2, 4, 72, 74 | 3V3 |
-| 20 | OverCurrent Flag |
-| 22 | UART_TX |
-| 32 | UART_RX |
-| 34 | UART_RTS |
-| 36 | UART_CTS |
-| 38 | MAGPIO0 |
-| 40 | MAGPIO1 |
-| 42 | MAGPIO2 |
-| 44 | COEX1 |
-| 46 | COEX2 |
-| 48 | GPIO0.14 |
-| 54 | nReset |
-| 56 | PWR_EN |
-| 58 | I2C_SDA |
-| 60 | I2C_SCL |
-
+---
 
 ## Before You Start
 
@@ -127,12 +181,17 @@ Prepare the following items before installing the module.
 | Item | Description |
 | --- | --- |
 | KSP-N51U-M.2 module | Main LTE-M / NB-IoT slot-type module |
-| Host board | Board with M.2 2230 Key E compatible socket |
+| Host board | Board with compatible M.2 2230 Key E socket |
 | Stable power source | 3.3 V DC supplied by the host board |
 | LTE antenna | Antenna connected through U.FL |
 | Nano USIM | Active SIM profile for cellular network access |
 | Serial terminal | PC tool or host software used to send AT commands |
 
+:::caution
+Before powering on, confirm the M.2 socket compatibility, module seating, antenna connection, Nano USIM preparation, and 3.3 V power design.
+:::
+
+---
 
 ## Install the Module
 
@@ -150,15 +209,21 @@ Insert the KSP-N51U-M.2 module into the compatible **M.2 2230 Key E** socket on 
 | Module size | Confirm clearance for the 22 × 30 mm module size |
 | Mechanical fixing | Secure the module according to the host board design |
 
-### 3. Connect the Antenna
+### 3. Secure the Module
+
+Secure the module mechanically according to the host board design. Make sure the module is not loose before continuing.
+
+### 4. Connect the Antenna
 
 Connect the LTE antenna to the **U.FL** antenna connector before running network tests.
 
-:::tip
-Use proper U.FL handling tools or careful hand pressure when connecting the antenna cable. Avoid twisting or lifting the connector at an angle.
-:::
+| Check Item | Recommended Action |
+| --- | --- |
+| Connector type | Use a compatible U.FL antenna cable |
+| Connector seating | Press straight down until the connector is seated |
+| Cable stress | Avoid pulling or twisting the antenna cable |
 
-### 4. Prepare the Nano USIM
+### 5. Prepare the Nano USIM
 
 Prepare the **Nano USIM** according to your host board or product design.
 
@@ -168,6 +233,13 @@ Prepare the **Nano USIM** according to your host board or product design.
 | SIM service | Confirm that the SIM plan supports the target LTE-M / NB-IoT network |
 | SIM connection | Verify the SIM circuit or socket in the host design |
 
+### 6. Power On the Host Board
+
+After the module is inserted, secured, and the antenna/SIM are prepared, power on the host board.
+
+The module should receive stable **3.3 V DC** power from the M.2 socket.
+
+---
 
 ## Connect the Host Interface
 
@@ -182,6 +254,32 @@ KSP-N51U-M.2 provides **UART** and **I2C** interface support. AT command control
 
 For AT command testing, open the UART port exposed by your host board or development platform.
 
+### UART Reference
+
+| M.2 Pin | Signal | Connect To |
+| --- | --- | --- |
+| 22 | UART_TX | Host UART RX |
+| 32 | UART_RX | Host UART TX |
+| 34 | UART_RTS | Host UART CTS, if flow control is used |
+| 36 | UART_CTS | Host UART RTS, if flow control is used |
+| GND pins | GND | Host GND |
+
+:::note
+Cross-connect TX and RX: module TX to host RX, and module RX to host TX.
+:::
+
+### I2C Reference
+
+| M.2 Pin | Signal |
+| --- | --- |
+| 58 | I2C_SDA |
+| 60 | I2C_SCL |
+
+:::note
+Use UART for AT command communication. I2C availability depends on the host board and product design.
+:::
+
+---
 
 ## Verify AT Command Communication
 
@@ -201,6 +299,7 @@ A normal AT command interface should return an `OK` response when the host UART 
 If there is no response, check that the host board exposes the module UART interface correctly and that the module receives stable 3.3 V power.
 :::
 
+---
 
 ## Network Connection Check
 
@@ -218,13 +317,29 @@ After the AT command interface responds, continue with your AT command workflow 
 For command details, continue with the KSP-N51U-M.2 AT Commands page.
 :::
 
+---
+
+## GNSS Preparation
+
+KSP-N51U-M.2 supports GNSS. For location-related applications, make sure the antenna design and product placement support GNSS reception.
+
+| Item | Recommendation |
+| --- | --- |
+| Antenna path | Verify the LTE/GNSS antenna design used by your product |
+| Placement | Avoid shielding the antenna with metal enclosure parts |
+| First fix | Allow enough time for first GNSS acquisition during testing |
+
+---
+
 ## Troubleshooting
 
 | Symptom | Possible Cause | Recommended Action |
 | --- | --- | --- |
 | Module is not detected | M.2 seating, host board, or power issue | Power off, reseat the module, confirm M.2 compatibility, then power on again |
-| No AT response | UART routing or serial setting issue | Check host UART routing, serial configuration, and firmware access to the UART port |
+| No AT response | UART routing, power, or serial setting issue | Check host UART routing, serial configuration, and stable 3.3 V power |
 | Module does not power on | Incorrect or unstable 3.3 V supply | Confirm stable 3.3 V DC power from the host board |
 | Cannot attach to network | SIM, antenna, coverage, or network profile issue | Check Nano USIM, LTE antenna, cellular coverage, and AT command configuration |
 | Weak signal | Poor antenna placement or low coverage | Reposition the antenna or test in a better coverage area |
 | GNSS does not get a fix | Antenna placement or sky visibility issue | Improve antenna placement and allow more time for first fix |
+| Unstable communication | UART routing or host timing issue | Check UART routing, common GND, and host firmware handling |
+
