@@ -384,3 +384,25 @@
   margin-bottom: 20px;
   border-radius: 16px;
 }
+
+/* Table below img */
+.spec-table-wrapper {
+  width: 100%;
+  margin: 24px auto;
+  justify-content: center!important;
+  display: grid;
+}
+
+.spec-table {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.spec-table th,
+.spec-table td {
+  vertical-align: middle;
+}
+
+.spec-table th {
+  background-color: #25b8ed;
+}

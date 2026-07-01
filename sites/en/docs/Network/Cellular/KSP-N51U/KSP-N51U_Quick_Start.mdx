@@ -11,6 +11,28 @@ The **KSP-N51U** is an internal LTE-M / NB-IoT module in the KORLINX industrial 
 
 Unlike the KSE-91A external modem, KSP-N51U is a PCB-level internal module. This Quick Start focuses on **hardware preparation**, **UART host connection**, **antenna connection**, **USIM preparation**, and **basic communication verification**.
 
+---
+
+## Quick Start Flow
+
+Use the following flow for first-time bring-up.
+
+| Step | Action | Expected Result |
+| --- | --- | --- |
+| 1 | Review the hardware overview and pin list | You can identify the antenna connector, power pins, GND pins, and UART pins |
+| 2 | Connect the LTE antenna | Antenna is securely connected to the U.FL connector |
+| 3 | Prepare the Nano USIM | SIM is ready for cellular network access |
+| 4 | Connect UART and GND | Host can communicate with the module through UART |
+| 5 | Apply 3.3–5 V DC power | Module powers on from a stable supply |
+| 6 | Open the host UART port | Serial terminal or host firmware is ready |
+| 7 | Send `AT` | Module returns `OK` if communication is working |
+| 8 | Continue network and GNSS checks | Module is ready for LTE-M / NB-IoT testing |
+
+:::tip
+For the first bring-up, verify the UART path first. A simple `AT` → `OK` response confirms that power, GND, and UART wiring are working.
+:::
+
+---
 
 ## Hardware Overview
 
@@ -24,12 +46,41 @@ The KSP-N51U hardware provides a compact internal LTE-M / NB-IoT module form fac
   className="blog-first-image"
 />
 
-| Part | Description |
-| --- | --- |
-| Module type | Internal LTE-M / NB-IoT module |
-| Host connection | 2.54 header pin type |
-| Antenna connector | U.FL |
-| Control interface | AT-COMMAND over UART |
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Module type</td>
+      <td>Internal LTE-M / NB-IoT module</td>
+    </tr>
+
+    <tr>
+      <td>Host connection</td>
+      <td>2.54 mm header pin type</td>
+    </tr>
+
+    <tr>
+      <td>Antenna connector</td>
+      <td>U.FL</td>
+    </tr>
+
+    <tr>
+      <td>Control interface</td>
+      <td>AT-COMMAND over UART</td>
+    </tr>
+
+  </tbody>
+</table>
+
+</div>
 
 ### Antenna Connector
 
@@ -41,6 +92,10 @@ The KSP-N51U hardware provides a compact internal LTE-M / NB-IoT module form fac
 
 The KSP-N51U uses a **U.FL** antenna connector. Connect the LTE antenna before starting cellular network tests. If your application uses GNSS, make sure the antenna design and placement support the required GNSS performance.
 
+:::tip
+For better signal quality, keep the antenna away from large metal objects and place it where cellular reception is available.
+:::
+
 ### Host Connection
 
 The module connects to the host system through a **2.54 header pin type** connection. Use the hardware reference or board design file for the exact pin assignment before wiring.
@@ -48,6 +103,35 @@ The module connects to the host system through a **2.54 header pin type** connec
 :::caution
 Do not assume the pin order from the product photo alone. Always verify the pinout from the official hardware reference or board design before applying power.
 :::
+
+### Pin List
+
+The KSP-N51U uses two 14-pin header groups for power, UART, I2C, control, and GPIO-related signals.
+
+<img
+  src="/img/KSP-N51U/KSP-N51U_pin_list.png"
+  alt="KSP-N51U pin list"
+  className="blog-first-image"
+/>
+
+### Essential Pins for Quick Start
+
+Use these pins for a basic power and UART communication test.
+
+| Purpose | KSP-N51U Pin | Signal | Connect To |
+| --- | --- | --- | --- |
+| Power input | J1-1 or J1-2 | 3.3–5V | Stable 3.3–5 V DC supply |
+| Ground | J1-3 or J1-4 | GND | Host / power supply GND |
+| UART transmit | J2-1 | UART_TX | Host UART RX |
+| UART receive | J2-2 | UART_RX | Host UART TX |
+| Power control | J2-5 | PWR_ON | Host control signal, if used |
+| Reset | J2-7 | nReset | Host reset control, if used |
+
+:::caution
+Confirm the J1/J2 orientation on the actual PCB or carrier board before wiring 3.3–5V and GND. Incorrect power wiring may damage the module.
+:::
+
+---
 
 ## Specification
 
@@ -88,39 +172,7 @@ Do not assume the pin order from the product photo alone. Always verify the pino
 | Current consumption (Tx) | ~120 mA average in LTE-M mode, varies by band and output level |
 | Current consumption (LP) | Under 5 µA in PSM / DRX power-saving mode |
 
-## Pin List
-
-The KSP-N51U uses two 14-pin header groups for power, UART, I2C, control, and GPIO-related signals.
-
-<img
-  src="/img/KSP-N51U/KSP-N51U_header_pin.jpg"
-  alt="KSP-N51U header pin connection"
-  className="blog-first-image"
-/>
-
-:::note
-The pin list below is based on the uploaded KSP-N51U pin list file. Always verify the pin direction and electrical design with your carrier board schematic before applying power.
-:::
-
-### Pin List
-
-| J1 | Function | J2 | Function |
-| --- | --- | --- | --- |
-| 1 | 3.3–5V | 1 | UART_TX |
-| 2 | 3.3–5V | 2 | UART_RX |
-| 3 | GND | 3 | UART_CTS |
-| 4 | GND | 4 | UART_RTS |
-| 5 | OverCurrent Flag | 5 | PWR_ON |
-| 6 | I2C_SCL | 6 | GPIO0.14 |
-| 7 | I2C_SDA | 7 | nReset |
-| 8 | MAGPIO0 | 8 | COEX2 |
-| 9 | MAGPIO1 | 9 | COEX1 |
-| 10 | MAGPIO2 | 10 | COEX0 |
-| 11 | GPIO0.20 | 11 | GPIO0.29 |
-| 12 | GPIO0.21 | 12 | GPIO0.28 |
-| 13 | GPIO0.23 | 13 | GPIO0.27 |
-| 14 | GPIO0.15 | 14 | GPIO0.26 |
-
+---
 
 ## Before You Start
 
@@ -136,9 +188,10 @@ Prepare the following items before wiring the module.
 | Serial terminal | PC tool or host software used to send AT commands |
 
 :::caution
-Before powering on, confirm the supply voltage and wiring. Incorrect power wiring may damage the module.
+Before powering on, confirm the supply voltage, common GND, UART wiring, and antenna connection. Incorrect power wiring may damage the module.
 :::
 
+---
 
 ## Connect the Hardware
 
@@ -164,11 +217,11 @@ Install or connect the **Nano USIM** according to your host board or product des
 
 KSP-N51U is controlled by **AT-COMMAND (UART)**. Connect the module UART interface to the host UART interface.
 
-| KSP-N51U Signal | Connect To |
-| --- | --- |
-| UART TX | Host UART RX |
-| UART RX | Host UART TX |
-| GND | Host GND |
+| KSP-N51U Pin | Signal | Connect To |
+| --- | --- | --- |
+| J2-1 | UART_TX | Host UART RX |
+| J2-2 | UART_RX | Host UART TX |
+| J1-3 or J1-4 | GND | Host GND |
 
 :::note
 The exact physical pin location depends on your carrier board or product design. Use the official pinout before wiring.
@@ -176,8 +229,16 @@ The exact physical pin location depends on your carrier board or product design.
 
 ### 4. Apply Power
 
-Apply stable **3.3–5 V DC** power to the module. After power is applied, open the host UART port from your PC tool or host firmware.
+Apply stable **3.3–5 V DC** power to the module.
 
+| KSP-N51U Pin | Signal | Connect To |
+| --- | --- | --- |
+| J1-1 or J1-2 | 3.3–5V | Power supply output |
+| J1-3 or J1-4 | GND | Power supply ground |
+
+After power is applied, open the host UART port from your PC tool or host firmware.
+
+---
 
 ## Verify AT Command Communication
 
@@ -197,6 +258,7 @@ A normal AT command interface should return an `OK` response when the host UART 
 If there is no response, check power, common GND, UART TX/RX direction, and the serial port settings used by your host firmware or test tool.
 :::
 
+---
 
 ## Network Connection Check
 
@@ -213,6 +275,20 @@ After the AT command interface responds, continue with your AT command workflow 
 :::note
 For command details, continue with the KSP-N51U AT Commands page.
 :::
+
+---
+
+## GNSS Preparation
+
+KSP-N51U supports GNSS. For location-related applications, make sure the antenna design and product placement support GNSS reception.
+
+| Item | Recommendation |
+| --- | --- |
+| Antenna path | Verify the LTE/GNSS antenna design used by your product |
+| Placement | Avoid shielding the antenna with metal enclosure parts |
+| First fix | Allow enough time for first GNSS acquisition during testing |
+
+---
 
 ## Troubleshooting
 
