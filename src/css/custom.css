@@ -406,3 +406,88 @@
 .spec-table th {
   background-color: #25b8ed;
 }
+
+/* Quick Start Ready */
+
+.quickstart-ready {
+  margin: 2rem 0;
+}
+
+.quickstart-ready-hero {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.quickstart-ready-hero h3 {
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.quickstart-ready-hero p {
+  margin: 0.35rem 0;
+  font-size: 1rem;
+}
+
+.quickstart-ready-checklist {
+  margin-top: 1rem;
+}
+
+.quickstart-ready-checklist ul {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.quickstart-ready-checklist li {
+  margin: 0.35rem 0;
+}
+
+.quickstart-ready-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.quickstart-ready-card {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.quickstart-ready-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.quickstart-ready-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.quickstart-ready-card p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.quickstart-ready blockquote {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+@media (max-width: 996px) {
+  .quickstart-ready-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .quickstart-ready-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .quickstart-ready-hero {
+    text-align: left;
+  }
+}
