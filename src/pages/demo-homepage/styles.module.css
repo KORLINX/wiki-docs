@@ -3,12 +3,32 @@
   color: #0f172a;
 }
 
-.hero {
+/* .hero {
   min-height: 620px;
   background: radial-gradient(circle at center top, #2563eb 0%, #0f2d72 45%, #ffffff 75%);
   color: white;
   text-align: center;
-  padding: 24px 40px 100px;
+  padding: 24px 40px 60px;
+} */
+
+.hero {
+  position: relative;
+  min-height: 730px;
+  overflow: hidden;
+
+  color: #ffffff;
+  text-align: center;
+
+  padding: 50px 40px 190px;
+
+  background:
+    radial-gradient(
+      ellipse 82% 90% at 50% 0%,
+      #2563eb 0%,
+      #143f9d 60%,
+      #dbe4f3 84%,
+      #ffffff 100%
+    );
 }
 
 .nav {
@@ -24,7 +44,7 @@
 }
 
 .heroContent {
-  margin-top: 120px;
+  margin-top: 30px;
 }
 
 .heroContent h1 {

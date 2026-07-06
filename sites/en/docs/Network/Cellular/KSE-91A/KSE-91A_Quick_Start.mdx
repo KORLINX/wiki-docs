@@ -284,6 +284,22 @@ The LCD should show the startup sequence and then move toward the **Connected** 
 
 ---
 
+## Verify AT Command Communication
+
+After the LTE/GNSS antennas, Nano USIM, host interface, and power connection are prepared, verify that the KSE-91A can respond to AT commands.
+
+KSE-91A supports AT command control through the available host interface depending on the product model and selected interface configuration.
+
+### Basic Communication Check
+
+Open the serial terminal or host application connected to the KSE-91A, then send a basic AT command:
+
+:::note
+AT
+:::
+
+A normal AT command interface should return an `OK` response when the host communication path is working.
+
 ## Startup and Connection Screens
 
 <img
@@ -307,6 +323,69 @@ The module displays several screens during power-on and cellular network attachm
 :::tip
 The **Connecting** screen is normal during startup. Wait until the module reaches **Connected** or shows a clear fault screen.
 :::
+
+---
+
+## 🎉 You're Ready!
+
+<div className="quickstart-ready">
+
+  <div className="quickstart-ready-hero">
+    <h3>Welcome to KORLINX Cellular Module</h3>
+    <p>
+      You've completed the basic hardware connection and UART communication check.
+    </p>
+    <p>
+      From power wiring to your first AT command response — that's an important first step.
+    </p>
+  </div>
+
+  <div className="quickstart-ready-checklist">
+    <strong>Here's what you accomplished:</strong>
+
+    <ul>
+      <li>✅ Connected the LTE antenna</li>
+      <li>✅ Prepared the Nano USIM</li>
+      <li>✅ Connected power and ground correctly</li>
+      <li>✅ Wired the UART host interface</li>
+      <li>✅ Sent your first <code>AT</code> command</li>
+      <li>✅ Received an <code>OK</code> response from the module</li>
+    </ul>
+  </div>
+
+  <h3>What's next?</h3>
+
+  <div className="quickstart-ready-cards">
+    <div className="quickstart-ready-card">
+      <div className="quickstart-ready-icon">📶</div>
+      <h4>Network Attach</h4>
+      <p>Continue with LTE-M / NB-IoT network registration and signal checks.</p>
+    </div>
+
+    <div className="quickstart-ready-card">
+      <div className="quickstart-ready-icon">🛰️</div>
+      <h4>GNSS Preparation</h4>
+      <p>Prepare antenna placement and test location-related features.</p>
+    </div>
+
+    <div className="quickstart-ready-card">
+      <div className="quickstart-ready-icon">⌨️</div>
+      <h4>AT Commands</h4>
+      <p>Use AT commands to configure the modem and check cellular status.</p>
+    </div>
+
+    <div className="quickstart-ready-card">
+      <div className="quickstart-ready-icon">🧩</div>
+      <h4>Host Integration</h4>
+      <p>Integrate the module with your MCU, host board, or application firmware.</p>
+    </div>
+  </div>
+
+  <blockquote>
+    Your module is now responding over UART. You can continue with network connection checks and product integration.
+  </blockquote>
+
+</div>
 
 ---
 
