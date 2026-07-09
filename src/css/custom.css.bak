@@ -493,29 +493,16 @@
 }
 
 
-/* =========================
-   Korlinx Homepage Search
-   ========================= */
-
-body.korlinx-home-page .hero,
-body.korlinx-home-page .heroContent,
-body.korlinx-home-page .korlinx-home-search,
-body.korlinx-home-page .korlinx-home-search *,
-body.korlinx-home-page .main-wrapper,
-body.korlinx-home-page main {
-  overflow: visible !important;
-}
-
+/* Homepage search bar - override local search default style */
 body.korlinx-home-page .korlinx-home-search {
   width: 1018px !important;
   max-width: calc(100vw - 48px) !important;
   margin: 76px auto 42px !important;
 
   position: relative !important;
-  z-index: 200 !important;
+  z-index: 5 !important;
 }
 
-/* Search wrapper */
 body.korlinx-home-page .korlinx-home-search > div,
 body.korlinx-home-page .korlinx-home-search .navbar__search,
 body.korlinx-home-page .korlinx-home-search [class*='navbarSearchContainer'],
@@ -528,15 +515,10 @@ body.korlinx-home-page .korlinx-home-search [class*='searchBox'] {
   margin: 0 !important;
   padding: 0 !important;
 
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-
   display: block !important;
-  overflow: visible !important;
+  position: relative !important;
 }
 
-/* Search input */
 body.korlinx-home-page .korlinx-home-search input,
 body.korlinx-home-page .korlinx-home-search input[type='search'],
 body.korlinx-home-page .korlinx-home-search .navbar__search-input {
@@ -577,8 +559,7 @@ body.korlinx-home-page .korlinx-home-search .navbar__search-input::placeholder {
   opacity: 1 !important;
 }
 
-
-/* Hide default small icon / shortcut key */
+body.korlinx-home-page .korlinx-home-search svg,
 body.korlinx-home-page .korlinx-home-search .navbar__search::before,
 body.korlinx-home-page .korlinx-home-search [class*='searchIcon'],
 body.korlinx-home-page .korlinx-home-search [class*='searchBarSearchIcon'],
@@ -588,57 +569,84 @@ body.korlinx-home-page .korlinx-home-search kbd {
   display: none !important;
 }
 
-/* Search result dropdown */
-body.korlinx-home-page .korlinx-home-search [class*='dropdown'],
-body.korlinx-home-page .korlinx-home-search [class*='Dropdown'],
+@media (max-width: 996px) {
+  body.korlinx-home-page .korlinx-home-search {
+    width: min(720px, calc(100vw - 64px)) !important;
+    margin: 56px auto 36px !important;
+  }
+
+  body.korlinx-home-page .korlinx-home-search input,
+  body.korlinx-home-page .korlinx-home-search input[type='search'],
+  body.korlinx-home-page .korlinx-home-search .navbar__search-input {
+    height: 58px !important;
+    padding-left: 28px !important;
+    padding-right: 72px !important;
+    background-position: right 26px center !important;
+    background-size: 26px 26px !important;
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body.korlinx-home-page .korlinx-home-search {
+    width: calc(100vw - 48px) !important;
+    margin: 42px auto 30px !important;
+  }
+
+  body.korlinx-home-page .korlinx-home-search input,
+  body.korlinx-home-page .korlinx-home-search input[type='search'],
+  body.korlinx-home-page .korlinx-home-search .navbar__search-input {
+    height: 48px !important;
+    padding-left: 20px !important;
+    padding-right: 56px !important;
+    background-position: right 20px center !important;
+    background-size: 21px 21px !important;
+    font-size: 14px !important;
+  }
+}
+/* Fix homepage search result position */
+body.korlinx-home-page .korlinx-home-search {
+  position: relative !important;
+  z-index: 100 !important;
+  overflow: visible !important;
+}
+
+body.korlinx-home-page .korlinx-home-search > div,
+body.korlinx-home-page .korlinx-home-search .navbar__search,
+body.korlinx-home-page .korlinx-home-search [class*='searchBar'],
+body.korlinx-home-page .korlinx-home-search [class*='navbarSearchContainer'] {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Search result panel */
 body.korlinx-home-page .korlinx-home-search [class*='searchResults'],
 body.korlinx-home-page .korlinx-home-search [class*='searchResultContainer'],
-body.korlinx-home-page .korlinx-home-search [class*='searchResultList'],
-body.korlinx-home-page .korlinx-home-search [class*='results'] {
+body.korlinx-home-page .korlinx-home-search [class*='dropdown'] {
   position: absolute !important;
 
-  top: calc(100% + 12px) !important;
+  top: calc(100% + 10px) !important;
   left: 50% !important;
   right: auto !important;
-
   transform: translateX(-50%) !important;
 
   width: min(760px, 100%) !important;
   max-width: calc(100vw - 48px) !important;
 
-  max-height: 430px !important;
+  max-height: 420px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
 
-  z-index: 9999999 !important;
+  z-index: 9999 !important;
 
   background: #ffffff !important;
   border-radius: 12px !important;
   box-shadow: 0 18px 45px rgba(0, 35, 120, 0.24) !important;
 }
 
-/* Result item */
+/* Search result items */
 body.korlinx-home-page .korlinx-home-search [class*='searchResultItem'],
 body.korlinx-home-page .korlinx-home-search [class*='hitItem'] {
   width: 100% !important;
   box-sizing: border-box !important;
-}
-
-body.korlinx-home-page .korlinx-home-search {
-  position: relative !important;
-  z-index: 50 !important;
-}
-
-body.korlinx-home-page .section {
-  position: relative !important;
-  z-index: 1 !important;
-}
-/* Hide local-search loading spinner on homepage */
-body.korlinx-home-page .korlinx-home-search [class*='loading'],
-body.korlinx-home-page .korlinx-home-search [class*='Loading'],
-body.korlinx-home-page .korlinx-home-search [class*='spinner'],
-body.korlinx-home-page .korlinx-home-search [class*='Spinner'],
-body.korlinx-home-page .korlinx-home-search [class*='loadingRing'],
-body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
-  display: none !important;
 }
