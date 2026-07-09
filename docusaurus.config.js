@@ -40,16 +40,22 @@ const config = {
     locales: ['en'],
   },
 
-  //Plugin Search
-  plugins: [
+  themes: [
   [
-    require.resolve('@easyops-cn/docusaurus-search-local'),
+    '@easyops-cn/docusaurus-search-local',
     {
       hashed: true,
       language: ['en'],
       indexDocs: true,
-      indexPages: true,
+      indexPages: false,
       indexBlog: false,
+
+      docsRouteBasePath: 'docs',
+      docsDir: 'sites/en/docs',
+
+      searchBarShortcut: true,
+      searchBarShortcutHint: false,
+      searchResultLimits: 8,
     },
   ],
 ],
@@ -124,10 +130,7 @@ const config = {
             className: 'header-github-link',
             'aria-label': 'GitHub repository',
           },
-          {
-            type: 'search',
-            position: 'right',
-          },
+          
         ],
       },
       footer: {
