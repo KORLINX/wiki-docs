@@ -25,7 +25,7 @@ New to KORLINX products? These guides walk you through everything from unboxing 
 5. **Test** connectivity with `AT+PING`
 
 :::note
-Specific AT commands vary by product. Refer to your product's AT Commands document for the full command reference.
+Network attach steps vary by product. Refer to your product's Network Attach document for the basic connectivity guide.
 :::
 
 ---

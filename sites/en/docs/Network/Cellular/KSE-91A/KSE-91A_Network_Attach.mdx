@@ -1,0 +1,193 @@
+---
+sidebar_position: 13
+title: KSE-91A Network Attach
+description: How the KSE-91A attaches to LTE-M / NB-IoT. It connects automatically at power-on — watch the display, confirm with AT commands, or attach manually with a custom APN.
+keywords: [KSE-91A, network attach, Serial Modem, LTE-M, NB-IoT, XSYSTEMMODE, CEREG, APN, display, KORLINX]
+---
+
+# KSE-91A Network Attach
+
+The **KSE-91A** is an external LTE-M / NB-IoT modem running Nordic Semiconductor's **Serial Modem** firmware, controlled with `AT` commands over its USB-C / UART / RS232 / RS485 interface. It is set up to **attach to the cellular network automatically at power-on**, and its built-in display shows the progress — for most users there is nothing to configure.
+
+:::tip
+Most of the time you don't need this page — power the modem, connect the antenna, and watch the display reach **Connected**. Come here only to **confirm** the attach over AT, to **switch the radio mode** (LTE-M vs NB-IoT), or to **attach manually** with a custom APN.
+:::
+
+{/* ---
+
+## Video Guide — Hardware Connection
+
+Follow along as the modem is connected: antenna, SIM, power, and the host serial link.
+
+<video controls width="100%" style={{ borderRadius: '12px' }}>
+  <source src="/video/KSE-91A/hw-connect.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+:::note
+Recording placeholder — drop the clip at `static/video/KSE-91A/hw-connect.mp4`. See [Quick Start](./KSE-91A_Quick_Start) for the step-by-step wiring reference.
+:::
+
+--- */}
+
+## How Attach Works by Default
+
+At power-on the modem brings up the radio and registers on the network on its own. The display walks through the sequence:
+
+| Screen | Meaning |
+| --- | --- |
+| Boot | Powering up: shows product and firmware version |
+| Starting | Modem is initializing |
+| Connecting | Searching for and attaching to the network (up to ~1 minute) |
+| **Connected** | ✅ Online and attached — normal operating state |
+
+:::tip
+The **Connecting** screen is normal during startup. Wait until the modem reaches **Connected** or shows a clear fault screen (see [Troubleshooting](#troubleshooting)).
+:::
+
+---
+
+## Confirm the Module Attached (over AT)
+
+If you are driving the modem from a host, confirm attach over the serial interface instead of the display.
+
+### 1. Check Registration Status
+
+```text
+AT+CEREG?
++CEREG: 1,1
+
+OK
+```
+
+The second value is the registration **status**:
+
+| `+CEREG` status | Meaning |
+| --- | --- |
+| `1` | ✅ Registered — home network |
+| `5` | ✅ Registered — roaming |
+| `2` | Still searching — wait a moment |
+| `0` / `3` / `4` | Not attached — see manual attach below |
+
+### 2. Check Signal and IP
+
+```text
+AT+CESQ
++CESQ: 99,99,255,255,20,54
+
+OK
+```
+
+```text
+AT+CGPADDR
++CGPADDR: 0,"10.0.0.1"
+
+OK
+```
+
+:::tip
+Aim for **RSRP better than −110 dBm**. An assigned IP from `AT+CGPADDR` confirms the data connection is up.
+:::
+
+---
+
+## Set the Radio Mode (LTE-M or NB-IoT)
+
+This is the setting most users configure. Use `AT%XSYSTEMMODE` to choose which radio access technology the modem uses:
+
+```text
+AT%XSYSTEMMODE=<LTE-M>,<NB-IoT>,<GNSS>,<preference>
+```
+
+| Parameter | Meaning | Value |
+| --- | --- | --- |
+| `<LTE-M>` | Enable LTE-M | `1` = on, `0` = off |
+| `<NB-IoT>` | Enable NB-IoT | `1` = on, `0` = off |
+| `<GNSS>` | Enable GNSS | `1` = on, `0` = off |
+| `<preference>` | Which to prefer when both are on | `0` none · `1` LTE-M · `2` NB-IoT |
+
+**Common presets:**
+
+```text
+AT%XSYSTEMMODE=1,1,0,1     LTE-M + NB-IoT, prefer LTE-M  (typical)
+AT%XSYSTEMMODE=1,0,0,0     LTE-M only
+AT%XSYSTEMMODE=0,1,0,0     NB-IoT only
+```
+
+:::caution
+Change the system mode with the radio **off**, then bring it back online:
+
+```text
+AT+CFUN=4                 Go offline
+AT%XSYSTEMMODE=1,1,0,1    Set the radio mode
+AT+CFUN=1                 Go online; attach begins
+```
+:::
+
+---
+
+## Manual Attach
+
+Use this only if your SIM needs an APN different from the default, or the modem did not attach on its own.
+
+{/* ### Video Guide — Manual Network Attach
+
+Walkthrough of the manual attach sequence over the serial console.
+
+<video controls width="100%" style={{ borderRadius: '12px' }}>
+  <source src="/video/KSE-91A/network-attach.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+:::note
+Recording placeholder — drop the clip at `static/video/KSE-91A/network-attach.mp4`.
+::: */}
+
+### 1. Go Offline and Configure
+
+```text
+AT+CFUN=4                        Go offline
+AT%XSYSTEMMODE=1,1,0,1           Choose the radio mode
+AT+CGDCONT=0,"IP","<your-apn>"   Set the APN
+```
+
+### 2. Go Online and Attach
+
+```text
+AT+CFUN=1                        Go online; attach begins
+AT+CEREG=5                       Subscribe to registration updates
+AT+CEREG?                        Poll until status is 1 or 5
+```
+
+### 3. Verify the Checkpoints
+
+| Checkpoint | Command | Pass Condition |
+| --- | --- | --- |
+| Registered | `AT+CEREG?` | status `1` or `5` |
+| Signal OK | `AT+CESQ` | RSRP better than −110 dBm |
+| Data up | `AT+CGPADDR` | non-empty IP address |
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely Cause | Recommended Action |
+| --- | --- | --- |
+| Display stuck at **Connecting** | Weak coverage / band not supported | Reposition antenna; confirm operator LTE-M / NB-IoT support |
+| **No Signal** screen | No mobile coverage | Move the modem or antenna to a better reception area |
+| **Check SIM** screen | SIM missing or unreadable | Power off, reseat the SIM, power on again |
+| **Service Error** screen | Network reached but connection refused | Check SIM plan/service; collect Diagnostics information |
+| `+CEREG: ...,3` (denied) | SIM not provisioned / wrong APN | Verify data plan; set the APN manually |
+| Registered but no IP | PDP context inactive | Re-check the APN; confirm the plan allows data |
+
+:::tip
+For registration error codes in depth, see the [FAQ](./KSE-91A_FAQ).
+:::
+
+---
+
+## Related Resources
+
+- [Quick Start](./KSE-91A_Quick_Start) — hardware bring-up and display screens
+- [AT Commands](./KSE-91A_AT_Commands) — full command reference
+- [FAQ](./KSE-91A_FAQ) — registration troubleshooting
