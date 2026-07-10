@@ -27,6 +27,7 @@ const productLines = [
     description:
       'Industrial LTE-M modems and modules for reliable cellular IoT connectivity.',
     image: ANNA_ASSETS.productCellular,
+    link: '/docs/Network/Cellular/Cellular_Intro',
   },
   {
     title: 'BLE',
@@ -53,7 +54,7 @@ const quickLinks = [
     icon: ANNA_ASSETS.hardware,
   },
   {
-    title: 'AT Commands Reference',
+    title: 'Network Attach Guide',
     description: 'Start here for first setup',
     icon: ANNA_ASSETS.atCommand,
   },
@@ -179,7 +180,7 @@ function DemoHomeContent() {
               <div className={styles.productCardContent}>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-                <a href="/">View more →</a>
+                <a href={item.link}>View more →</a>
               </div>
 
               <div className={styles.productImageArea}>

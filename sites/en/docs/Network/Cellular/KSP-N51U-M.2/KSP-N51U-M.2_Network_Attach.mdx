@@ -1,0 +1,167 @@
+---
+sidebar_position: 13
+title: KSP-N51U-M.2 Network Attach
+description: How the KSP-N51U-M.2 attaches to LTE-M / NB-IoT. It connects automatically by default — confirm attach, and set the system mode when you need LTE-M or NB-IoT specifically.
+keywords: [KSP-N51U-M.2, network attach, Serial Modem, LTE-M, NB-IoT, XSYSTEMMODE, CEREG, APN, KORLINX]
+---
+
+# KSP-N51U-M.2 Network Attach
+
+The **KSP-N51U-M.2** runs Nordic Semiconductor's **Serial Modem** firmware and is controlled over UART with `AT` commands. It is set up to **attach to the cellular network automatically at power-on** — for most users there is nothing to configure.
+
+:::tip
+Most of the time you don't need this page — power the module and wait, and it attaches on its own. Come here only for the exceptions: to **confirm** the attach, to **switch the radio mode** (LTE-M vs NB-IoT), or to **attach manually** with a custom APN.
+:::
+
+---
+
+## Attach Flow
+
+| Step | Action | Command | Expected Result |
+| --- | --- | --- | --- |
+| 1 | Power on the module | — | Module attaches automatically |
+| 2 | Confirm registration | `AT+CEREG?` | Status `1` (home) or `5` (roaming) |
+| 3 | Check signal | `AT+CESQ` | RSRP better than −110 dBm |
+| 4 | Confirm data connection | `AT+CGPADDR` | Module has an assigned IP address |
+
+:::note
+Steps 2–4 are **checks**, not configuration. You only need the [manual attach](#manual-attach) section for uncommon situations such as a custom APN or a specific radio mode.
+:::
+
+---
+
+## How Attach Works by Default
+
+At power-on the module brings up the radio and registers on the network on its own. Power it up, wait up to about a minute for band scanning, and it comes online — no `AT` commands required.
+
+---
+
+## Confirm the Module Attached
+
+### 1. Check Registration Status
+
+This is the check that matters most. Query the network registration state:
+
+```text
+AT+CEREG?
++CEREG: 1,1
+
+OK
+```
+
+The second value is the registration **status**:
+
+| `+CEREG` status | Meaning |
+| --- | --- |
+| `1` | ✅ Registered — home network |
+| `5` | ✅ Registered — roaming |
+| `2` | Still searching — wait a moment |
+| `0` / `3` / `4` | Not attached — see manual attach below |
+
+### 2. Check Signal and IP
+
+```text
+AT+CESQ
++CESQ: 99,99,255,255,20,54
+
+OK
+```
+
+```text
+AT+CGPADDR
++CGPADDR: 0,"10.0.0.1"
+
+OK
+```
+
+:::tip
+Aim for **RSRP better than −110 dBm**. An assigned IP from `AT+CGPADDR` confirms the data connection is up.
+:::
+
+---
+
+## Set the Radio Mode (LTE-M or NB-IoT)
+
+This is the setting most users configure. Use `AT%XSYSTEMMODE` to choose which radio access technology the module uses:
+
+```text
+AT%XSYSTEMMODE=<LTE-M>,<NB-IoT>,<GNSS>,<preference>
+```
+
+| Parameter | Meaning | Value |
+| --- | --- | --- |
+| `<LTE-M>` | Enable LTE-M | `1` = on, `0` = off |
+| `<NB-IoT>` | Enable NB-IoT | `1` = on, `0` = off |
+| `<GNSS>` | Enable GNSS | `1` = on, `0` = off |
+| `<preference>` | Which to prefer when both are on | `0` none · `1` LTE-M · `2` NB-IoT |
+
+**Common presets:**
+
+```text
+AT%XSYSTEMMODE=1,1,0,1     LTE-M + NB-IoT, prefer LTE-M  (typical)
+AT%XSYSTEMMODE=1,0,0,0     LTE-M only
+AT%XSYSTEMMODE=0,1,0,0     NB-IoT only
+```
+
+:::caution
+Change the system mode with the radio **off**, then bring it back online:
+
+```text
+AT+CFUN=4                 Go offline
+AT%XSYSTEMMODE=1,1,0,1    Set the radio mode
+AT+CFUN=1                 Go online; attach begins
+```
+:::
+
+---
+
+## Manual Attach
+
+Use this only if your SIM needs an APN different from the default, or the module did not attach on its own.
+
+### 1. Go Offline and Configure
+
+```text
+AT+CFUN=4                        Go offline
+AT%XSYSTEMMODE=1,1,0,1           Choose the radio mode
+AT+CGDCONT=0,"IP","<your-apn>"   Set the APN
+```
+
+### 2. Go Online and Attach
+
+```text
+AT+CFUN=1                        Go online; attach begins
+AT+CEREG=5                       Subscribe to registration updates
+AT+CEREG?                        Poll until status is 1 or 5
+```
+
+### 3. Verify the Checkpoints
+
+| Checkpoint | Command | Pass Condition |
+| --- | --- | --- |
+| Registered | `AT+CEREG?` | status `1` or `5` |
+| Signal OK | `AT+CESQ` | RSRP better than −110 dBm |
+| Data up | `AT+CGPADDR` | non-empty IP address |
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely Cause | Recommended Action |
+| --- | --- | --- |
+| Stuck at `+CEREG: ...,2` | Weak coverage / band not supported | Check antenna; confirm operator LTE-M / NB-IoT support |
+| `+CEREG: ...,3` (denied) | SIM not provisioned / wrong APN | Verify data plan; set the APN manually |
+| Wrong radio mode | Operator only supports one RAT | Set `AT%XSYSTEMMODE` for LTE-M only or NB-IoT only |
+| Registered but no IP | PDP context inactive | Re-check the APN; confirm the plan allows data |
+
+:::tip
+For registration error codes in depth, see the [FAQ](./KSP-N51U-M.2_FAQ).
+:::
+
+---
+
+## Related Resources
+
+- [Quick Start](./KSP-N51U-M.2_Quick_Start) — hardware bring-up and first AT command
+- [AT Commands](./KSP-N51U-M.2_AT_Commands) — full command reference
+- [FAQ](./KSP-N51U-M.2_FAQ) — registration troubleshooting

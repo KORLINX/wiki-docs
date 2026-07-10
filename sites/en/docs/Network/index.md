@@ -44,5 +44,5 @@ All KORLINX network products follow a consistent documentation structure:
 |----------|---------|
 | `_Overview` | Features, specifications, pinout |
 | `_Quick_Start` | 15-minute first-connection guide |
-| `_AT_Commands` | Full AT command reference (firmware-programmable devices) |
+| `_Network_Attach` | Network attach guide and basic connectivity check |
 | `_FAQ` | Troubleshooting and error codes |
