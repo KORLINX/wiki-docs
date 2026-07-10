@@ -27,7 +27,7 @@ const sidebars = {
           items: [
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Overview', label: 'Overview' },
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Quick_Start', label: 'Quick Start' },
-            { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Network_Attach', label: 'AT Commands' },
+            { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Network_Attach', label: 'Network Attach' },
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_FAQ', label: 'FAQ' },
           ],
         },
@@ -43,7 +43,7 @@ const sidebars = {
           items: [
             { type: 'doc', id: 'Network/Cellular/KSP-N51U/KSP-N51U_Overview', label: 'Overview' },
             { type: 'doc', id: 'Network/Cellular/KSP-N51U/KSP-N51U_Quick_Start', label: 'Quick Start' },
-            { type: 'doc', id: 'Network/Cellular/KSP-N51U/KSP-N51U_Network_Attach', label: 'AT Commands' },
+            { type: 'doc', id: 'Network/Cellular/KSP-N51U/KSP-N51U_Network_Attach', label: 'Network Attach' },
             { type: 'doc', id: 'Network/Cellular/KSP-N51U/KSP-N51U_FAQ', label: 'FAQ' },
           ],
         },
@@ -59,7 +59,7 @@ const sidebars = {
           items: [
             { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Overview', label: 'Overview' },
             { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Quick_Start', label: 'Quick Start' },
-            { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Network_Attach', label: 'AT Commands' },
+            { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Network_Attach', label: 'Network Attach' },
             { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_FAQ', label: 'FAQ' },
           ],
         },
