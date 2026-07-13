@@ -28,6 +28,7 @@ const sidebars = {
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Overview', label: 'Overview' },
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Quick_Start', label: 'Quick Start' },
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Network_Attach', label: 'Network Attach' },
+            { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_Send_Data', label: 'Send Data' },
             { type: 'doc', id: 'Network/Cellular/KSE-91A/KSE-91A_FAQ', label: 'FAQ' },
           ],
         },

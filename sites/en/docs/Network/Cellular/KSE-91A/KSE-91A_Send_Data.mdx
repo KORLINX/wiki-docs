@@ -1,0 +1,340 @@
+---
+sidebar_position: 14
+title: KSE-91A Send Data
+description: Send data from the KSE-91A after network attach by connecting to an MQTT broker, publishing a message, verifying delivery, and checking the LCD/Diagnostics status.
+keywords: [KSE-91A, send data, MQTT, XMQTTCFG, XMQTTCON, XMQTTPUB, XMQTTSUB, XMQTTMSG, Serial Modem, LTE-M, NB-IoT, USB-C, UART, RS232, RS485, KORLINX]
+---
+
+# KSE-91A Send Data
+
+After the **KSE-91A** reaches the cellular network and receives an IP address, the next step is to send real application data.
+
+This guide walks through a simple **MQTT publish** workflow:
+
+1. Confirm that the modem already has a data connection.
+2. Configure the MQTT client.
+3. Connect to an MQTT broker.
+4. Publish a message.
+5. Verify that the broker received the message.
+6. Optionally subscribe to a command topic.
+7. Disconnect cleanly.
+
+The KSE-91A is an external LTE-M / NB-IoT modem controlled by **AT commands** through the available host interface, depending on the product model and selected interface configuration. Supported host interfaces include **USB-C**, **UART**, **RS232**, and **RS485**.
+
+:::note
+This page is a practical send-data workflow. It is not a full AT command reference. Exact command support may vary depending on the Serial Modem firmware version used by your KSE-91A.
+:::
+
+---
+
+## Before You Start
+
+This page assumes the KSE-91A is already attached to the cellular network.
+
+Before sending MQTT data, complete [KSE-91A Network Attach](./KSE-91A_Network_Attach) and confirm the following items.
+
+| Check Item | Command / Source | Pass Condition |
+| --- | --- | --- |
+| AT command path | `AT` | Returns `OK` |
+| SIM status | `AT+CPIN?` | SIM is ready |
+| Network registration | `AT+CEREG?` | Registered status |
+| Signal quality | `AT+CESQ` | Usable RSRP / RSRQ values |
+| IP address | `AT+CGPADDR` | Non-empty IP address |
+| LCD status | KSE-91A display | Shows **Connected** |
+| Broker information | MQTT broker settings | Hostname, port, username/password if required |
+
+:::tip
+If the modem does not have an IP address yet, finish [KSE-91A Network Attach](./KSE-91A_Network_Attach) first.
+:::
+
+---
+
+## Send Data Flow
+
+Use the following flow to publish one test message to an MQTT broker.
+
+| Step | Action | Command | Expected Result |
+| --- | --- | --- | --- |
+| 1 | Configure the MQTT client | `AT#XMQTTCFG` | `OK` |
+| 2 | Connect to the broker | `AT#XMQTTCON` | `OK`, then `#XMQTTEVT: 0,0` |
+| 3 | Publish a message | `AT#XMQTTPUB` | `OK`; for QoS 1/2, check the related `#XMQTTEVT` acknowledgement and verify the message at the broker |
+| 4 | Verify delivery | External MQTT client or cloud console | Message appears on the subscribed topic |
+| 5 | Disconnect | `AT#XMQTTCON=0` | `OK`, then `#XMQTTEVT: 1,0` |
+
+:::caution
+Do not treat `OK` from `AT#XMQTTPUB` as final proof that the application received the data. `OK` confirms that the command was accepted by the AT interface. Always verify delivery through the broker, subscriber, cloud dashboard, or related MQTT event.
+:::
+
+---
+
+## Step 1 — Configure the MQTT Client
+
+Configure the MQTT client identity before connecting to the broker.
+
+```text
+AT#XMQTTCFG="korlinx-kse-91a",60,1
+
+OK
+```
+
+The parameters are:
+
+| Parameter | Example | Description |
+| --- | --- | --- |
+| Client ID | `"korlinx-kse-91a"` | MQTT client identifier. It should be unique on the broker. |
+| Keep-alive | `60` | MQTT keep-alive interval in seconds. |
+| Clean session | `1` | `1` = clean session, `0` = persistent session. |
+
+:::note
+Use a unique MQTT client ID for every device. If two devices connect to the same broker with the same client ID, the broker may disconnect one of them.
+:::
+
+---
+
+## Step 2 — Connect to the MQTT Broker
+
+Connect to the MQTT broker.
+
+```text
+AT#XMQTTCON=1,"","","broker.example.com",1883
+
+OK
+#XMQTTEVT: 0,0
+```
+
+The parameters are:
+
+| Parameter | Example | Description |
+| --- | --- | --- |
+| Operation | `1` | Connect using IPv4 |
+| Username | `""` | Empty when the broker does not require authentication |
+| Password | `""` | Empty when the broker does not require authentication |
+| Broker hostname | `"broker.example.com"` | MQTT broker hostname |
+| Port | `1883` | Standard non-TLS MQTT port |
+
+The `AT#XMQTTCON=1,...` command returns `OK` first. The actual connection result is reported by an MQTT event.
+
+| Event | Meaning |
+| --- | --- |
+| `#XMQTTEVT: 0,0` | Connection request acknowledged successfully |
+| Negative result value | Connection failed; check broker, port, credentials, TLS, or network path |
+| `#XMQTTEVT: 9,0` | Broker ping response after keep-alive, when reported |
+
+:::note
+For TLS, use the TLS MQTT port, commonly `8883`, and provide the security tag configured for the broker certificate if your firmware and broker setup require it.
+:::
+
+---
+
+## Step 3 — Publish a Message
+
+Publish a simple status message to a topic.
+
+```text
+AT#XMQTTPUB="korlinx/kse-91a/status","online",0,0
+
+OK
+```
+
+The parameters are:
+
+| Parameter | Example | Description |
+| --- | --- | --- |
+| Topic | `"korlinx/kse-91a/status"` | MQTT topic to publish to |
+| Payload | `"online"` | Message payload |
+| QoS | `0` | MQTT QoS value |
+| Retain | `0` | `0` = do not retain, `1` = broker retains the message |
+
+:::note Payload size
+The maximum payload size depends on the Serial Modem firmware version. In Nordic nRF Connect SDK 3.x documentation, the non-empty `AT#XMQTTPUB` payload size is up to **1024 bytes**. Check the command reference for the exact firmware version used by your KSE-91A.
+:::
+
+### QoS and Publish Acknowledgement
+
+The QoS parameter uses MQTT QoS values `0`, `1`, or `2`.
+
+| QoS | Typical Meaning | What to Check |
+| --- | --- | --- |
+| `0` | No publish acknowledgement required | `OK`, then verify at the subscriber or broker side |
+| `1` | Broker acknowledgement expected | `#XMQTTEVT: 3,0` |
+| `2` | QoS 2 publish flow | `#XMQTTEVT: 4,0`, then `#XMQTTEVT: 6,0` |
+
+:::caution
+The Serial Modem MQTT client uses MQTT QoS values, but it does not keep internal publish/subscribe state for retransmission or guaranteed packet delivery according to MQTT v3.1.1 QoS classes. For reliable application behavior, verify delivery at the broker or application layer.
+:::
+
+---
+
+## Step 4 — Verify the Message Arrived
+
+Use an external MQTT client, cloud dashboard, or broker console to subscribe to the same topic.
+
+Example using `mosquitto_sub`:
+
+```text
+mosquitto_sub -h broker.example.com -t "korlinx/kse-91a/status"
+```
+
+Expected received message:
+
+```text
+online
+```
+
+:::tip
+Use an external subscriber during first testing. This confirms that the message reached the broker, not only that the AT command returned `OK`.
+:::
+
+---
+
+## Step 5 — Receive a Message on the KSE-91A
+
+To receive a message on the KSE-91A, subscribe to a command topic.
+
+```text
+AT#XMQTTSUB="korlinx/kse-91a/cmd",0
+
+OK
+#XMQTTEVT: 7,0
+```
+
+When a message is published to the subscribed topic, the modem reports an incoming message notification.
+
+```text
+#XMQTTMSG: 19,6
+korlinx/kse-91a/cmd
+reboot
+#XMQTTEVT: 2,0
+```
+
+The notification contains:
+
+| Field | Meaning |
+| --- | --- |
+| Topic length | Length of the received topic |
+| Message length | Length of the received payload |
+| Topic | Topic that received the message |
+| Payload | Received message content |
+
+:::note
+The sample topic `korlinx/kse-91a/cmd` has 19 characters, and the sample payload `reboot` has 6 characters.
+:::
+
+---
+
+## Step 6 — Disconnect from the Broker
+
+Disconnect cleanly when the test is complete.
+
+```text
+AT#XMQTTCON=0
+
+OK
+#XMQTTEVT: 1,0
+```
+
+| Event | Meaning |
+| --- | --- |
+| `#XMQTTEVT: 1,0` | MQTT client disconnected successfully |
+
+---
+
+## Full Example
+
+The sequence below shows a minimal end-to-end MQTT publish test.
+
+```text
+AT
+OK
+
+AT#XMQTTCFG="korlinx-kse-91a",60,1
+OK
+
+AT#XMQTTCON=1,"","","broker.example.com",1883
+OK
+#XMQTTEVT: 0,0
+
+AT#XMQTTPUB="korlinx/kse-91a/status","online",0,0
+OK
+
+AT#XMQTTCON=0
+OK
+#XMQTTEVT: 1,0
+```
+
+---
+
+## KSE-91A LCD and Diagnostics Cross-check
+
+The KSE-91A has a built-in display. Use the LCD and Diagnostics pages together with AT commands during send-data testing.
+
+| KSE-91A Screen / Page | What to Check | Related Command |
+| --- | --- | --- |
+| Home / Connected | Network, type, signal, IP, uptime | `AT+CEREG?`, `AT+CESQ`, `AT+CGPADDR` |
+| Diagnostics → Network | Registration state, operator, type, band | `AT+CEREG?`, `AT+COPS?` |
+| Diagnostics → Signal | RSRP, RSRQ, SNR, Cell ID | `AT+CESQ` |
+| Diagnostics → Link | IP, protocol, data state, sent/received data | `AT+CGPADDR`, MQTT events |
+| Diagnostics → Device | IMEI, ICCID, host UART, firmware version | Device / support information |
+
+:::tip
+Open Diagnostics with a long press from the Home / Connected or Location screen. Diagnostics is read-only and does not change modem settings.
+:::
+
+---
+
+## Verify the Checkpoints
+
+| Checkpoint | Command / Tool | Pass Condition |
+| --- | --- | --- |
+| Data connection is ready | `AT+CGPADDR` | Non-empty IP address |
+| MQTT broker is connected | `AT#XMQTTCON=1,...` | `#XMQTTEVT: 0,0` |
+| Message command is accepted | `AT#XMQTTPUB` | `OK` |
+| Message is delivered | External MQTT subscriber / broker console | Payload appears on the target topic |
+| KSE-91A link status looks normal | Diagnostics → Link | IP, protocol, data state, and counters look reasonable |
+| MQTT client disconnects cleanly | `AT#XMQTTCON=0` | `#XMQTTEVT: 1,0` |
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely Cause | Recommended Action |
+| --- | --- | --- |
+| No AT response | Wrong host interface, wiring issue, serial settings, or interface mismatch | Check USB-C / UART / RS232 / RS485 connection and confirm the selected interface in Interface Configuration |
+| LCD does not reach **Connected** | Network attach has not completed | Complete [KSE-91A Network Attach](./KSE-91A_Network_Attach) first |
+| No IP from `AT+CGPADDR` | Data context is not ready | Check APN, SIM service plan, registration status, and network coverage |
+| `AT#XMQTTCON` returns `OK` but no success event | Broker unreachable, DNS issue, blocked port, wrong credentials, or TLS issue | Check broker hostname, port, credentials, TLS settings, and network path |
+| Connects, then disconnects | Duplicate client ID, keep-alive issue, broker policy, or unstable network | Use a unique client ID and verify keep-alive / broker settings |
+| Publish returns `ERROR` | Invalid topic, payload format, command syntax, or MQTT not connected | Check command syntax and confirm MQTT connection status |
+| Publish returns `OK`, but subscriber sees nothing | Topic mismatch, broker ACL, wrong broker, or QoS/event issue | Verify topic, broker, subscriber, QoS events, and broker permissions |
+| TLS connection fails | Missing or incorrect certificate/security tag | Provision the correct CA certificate and use the correct security tag |
+| Incoming message is not received | Not subscribed, wrong topic, or broker permission issue | Check `AT#XMQTTSUB`, topic name, and broker ACL |
+
+:::note
+Keep this page focused on MQTT send-data checks. Use [KSE-91A Network Attach](./KSE-91A_Network_Attach) for registration, signal, APN, and IP-related issues.
+:::
+
+---
+
+## Other Protocols and Services
+
+The product platform supports more than MQTT, depending on the firmware build and project configuration.
+
+| Protocol / Service | Use For | Suggested Future Page |
+| --- | --- | --- |
+| HTTP | Calling a REST / web API | HTTP send-data guide |
+| TCP / UDP socket | Raw or custom transport | Socket guide |
+| CoAP | Constrained REST over UDP | CoAP guide |
+| LwM2M | Device management / carrier workflow | LwM2M guide |
+| GNSS | Position acquisition | GNSS guide |
+
+:::note
+This page intentionally focuses on MQTT send-data because it is a common telemetry workflow for cellular IoT. Add separate task pages for HTTP, sockets, CoAP, LwM2M, and GNSS when those workflows are ready.
+:::
+
+---
+
+## Related Resources
+
+- [KSE-91A Quick Start](./KSE-91A_Quick_Start) — hardware bring-up, first AT command, LCD screens, and button operation
+- [KSE-91A Network Attach](./KSE-91A_Network_Attach) — cellular registration, signal, APN, and IP checks
+- [KSE-91A Overview](./KSE-91A_Overview) — product summary and technical highlights
