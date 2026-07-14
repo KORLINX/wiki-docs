@@ -1,0 +1,344 @@
+---
+sidebar_position: 14
+title: KSP-N51U-M.2 Send Data
+description: Send data from the KSP-N51U-M.2 after network attach by connecting to an MQTT broker, publishing a message, verifying delivery, and checking common issues.
+keywords: [KSP-N51U-M.2, send data, MQTT, XMQTTCFG, XMQTTCON, XMQTTPUB, XMQTTSUB, XMQTTMSG, Serial Modem, LTE-M, NB-IoT, M.2, UART, I2C, KORLINX]
+---
+
+# KSP-N51U-M.2 Send Data
+
+After the **KSP-N51U-M.2** is attached to the LTE-M / NB-IoT network and has an IP address, the next step is to send real application data.
+
+This guide walks through a simple **MQTT publish** workflow:
+
+1. Confirm that the module already has a data connection.
+2. Configure the MQTT client.
+3. Connect to an MQTT broker.
+4. Publish a message.
+5. Verify that the broker received the message.
+6. Optionally subscribe to a command topic.
+7. Disconnect cleanly.
+
+The **KSP-N51U-M.2** is an internal slot-type LTE-M / NB-IoT module. It uses an **M.2 2230 Key E** connection, a **U.FL** antenna connector, and **3.3 V DC** input from the host board. The module supports **UART** and **I2C**, while AT command control is performed over **UART**.
+
+:::note
+This page is a practical send-data workflow. It is not a full AT command reference. Exact command support may vary depending on the Serial Modem firmware version used by your KSP-N51U-M.2.
+:::
+
+---
+
+## Before You Start
+
+This page assumes the KSP-N51U-M.2 is already attached to the cellular network.
+
+Before sending MQTT data, complete [KSP-N51U-M.2 Network Attach](./KSP-N51U-M.2_Network_Attach) and confirm the following items.
+
+| Check Item | Command / Source | Pass Condition |
+| --- | --- | --- |
+| AT command path | `AT` | Returns `OK` |
+| SIM status | `AT+CPIN?` | SIM is ready |
+| Network registration | `AT+CEREG?` | Registered status |
+| Signal quality | `AT+CESQ` | Usable RSRP / RSRQ values |
+| IP address | `AT+CGPADDR` | Non-empty IP address |
+| Host UART | Host board / serial terminal | UART path to the module is stable |
+| Broker information | MQTT broker settings | Hostname, port, username/password if required |
+
+:::tip
+If the module does not have an IP address yet, finish [KSP-N51U-M.2 Network Attach](./KSP-N51U-M.2_Network_Attach) first.
+:::
+
+:::caution
+KSP-N51U-M.2 is an internal module. Before troubleshooting MQTT, first confirm the M.2 module is seated correctly, the host board supplies stable 3.3 V power, the U.FL antenna is connected, and the host UART path is working.
+:::
+
+---
+
+## Send Data Flow
+
+Use the following flow to publish one test message to an MQTT broker.
+
+| Step | Action | Command | Expected Result |
+| --- | --- | --- | --- |
+| 1 | Configure the MQTT client | `AT#XMQTTCFG` | `OK` |
+| 2 | Connect to the broker | `AT#XMQTTCON` | `OK`, then `#XMQTTEVT: 0,0` |
+| 3 | Publish a message | `AT#XMQTTPUB` | `OK`; for QoS 1/2, check the related `#XMQTTEVT` acknowledgement and verify the message at the broker |
+| 4 | Verify delivery | External MQTT client or cloud console | Message appears on the subscribed topic |
+| 5 | Disconnect | `AT#XMQTTCON=0` | `OK`, then `#XMQTTEVT: 1,0` |
+
+:::caution
+Do not treat `OK` from `AT#XMQTTPUB` as final proof that the application received the data. `OK` confirms that the command was accepted by the AT interface. Always verify delivery through the broker, subscriber, cloud dashboard, or related MQTT event.
+:::
+
+---
+
+## Step 1 — Configure the MQTT Client
+
+Configure the MQTT client identity before connecting to the broker.
+
+```text
+AT#XMQTTCFG="korlinx-ksp-n51u-m2",60,1
+
+OK
+```
+
+The parameters are:
+
+| Parameter | Example | Description |
+| --- | --- | --- |
+| Client ID | `"korlinx-ksp-n51u-m2"` | MQTT client identifier. It should be unique on the broker. |
+| Keep-alive | `60` | MQTT keep-alive interval in seconds. |
+| Clean session | `1` | `1` = clean session, `0` = persistent session. |
+
+:::note
+Use a unique MQTT client ID for every device. If two devices connect to the same broker with the same client ID, the broker may disconnect one of them.
+:::
+
+---
+
+## Step 2 — Connect to the MQTT Broker
+
+Connect to the MQTT broker.
+
+```text
+AT#XMQTTCON=1,"","","broker.example.com",1883
+
+OK
+#XMQTTEVT: 0,0
+```
+
+The parameters are:
+
+| Parameter | Example | Description |
+| --- | --- | --- |
+| Operation | `1` | Connect using IPv4 |
+| Username | `""` | Empty when the broker does not require authentication |
+| Password | `""` | Empty when the broker does not require authentication |
+| Broker hostname | `"broker.example.com"` | MQTT broker hostname |
+| Port | `1883` | Standard non-TLS MQTT port |
+
+The `AT#XMQTTCON=1,...` command returns `OK` first. The actual connection result is reported by an MQTT event.
+
+| Event | Meaning |
+| --- | --- |
+| `#XMQTTEVT: 0,0` | Connection request acknowledged successfully |
+| Negative result value | Connection failed; check broker, port, credentials, TLS, or network path |
+| `#XMQTTEVT: 9,0` | Broker ping response after keep-alive, when reported |
+
+:::note
+For TLS, use the TLS MQTT port, commonly `8883`, and provide the security tag configured for the broker certificate if your firmware and broker setup require it.
+:::
+
+---
+
+## Step 3 — Publish a Message
+
+Publish a simple status message to a topic.
+
+```text
+AT#XMQTTPUB="korlinx/ksp-n51u-m2/status","online",0,0
+
+OK
+```
+
+The parameters are:
+
+| Parameter | Example | Description |
+| --- | --- | --- |
+| Topic | `"korlinx/ksp-n51u-m2/status"` | MQTT topic to publish to |
+| Payload | `"online"` | Message payload |
+| QoS | `0` | MQTT QoS value |
+| Retain | `0` | `0` = do not retain, `1` = broker retains the message |
+
+:::note Payload size
+The maximum payload size depends on the Serial Modem firmware version. In Nordic nRF Connect SDK 3.x documentation, the non-empty `AT#XMQTTPUB` payload size is up to **1024 bytes**. Check the command reference for the exact firmware version used by your KSP-N51U-M.2.
+:::
+
+### QoS and Publish Acknowledgement
+
+The QoS parameter uses MQTT QoS values `0`, `1`, or `2`.
+
+| QoS | Typical Meaning | What to Check |
+| --- | --- | --- |
+| `0` | No publish acknowledgement required | `OK`, then verify at the subscriber or broker side |
+| `1` | Broker acknowledgement expected | `#XMQTTEVT: 3,0` |
+| `2` | QoS 2 publish flow | `#XMQTTEVT: 4,0`, then `#XMQTTEVT: 6,0` |
+
+:::caution
+The Serial Modem MQTT client uses MQTT QoS values, but it does not keep internal publish/subscribe state for retransmission or guaranteed packet delivery according to MQTT v3.1.1 QoS classes. For reliable application behavior, verify delivery at the broker or application layer.
+:::
+
+---
+
+## Step 4 — Verify the Message Arrived
+
+Use an external MQTT client, cloud dashboard, or broker console to subscribe to the same topic.
+
+Example using `mosquitto_sub`:
+
+```text
+mosquitto_sub -h broker.example.com -t "korlinx/ksp-n51u-m2/status"
+```
+
+Expected received message:
+
+```text
+online
+```
+
+:::tip
+Use an external subscriber during first testing. This confirms that the message reached the broker, not only that the AT command returned `OK`.
+:::
+
+---
+
+## Step 5 — Receive a Message on the KSP-N51U-M.2
+
+To receive a message on the KSP-N51U-M.2, subscribe to a command topic.
+
+```text
+AT#XMQTTSUB="korlinx/ksp-n51u-m2/cmd",0
+
+OK
+#XMQTTEVT: 7,0
+```
+
+When a message is published to the subscribed topic, the module reports an incoming message notification.
+
+```text
+#XMQTTMSG: 23,6
+korlinx/ksp-n51u-m2/cmd
+reboot
+#XMQTTEVT: 2,0
+```
+
+The notification contains:
+
+| Field | Meaning |
+| --- | --- |
+| Topic length | Length of the received topic |
+| Message length | Length of the received payload |
+| Topic | Topic that received the message |
+| Payload | Received message content |
+
+:::note
+The sample topic `korlinx/ksp-n51u-m2/cmd` has 23 characters, and the sample payload `reboot` has 6 characters.
+:::
+
+---
+
+## Step 6 — Disconnect from the Broker
+
+Disconnect cleanly when the test is complete.
+
+```text
+AT#XMQTTCON=0
+
+OK
+#XMQTTEVT: 1,0
+```
+
+| Event | Meaning |
+| --- | --- |
+| `#XMQTTEVT: 1,0` | MQTT client disconnected successfully |
+
+---
+
+## Full Example
+
+The sequence below shows a minimal end-to-end MQTT publish test.
+
+```text
+AT
+OK
+
+AT#XMQTTCFG="korlinx-ksp-n51u-m2",60,1
+OK
+
+AT#XMQTTCON=1,"","","broker.example.com",1883
+OK
+#XMQTTEVT: 0,0
+
+AT#XMQTTPUB="korlinx/ksp-n51u-m2/status","online",0,0
+OK
+
+AT#XMQTTCON=0
+OK
+#XMQTTEVT: 1,0
+```
+
+---
+
+## Host Board Cross-check
+
+Because KSP-N51U-M.2 is an internal slot-type module, send-data issues may be related to the host board integration. Use this checklist together with the AT command results.
+
+| Area | What to Check | Related Command / Source |
+| --- | --- | --- |
+| Power | Stable 3.3 V power from the M.2 socket | Host board schematic / measurement |
+| Module seating | Module is inserted and secured correctly | Visual / mechanical check |
+| Antenna | LTE antenna is connected to the U.FL connector | Hardware check |
+| UART path | Host UART is routed to the module correctly | `AT` |
+| Registration | Module is registered on LTE-M / NB-IoT | `AT+CEREG?` |
+| Signal | Cellular signal is usable | `AT+CESQ` |
+| IP address | Data context is active | `AT+CGPADDR` |
+| MQTT session | Broker connection is active | `AT#XMQTTCON` and `#XMQTTEVT` |
+| Application delivery | Payload reaches the broker or subscriber | External MQTT client / cloud console |
+
+---
+
+## Verify the Checkpoints
+
+| Checkpoint | Command / Tool | Pass Condition |
+| --- | --- | --- |
+| Data connection is ready | `AT+CGPADDR` | Non-empty IP address |
+| MQTT broker is connected | `AT#XMQTTCON=1,...` | `#XMQTTEVT: 0,0` |
+| Message command is accepted | `AT#XMQTTPUB` | `OK` |
+| Message is delivered | External MQTT subscriber / broker console | Payload appears on the target topic |
+| Host board integration looks normal | Host board check | Stable power, UART routing, and antenna connection |
+| MQTT client disconnects cleanly | `AT#XMQTTCON=0` | `#XMQTTEVT: 1,0` |
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely Cause | Recommended Action |
+| --- | --- | --- |
+| No AT response | Host UART routing, serial settings, power, or M.2 seating issue | Check module seating, stable 3.3 V power, UART routing, TX/RX direction, and serial terminal settings |
+| No IP from `AT+CGPADDR` | Module is not attached or PDP context is not ready | Complete [KSP-N51U-M.2 Network Attach](./KSP-N51U-M.2_Network_Attach) first |
+| `AT#XMQTTCON` returns `OK` but no success event | Broker unreachable, DNS issue, blocked port, wrong credentials, or TLS issue | Check broker hostname, port, credentials, TLS settings, and network path |
+| Connects, then disconnects | Duplicate client ID, keep-alive issue, broker policy, or unstable network | Use a unique client ID and verify keep-alive / broker settings |
+| Publish returns `ERROR` | Invalid topic, payload format, command syntax, or MQTT not connected | Check command syntax and confirm MQTT connection status |
+| Publish returns `OK`, but subscriber sees nothing | Topic mismatch, broker ACL, wrong broker, or QoS/event issue | Verify topic, broker, subscriber, QoS events, and broker permissions |
+| TLS connection fails | Missing or incorrect certificate/security tag | Provision the correct CA certificate and use the correct security tag |
+| Incoming message is not received | Not subscribed, wrong topic, or broker permission issue | Check `AT#XMQTTSUB`, topic name, and broker ACL |
+| Unstable MQTT session | Weak signal, antenna issue, or unstable host power | Check `AT+CESQ`, antenna connection, and host board power stability |
+
+:::note
+Keep this page focused on MQTT send-data checks. Use [KSP-N51U-M.2 Network Attach](./KSP-N51U-M.2_Network_Attach) for registration, signal, APN, and IP-related issues.
+:::
+
+---
+
+## Other Protocols and Services
+
+The product platform supports more than MQTT, depending on the firmware build and project configuration.
+
+| Protocol / Service | Use For | Suggested Future Page |
+| --- | --- | --- |
+| HTTP | Calling a REST / web API | HTTP send-data guide |
+| TCP / UDP socket | Raw or custom transport | Socket guide |
+| CoAP | Constrained REST over UDP | CoAP guide |
+| LwM2M | Device management / carrier workflow | LwM2M guide |
+| GNSS | Position acquisition | GNSS guide |
+
+:::note
+This page intentionally focuses on MQTT send-data because it is a common telemetry workflow for cellular IoT. Add separate task pages for HTTP, sockets, CoAP, LwM2M, and GNSS when those workflows are ready.
+:::
+
+---
+
+## Related Resources
+
+- [KSP-N51U-M.2 Quick Start](./KSP-N51U-M.2_Quick_Start) — M.2 installation, host interface preparation, and first AT command
+- [KSP-N51U-M.2 Network Attach](./KSP-N51U-M.2_Network_Attach) — cellular registration, signal, APN, and IP checks
+- [KSP-N51U-M.2 Overview](./KSP-N51U-M.2_Overview) — product summary and technical highlights
