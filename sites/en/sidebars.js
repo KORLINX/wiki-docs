@@ -62,6 +62,7 @@ const sidebars = {
             { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Overview', label: 'Overview' },
             { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Quick_Start', label: 'Quick Start' },
             { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Network_Attach', label: 'Network Attach' },
+            { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Send_Data', label: 'Send Data' },
             { type: 'doc', id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_FAQ', label: 'FAQ' },
           ],
         },
