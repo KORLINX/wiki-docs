@@ -734,6 +734,9 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
 @media (min-width: 997px) {
   /* Open sidebar: bottom button */
   aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] {
+    transform: rotate(180deg) !important;
+    transform-origin: center center !important;
+    
     position: absolute !important;
     left: 0 !important;
     right: 0 !important;
@@ -749,7 +752,7 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
     display: block !important;
 
     border: 0 !important;
-    border-top: 1px solid var(--ifm-color-emphasis-300) !important;
+    border-bottom: 1px solid var(--ifm-color-emphasis-300) !important;
     border-radius: 0 !important;
 
     background: var(--ifm-background-surface-color) !important;
@@ -762,6 +765,8 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
 
   aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] svg,
   aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] [class*='collapseSidebarButtonIcon'] {
+    
+    
     position: absolute !important;
     left: 50% !important;
     top: 50% !important;
