@@ -296,7 +296,7 @@ The FAQ page may contain deeper troubleshooting once it is completed. Until then
 
 ## Runnable Code
 
-If your project uses the `korlinx-at-examples` sample repository, start from the MQTT publish and subscribe examples.
+If your project uses the [`korlinx-at-examples`](https://github.com/KORLINX/korlinx-at-examples) sample repository, start from the MQTT publish and subscribe examples.
 
 Suggested example names:
 
@@ -309,6 +309,54 @@ Suggested example names:
 This statement is now softer because the availability, naming, or visibility of the sample repository may depend on the project setup. If the repository is private or not yet published, the command sequence above remains the reference workflow.
 :::
 
+---
+
+## Examples Data
+
+The <a href="https://github.com/KORLINX/korlinx-at-examples" target="_blank" rel="noopener noreferrer">korlinx-at-examples</a> repository provides runnable AT command examples for KORLINX LTE-M products.
+
+Use this repository when you want to test the same send-data flow from a real host environment instead of typing every AT command manually in a serial terminal.
+
+### Recommended Examples for Send Data
+
+| Example          | Purpose                                                                            | When to Use               |
+| ---------------- | ---------------------------------------------------------------------------------- | ------------------------- |
+| `hello`          | Open the serial port, send `AT`, and check for `OK`                                | First communication test  |
+| `attach_network` | Confirm or trigger network attach, then check registration, signal, and IP address | Before sending data       |
+| `mqtt_publish`   | Connect to an MQTT broker and publish a message                                    | Main send-data test       |
+| `mqtt_subscribe` | Subscribe to an MQTT topic and receive messages                                    | Command / downlink test   |
+| `http_get`       | Fetch a URL over HTTP                                                              | HTTP data test            |
+| `tcp_socket`     | Open a raw TCP socket and exchange data                                            | Custom TCP workflow       |
+| `coap_client`    | Make a CoAP request over UDP                                                       | CoAP workflow             |
+| `gnss_fix`       | Acquire a GNSS position fix                                                        | Location-related workflow |
+
+### Quick Python Test
+
+The fastest path is to start from the Python examples on a PC.
+
+```bash
+git clone https://github.com/KORLINX/korlinx-at-examples.git
+cd korlinx-at-examples/python
+pip install -r requirements.txt
+```
+
+Run the basic communication test first:
+
+```bash
+python hello.py --port /dev/ttyUSB0
+```
+
+On Windows, the port may look like this:
+
+```bash
+python hello.py --port COM5
+```
+
+On macOS, the port may look like this:
+
+```bash
+python hello.py --port /dev/cu.usbserial-0001
+```
 ---
 
 ## Other Protocols and Services
