@@ -867,3 +867,31 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
     min-height: calc(100vh - var(--korlinx-navbar-height)) !important;
   }
 }
+
+/* =========================
+   Use mobile "On this page" dropdown on desktop
+   ========================= */
+
+@media (min-width: 997px) {
+  /* Show mobile dropdown TOC on desktop */
+  .theme-doc-toc-mobile {
+    display: block !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Hide desktop right-side TOC */
+  .theme-doc-toc-desktop {
+    display: none !important;
+  }
+
+  /* Hide empty right TOC column */
+  .row .col:has(.theme-doc-toc-desktop) {
+    display: none !important;
+  }
+
+  /* Let main doc content use the released width */
+  [class*='docItemCol'] {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+}
