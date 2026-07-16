@@ -18,7 +18,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'KSE-91A',
-          collapsed: false,
+          collapsed: true,
           collapsible: true,
           link: { type: 'generated-index',
                   title: 'KSE-91A',
@@ -35,7 +35,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'KSP-N51U',
-          collapsed: false,
+          collapsed: true,
           collapsible: true,
           link: { type: 'generated-index',
                   title: 'KSP-N51U',
@@ -52,7 +52,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'KSP-N51U-M.2',
-          collapsed: false,
+          collapsed: true,
           collapsible: true,
           link: { type: 'generated-index',
                   title: 'KSP-N51U-M.2',

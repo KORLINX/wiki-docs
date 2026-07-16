@@ -5,11 +5,9 @@ import styles from './styles.module.css';
 import {GithubIcon, MoonIcon, SunIcon} from './Icons';
 
 const navItems = [
-  {label: 'PRODUCTS', to: '/docs/'},
   {label: 'GUIDES', to: '/docs/Network/'},
   {label: 'TUTORIALS', to: '/docs/Tutorials/Tutorials_Intro/'},
   {label: 'SUPPORT', to: '/docs/'},
-  {label: 'RESOURCES', to: '/docs/'},
 ];
 
 export default function Header() {

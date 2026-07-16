@@ -1,9 +1,3 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
-
 /* KORLINX Blue Color Palette */
 :root {
   --ifm-color-primary: #2563eb;
@@ -40,56 +34,6 @@
   --ifm-footer-background-color: #0f172a;
 }
 
-/* Navbar layout */
-/* .navbar__inner {
-  position: relative;
-  flex-wrap: nowrap;
-}
-
-.navbar__brand {
-  position: relative;
-  z-index: 1;
-}
-
-.navbar__logo img {
-  height: 32px;
-  width: auto;
-} */
-
-/* Center the search bar container */
-/* [class*="navbarSearchContainer"] {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 50%;
-  margin-top: -20px;
-}
-
-.navbar__search-input {
-  width: 400px !important;
-  padding: 10px 40px 10px 16px !important;
-  font-size: 16px !important;
-  border-radius: 8px !important;
-  height: 40px !important;
-}
-
-@media (max-width: 996px) {
-  [class*="navbarSearchContainer"] {
-    position: static;
-    transform: none;
-    margin-top: 0;
-  }
-
-  .navbar__search-input {
-    width: 200px !important;
-  }
-}
-
-@media (max-width: 576px) {
-  .navbar__search-input {
-    width: 120px !important;
-  }
-} */
 
 /* GitHub icon in navbar */
 .header-github-link::before {
@@ -105,25 +49,6 @@
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
     no-repeat;
 }
-
-/* Move search to right side */
-/* .navbarSearchContainer_Bca1 {
-  position: static !important;
-  left: auto !important;
-  top: auto !important;
-  transform: none !important;
-  margin-top: 0 !important;
-}
-
-.navbar__search-input {
-  width: 200px !important;
-  height: 36px;
-  border-radius: 20px !important;
-  padding-left: 12px;
-  padding-right: 60px; chừa chỗ Ctrl+K
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-} */
 
 .header-github-link:hover {
 	opacity: 0.6;
@@ -144,14 +69,6 @@
 		no-repeat;
 }
 
-/*Position toggle colormode*/
-/* .toggle_vylO {
-  order: 1;
-} */
-/*Postision search bar*/
-/* .navbarSearchContainer_Bca1 {
-  order: 2;
-} */
 
 /* Tech Support Container */
 .button_tech_support_container {
@@ -641,4 +558,307 @@ body.korlinx-home-page .korlinx-home-search [class*='Spinner'],
 body.korlinx-home-page .korlinx-home-search [class*='loadingRing'],
 body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
   display: none !important;
+}
+
+/* =========================
+   Korlinx Docs Sidebar
+   Clean final layout
+   ========================= */
+
+@media (min-width: 997px) {
+  :root {
+    --korlinx-navbar-height: 72px;
+    --korlinx-sidebar-footer-height: 42px;
+    --korlinx-sidebar-rail-width: 30px;
+  }
+
+  .theme-doc-sidebar-container {
+    position: sticky !important;
+    top: var(--korlinx-navbar-height) !important;
+    height: calc(100vh - var(--korlinx-navbar-height)) !important;
+    min-height: calc(100vh - var(--korlinx-navbar-height)) !important;
+    overflow: hidden !important;
+    border-right: 1px solid var(--ifm-color-emphasis-300) !important;
+    background: var(--ifm-background-color) !important;
+  }
+
+  .theme-doc-sidebar-container > div,
+  .theme-doc-sidebar-container [class^='sidebarViewport_'],
+  .theme-doc-sidebar-container [class*=' sidebarViewport_'] {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding-top: 0 !important;
+  }
+
+  .theme-doc-sidebar-container [class^='sidebar_'],
+  .theme-doc-sidebar-container [class*=' sidebar_'] {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+    padding-top: 0 !important;
+  }
+
+  .theme-doc-sidebar-container nav.menu {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    padding: 16px 12px 16px 16px !important;
+    margin: 0 !important;
+  }
+
+  aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+
+    flex: 0 0 var(--korlinx-sidebar-footer-height) !important;
+
+    width: 100% !important;
+    height: var(--korlinx-sidebar-footer-height) !important;
+    min-height: var(--korlinx-sidebar-footer-height) !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-top: 1px solid var(--ifm-color-emphasis-300) !important;
+    border-radius: 0 !important;
+
+    background: var(--ifm-background-surface-color) !important;
+    color: #8a8a8a !important;
+
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+
+  aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] svg {
+    width: 28px !important;
+    height: 28px !important;
+
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    position: static !important;
+
+    transform: none !important;
+    transform-origin: center center !important;
+  }
+
+  button[class*='expandButton'] {
+    position: fixed !important;
+    left: 0 !important;
+    top: var(--korlinx-navbar-height) !important;
+
+    width: var(--korlinx-sidebar-rail-width) !important;
+    height: calc(100vh - var(--korlinx-navbar-height)) !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-right: 1px solid var(--ifm-color-emphasis-300) !important;
+    border-radius: 0 !important;
+
+    background: var(--ifm-background-surface-color) !important;
+    color: #8a8a8a !important;
+
+    font-size: 0 !important;
+    line-height: 0 !important;
+
+    z-index: 999 !important;
+  }
+
+  button[class*='expandButton'] svg {
+    width: 28px !important;
+    height: 28px !important;
+
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    position: static !important;
+
+    transform: none !important;
+    transform-origin: center center !important;
+  }
+
+  aside.theme-doc-sidebar-container button[class*='collapseSidebarButton']:hover,
+  button[class*='expandButton']:hover {
+    color: var(--ifm-color-primary) !important;
+    background: var(--ifm-color-emphasis-100) !important;
+  }
+
+  html[data-theme='dark'] .theme-doc-sidebar-container,
+  html[data-theme='dark'] aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'],
+  html[data-theme='dark'] button[class*='expandButton'] {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #9ca3af !important;
+  }
+
+  html[data-theme='dark'] aside.theme-doc-sidebar-container button[class*='collapseSidebarButton']:hover,
+  html[data-theme='dark'] button[class*='expandButton']:hover {
+    background: #1f2937 !important;
+    color: #ffffff !important;
+  }
+}
+
+/* =========================
+   Final fix: center sidebar arrows exactly
+   ========================= */
+
+@media (min-width: 997px) {
+  /* Open sidebar: bottom button */
+  aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+
+    width: 100% !important;
+    height: var(--korlinx-sidebar-bottom-rail-height, 42px) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    border: 0 !important;
+    border-top: 1px solid var(--ifm-color-emphasis-300) !important;
+    border-radius: 0 !important;
+
+    background: var(--ifm-background-surface-color) !important;
+    color: #8a8a8a !important;
+
+    font-size: 0 !important;
+    line-height: 0 !important;
+    text-align: center !important;
+  }
+
+  aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] svg,
+  aside.theme-doc-sidebar-container button[class*='collapseSidebarButton'] [class*='collapseSidebarButtonIcon'] {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+
+    width: 28px !important;
+    height: 20px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    transform: translate(-50%, -50%) !important;
+    transform-origin: center center !important;
+  }
+
+  /* Closed sidebar: vertical button */
+  button[class*='expandButton'] {
+    position: fixed !important;
+    left: 0 !important;
+    top: var(--korlinx-navbar-height, 72px) !important;
+
+    width: var(--korlinx-sidebar-rail-width, 30px) !important;
+    height: calc(100vh - var(--korlinx-navbar-height, 72px)) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    border: 0 !important;
+    border-right: 1px solid var(--ifm-color-emphasis-300) !important;
+    border-radius: 0 !important;
+
+    background: var(--ifm-background-surface-color) !important;
+    color: #8a8a8a !important;
+
+    font-size: 0 !important;
+    line-height: 0 !important;
+    text-align: center !important;
+    z-index: 999 !important;
+  }
+
+  button[class*='expandButton'] svg,
+  button[class*='expandButton'] [class*='expandButtonIcon'] {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+
+    width: 28px !important;
+    height: 20px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    transform: translate(-50%, -50%) !important;
+    transform-origin: center center !important;
+  }
+}
+
+/* =========================
+   Fix docs sidebar hidden under sticky navbar
+   ========================= */
+
+@media (min-width: 997px) {
+  :root {
+    --korlinx-navbar-height: 72px;
+  }
+
+  /* Make docs layout aware of custom sticky navbar */
+  .theme-doc-sidebar-container {
+    top: var(--korlinx-navbar-height) !important;
+    height: calc(100vh - var(--korlinx-navbar-height)) !important;
+    max-height: calc(100vh - var(--korlinx-navbar-height)) !important;
+  }
+
+  .theme-doc-sidebar-container > div,
+  .theme-doc-sidebar-container [class^='sidebarViewport_'],
+  .theme-doc-sidebar-container [class*=' sidebarViewport_'],
+  .theme-doc-sidebar-container [class^='sidebar_'],
+  .theme-doc-sidebar-container [class*=' sidebar_'] {
+    height: calc(100vh - var(--korlinx-navbar-height)) !important;
+    max-height: calc(100vh - var(--korlinx-navbar-height)) !important;
+    padding-top: 0 !important;
+  }
+
+  .theme-doc-sidebar-container nav.menu {
+    padding-top: 16px !important;
+  }
+
+  /* Important for short docs pages */
+  .main-wrapper,
+  [class*='docPage'],
+  [class*='docRoot'],
+  [class*='docMainContainer'] {
+    min-height: calc(100vh - var(--korlinx-navbar-height)) !important;
+  }
 }
