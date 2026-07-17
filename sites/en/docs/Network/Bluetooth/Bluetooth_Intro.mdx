@@ -1,0 +1,174 @@
+---
+sidebar_position: 1
+title: Bluetooth Intro
+description: Introduction to Bluetooth Low Energy for low-power IoT devices, sensors, beacons, wearables, smart home, and short-range wireless applications.
+keywords: [Bluetooth, Bluetooth LE, BLE, low power, IoT, sensor, beacon, wearable, smart home, industrial monitoring]
+---
+
+# Bluetooth Intro
+
+Bluetooth is a short-range wireless technology used to connect devices over a local area. In embedded systems and IoT products, the most common choice is **Bluetooth Low Energy (BLE)** because it is designed for devices that need wireless communication with low power consumption.
+
+BLE is commonly used in sensors, beacons, wearables, smart home devices, industrial monitoring devices, and products that communicate with a smartphone, gateway, or nearby controller.
+
+---
+
+## What is Bluetooth Low Energy?
+
+**Bluetooth Low Energy (BLE)** is a low-power version of Bluetooth designed for small data exchange.
+
+Unlike wireless technologies that keep a connection active continuously, BLE devices can stay in sleep mode most of the time. They wake up only when they need to advertise, connect, send data, receive data, or update their state.
+
+This makes BLE suitable for battery-powered devices that need long operating life.
+
+---
+
+## Why BLE is Suitable for Low-Power IoT
+
+BLE is useful when a device only needs to send small amounts of data at intervals.
+
+A typical BLE sensor does not need to transmit data continuously. It can:
+
+1. Stay in sleep mode
+2. Wake up to read sensor data
+3. Advertise or connect
+4. Send data
+5. Return to sleep
+
+This operating pattern helps reduce average power consumption.
+
+| Low-Power Factor | Why It Matters |
+| --- | --- |
+| Sleep current | Determines how much energy the device uses while idle |
+| Advertising interval | Controls how often the device broadcasts its presence |
+| Connection interval | Controls how often connected devices exchange data |
+| TX power | Higher transmit power can improve range but increases current consumption |
+| Sensor duty cycle | Sensors should be active only when measurements are needed |
+| Firmware power management | Unused peripherals should be disabled during low-power states |
+
+
+:::note
+**Low-power design principle**  
+A good BLE design lets the device sleep most of the time, wake up only when needed, exchange data quickly, and return to sleep.
+:::
+
+---
+
+## BLE Communication Models
+
+BLE supports several communication models depending on the application.
+
+| Model | Description | Example |
+| --- | --- | --- |
+| Advertising | A device broadcasts small data packets without a full connection | Beacon, simple sensor broadcast |
+| Connection | A device connects to a phone, gateway, or controller to exchange data | Wearable, smart sensor, configuration app |
+| GATT | A connected device exposes data as services and characteristics | Battery level, sensor value, device status |
+| Gateway | A BLE device connects locally to a gateway, and the gateway forwards data to the cloud | Industrial monitoring, smart building system |
+
+---
+
+## Typical Use Cases
+
+| Use Case | Description |
+| --- | --- |
+| Sensor nodes | Periodic measurement and reporting, such as temperature, humidity, motion, or status |
+| BLE beacons | Proximity detection, indoor positioning, asset tracking, and broadcast data |
+| Wearables | Health, activity, personal monitoring, and compact battery-powered devices |
+| Smart home | Switches, sensors, locks, controllers, and automation devices |
+| Industrial monitoring | Short-range wireless monitoring for equipment or environmental data |
+| HID devices | Keyboards, remote controls, and other human-interface devices |
+
+---
+
+## Bluetooth vs Other Wireless Technologies
+
+Bluetooth is best suited for short-range, low-power communication. It is not intended to replace long-range or high-throughput networks.
+
+| Technology | Best For |
+| --- | --- |
+| Bluetooth / BLE | Low-power short-range devices, sensors, beacons, wearables |
+| Wi-Fi | Higher data rate and direct IP network access |
+| Cellular | Wide-area coverage and direct cloud communication |
+| LPWAN | Long-range, low-data-rate, battery-powered outdoor devices |
+| Ethernet | Stable wired connection and fixed installations |
+
+:::note  
+> Use Bluetooth when the device communicates locally with a phone, gateway, or nearby controller.  
+> Use Wi-Fi, Cellular, LPWAN, or Ethernet when the application requires different range, bandwidth, or network behavior.
+:::
+
+---
+
+## Development Path
+
+A typical Bluetooth product development path is:
+
+| Step | Description |
+| --- | --- |
+| 1 | Define the use case and expected battery life |
+| 2 | Choose the BLE communication model: advertising, connection, GATT, or gateway |
+| 3 | Select the Bluetooth module or SoC platform |
+| 4 | Bring up the development board or custom hardware |
+| 5 | Run a basic BLE advertising or GATT example |
+| 6 | Add sensors, GPIO, or host interfaces |
+| 7 | Optimize sleep current and radio timing |
+| 8 | Validate antenna performance and real-world range |
+
+---
+
+## Next Step
+
+After understanding the basic Bluetooth / BLE concept, continue to the product-specific documentation for hardware bring-up, firmware development, low-power tuning, antenna design, and application examples.
+
+## Tech Support & Product Discussion
+
+Thank you for choosing our products! We are here to provide you with different support to ensure that your experience with our products is as smooth as possible. We offer several communication channels to cater to different preferences and needs.
+
+<div class="button_tech_support_container">
+
+  <a
+    href="mailto:sales@samplepcb.co.kr"
+    class="button_email"
+  >
+    <div class="support-content">
+      <div class="support-icon">📧</div>
+      <div class="support-title">Email Support</div>
+      <div class="support-description">
+        Get professional email support and direct expert helps, by sending us Email  about your product problems.
+      </div>
+    </div>
+  </a>
+
+  <a
+    href="https://discord.com/invite/UtDkh9ED4Q"
+    target="_blank"
+    class="button_discord"
+  >
+    <div class="support-content">
+      <div class="support-icon">
+        <img src="/img/discord-icon.svg" alt="Discord" />
+      </div>
+      <div class="support-title">Discord Community</div>
+      <div class="support-description">
+        Join our active Discord community channel and get lastest Korlinx news, for real-time chatting with Korlinx Team.
+      </div>
+    </div>
+  </a>
+
+  <a
+    href="https://github.com/KORLINX/wiki-docs/discussions"
+    target="_blank"
+    class="button_discussion"
+  >
+    <div class="support-content">
+      <div class="support-icon">
+        <img src="/img/github-icon.svg" alt="GitHub" />
+      </div>
+      <div class="support-title">GitHub Discussions</div>
+      <div class="support-description">
+        Collaborate with our wiki development team, and suggest improvements, by leaving your commnets and feedbacks about website.
+      </div>
+    </div>
+  </a>
+
+</div>

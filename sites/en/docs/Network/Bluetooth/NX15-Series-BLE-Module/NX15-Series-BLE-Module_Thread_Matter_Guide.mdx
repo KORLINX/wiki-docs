@@ -1,0 +1,143 @@
+---
+sidebar_position: 7
+title: NX15 Thread / Matter Guide
+description: Introductory guide for Thread, Zigbee, and Matter over Thread application planning with NX15.
+keywords: [NX15, Thread, Matter, Zigbee, 802.15.4, BLE, multiprotocol, smart home]
+---
+
+# NX15 Thread / Matter Guide
+
+{/* Image suggestion: Multiprotocol diagram showing NX15 supporting BLE and 802.15.4-based network paths such as Thread / Zigbee / Matter. Suggested path: /img/bluetooth/nx15/nx15-thread-matter-overview.png */}
+
+This page introduces the planning considerations for using NX15 in 802.15.4-based applications such as **Thread**, **Zigbee**, and **Matter over Thread**.
+
+NX15 supports BLE and can be used for 802.15.4-capable designs depending on the software stack and firmware configuration.
+
+:::note
+Matter over Thread support depends on the selected software stack, project firmware, memory configuration, and application requirements. This page is an application planning guide, not a complete Matter certification guide.
+:::
+
+---
+
+## When to Consider Thread or Matter
+
+BLE is useful for short-range local communication, phone connection, and low-power data exchange.
+
+Thread or Matter may be considered when the product needs:
+
+| Requirement | Why Thread / Matter May Help |
+| --- | --- |
+| Smart home ecosystem | Matter can improve interoperability when supported |
+| Mesh behavior | Thread can support mesh networking |
+| Local IP-based network | Thread uses IPv6-based networking |
+| Device-to-device communication | Useful in local smart device networks |
+| Commissioning flow | BLE may be used together with Thread / Matter in some workflows |
+
+---
+
+## BLE vs Thread / Matter Role
+
+| Technology | Typical Role |
+| --- | --- |
+| BLE | Discovery, commissioning, local phone connection, simple sensor/device communication |
+| Thread | Low-power mesh network for connected devices |
+| Matter over Thread | Application layer for interoperable smart home devices |
+| Zigbee | 802.15.4-based device network, depending on ecosystem requirements |
+
+---
+
+## Planning Questions
+
+Before starting a Thread or Matter project, confirm:
+
+| Question | Why It Matters |
+| --- | --- |
+| Which protocol is required? | BLE, Thread, Zigbee, and Matter have different roles |
+| Which software stack will be used? | Feature support depends on firmware stack |
+| Is external Flash required? | Some applications may require more memory |
+| Is commissioning required? | BLE may be used during setup depending on the workflow |
+| What is the target ecosystem? | Smart home ecosystems may have specific requirements |
+| Is certification needed? | Matter or Zigbee products may require formal validation |
+
+---
+
+## Development Flow
+
+{/* Image suggestion: Thread/Matter development flow: Select stack → Configure board → Build sample → Commission device → Test network → Optimize power. Suggested path: /img/bluetooth/nx15/nx15-thread-matter-flow.png */}
+
+| Step | Description |
+| --- | --- |
+| 1 | Confirm required protocol: Thread, Zigbee, or Matter |
+| 2 | Select the correct NX15 model and memory option |
+| 3 | Prepare the board support package and software stack |
+| 4 | Build a basic sample application |
+| 5 | Test network join or commissioning flow |
+| 6 | Validate communication with controller or gateway |
+| 7 | Optimize power and radio behavior |
+| 8 | Prepare certification or production validation if required |
+
+---
+
+## Memory and Model Considerations
+
+Some applications may need more firmware or storage resources than a basic BLE application.
+
+| Consideration | Design Note |
+| --- | --- |
+| External Flash | Consider Flash models when the application requires additional storage |
+| Firmware size | Confirm build output against available memory |
+| OTA / update | Check update strategy early |
+| Logs | Reduce logs in production builds |
+| Stack configuration | Disable unused features to reduce firmware size |
+
+:::tip
+For Thread / Matter projects, confirm memory and stack requirements before finalizing the NX15 model variant.
+:::
+
+---
+
+## Commissioning and Gateway Considerations
+
+A Thread or Matter product usually needs additional system components.
+
+| Component | Example Role |
+| --- | --- |
+| Border router | Connects Thread network to IP network |
+| Controller | Controls or commissions devices |
+| Mobile app | May be used for setup depending on ecosystem |
+| Gateway | Collects or routes device data |
+| Cloud service | Optional, depending on product design |
+
+---
+
+## Validation Checklist
+
+| Check | Purpose |
+| --- | --- |
+| Basic firmware runs | Confirms board bring-up |
+| Radio operation verified | Confirms wireless path |
+| Network join works | Confirms Thread / Zigbee network setup |
+| Commissioning works | Confirms device setup path |
+| Communication works | Confirms application-level data exchange |
+| Power behavior measured | Confirms low-power design |
+| Final ecosystem tested | Confirms real use-case compatibility |
+
+---
+
+## What Not to Include Here
+
+| Topic | Go To |
+| --- | --- |
+| BLE advertising and GATT | [NX15 BLE Application Guide](./NX15_BLE_Application_Guide) |
+| Low-power tuning | [NX15 Low Power Guide](./NX15_Low_Power_Guide) |
+| Hardware design | [NX15 Hardware Design](./NX15_Hardware_Design) |
+| Antenna design | [NX15 Antenna Design](./NX15_Antenna_Design) |
+| First bring-up | [NX15 Quick Start](./NX15_Quick_Start) |
+
+---
+
+## Related Pages
+
+- [NX15 BLE Application Guide](./NX15_BLE_Application_Guide)
+- [NX15 Low Power Guide](./NX15_Low_Power_Guide)
+- [NX15 Quick Start](./NX15_Quick_Start)

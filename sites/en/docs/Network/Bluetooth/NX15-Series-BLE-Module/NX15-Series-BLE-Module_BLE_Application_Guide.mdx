@@ -1,0 +1,174 @@
+---
+sidebar_position: 6
+title: NX15 BLE Application Guide
+description: Application-level guide for building BLE advertising, connection-based, and GATT-based applications with NX15.
+keywords: [NX15, BLE application, Bluetooth LE, advertising, GATT, sensor data, gateway, mobile app]
+---
+
+# NX15 BLE Application Guide
+
+{/* Image suggestion: BLE application flow diagram: NX15 device → Smartphone / Gateway → Application / Cloud. Suggested path: /img/bluetooth/nx15/nx15-ble-application-flow.png */}
+
+This page explains the common BLE application patterns used with NX15.
+
+It focuses on application behavior such as advertising, connection-based communication, GATT services, and gateway-based data flow.
+
+:::note
+This page does not cover hardware bring-up, antenna layout, or low-power tuning. Use the related pages at the end for those topics.
+:::
+
+---
+
+## BLE Application Models
+
+NX15 BLE applications usually follow one of these models.
+
+| Model | Description | Example |
+| --- | --- | --- |
+| Advertising only | Device broadcasts small data without connection | Beacon, simple sensor broadcast |
+| Connection-based | Device connects to a phone, gateway, or controller | Wearable, smart sensor, configuration device |
+| GATT service | Device exposes structured data as services and characteristics | Battery, sensor value, device status |
+| Gateway-based | BLE device sends data locally to a gateway, and the gateway forwards it onward | Industrial monitoring, building automation |
+
+---
+
+## Advertising Application
+
+Advertising is useful when the device only needs to broadcast small data or be discovered by another device.
+
+{/* Image suggestion: BLE advertising diagram showing NX15 broadcasting packets to phone/gateway without connection. Suggested path: /img/bluetooth/nx15/nx15-ble-advertising.png */}
+
+Typical advertising use cases:
+
+| Use Case | Description |
+| --- | --- |
+| Beacon | Broadcasts ID or location-related data |
+| Sensor broadcast | Sends compact sensor data periodically |
+| Device discovery | Allows a phone or gateway to find the device |
+| Status broadcast | Sends simple device state without connection |
+
+Advertising design questions:
+
+| Question | Why It Matters |
+| --- | --- |
+| What data should be broadcast? | Advertising payload is limited |
+| How often should the device advertise? | Affects discovery speed and power |
+| Should the device allow connection? | Some devices advertise only, others accept connections |
+| Is privacy required? | Address behavior and payload design may matter |
+
+---
+
+## Connection-Based Application
+
+A connection-based BLE application is useful when the central device needs to read, write, configure, or control the NX15 device.
+
+Common central devices:
+
+| Central Device | Example |
+| --- | --- |
+| Smartphone | Mobile app configuration or monitoring |
+| Gateway | Data collection and local network bridge |
+| PC tool | Development, test, or production setup |
+| Controller | Local control system |
+
+Typical connected actions:
+
+| Action | Example |
+| --- | --- |
+| Read data | Sensor value, battery level, device status |
+| Write configuration | Measurement interval, device mode, threshold |
+| Receive notification | Sensor event, alarm, state change |
+| Firmware-related control | Device mode or update trigger, depending on project implementation |
+
+---
+
+## GATT Service Design
+
+GATT is commonly used to organize BLE data into services and characteristics.
+
+{/* Image suggestion: GATT structure diagram: Service → Characteristic → Read / Write / Notify. Suggested path: /img/bluetooth/nx15/nx15-gatt-structure.png */}
+
+| GATT Item | Meaning |
+| --- | --- |
+| Service | A group of related functions |
+| Characteristic | A data point or control item |
+| Read | Central device reads a value |
+| Write | Central device updates a value |
+| Notify | Peripheral sends value changes to central device |
+
+Example structure:
+
+| Service | Characteristic | Operation |
+| --- | --- | --- |
+| Device Status Service | Battery level | Read / Notify |
+| Sensor Service | Temperature | Read / Notify |
+| Configuration Service | Measurement interval | Read / Write |
+| Control Service | Device mode | Read / Write |
+
+:::tip
+Keep GATT design simple at first. Start with a small number of services and add more only when the application requires them.
+:::
+
+---
+
+## Gateway-Based BLE Flow
+
+In many IoT systems, the BLE device does not connect directly to the cloud. Instead, it sends data to a nearby gateway.
+
+| Step | Description |
+| --- | --- |
+| 1 | NX15 reads sensor or application data |
+| 2 | NX15 advertises or connects to a gateway |
+| 3 | Gateway receives BLE data |
+| 4 | Gateway forwards data to local server or cloud |
+| 5 | Application displays or processes the data |
+
+This approach is useful for smart buildings, factories, indoor monitoring, and environments where many low-power BLE devices report to one gateway.
+
+---
+
+## Application Bring-up Checklist
+
+| Step | Check |
+| --- | --- |
+| 1 | Confirm basic firmware runs |
+| 2 | Verify BLE advertising is visible |
+| 3 | Define advertising payload or GATT structure |
+| 4 | Test connection from phone, PC, or gateway |
+| 5 | Test read/write/notify behavior |
+| 6 | Add sensor or application data |
+| 7 | Validate behavior over time |
+| 8 | Optimize power using the Low Power Guide |
+
+---
+
+## Common BLE Application Issues
+
+| Symptom | Possible Cause | Check |
+| --- | --- | --- |
+| Device not visible | Advertising not enabled or RF issue | Check firmware and antenna design |
+| Cannot connect | Device not connectable or connection settings mismatch | Check advertising mode |
+| Data not updating | Notification not enabled or application state not refreshed | Check characteristic behavior |
+| Phone sees old data | Advertising payload not updated | Check application update logic |
+| Gateway misses data | Advertising interval too long or scan window too short | Check both device and gateway settings |
+| Battery drains quickly | BLE timing too aggressive | Review Low Power Guide |
+
+---
+
+## What Not to Include Here
+
+| Topic | Go To |
+| --- | --- |
+| First board bring-up | [NX15 Quick Start](./NX15_Quick_Start) |
+| Power and debug hardware | [NX15 Hardware Design](./NX15_Hardware_Design) |
+| Antenna layout | [NX15 Antenna Design](./NX15_Antenna_Design) |
+| Sleep and current optimization | [NX15 Low Power Guide](./NX15_Low_Power_Guide) |
+| Thread / Matter application | [NX15 Thread / Matter Guide](./NX15_Thread_Matter_Guide) |
+
+---
+
+## Related Pages
+
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 Low Power Guide](./NX15_Low_Power_Guide)
+- [NX15 Thread / Matter Guide](./NX15_Thread_Matter_Guide)

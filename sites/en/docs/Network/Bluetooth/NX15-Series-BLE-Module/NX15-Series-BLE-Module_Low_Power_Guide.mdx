@@ -1,0 +1,181 @@
+---
+sidebar_position: 5
+title: NX15 Low Power Guide
+description: Low-power design guide for NX15 BLE applications, including sleep behavior, advertising interval, connection interval, and firmware power management.
+keywords: [NX15, low power, BLE, sleep current, advertising interval, connection interval, battery life, power optimization]
+---
+
+# NX15 Low Power Guide
+
+{/* Image suggestion: Low-power operation cycle diagram: Sleep → Wake up → Read sensor → Advertise / Connect → Send data → Sleep. Suggested path: /img/bluetooth/nx15/nx15-low-power-cycle.png */}
+
+This page explains how to approach low-power design for NX15-based BLE applications.
+
+The goal of a low-power BLE device is simple: keep the device in a low-power state most of the time, wake up only when needed, finish the required task quickly, and return to sleep.
+
+:::note
+This page focuses on firmware-level low-power strategy. Power supply, decoupling, and PCB hardware design are covered in [NX15 Hardware Design](./NX15_Hardware_Design).
+:::
+
+---
+
+## Low-Power Operating Concept
+
+A typical low-power BLE device follows this cycle:
+
+| Step | Action |
+| --- | --- |
+| 1 | Stay in sleep mode |
+| 2 | Wake up by timer, button, sensor interrupt, or host event |
+| 3 | Read sensor or update application state |
+| 4 | Advertise, connect, or send data |
+| 5 | Disable unused peripherals |
+| 6 | Return to sleep mode |
+
+The average current depends on how long the device stays active compared with how long it sleeps.
+
+---
+
+## Key Parameters
+
+{/* Image suggestion: Simple bar chart comparing active current vs sleep current. Suggested path: /img/bluetooth/nx15/nx15-active-vs-sleep-current.png */}
+
+| Parameter | Why It Matters |
+| --- | --- |
+| Sleep current | Main factor for idle battery life |
+| Wake-up interval | Controls how often the device becomes active |
+| Advertising interval | Controls how often the device broadcasts |
+| Connection interval | Controls how often connected devices exchange data |
+| TX power | Higher TX power can improve range but increases current |
+| Peripheral usage | Sensors, UART, SPI, I2C, LEDs, and debug logs can increase current |
+| Firmware state | Application logic must allow the system to enter sleep |
+
+---
+
+## Advertising Interval
+
+BLE advertising is often used for beacons, sensors, and devices waiting for a connection.
+
+| Advertising Interval | Behavior |
+| --- | --- |
+| Short interval | Faster discovery, higher power consumption |
+| Long interval | Slower discovery, lower power consumption |
+| Periodic advertising | Useful for data broadcast patterns |
+| Stop advertising when not needed | Reduces unnecessary radio activity |
+
+:::tip
+For battery-powered devices, avoid advertising too frequently unless fast discovery is required.
+:::
+
+---
+
+## Connection Interval
+
+For connected BLE devices, the connection interval affects power consumption.
+
+| Connection Behavior | Impact |
+| --- | --- |
+| Short connection interval | Lower latency, more frequent radio activity |
+| Long connection interval | Lower average current, higher latency |
+| Infrequent data transfer | Can use longer intervals |
+| Real-time control | May require shorter intervals |
+
+Choose the interval based on application needs. A sensor that sends data every few minutes does not need the same connection behavior as a real-time control device.
+
+---
+
+## Peripheral Power Management
+
+Unused peripherals should be disabled when the device is sleeping.
+
+| Peripheral | Low-Power Recommendation |
+| --- | --- |
+| UART | Disable when logs or host communication are not needed |
+| SPI / I2C | Enable only during sensor or peripheral access |
+| ADC | Enable only during measurement |
+| PWM | Disable when output is not required |
+| LEDs | Avoid keeping LEDs on in battery-powered mode |
+| Sensors | Use sensor sleep mode or interrupt mode when available |
+| Debug logs | Disable or reduce logs in low-power builds |
+
+---
+
+## Sensor Duty Cycle
+
+Many BLE products use sensors. The sensor duty cycle can strongly affect battery life.
+
+| Design Question | Example |
+| --- | --- |
+| How often is data needed? | Every 1 second, 1 minute, or 10 minutes |
+| Can the sensor sleep? | Put sensor into standby between readings |
+| Can an interrupt wake the system? | Motion, threshold, button, or event wake-up |
+| Is continuous sampling required? | Avoid if periodic sampling is enough |
+
+:::note
+Low-power design should include both the BLE module and all external components on the board.
+:::
+
+---
+
+## Recommended Low-Power Checklist
+
+| Area | Check |
+| --- | --- |
+| Sleep state | Confirm firmware can enter low-power state |
+| Advertising | Use the longest acceptable advertising interval |
+| Connection | Use a suitable connection interval for the application |
+| TX power | Use only the power level required for reliable communication |
+| Sensors | Disable or sleep sensors between measurements |
+| Interfaces | Disable unused UART, SPI, I2C, ADC, PWM, or PDM blocks |
+| Debug | Disable unnecessary debug logs in release firmware |
+| Measurement | Measure current on real hardware, not only in firmware simulation |
+
+---
+
+## Low-Power Validation
+
+{/* Image suggestion: Current measurement setup with power analyzer connected to NX15 board. Suggested path: /img/bluetooth/nx15/nx15-current-measurement-setup.png */}
+
+Validate current consumption in each mode:
+
+| Mode | What to Measure |
+| --- | --- |
+| Boot | Startup current and duration |
+| Advertising | Average current during advertising |
+| Connected | Current at selected connection interval |
+| Sensor read | Current during sensor operation |
+| Sleep | Lowest idle current |
+| Full cycle | Average current over one complete application cycle |
+
+---
+
+## Common Low-Power Issues
+
+| Symptom | Possible Cause | Check |
+| --- | --- | --- |
+| Current is always high | Device never enters sleep | Check firmware state and active peripherals |
+| Sleep current is higher than expected | External components still active | Check sensors, pull-ups, LEDs, and host circuits |
+| Battery drains quickly | Advertising or connection interval too short | Increase intervals where possible |
+| BLE response is slow | Interval too long | Balance latency and power |
+| Current varies between boards | Hardware or assembly difference | Compare antenna, sensors, and external loads |
+
+---
+
+## What Not to Include Here
+
+To avoid duplicate content:
+
+| Topic | Go To |
+| --- | --- |
+| VDD, GND, SWD, reset | [NX15 Hardware Design](./NX15_Hardware_Design) |
+| Antenna keep-out / u.FL trace | [NX15 Antenna Design](./NX15_Antenna_Design) |
+| First BLE bring-up | [NX15 Quick Start](./NX15_Quick_Start) |
+| BLE services and application data | [NX15 BLE Application Guide](./NX15_BLE_Application_Guide) |
+
+---
+
+## Related Pages
+
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 Hardware Design](./NX15_Hardware_Design)
+- [NX15 BLE Application Guide](./NX15_BLE_Application_Guide)

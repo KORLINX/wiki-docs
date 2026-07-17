@@ -1,0 +1,159 @@
+---
+sidebar_position: 4
+title: NX15 LGA Pad Layout
+description: LGA pad layout and signal group guide for NX15 module integration.
+keywords: [NX15, LGA pad layout, LGA-53, pin map, VDD, GND, SWD, NRESET, GPIO]
+---
+
+# NX15 LGA Pad Layout
+
+{/* Image suggestion: NX15 bottom-side LGA pad layout with labeled groups: VDD, GND, SWD, reset, GPIO, analog, NFC, crystal. Suggested path: /img/bluetooth/nx15/module-integration/nx15-lga-pad-layout.png */}
+
+This page explains the main LGA pad groups used when integrating the NX15 module into a custom PCB.
+
+Use this page together with the official pad layout drawing before finalizing the PCB footprint.
+
+:::caution
+Always verify the latest pad layout and recommended landing pattern before PCB release.
+:::
+
+---
+
+## Module Package Summary
+
+| Item | Value |
+| --- | --- |
+| Package type | LGA surface-mount module |
+| Module body | 9.5 × 9.5 mm |
+| Height | 1.95 mm with shield |
+| Pad pitch | 0.65 mm |
+| Mounting | SMT reflow |
+
+---
+
+## Main Pad Groups
+
+| Pad Group | Purpose |
+| --- | --- |
+| VDD_nRF | Main supply input |
+| GND | Ground, RF reference, and thermal return path |
+| SWDIO / SWDCLK | Programming and debugging |
+| NRESET | Active-low reset |
+| GPIO | General-purpose I/O and peripheral mapping |
+| Analog input pins | SAADC / analog sensing |
+| NFC pins | NFC antenna interface or GPIO, depending on firmware |
+| XL1 / XL2 | 32.768 kHz crystal pins or GPIO |
+| SWO | Debug trace or GPIO |
+
+---
+
+## VDD_nRF Pads
+
+| Item | Recommendation |
+| --- | --- |
+| Function | Main supply input |
+| Voltage | 1.7–3.6 V |
+| Decoupling | Place 100 nF + 1 µF capacitors close to each VDD pad |
+| Routing | Keep power path short and stable |
+| Test | Add VDD test point for bring-up |
+
+---
+
+## GND Pads
+
+GND pads are used for common ground, RF reference, and thermal return path.
+
+| Rule | Recommendation |
+| --- | --- |
+| Connect all GND pads | Do not leave any GND pad floating |
+| Via stitching | Use short vias to solid ground plane |
+| Ground plane | Keep ground plane continuous below the module |
+| RF reference | Treat GND as part of RF performance, not only power return |
+
+:::tip
+Poor GND connection can cause unstable firmware behavior, weak RF performance, or inconsistent current measurement.
+:::
+
+---
+
+## SWD and Reset Pads
+
+| Signal | Purpose | Recommendation |
+| --- | --- | --- |
+| SWDIO | Programming/debug data | Route to header or test pad |
+| SWDCLK | Programming/debug clock | Route to header or test pad |
+| NRESET | Active-low reset | Route to reset button, header, or test pad |
+| SWO | Optional debug trace | Use only if debug trace is required |
+
+Keep debug access available for development, recovery, and production programming.
+
+---
+
+## GPIO Pads
+
+GPIO pins can be mapped to different firmware functions.
+
+| Function Type | Example Use |
+| --- | --- |
+| UART | Host communication or log output |
+| SPI | External sensors or peripherals |
+| I2C | Low-speed sensors or configuration devices |
+| PWM | LED, buzzer, or control output |
+| ADC | Analog sensor input |
+| PDM | Digital microphone input |
+| GPIO | Button, interrupt, enable, or status signal |
+
+:::caution
+On Flash models, confirm whether QSPI-related pins are reserved before assigning them as GPIO.
+:::
+
+---
+
+## Analog Input Pins
+
+Analog-capable pins should be routed carefully.
+
+| Design Item | Recommendation |
+| --- | --- |
+| Noise | Keep away from high-speed or switching signals |
+| Protection | Add input protection if the signal leaves the PCB |
+| Filtering | Add RC filter if required by the sensor |
+| Voltage | Keep input within allowed voltage range |
+
+---
+
+## NFC and Crystal Pins
+
+Some pins can be used for special functions or GPIO, depending on the firmware configuration.
+
+| Pin Group | Possible Use | Design Note |
+| --- | --- | --- |
+| XL1 / XL2 | 32.768 kHz LFXO or GPIO | Reserve if external low-frequency crystal is required |
+| NFC1 / NFC2 | NFC antenna or GPIO | Keep as NFC if NFC function is required |
+| SWO | Debug trace or GPIO | Confirm firmware configuration before use |
+
+---
+
+## PCB Footprint Checklist
+
+Before releasing the PCB footprint:
+
+| Check | Status |
+| --- | --- |
+| LGA pad pitch confirmed | ☐ |
+| Recommended landing pattern followed | ☐ |
+| All VDD pads connected correctly | ☐ |
+| All GND pads connected to ground plane | ☐ |
+| SWDIO / SWDCLK accessible | ☐ |
+| NRESET accessible | ☐ |
+| GPIO function checked against firmware | ☐ |
+| Flash-model pin reservation checked | ☐ |
+| Antenna area reviewed | ☐ |
+
+---
+
+## Related Pages
+
+- [NX15 PCB Integration](./NX15_PCB_Integration)
+- [NX15 Model Selection](./NX15_Model_Selection)
+- [NX15 Handling & Soldering](./NX15_Handling_Soldering)
