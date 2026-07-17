@@ -1,0 +1,205 @@
+---
+sidebar_position: 6
+title: NX15 Module Integration FAQ
+description: Common questions and troubleshooting notes for integrating NX15 into a custom PCB.
+keywords: [NX15, module integration FAQ, PCB troubleshooting, LGA, SWD, soldering, antenna, bring-up]
+---
+
+# NX15 Module Integration FAQ
+
+This FAQ covers common questions when integrating NX15 into a custom PCB.
+
+:::note
+This FAQ focuses on module integration. BLE application behavior, GATT design, and low-power firmware tuning are covered in the NX15 Series BLE Module section.
+:::
+
+---
+
+## Model Selection
+
+### Which NX15 model should I choose?
+
+Choose based on antenna type and Flash requirement.
+
+| Requirement | Direction |
+| --- | --- |
+| Integrated antenna | Choose NX15i variant |
+| External antenna | Choose NX15E variant |
+| External Flash required | Choose 32 model |
+| No external Flash required | Choose 00 model |
+
+See:
+
+- [NX15 Model Selection](./NX15_Model_Selection)
+
+---
+
+### Should I choose chip antenna or u.FL?
+
+| Option | Use When |
+| --- | --- |
+| Chip antenna | Your PCB and enclosure can follow antenna keep-out rules |
+| u.FL external antenna | You need flexible antenna placement or external antenna positioning |
+
+If the enclosure has metal parts or the antenna area is constrained, evaluate the u.FL external antenna option.
+
+---
+
+## PCB Bring-up
+
+### The board does not power on. What should I check?
+
+Check:
+
+| Area | Check |
+| --- | --- |
+| VDD_nRF | Confirm voltage is within the recommended operating range |
+| GND | Confirm all GND pads are connected |
+| Short circuit | Check VDD-to-GND resistance before power-on |
+| Decoupling | Confirm capacitors are installed near VDD pads |
+| Assembly | Inspect for solder bridge or misalignment |
+
+---
+
+### I cannot connect through SWD. What should I check?
+
+Check:
+
+| Signal | Check |
+| --- | --- |
+| SWDIO | Routed correctly and not shorted |
+| SWDCLK | Routed correctly and not shorted |
+| GND | Common ground between debugger and board |
+| NRESET | Not held low unexpectedly |
+| VDD | Target board is powered |
+| Debug access | Header or test pads are accessible |
+
+---
+
+### The firmware flashes but does not run correctly. What should I check?
+
+Possible causes:
+
+| Cause | Check |
+| --- | --- |
+| Wrong board configuration | Confirm pin mapping and board target |
+| Power instability | Measure VDD during boot and radio activity |
+| Reset issue | Check NRESET circuit |
+| GPIO conflict | Check reserved pins and firmware pinctrl |
+| External Flash mismatch | Confirm model and Flash configuration |
+
+---
+
+## LGA and Soldering
+
+### What should I inspect after reflow?
+
+Inspect:
+
+| Item | Purpose |
+| --- | --- |
+| Module alignment | Confirm correct placement |
+| Solder joints | Check pad wetting and solder bridge |
+| Mechanical damage | Check crack or package damage |
+| VDD-to-GND resistance | Detect short before power-on |
+| Antenna area | Confirm keep-out was not violated |
+
+---
+
+### Can I clean the module after soldering?
+
+Cleaning is not recommended.
+
+Avoid ultrasonic cleaning, liquid immersion, or aggressive solvent cleaning because it may damage the module or degrade RF performance.
+
+See:
+
+- [NX15 Handling & Soldering](./NX15_Handling_Soldering)
+
+---
+
+### What if the floor life is exceeded?
+
+Follow the baking requirement before assembly.
+
+See:
+
+- [NX15 Handling & Soldering](./NX15_Handling_Soldering)
+
+---
+
+## GPIO and Pin Usage
+
+### Can every GPIO be used freely?
+
+No. GPIO availability depends on firmware configuration and model variant.
+
+On Flash models, check whether QSPI-related pins are reserved before using them as GPIO.
+
+See:
+
+- [NX15 LGA Pad Layout](./NX15_LGA_Pad_Layout)
+
+---
+
+### Which pins should always be accessible?
+
+At minimum, keep access to:
+
+| Signal | Reason |
+| --- | --- |
+| VDD_nRF | Power measurement |
+| GND | Reference and debug |
+| SWDIO | Firmware programming/debug |
+| SWDCLK | Firmware programming/debug |
+| NRESET | Reset and recovery |
+| UART log pins | Optional bring-up log path |
+
+---
+
+## Antenna
+
+### BLE signal is weak on my custom PCB. What should I check?
+
+Check:
+
+| Area | Check |
+| --- | --- |
+| Module placement | Is the antenna side placed near PCB edge? |
+| Keep-out | Is copper or ground placed in antenna clearance area? |
+| Metal | Is a shield, battery, or enclosure near the antenna? |
+| u.FL | Is connector soldered correctly? |
+| RF trace | Is the RF path 50 Ω with solid GND reference? |
+
+---
+
+### Can I change antenna placement after PCB layout?
+
+Antenna placement should be decided before PCB layout. Changing antenna type or module position later may require PCB redesign and RF re-validation.
+
+---
+
+## Production
+
+### What should be included in production test?
+
+Recommended checks:
+
+| Test | Purpose |
+| --- | --- |
+| Power check | Confirm supply and current behavior |
+| SWD programming | Confirm programming access |
+| Firmware boot | Confirm application starts |
+| BLE advertising | Confirm radio operation |
+| Current measurement | Confirm no abnormal load |
+| Visual inspection | Confirm assembly quality |
+
+---
+
+## Related Pages
+
+- [NX15 Module Integration Overview](./NX15_Module_Integration_Overview)
+- [NX15 Model Selection](./NX15_Model_Selection)
+- [NX15 PCB Integration](./NX15_PCB_Integration)
+- [NX15 LGA Pad Layout](./NX15_LGA_Pad_Layout)
+- [NX15 Handling & Soldering](./NX15_Handling_Soldering)

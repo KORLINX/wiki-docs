@@ -1,0 +1,106 @@
+---
+sidebar_position: 2
+title: NX15 Model Selection
+description: Guide for selecting the correct NX15 module variant based on antenna type and external Flash requirement.
+keywords: [NX15, model selection, NX15i32, NX15E32, NX15i00, NX15E00, chip antenna, u.FL, external flash]
+---
+
+# NX15 Model Selection
+
+{/* Image suggestion: Model selection matrix showing antenna option on one axis and Flash option on the other axis. Suggested path: /img/bluetooth/nx15/module-integration/nx15-model-selection-matrix.png */}
+
+This page helps you select the correct NX15 module variant before starting PCB design.
+
+NX15 variants are mainly selected by two hardware decisions:
+
+1. Antenna type
+2. External Flash requirement
+
+---
+
+## Model Lineup
+
+| Model | Antenna | Flash | GPIO | Typical Use |
+| --- | --- | --- | --- | --- |
+| NX15i32 | Chip antenna | 32 Mbit SPI Flash | 25 | Compact design with external Flash |
+| NX15E32 | u.FL connector | 32 Mbit SPI Flash | 25 | External antenna design with external Flash |
+| NX15i00 | Chip antenna | None | 25 | Compact design without external Flash |
+| NX15E00 | u.FL connector | None | 25 | External antenna design without external Flash |
+
+---
+
+## Naming Rule
+
+| Code Part | Meaning |
+| --- | --- |
+| `NX15` | NX15 Series BLE module |
+| `i` | Integrated chip antenna |
+| `E` | External antenna through u.FL connector |
+| `32` | 32 Mbit SPI Flash |
+| `00` | No external Flash |
+
+---
+
+## Antenna Selection
+
+Choose the antenna type based on product enclosure, PCB layout, and RF validation requirement.
+
+| Option | Use When |
+| --- | --- |
+| Chip antenna | You need compact design and can follow antenna keep-out rules |
+| u.FL external antenna | You need external antenna placement, enclosure flexibility, or better antenna positioning |
+
+:::tip
+Antenna selection should be decided before PCB layout. Changing from chip antenna to u.FL later can affect PCB placement, enclosure design, and RF validation.
+:::
+
+---
+
+## Flash Selection
+
+Choose the Flash option based on firmware and storage requirements.
+
+| Option | Use When |
+| --- | --- |
+| 32 Mbit SPI Flash | Application requires external storage or larger firmware/storage margin |
+| No external Flash | Application is compact and does not need external Flash |
+
+:::caution
+On Flash models, confirm whether QSPI-related pins are reserved before using them as user GPIO.
+:::
+
+---
+
+## Selection Guide
+
+| Requirement | Recommended Direction |
+| --- | --- |
+| Smallest antenna integration | NX15i variant |
+| External antenna placement | NX15E variant |
+| More storage margin | 32 model |
+| Simpler design without external Flash | 00 model |
+| Maximum GPIO flexibility | Confirm firmware and Flash pin reservation before layout |
+| Enclosed product with antenna constraints | Evaluate NX15E with external antenna |
+
+---
+
+## Decision Checklist
+
+Before finalizing the model, check:
+
+| Question | Status |
+| --- | --- |
+| Does the final product require chip antenna or external antenna? | ☐ |
+| Does the firmware require external Flash? | ☐ |
+| Are QSPI-related pins needed as GPIO? | ☐ |
+| Is the antenna location compatible with the enclosure? | ☐ |
+| Is SWD access available for firmware bring-up? | ☐ |
+| Has the selected model been verified on prototype hardware? | ☐ |
+
+---
+
+## Related Pages
+
+- [NX15 PCB Integration](./NX15_PCB_Integration)
+- [NX15 LGA Pad Layout](./NX15_LGA_Pad_Layout)
+- [NX15 Module Integration FAQ](./NX15_Module_Integration_FAQ)

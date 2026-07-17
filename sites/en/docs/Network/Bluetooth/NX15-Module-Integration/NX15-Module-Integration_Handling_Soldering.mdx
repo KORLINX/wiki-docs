@@ -1,0 +1,130 @@
+---
+sidebar_position: 5
+title: NX15 Handling & Soldering
+description: Handling, storage, MSL, and reflow soldering guidance for NX15 module assembly.
+keywords: [NX15, handling, soldering, reflow, MSL, SMT, LGA module, storage, ESD]
+---
+
+# NX15 Handling & Soldering
+
+{/* Image suggestion: SMT assembly flow diagram: storage → open MBB → place module → reflow → inspection → test. Suggested path: /img/bluetooth/nx15/module-integration/nx15-handling-soldering-flow.png */}
+
+This page provides handling and soldering guidance for NX15 module assembly.
+
+NX15 is an SMT LGA module. Handle it as a moisture-sensitive and ESD-sensitive component during storage, placement, reflow, and inspection.
+
+---
+
+## Storage Conditions
+
+| Condition | Specification |
+| --- | --- |
+| Storage temperature | 5°C to 35°C, unopened |
+| Storage humidity | 20% to 70% RH, unopened |
+| Shelf life | 12 months from shipment date |
+| MSL level | MSL 3 |
+| Floor life | ≤168 hours at &lt;30°C / &lt;60% RH |
+| Baking | 125°C +5/-0°C, 24 hours, one time max |
+| Corrosive atmosphere | Avoid Cl2, NH3, SO2, or NOx |
+
+:::caution
+Track floor life after opening the moisture barrier bag. If the floor life is exceeded, follow the baking requirement before assembly.
+:::
+
+---
+
+## Handling Rules
+
+| Rule | Reason |
+| --- | --- |
+| Use ESD protection | Prevent electrostatic damage |
+| Avoid touching pads | Prevent contamination and soldering issues |
+| Inspect before assembly | Check cracks, pad damage, or abnormal surface condition |
+| Use vacuum pickup | Pick up from the top surface only |
+| Avoid mechanical stress | Prevent module or solder joint damage |
+
+{/* Image suggestion: Proper vacuum pickup position on the top shield surface of the NX15 module. Suggested path: /img/bluetooth/nx15/module-integration/nx15-vacuum-pickup.png */}
+
+---
+
+## Reflow Profile Summary
+
+| Zone | Temperature | Duration |
+| --- | --- | --- |
+| Preheat | 25°C to 150°C | 60–120 s |
+| Soak | 150°C to 200°C | 60–120 s |
+| Reflow peak | ≤260°C | Max 30 s above 250°C |
+| Cooling | 260°C to 25°C | &lt;6°C/s ramp-down |
+| Number of reflows | — | Maximum 2 times |
+
+:::caution
+Do not exceed the recommended reflow conditions. Excessive heat or repeated reflow can damage the module or degrade RF performance.
+:::
+
+---
+
+## Cleaning
+
+Cleaning is not recommended.
+
+Ultrasonic cleaning or liquid immersion may damage internal components or degrade RF performance.
+
+| Cleaning Method | Recommendation |
+| --- | --- |
+| Ultrasonic cleaning | Not recommended |
+| Liquid immersion | Not recommended |
+| Aggressive solvent | Not recommended |
+| No-clean process | Preferred when compatible with production process |
+
+---
+
+## Inspection After Reflow
+
+After reflow, inspect the assembly before powering the board.
+
+| Check | Purpose |
+| --- | --- |
+| Module alignment | Confirm module is placed correctly |
+| Solder bridge | Check for shorts between pads |
+| Pad wetting | Confirm solder joints are formed properly |
+| Cracks / damage | Check mechanical damage |
+| Antenna area | Confirm no unexpected metal or contamination near antenna |
+| Power short | Check VDD-to-GND resistance before power-on |
+
+---
+
+## First Power-On After Assembly
+
+Use a current-limited power supply during the first power-on.
+
+| Step | Action |
+| --- | --- |
+| 1 | Inspect board visually |
+| 2 | Check VDD-to-GND resistance |
+| 3 | Set current limit |
+| 4 | Apply power |
+| 5 | Measure VDD_nRF |
+| 6 | Try SWD connection |
+| 7 | Flash or run basic firmware |
+| 8 | Verify BLE advertising or debug output |
+
+---
+
+## Production Notes
+
+| Item | Recommendation |
+| --- | --- |
+| MSL tracking | Record opening time and floor life |
+| Reflow count | Do not exceed maximum reflow count |
+| ESD control | Use ESD-safe workstations and packaging |
+| Traceability | Track lot code and date code |
+| Programming | Keep SWD access available for production |
+| Test | Include power, programming, and BLE verification tests |
+
+---
+
+## Related Pages
+
+- [NX15 PCB Integration](./NX15_PCB_Integration)
+- [NX15 LGA Pad Layout](./NX15_LGA_Pad_Layout)
+- [NX15 Module Integration FAQ](./NX15_Module_Integration_FAQ)

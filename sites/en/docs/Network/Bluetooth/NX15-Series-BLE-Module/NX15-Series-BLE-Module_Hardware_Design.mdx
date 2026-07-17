@@ -1,0 +1,209 @@
+---
+sidebar_position: 3
+title: NX15 Hardware Design
+description: Hardware design guidelines for integrating the NX15 Series BLE module into a host board.
+keywords: [NX15, hardware design, BLE module, LGA, power design, GPIO, SWD, reset, PCB design]
+---
+
+# NX15 Hardware Design
+
+{/* Image suggestion: Simple NX15 hardware integration diagram showing VDD, GND, SWD, NRESET, GPIO, host MCU, and antenna area. Suggested path: /img/bluetooth/nx15/nx15-hardware-design-overview.png */}
+
+This page provides the basic hardware design guidelines for integrating the **NX15 Series BLE module** into a host board.
+
+It focuses on power, ground, GPIO usage, programming/debug access, reset, and PCB-level bring-up requirements.
+
+:::note
+This page does not cover antenna layout in detail. For chip antenna keep-out and u.FL RF trace design, see [NX15 Antenna Design](./NX15_Antenna_Design).
+:::
+
+---
+
+## Hardware Design Flow
+
+Use this checklist before finalizing the host PCB.
+
+| Step | Design Area | Goal |
+| --- | --- | --- |
+| 1 | Power input | Provide a stable supply within the recommended range |
+| 2 | Ground | Connect all GND pads to a solid ground plane |
+| 3 | Decoupling | Place bypass capacitors close to VDD pads |
+| 4 | Programming / debug | Route SWDIO, SWDCLK, GND, and reset to accessible pads |
+| 5 | Reset | Provide a reliable NRESET path |
+| 6 | GPIO planning | Confirm pin function before PCB finalization |
+| 7 | Interface routing | Route UART, SPI, I2C, PWM, ADC, or PDM as required |
+| 8 | Bring-up access | Keep test points available for early validation |
+
+---
+
+## Power Supply
+
+NX15 uses **VDD_nRF** as the main supply input.
+
+| Item | Recommendation |
+| --- | --- |
+| Supply range | 1.7 V to 3.6 V |
+| Typical supply | 3.3 V |
+| Power rail | Keep stable during radio TX/RX activity |
+| Decoupling | Place 100 nF + 1 µF capacitors close to each VDD pad |
+| Ground return | Use a short, low-impedance return path to the ground plane |
+
+:::caution
+Do not use the absolute maximum rating as the normal design target. Design the product using the recommended operating range.
+:::
+
+{/* Image suggestion: Power design diagram showing VDD_nRF with 100nF + 1µF capacitors placed close to module VDD pads. Suggested path: /img/bluetooth/nx15/nx15-power-decoupling.png */}
+
+---
+
+## Ground Design
+
+All GND pads should be connected to a solid ground plane.
+
+| Rule | Why It Matters |
+| --- | --- |
+| Connect every GND pad | Prevents floating ground pads and unstable behavior |
+| Use short vias to ground | Reduces impedance and improves RF / thermal return |
+| Keep ground plane continuous | Helps RF performance and power stability |
+| Avoid splitting ground below the module | Prevents unpredictable return current paths |
+
+:::tip
+For BLE modules, ground design affects both electrical stability and RF performance. Treat the GND pads as part of the RF reference path, not only as power return.
+:::
+
+---
+
+## Programming and Debugging
+
+NX15 provides **SWDIO** and **SWDCLK** for firmware programming and debugging.
+
+| Signal | Purpose | Recommendation |
+| --- | --- | --- |
+| SWDIO | Serial Wire Debug data | Route to SWD header or test pad |
+| SWDCLK | Serial Wire Debug clock | Route to SWD header or test pad |
+| GND | Debug reference | Route to the same debug connector |
+| NRESET | Reset control | Route to debug connector or test pad |
+
+Keep these signals accessible during development and production.
+
+{/* Image suggestion: SWD header wiring diagram showing debugger connected to SWDIO, SWDCLK, GND, and NRESET. Suggested path: /img/bluetooth/nx15/nx15-swd-debug-header.png */}
+
+:::note
+Even if the final product does not expose a full debug connector, test pads are strongly recommended for firmware flashing, recovery, and production programming.
+:::
+
+---
+
+## Reset Design
+
+The **NRESET** pin is an active-low system reset signal.
+
+| Item | Recommendation |
+| --- | --- |
+| Reset access | Route NRESET to a reset button or debug connector |
+| Firmware recovery | Keep NRESET accessible during bring-up |
+| Production test | Provide test pad access if no button is used |
+| Pull-up / reset circuit | Follow the reference circuit recommendation |
+
+A reliable reset path is important for firmware flashing, debugging, and board-level recovery.
+
+---
+
+## GPIO and Interface Planning
+
+NX15 GPIO pins can be mapped to different peripheral functions through firmware configuration.
+
+| Interface | Typical Use |
+| --- | --- |
+| UART | Host communication, logging, simple command/data interface |
+| SPI | External sensors, peripherals, or memory-related functions |
+| I2C | Low-speed sensors and configuration devices |
+| PWM | LED, buzzer, or control output |
+| ADC | Analog sensor input |
+| PDM | Digital microphone input |
+| GPIO | Buttons, interrupts, enable pins, status lines |
+
+:::caution
+GPIO availability depends on firmware configuration and module variant. On Flash models, verify whether QSPI-related pins are reserved before using them as general-purpose GPIO.
+:::
+
+---
+
+## Analog Input Notes
+
+Some pins can be used as analog input channels.
+
+| Design Item | Recommendation |
+| --- | --- |
+| Analog traces | Keep away from noisy or high-speed signals |
+| Input protection | Add protection if the signal comes from outside the board |
+| Filtering | Add RC filtering when required by the sensor |
+| Voltage range | Keep input voltage within allowed GPIO / ADC limits |
+
+---
+
+## Clock / NFC / Special Function Pins
+
+Some pins may have special functions depending on the firmware configuration.
+
+| Pin Group | Possible Function | Design Note |
+| --- | --- | --- |
+| XL1 / XL2 | 32.768 kHz LFXO or GPIO | Reserve if external low-frequency crystal is used |
+| NFC1 / NFC2 | NFC antenna pins or GPIO | Keep as NFC pins if NFC is required |
+| SWO | Debug trace or GPIO | Use as SWO only when debug trace is required |
+| QSPI-related pins | External Flash function or GPIO | Check carefully on Flash models |
+
+---
+
+## Basic PCB Design Rules
+
+Use the following rules as the minimum hardware design checklist.
+
+| Rule | Description |
+| --- | --- |
+| GND | Connect all GND pads to a solid ground plane |
+| Decoupling | Place 100 nF + 1 µF capacitors near each VDD pin |
+| RF area | Maintain antenna keep-out around the antenna edge |
+| RF trace | Use 50 Ω controlled impedance for RF feed traces |
+| Debug | Keep SWDIO, SWDCLK, GND, and NRESET accessible |
+| Test points | Add test points for key power and debug signals |
+
+---
+
+## Hardware Bring-up Checklist
+
+Before applying power to the first prototype, check:
+
+| Item | Status |
+| --- | --- |
+| VDD_nRF is within the recommended operating range | ☐ |
+| All GND pads are connected to a solid ground plane | ☐ |
+| Decoupling capacitors are placed close to VDD pads | ☐ |
+| SWDIO and SWDCLK are accessible | ☐ |
+| NRESET is accessible | ☐ |
+| GPIO functions match firmware configuration | ☐ |
+| Antenna area follows the correct layout rules | ☐ |
+| Test points are available for debugging | ☐ |
+
+---
+
+## What Not to Include Here
+
+To avoid duplicate content, the following topics are handled in separate pages:
+
+| Topic | Go To |
+| --- | --- |
+| Chip antenna keep-out and u.FL RF trace | [NX15 Antenna Design](./NX15_Antenna_Design) |
+| Sleep current and firmware power tuning | [NX15 Low Power Guide](./NX15_Low_Power_Guide) |
+| BLE advertising and GATT services | [NX15 BLE Application Guide](./NX15_BLE_Application_Guide) |
+| Model variant selection | NX15 Module Integration / Model Selection |
+| LGA pad detail | NX15 Module Integration / LGA Pad Layout |
+
+---
+
+## Related Pages
+
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 Antenna Design](./NX15_Antenna_Design)
+- [NX15 Low Power Guide](./NX15_Low_Power_Guide)
+- [NX15 BLE Application Guide](./NX15_BLE_Application_Guide)

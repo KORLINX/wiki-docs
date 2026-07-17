@@ -1,0 +1,75 @@
+---
+sidebar_position: 1
+title: NX15 Series BLE Module Overview
+description: Short overview of the NX15 Series BLE module and the recommended documentation path.
+keywords: [NX15, NX15 Series, BLE module, Bluetooth LE, nRF54L15, Thread, Matter, KORLINX]
+---
+
+# NX15 Series BLE Module Overview
+
+{/* Image suggestion: NX15 module product image showing both chip antenna and u.FL antenna variants. Suggested path: /img/bluetooth/nx15/nx15-series-overview.png */}
+
+The **NX15 Series** is a compact Bluetooth Low Energy module designed for low-power IoT products, sensors, beacons, wearables, smart home devices, and embedded wireless applications.
+
+It is based on the Nordic **nRF54L15 SoC** and supports **Bluetooth LE 5.4**. Depending on the software stack, it can also be used for 802.15.4-based applications such as **Thread**, **Zigbee**, and **Matter over Thread**.
+
+This overview provides a short introduction only. For hardware design, antenna layout, low-power optimization, and application development, continue to the dedicated pages listed below.
+
+---
+
+## When to Use NX15
+
+NX15 is suitable when your product needs:
+
+| Requirement | Why NX15 Fits |
+| --- | --- |
+| Compact wireless module | Small LGA module for space-constrained designs |
+| Low-power BLE communication | Suitable for battery-powered IoT devices |
+| Sensor or beacon behavior | Supports periodic data transmission and BLE advertising |
+| Embedded application development | Works with nRF Connect SDK / Zephyr RTOS |
+| Flexible antenna option | Available with chip antenna or u.FL external antenna variants |
+| Future multiprotocol path | Can support Thread / Zigbee / Matter depending on software stack |
+
+---
+
+## Documentation Flow
+
+Use the NX15 documentation in this order:
+
+| Step | Page | Purpose |
+| --- | --- | --- |
+| 1 | Quick Start | Bring up the module or DEV-NX15 board |
+| 2 | Hardware Design | Review power, GPIO, SWD, reset, and basic PCB design |
+| 3 | Antenna Design | Design the chip antenna keep-out or u.FL RF path |
+| 4 | Low Power Guide | Optimize sleep behavior, radio timing, and current consumption |
+| 5 | BLE Application Guide | Build BLE advertising, GATT, and application-level behavior |
+| 6 | Thread / Matter Guide | Use Thread, Zigbee, or Matter over Thread when required |
+| 7 | FAQ | Check common issues and troubleshooting notes |
+
+---
+
+## Series Positioning
+
+The NX15 Series includes variants for different hardware integration needs.
+
+{/* Image suggestion: Simple model lineup diagram: NX15i = chip antenna, NX15E = u.FL antenna, 32 = external Flash, 00 = no external Flash. Suggested path: /img/bluetooth/nx15/nx15-model-lineup.png */}
+
+| Variant Type | Description |
+| --- | --- |
+| NX15i Series | Integrated chip antenna variants |
+| NX15E Series | u.FL external antenna variants |
+| 32 models | Include external SPI Flash |
+| 00 models | No external Flash, more focused on compact/full GPIO use cases |
+
+For detailed model selection, use the **NX15 Module Integration / Model Selection** page.
+
+---
+
+## Next Step
+
+Start with the Quick Start guide if you are preparing a development board, evaluating DEV-NX15, or bringing up NX15 on custom hardware.
+
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 Hardware Design](./NX15_Hardware_Design)
+- [NX15 Antenna Design](./NX15_Antenna_Design)
+- [NX15 Low Power Guide](./NX15_Low_Power_Guide)

@@ -1,0 +1,231 @@
+---
+sidebar_position: 8
+title: NX15 FAQ
+description: Frequently asked questions and troubleshooting notes for NX15 Series BLE module development.
+keywords: [NX15, FAQ, troubleshooting, BLE, hardware bring-up, antenna, low power, firmware]
+---
+
+# NX15 FAQ
+
+This page collects common questions for NX15 Series BLE module development.
+
+:::note
+FAQ is the main place for troubleshooting. Other pages should keep only short troubleshooting notes and link back here when deeper explanation is needed.
+:::
+
+---
+
+## General
+
+### What is the NX15 Series?
+
+NX15 Series is a compact BLE module family for low-power IoT and embedded wireless applications.
+
+For a short product overview, see:
+
+- [NX15 Overview](./NX15_Overview)
+
+---
+
+### Where should I start?
+
+Start with:
+
+1. [NX15 Overview](./NX15_Overview)
+2. [NX15 Quick Start](./NX15_Quick_Start)
+3. [NX15 Hardware Design](./NX15_Hardware_Design)
+4. [NX15 Antenna Design](./NX15_Antenna_Design)
+5. [NX15 Low Power Guide](./NX15_Low_Power_Guide)
+
+---
+
+## Hardware Bring-up
+
+### The board does not power on. What should I check?
+
+Check:
+
+| Area | Check |
+| --- | --- |
+| Power | Confirm VDD_nRF is within the recommended range |
+| Ground | Confirm all GND pads are connected |
+| Decoupling | Confirm bypass capacitors are placed close to VDD pads |
+| Short circuit | Check for solder bridge or assembly issue |
+| Current limit | Confirm the power supply is not current-limited too low |
+
+See:
+
+- [NX15 Hardware Design](./NX15_Hardware_Design)
+
+---
+
+### I cannot flash firmware. What should I check?
+
+Check:
+
+| Signal | Check |
+| --- | --- |
+| SWDIO | Routed correctly and accessible |
+| SWDCLK | Routed correctly and accessible |
+| GND | Common ground between debugger and target |
+| NRESET | Accessible and not held low unexpectedly |
+| Power | Target board is powered correctly |
+
+See:
+
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 Hardware Design](./NX15_Hardware_Design)
+
+---
+
+## BLE Operation
+
+### The device does not appear in a BLE scanner. What should I check?
+
+Possible causes:
+
+| Cause | Check |
+| --- | --- |
+| Firmware not running | Check LED, log, or debug session |
+| Advertising not enabled | Check application configuration |
+| Wrong board target | Confirm pin and board configuration |
+| RF issue | Check antenna design and module placement |
+| Power issue | Check supply stability during radio activity |
+
+See:
+
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 BLE Application Guide](./NX15_BLE_Application_Guide)
+- [NX15 Antenna Design](./NX15_Antenna_Design)
+
+---
+
+### BLE signal is weak. What should I check?
+
+Check the antenna path first.
+
+| Variant | Check |
+| --- | --- |
+| NX15i | Antenna keep-out, PCB edge placement, nearby metal, battery position |
+| NX15E | u.FL connector, RF trace, antenna cable, external antenna placement |
+
+See:
+
+- [NX15 Antenna Design](./NX15_Antenna_Design)
+
+---
+
+## Low Power
+
+### Current consumption is higher than expected. What should I check?
+
+Common causes:
+
+| Cause | Check |
+| --- | --- |
+| Device not sleeping | Confirm firmware enters low-power state |
+| Advertising too often | Increase advertising interval if possible |
+| Connection interval too short | Adjust interval based on latency requirement |
+| Debug logs active | Reduce or disable logs in release firmware |
+| External sensors active | Put sensors into sleep mode |
+| LEDs active | Disable LEDs in low-power mode |
+
+See:
+
+- [NX15 Low Power Guide](./NX15_Low_Power_Guide)
+
+---
+
+### Should I optimize hardware or firmware first?
+
+Both matter, but the practical order is:
+
+1. Confirm hardware power path is correct.
+2. Confirm firmware can enter sleep.
+3. Disable unused peripherals.
+4. Measure current on real hardware.
+5. Adjust BLE timing and application behavior.
+
+---
+
+## Antenna
+
+### Should I choose chip antenna or u.FL?
+
+Use the model selection and antenna design pages.
+
+General rule:
+
+| Option | Use When |
+| --- | --- |
+| Chip antenna | You need compact design and can follow keep-out requirements |
+| u.FL antenna | You need external antenna placement or better control of antenna position |
+
+See:
+
+- [NX15 Antenna Design](./NX15_Antenna_Design)
+
+---
+
+### Can I place metal or battery near the antenna?
+
+Avoid placing metal, shield cans, batteries, or dense copper near the antenna area. These can reduce range or make RF behavior unstable.
+
+See:
+
+- [NX15 Antenna Design](./NX15_Antenna_Design)
+
+---
+
+## Thread / Matter
+
+### Does NX15 support Matter?
+
+NX15 can be used for Matter over Thread depending on the selected software stack and firmware configuration.
+
+See:
+
+- [NX15 Thread / Matter Guide](./NX15_Thread_Matter_Guide)
+
+---
+
+### Should I use BLE, Thread, or Matter?
+
+It depends on the application.
+
+| Need | Consider |
+| --- | --- |
+| Phone connection or local configuration | BLE |
+| Low-power mesh network | Thread |
+| Smart home interoperability | Matter over Thread |
+| Existing 802.15.4 ecosystem | Zigbee or Thread, depending on requirement |
+
+---
+
+## Production and Validation
+
+### What should I validate before production?
+
+At minimum, validate:
+
+| Area | Check |
+| --- | --- |
+| Power | Stable supply and expected current |
+| Firmware | Correct board configuration and reliable boot |
+| BLE | Advertising / connection behavior |
+| Antenna | RF performance in final enclosure |
+| Low power | Sleep and average current |
+| Programming | SWD or production flashing access |
+| Assembly | Soldering, handling, and inspection process |
+
+---
+
+## Related Pages
+
+- [NX15 Overview](./NX15_Overview)
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 Hardware Design](./NX15_Hardware_Design)
+- [NX15 Antenna Design](./NX15_Antenna_Design)
+- [NX15 Low Power Guide](./NX15_Low_Power_Guide)
+- [NX15 BLE Application Guide](./NX15_BLE_Application_Guide)
+- [NX15 Thread / Matter Guide](./NX15_Thread_Matter_Guide)

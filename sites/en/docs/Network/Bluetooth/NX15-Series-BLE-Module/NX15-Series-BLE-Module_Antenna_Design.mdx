@@ -1,0 +1,202 @@
+---
+sidebar_position: 4
+title: NX15 Antenna Design
+description: Antenna layout guidelines for NX15 chip antenna and u.FL external antenna variants.
+keywords: [NX15, antenna design, chip antenna, u.FL, RF layout, 50 ohm, BLE antenna, keep-out]
+---
+
+# NX15 Antenna Design
+
+{/* Image suggestion: Side-by-side image showing NX15i chip antenna variant and NX15E u.FL external antenna variant. Suggested path: /img/bluetooth/nx15/nx15-antenna-variants.png */}
+
+This page explains the antenna design considerations for the **NX15 Series BLE module**.
+
+NX15 has two antenna integration options:
+
+| Variant | Antenna Type | Main Design Focus |
+| --- | --- | --- |
+| NX15i Series | Integrated chip antenna | Antenna keep-out and host PCB ground area |
+| NX15E Series | u.FL external antenna | 50 Ω RF trace and u.FL connector layout |
+
+:::note
+This page focuses only on antenna layout. Power, GPIO, SWD, reset, and general PCB design are covered in [NX15 Hardware Design](./NX15_Hardware_Design).
+:::
+
+---
+
+## Antenna Design Flow
+
+Use this flow before finalizing the PCB.
+
+| Step | Action |
+| --- | --- |
+| 1 | Confirm whether the design uses NX15i or NX15E |
+| 2 | Check module placement on the host PCB |
+| 3 | Reserve antenna keep-out or RF trace area |
+| 4 | Check ground plane requirement |
+| 5 | Keep metal objects away from the antenna |
+| 6 | Review enclosure and battery placement |
+| 7 | Validate RF performance on real hardware |
+
+---
+
+## NX15i Chip Antenna Variant
+
+The NX15i variant uses an integrated chip antenna.
+
+This option is useful when the design needs a compact module without an external RF connector. However, the antenna area must be protected from copper, ground, metal objects, and enclosure interference.
+
+{/* Image suggestion: NX15i top-view layout with chip antenna area highlighted in red and host PCB ground plane shown below. Suggested path: /img/bluetooth/nx15/nx15i-chip-antenna-keepout.png */}
+
+### Placement Rules
+
+| Rule | Recommendation |
+| --- | --- |
+| Module placement | Place the module at the top-left or top-right edge of the host PCB |
+| Antenna clearance | Keep the antenna clearance area free from ground plane, copper traces, and metal shielding |
+| Host PCB ground | Extend the host PCB ground plane below the module |
+| Metal distance | Keep shields, batteries, and other metal objects away from the antenna |
+| Enclosure | Avoid placing metal or dense material directly over the antenna area |
+
+:::caution
+Do not place copper, ground pour, signal traces, or metal shielding inside the chip antenna keep-out area.
+:::
+
+---
+
+## Chip Antenna Keep-out Area
+
+The keep-out area is the most important layout requirement for the NX15i variant.
+
+| Area | Requirement |
+| --- | --- |
+| Antenna area | Keep free from copper and ground |
+| Nearby components | Avoid tall metal components near the antenna |
+| Battery | Do not place battery directly over or beside the antenna area |
+| Shield can | Keep shield structures away from the antenna |
+| Host PCB edge | Place the antenna side toward the PCB edge |
+
+:::tip
+For chip antenna modules, small mechanical changes can affect RF performance. Always validate the final PCB together with the actual enclosure and battery placement.
+:::
+
+---
+
+## NX15E External Antenna Variant
+
+The NX15E variant uses a **u.FL / UMCC external antenna connector**.
+
+This option is useful when the antenna must be placed away from the PCB, outside an enclosure, or in a controlled RF location.
+
+{/* Image suggestion: NX15E layout showing module, short 50Ω RF trace, u.FL connector, and external antenna. Suggested path: /img/bluetooth/nx15/nx15e-ufl-rf-trace.png */}
+
+### RF Trace Requirements
+
+| Parameter | Requirement |
+| --- | --- |
+| RF impedance | 50 Ω controlled impedance |
+| Connector | u.FL / UMCC, 50 Ω |
+| Reference plane | Solid Layer 2 GND plane under the RF trace |
+| Trace length | Keep short; avoid unnecessary length |
+| Trace path | Avoid routing across gaps in the ground reference |
+| Matching | Follow the reference design or RF validation result |
+
+---
+
+## 50 Ω Microstrip Guidance
+
+For FR-4 PCB design, the datasheet gives a simple starting point for the RF microstrip.
+
+| Parameter | Requirement |
+| --- | --- |
+| PCB material | FR-4, εr approximately 4.2 |
+| Dielectric height | 0.2 mm to 0.4 mm |
+| Trace width | W = H × 1.8 |
+| Trace length | 7 mm to 25 mm |
+| Layer 2 | Solid GND plane |
+| Connector | u.FL / UMCC, 50 Ω impedance |
+
+:::caution
+The RF trace must keep the same dielectric-to-ground-plane configuration along its entire length. Do not route the RF trace over an area without a solid Layer 2 GND plane.
+:::
+
+---
+
+## Ground Via and Connector Area
+
+For the u.FL connector area:
+
+| Item | Recommendation |
+| --- | --- |
+| Ground vias | Place ground vias near the connector ground pads |
+| RF return path | Keep return current path short and continuous |
+| Connector footprint | Use the recommended u.FL / UMCC footprint |
+| Mechanical stress | Avoid placing the connector where cable pull may damage the PCB |
+| Cable routing | Route antenna cable away from noisy or high-current areas |
+
+---
+
+## Enclosure and Mechanical Considerations
+
+Antenna performance can change after the board is installed in the final product.
+
+Check the following:
+
+| Item | Why It Matters |
+| --- | --- |
+| Plastic enclosure | Usually better than metal around the antenna |
+| Metal enclosure | Can block or detune the antenna |
+| Battery location | Can reduce antenna efficiency if too close |
+| Cable position | External antenna cable position affects repeatability |
+| Product orientation | RSSI may change depending on orientation |
+| Nearby ground / metal | Can reduce range or create unstable RF behavior |
+
+---
+
+## Antenna Validation Checklist
+
+Before release, validate the antenna in the final mechanical configuration.
+
+| Test | Purpose |
+| --- | --- |
+| BLE advertising scan | Confirms device is visible |
+| RSSI comparison | Checks relative signal strength |
+| Distance test | Verifies expected operating range |
+| Orientation test | Checks signal stability in different positions |
+| Enclosure test | Confirms RF behavior after assembly |
+| Battery placement test | Checks effect of battery position |
+| Production sample check | Confirms repeatability across units |
+
+---
+
+## Common Antenna Issues
+
+| Symptom | Possible Cause | Check |
+| --- | --- | --- |
+| Weak BLE signal | Antenna keep-out violated | Check copper, ground, metal, and battery placement |
+| Device visible only at short range | Poor antenna placement | Check module position and enclosure |
+| Signal changes strongly by orientation | Antenna blocked or detuned | Check mechanical layout |
+| External antenna not working | u.FL connector or RF trace issue | Check connector soldering and 50 Ω trace |
+| Inconsistent units | Assembly or cable variation | Check production process and antenna cable routing |
+
+---
+
+## What Not to Include Here
+
+To keep this page focused, the following topics should stay in other pages:
+
+| Topic | Go To |
+| --- | --- |
+| Power, GPIO, SWD, reset | [NX15 Hardware Design](./NX15_Hardware_Design) |
+| First firmware bring-up | [NX15 Quick Start](./NX15_Quick_Start) |
+| BLE advertising / GATT behavior | [NX15 BLE Application Guide](./NX15_BLE_Application_Guide) |
+| Low-power firmware tuning | [NX15 Low Power Guide](./NX15_Low_Power_Guide) |
+
+---
+
+## Related Pages
+
+- [NX15 Hardware Design](./NX15_Hardware_Design)
+- [NX15 Quick Start](./NX15_Quick_Start)
+- [NX15 Low Power Guide](./NX15_Low_Power_Guide)
+- [NX15 BLE Application Guide](./NX15_BLE_Application_Guide)
