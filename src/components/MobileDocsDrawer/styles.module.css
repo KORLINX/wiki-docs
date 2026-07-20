@@ -1,0 +1,187 @@
+.mobileDocsRoot {
+  display: none;
+}
+
+@media (max-width: 996px) {
+  .mobileDocsRoot {
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .mobileDocsButton {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 14px;
+
+    border: 1px solid rgba(96, 165, 250, 0.35);
+    border-radius: 10px;
+
+    background: rgba(96, 165, 250, 0.12);
+    color: #93c5fd;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+  .mobileDocsButtonIcon {
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  .mobileDocsBackdrop {
+    position: fixed;
+    inset: 0;
+
+    display: block;
+
+    border: 0;
+    background: rgba(0, 0, 0, 0.52);
+
+    z-index: 1098;
+  }
+
+  .mobileDocsDrawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: min(86vw, 360px);
+
+    display: flex;
+    flex-direction: column;
+
+    background: #0f172a;
+    color: #ffffff;
+
+    transform: translateX(-100%);
+    transition: transform 0.22s ease;
+
+    z-index: 1099;
+
+    box-shadow: 16px 0 44px rgba(0, 0, 0, 0.38);
+  }
+
+  .mobileDocsDrawerOpen {
+    transform: translateX(0);
+  }
+
+  .mobileDocsHeader {
+    height: 64px;
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  .mobileDocsClose {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+
+    font-size: 25px;
+    line-height: 1;
+
+    cursor: pointer;
+  }
+
+  .mobileDocsNav {
+    flex: 1 1 auto;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 14px 14px 28px;
+  }
+
+  .docsGroup {
+    margin-bottom: 6px;
+  }
+
+  .docsGroupSummary {
+    padding: 10px 8px;
+
+    color: #dbeafe;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .docsGroupSummary::-webkit-details-marker {
+    display: none;
+  }
+
+  .docsGroupSummary::after {
+    content: '›';
+    float: right;
+
+    color: #94a3b8;
+
+    transform: rotate(90deg);
+  }
+
+  .docsGroup:not([open]) > .docsGroupSummary::after {
+    transform: rotate(0deg);
+  }
+
+  .docsGroupChildren {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    padding-left: 10px;
+  }
+
+  .docsLink,
+  .docsLinkActive {
+    display: block;
+
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    color: #e5e7eb;
+
+    font-size: 14px;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .docsLink:hover,
+  .docsLinkActive:hover {
+    color: #60a5fa;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .docsLinkActive {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.14);
+  }
+}
