@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import {useWindowSize} from '@docusaurus/theme-common';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
+import MobileDocsDrawer from '@site/src/components/MobileDocsDrawer';
 
 import DocItemPaginator from '@theme/DocItem/Paginator';
 import DocVersionBanner from '@theme/DocVersionBanner';
@@ -48,6 +49,8 @@ export default function DocItemLayout({children}) {
 
         <div className={styles.docItemContainer}>
           <article>
+            <MobileDocsDrawer />
+
             <DocBreadcrumbs />
             <DocVersionBadge />
             {docTOC.mobile}
