@@ -1,0 +1,225 @@
+---
+sidebar_position: 3
+title: NX40 Hardware Design
+description: Hardware design guidelines for integrating the NX40 Series BLE module into a host board.
+keywords: [NX40, hardware design, BLE module, nRF52840, power design, GPIO, SWD, reset, PCB design]
+---
+
+# NX40 Hardware Design
+
+{/* Image suggestion: Simple NX40 hardware integration diagram showing power, GND, SWD, reset, GPIO, host MCU, external Flash, crystal, and antenna area. Suggested path: /img/bluetooth/nx40/nx40-hardware-design-overview.png */}
+
+This page provides hardware design guidance for using the **NX40 Series BLE module** in a host board or custom embedded product.
+
+The NX40 Series is based on the **nRF52840** platform and is intended for Bluetooth Low Energy and 2.4 GHz embedded applications.
+
+:::note
+This page focuses on board-level hardware design. First bring-up is covered in [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start), and antenna layout is covered in [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design).
+:::
+
+---
+
+## Hardware Design Flow
+
+Use this flow before finalizing the host PCB.
+
+| Step | Design Area | Goal |
+| --- | --- | --- |
+| 1 | Power input | Provide a stable power rail for the module |
+| 2 | Ground | Connect all required ground pads to a solid ground reference |
+| 3 | Decoupling | Place bypass capacitors close to power pins |
+| 4 | Clock / crystal | Confirm crystal and clock circuit according to the reference design |
+| 5 | Programming / debug | Keep SWD access available |
+| 6 | Reset | Provide a reliable reset path |
+| 7 | GPIO planning | Confirm pin usage before PCB finalization |
+| 8 | Antenna area | Reserve antenna keep-out or RF path area |
+| 9 | Test points | Add bring-up and production test access |
+| 10 | Prototype validation | Verify power, firmware, and BLE operation on real hardware |
+
+---
+
+## Main Hardware Blocks
+
+{/* Image suggestion: NX40 block diagram showing nRF52840, external Flash, 32 MHz crystal, antenna/matching network, SWD, GPIO, and host board. Suggested path: /img/bluetooth/nx40/nx40-main-hardware-blocks.png */}
+
+| Block | Purpose |
+| --- | --- |
+| nRF52840 SoC | Main wireless MCU platform |
+| External Flash | Optional storage depending on model variant |
+| 32 MHz crystal | Main clock source |
+| Power supply | Provides stable operating power to the module |
+| Decoupling capacitors | Stabilize the supply near active circuits |
+| SWD interface | Firmware programming and debugging |
+| Reset | Board recovery and debug control |
+| GPIO / peripherals | Application interface and host connection |
+| Antenna / RF network | 2.4 GHz wireless communication path |
+
+---
+
+## Power Design
+
+The power design must follow the final NX40 schematic and datasheet.
+
+Before powering the first prototype, confirm:
+
+| Item | Design Check |
+| --- | --- |
+| Power rail | Correct voltage range for the NX40 hardware revision |
+| Power stability | No large voltage drop during boot or radio activity |
+| Decoupling | Capacitors placed close to power pins |
+| Ground return | Short and low-impedance return path |
+| Current limit | Use current-limited supply during first bring-up |
+| Test point | Add a power test point for measurement |
+
+:::caution
+Do not assume the NX15 power range applies to NX40. Confirm the final NX40 power requirement from the NX40 schematic or datasheet before production.
+:::
+
+{/* Image suggestion: Power input and decoupling diagram showing module power rail, nearby capacitors, and measurement test point. Suggested path: /img/bluetooth/nx40/nx40-power-decoupling.png */}
+
+---
+
+## Ground Design
+
+A stable ground design is important for both digital operation and RF performance.
+
+| Rule | Recommendation |
+| --- | --- |
+| Connect all required GND pads | Do not leave ground pads floating |
+| Use a solid ground plane | Keep the return path short and continuous |
+| Avoid ground breaks under RF area | Prevent unstable RF behavior |
+| Add ground vias | Use vias near RF and high-speed return paths |
+| Keep debug ground close | Place GND near SWD/debug access points |
+
+:::tip
+For wireless modules, ground is part of the RF system. Poor ground layout can cause weak signal, unstable current measurement, or inconsistent wireless performance.
+:::
+
+---
+
+## Programming and Debugging
+
+NX40 hardware should keep **SWD** access available for firmware flashing, debugging, recovery, and production programming.
+
+| Signal | Purpose | Recommendation |
+| --- | --- | --- |
+| SWDIO | Programming/debug data | Route to header or test pad |
+| SWDCLK | Programming/debug clock | Route to header or test pad |
+| GND | Debug reference | Place close to SWD signals |
+| RESET / NRESET | Reset and recovery | Route to header, button, or test pad |
+| Target voltage reference | Debugger voltage detection | Add if required by the debugger |
+
+{/* Image suggestion: SWD debug connector or test-pad layout for NX40. Suggested path: /img/bluetooth/nx40/nx40-swd-debug-header.png */}
+
+:::note
+Even if the final product does not expose a debug connector, test pads are recommended for development and production support.
+:::
+
+---
+
+## Reset Design
+
+A reset path should be available for board recovery and firmware development.
+
+| Item | Recommendation |
+| --- | --- |
+| Reset access | Route reset to a button, connector, or test pad |
+| Debug support | Make reset available near SWD pins |
+| Production support | Keep reset accessible during programming |
+| Noise protection | Avoid routing reset near noisy switching signals |
+
+---
+
+## Clock and External Flash
+
+The NX40i32 BOM includes a **32 MHz crystal** and an external SPI Flash device. These circuits should follow the reference design.
+
+| Area | Design Note |
+| --- | --- |
+| 32 MHz crystal | Keep crystal traces short and follow recommended layout |
+| Crystal capacitors | Use the confirmed values from the NX40 schematic/BOM |
+| External Flash | Match firmware configuration to the mounted Flash option |
+| Flash routing | Keep SPI/QSPI-related traces clean and compact |
+| No-Flash models | Confirm firmware configuration before using Flash-related pins |
+
+:::caution
+If your design uses an NX40 model without external Flash, make sure the firmware and pin usage do not assume that external Flash is present.
+:::
+
+---
+
+## GPIO and Peripheral Planning
+
+NX40 GPIO and peripheral routing should be planned together with firmware pin configuration.
+
+| Interface / Function | Typical Use |
+| --- | --- |
+| UART | Host communication or log output |
+| SPI | External sensors, Flash, or peripherals |
+| I2C | Low-speed sensors and configuration devices |
+| PWM | LED, buzzer, or control output |
+| ADC | Analog sensor input |
+| GPIO | Buttons, interrupts, enable pins, status signals |
+| SWD | Programming and debugging |
+
+:::caution
+Do not finalize GPIO routing before checking the firmware board configuration and model variant.
+:::
+
+---
+
+## Test Points
+
+Add test points for bring-up and production validation.
+
+| Test Point | Purpose |
+| --- | --- |
+| Power rail | Voltage measurement |
+| GND | Measurement reference |
+| SWDIO | Programming/debug |
+| SWDCLK | Programming/debug |
+| RESET / NRESET | Recovery and reset control |
+| UART TX/RX | Optional serial log |
+| Key GPIO | Application-specific validation |
+
+---
+
+## First Hardware Bring-up Checklist
+
+Before flashing firmware:
+
+| Check | Status |
+| --- | --- |
+| Correct NX40 variant mounted | ☐ |
+| Power rail verified | ☐ |
+| Ground continuity checked | ☐ |
+| No VDD-to-GND short | ☐ |
+| Decoupling capacitors installed | ☐ |
+| SWDIO / SWDCLK accessible | ☐ |
+| Reset path accessible | ☐ |
+| External Flash option matches firmware | ☐ |
+| Antenna layout reviewed | ☐ |
+| Current limit set for first power-on | ☐ |
+
+---
+
+## What Not to Include Here
+
+To avoid duplicated content, these topics are handled in other pages:
+
+| Topic | Go To |
+| --- | --- |
+| First bring-up steps | [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start) |
+| Chip antenna / u.FL antenna layout | [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design) |
+| Sleep and average current optimization | [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide) |
+| BLE advertising and GATT | [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide) |
+| Model selection and module-only integration | NX40 Module Integration pages |
+
+---
+
+## Related Pages
+
+- [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+- [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide)

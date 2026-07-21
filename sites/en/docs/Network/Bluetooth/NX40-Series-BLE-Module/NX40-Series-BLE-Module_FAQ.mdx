@@ -1,0 +1,308 @@
+---
+sidebar_position: 8
+title: NX40 FAQ
+description: Frequently asked questions and troubleshooting notes for NX40 Series BLE module development.
+keywords: [NX40, FAQ, troubleshooting, BLE, hardware bring-up, antenna, low power, firmware, 802.15.4, Thread]
+---
+
+# NX40 FAQ
+
+This page collects common questions for **NX40 Series BLE Module** development.
+
+:::note
+FAQ is the main place for troubleshooting. Other pages should keep only short troubleshooting notes and link back here when deeper explanation is needed.
+:::
+
+---
+
+## General
+
+### What is the NX40 Series?
+
+The NX40 Series is a compact wireless module series for Bluetooth Low Energy and 2.4 GHz embedded applications.
+
+For a short introduction, see:
+
+- [NX40 Overview](./NX40-Series-BLE-Module_Overview)
+
+---
+
+### Where should I start?
+
+Start with:
+
+1. [NX40 Overview](./NX40-Series-BLE-Module_Overview)
+2. [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+3. [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design)
+4. [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+5. [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+
+---
+
+## Model Selection
+
+### What do NX40i32, NX40E32, NX40i00, and NX40E00 mean?
+
+| Model | Meaning |
+| --- | --- |
+| NX40i32 | Chip antenna variant with 32 Mbit SPI Flash |
+| NX40E32 | External antenna variant with 32 Mbit SPI Flash |
+| NX40i00 | Chip antenna variant without external Flash |
+| NX40E00 | External antenna variant without external Flash |
+
+See the Module Integration section for detailed model selection.
+
+---
+
+### Should I choose chip antenna or external antenna?
+
+| Option | Use When |
+| --- | --- |
+| Chip antenna | The PCB and enclosure can follow antenna keep-out rules |
+| External antenna | The antenna needs to be placed away from the PCB or outside a constrained enclosure |
+
+For RF layout guidance, see:
+
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+
+---
+
+## Hardware Bring-up
+
+### The board does not power on. What should I check?
+
+Check:
+
+| Area | Check |
+| --- | --- |
+| Power rail | Confirm the correct NX40 voltage requirement from the NX40 schematic/datasheet |
+| Ground | Confirm all required GND pads are connected |
+| Short circuit | Check VDD-to-GND resistance before power-on |
+| Decoupling | Confirm capacitors are installed near power pins |
+| Assembly | Inspect for solder bridge, missing parts, or misalignment |
+| Current limit | Use a current-limited supply during first power-on |
+
+See:
+
+- [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design)
+
+---
+
+### I cannot flash firmware. What should I check?
+
+Check:
+
+| Signal | Check |
+| --- | --- |
+| SWDIO | Routed correctly and accessible |
+| SWDCLK | Routed correctly and accessible |
+| GND | Common ground between debugger and target board |
+| RESET / NRESET | Not held low unexpectedly |
+| Target voltage | Debugger can detect target voltage if required |
+| Board target | Firmware board configuration matches the hardware |
+
+See:
+
+- [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+- [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design)
+
+---
+
+### Firmware flashes successfully but does not run. What should I check?
+
+Possible causes:
+
+| Cause | Check |
+| --- | --- |
+| Wrong board configuration | Confirm board target and pin configuration |
+| Power instability | Measure power during boot |
+| Reset issue | Check reset circuit |
+| External Flash mismatch | Confirm firmware configuration matches Flash option |
+| GPIO conflict | Check pin assignment and reserved signals |
+| Clock issue | Review crystal and clock circuit |
+
+---
+
+## BLE Operation
+
+### The device does not appear in a BLE scanner. What should I check?
+
+Possible causes:
+
+| Cause | Check |
+| --- | --- |
+| Firmware not running | Check LED, log, or debug session |
+| Advertising not enabled | Check application configuration |
+| Wrong board target | Confirm pin and board configuration |
+| RF issue | Check antenna design and module placement |
+| Power issue | Check supply stability during radio activity |
+
+See:
+
+- [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide)
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+
+---
+
+### BLE signal is weak. What should I check?
+
+Check the antenna path first.
+
+| Variant | Check |
+| --- | --- |
+| NX40i | Chip antenna keep-out, PCB edge placement, nearby metal, battery position |
+| NX40E | External antenna connector, RF trace, antenna cable, antenna placement |
+
+See:
+
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+
+---
+
+### BLE connection drops frequently. What should I check?
+
+Possible causes:
+
+| Cause | Check |
+| --- | --- |
+| Weak RF signal | Check antenna and RSSI |
+| Poor enclosure placement | Test with and without enclosure |
+| Connection interval issue | Review connection parameters |
+| Power instability | Measure supply during radio activity |
+| Central-side behavior | Test with another phone, gateway, or BLE tool |
+
+---
+
+## Low Power
+
+### Current consumption is higher than expected. What should I check?
+
+Common causes:
+
+| Cause | Check |
+| --- | --- |
+| Device not sleeping | Confirm firmware enters low-power state |
+| Advertising too often | Increase advertising interval if possible |
+| Connection interval too short | Adjust interval based on latency requirement |
+| Debug logs active | Reduce or disable logs in release firmware |
+| LEDs active | Disable always-on LEDs |
+| External sensors active | Put sensors into standby or sleep |
+| Pull-ups / external loads | Review board-level leakage paths |
+
+See:
+
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+
+---
+
+### Should I optimize hardware or firmware first?
+
+Use this order:
+
+1. Confirm power rail and board assembly are correct.
+2. Confirm firmware can enter sleep.
+3. Disable unused peripherals.
+4. Disable or reduce debug logs.
+5. Measure current on real hardware.
+6. Tune BLE advertising and connection parameters.
+7. Re-test in the final enclosure.
+
+---
+
+## 802.15.4 / Thread
+
+### Does NX40 support 802.15.4 or Thread?
+
+NX40 is based on the nRF52840 platform and can be used for 2.4 GHz multiprotocol application planning. Actual 802.15.4 or Thread support depends on the selected firmware stack, board configuration, and project requirements.
+
+See:
+
+- [NX40 802.15.4 / Thread Guide](./NX40-Series-BLE-Module_802154_Thread_Guide)
+
+---
+
+### Should I use BLE or Thread?
+
+| Need | Consider |
+| --- | --- |
+| Phone connection or local configuration | BLE |
+| Simple sensor broadcast | BLE advertising |
+| GATT-based data exchange | BLE connection |
+| Low-power mesh network | Thread / 802.15.4 |
+| Gateway or border-router network | Thread / 802.15.4 with gateway architecture |
+
+---
+
+### BLE works, but Thread does not. What should I check?
+
+Check:
+
+| Area | Check |
+| --- | --- |
+| Firmware stack | Confirm Thread / 802.15.4 stack is enabled |
+| Board configuration | Confirm radio and board target are configured correctly |
+| Memory layout | Confirm firmware fits memory and Flash configuration |
+| Network setup | Confirm network credentials and commissioning process |
+| Antenna | Confirm RF performance is acceptable |
+| Logs | Check stack or join error messages |
+
+---
+
+## External Flash
+
+### Do all NX40 models have external Flash?
+
+No. The `32` models include external SPI Flash, while the `00` models do not.
+
+| Model | Flash |
+| --- | --- |
+| NX40i32 | 32 Mbit SPI Flash |
+| NX40E32 | 32 Mbit SPI Flash |
+| NX40i00 | No external Flash |
+| NX40E00 | No external Flash |
+
+---
+
+### What happens if firmware assumes Flash but the model has no external Flash?
+
+The firmware may fail to boot correctly, fail storage operations, or produce runtime errors.
+
+Check:
+
+| Area | Check |
+| --- | --- |
+| Board configuration | Correct model selected |
+| Device tree / pin configuration | Flash node matches hardware |
+| Storage usage | Application does not require missing Flash |
+| OTA / DFU | Update strategy matches available memory |
+
+---
+
+## Production and Validation
+
+### What should I validate before production?
+
+At minimum, validate:
+
+| Area | Check |
+| --- | --- |
+| Power | Stable supply and expected current |
+| Firmware | Correct board configuration and reliable boot |
+| BLE | Advertising / connection behavior |
+| Antenna | RF performance in final enclosure |
+| Low power | Sleep and average current |
+| Programming | SWD or production flashing access |
+| External Flash | Correct operation on 32 models |
+| Assembly | Soldering, inspection, and first power-on procedure |
+
+---
+
+## Related Pages
+
+- [NX40 Overview](./NX40-Series-BLE-Module_Overview)
+- [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+- [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design)
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+- [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide)
+- [NX40 802.15.4 / Thread Guide](./NX40-Series-BLE-Module_802154_Thread_Guide)

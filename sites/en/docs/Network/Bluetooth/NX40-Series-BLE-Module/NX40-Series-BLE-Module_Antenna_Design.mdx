@@ -1,0 +1,205 @@
+---
+sidebar_position: 4
+title: NX40 Antenna Design
+description: Antenna design guidance for NX40 chip antenna and external antenna variants.
+keywords: [NX40, antenna design, chip antenna, u.FL, RF layout, 2.4GHz, BLE antenna]
+---
+
+# NX40 Antenna Design
+
+{/* Image suggestion: Side-by-side image showing NX40i chip antenna variant and NX40E external antenna variant. Suggested path: /img/bluetooth/nx40/nx40-antenna-variants.png */}
+
+This page explains antenna design considerations for the **NX40 Series BLE module**.
+
+NX40 variants can be organized by antenna type:
+
+| Variant | Antenna Type | Main Design Focus |
+| --- | --- | --- |
+| NX40i Series | Integrated chip antenna | Antenna placement, keep-out, and ground reference |
+| NX40E Series | External antenna interface | RF trace, connector, and external antenna placement |
+
+:::note
+This page focuses only on antenna design. Power, SWD, GPIO, reset, and general PCB design are covered in [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design).
+:::
+
+---
+
+## Antenna Design Flow
+
+Use this flow before PCB release.
+
+| Step | Action |
+| --- | --- |
+| 1 | Confirm whether the design uses NX40i or NX40E |
+| 2 | Place the module with the antenna requirement in mind |
+| 3 | Reserve chip antenna keep-out or external RF path |
+| 4 | Keep metal, battery, shield, and dense copper away from the antenna |
+| 5 | Check ground reference around the RF path |
+| 6 | Validate signal strength on prototype hardware |
+| 7 | Re-test after enclosure assembly |
+
+---
+
+## NX40i Chip Antenna Variant
+
+The NX40i variant uses an integrated **2.4 GHz chip antenna**.
+
+{/* Image suggestion: NX40i module top-view with chip antenna highlighted and keep-out area shown. Suggested path: /img/bluetooth/nx40/nx40i-chip-antenna-keepout.png */}
+
+For chip antenna designs, layout and mechanical placement strongly affect wireless performance.
+
+| Area | Recommendation |
+| --- | --- |
+| Module placement | Place antenna side near the PCB edge where possible |
+| Keep-out area | Keep antenna clearance free from copper, ground, and signal traces |
+| Metal objects | Keep shield cans, batteries, screws, and metal enclosure parts away |
+| Enclosure | Avoid metal directly over or around the antenna area |
+| Ground reference | Follow the reference design for the required ground area |
+| Validation | Test RSSI and range after final mechanical assembly |
+
+:::caution
+Do not place ground pour, copper traces, components, battery, or metal parts inside the chip antenna keep-out area.
+:::
+
+---
+
+## Chip Antenna Keep-out
+
+The keep-out area is the most important layout requirement for the NX40i antenna.
+
+| Item | Check |
+| --- | --- |
+| Copper | No copper under or inside the antenna keep-out area |
+| Ground | No ground pour where the antenna requires clearance |
+| Components | Avoid components near the antenna area |
+| Battery | Do not place battery directly over the antenna |
+| Shield | Keep shield structures away from the antenna |
+| Enclosure | Validate with final plastic or mechanical housing |
+
+{/* Image suggestion: Good vs bad chip antenna placement examples for NX40. Suggested path: /img/bluetooth/nx40/nx40i-antenna-placement-examples.png */}
+
+:::tip
+Antenna performance should be checked on the final PCB and final enclosure, not only on an open development board.
+:::
+
+---
+
+## NX40E External Antenna Variant
+
+The NX40E variant should be used when the product needs external antenna placement or more control over antenna position.
+
+{/* Image suggestion: NX40E RF path diagram showing module RF output, matching network, RF trace, connector, and external antenna. Suggested path: /img/bluetooth/nx40/nx40e-external-antenna-rf-path.png */}
+
+| Area | Recommendation |
+| --- | --- |
+| RF trace | Use controlled impedance RF routing |
+| Connector | Use the confirmed connector footprint from the NX40 reference design |
+| Ground reference | Keep a continuous ground reference under RF path |
+| Matching network | Follow the reference design and tune during RF validation if required |
+| Cable routing | Route antenna cable away from noisy or high-current circuits |
+| Mechanical strength | Avoid placing the connector where cable pull can damage the PCB |
+
+:::caution
+Confirm the final external antenna connector type, matching network, and RF trace dimensions from the NX40 schematic and PCB stack-up before production.
+:::
+
+---
+
+## RF Matching Network
+
+The NX40i32 BOM includes RF matching components around the 2.4 GHz antenna path.
+
+Do not treat matching values as universal for every PCB layout. Antenna matching can depend on:
+
+| Factor | Impact |
+| --- | --- |
+| PCB stack-up | Changes impedance and antenna behavior |
+| Ground plane shape | Affects antenna efficiency |
+| Module placement | Changes RF environment |
+| Enclosure material | Can detune the antenna |
+| Battery position | May reduce antenna performance |
+| Nearby metal | Can block or detune RF radiation |
+
+:::note
+Use the reference matching network as the starting point, then validate RF performance on the actual PCB and enclosure.
+:::
+
+---
+
+## External Antenna Layout Checklist
+
+| Check | Status |
+| --- | --- |
+| RF path uses controlled impedance | ☐ |
+| RF trace is short and direct | ☐ |
+| Ground reference is continuous | ☐ |
+| Connector footprint is verified | ☐ |
+| Matching network follows reference design | ☐ |
+| Cable route avoids noisy circuits | ☐ |
+| Antenna position is mechanically stable | ☐ |
+| RF performance tested in final enclosure | ☐ |
+
+---
+
+## Enclosure and Mechanical Effects
+
+The antenna should be evaluated after mechanical assembly.
+
+| Mechanical Factor | Possible Effect |
+| --- | --- |
+| Metal enclosure | Can block or detune antenna |
+| Battery location | Can reduce range if too close |
+| Shield can | Can affect antenna pattern |
+| Screws or brackets | May create unexpected RF loss |
+| Cable position | Can change external antenna behavior |
+| Product orientation | RSSI may vary by orientation |
+
+---
+
+## Antenna Validation
+
+Validate the antenna using real hardware.
+
+| Test | Purpose |
+| --- | --- |
+| BLE advertising scan | Confirms device is visible |
+| RSSI comparison | Checks relative signal strength |
+| Distance test | Verifies usable range |
+| Orientation test | Checks signal stability |
+| Enclosure test | Confirms final mechanical effect |
+| Current check | Detects abnormal behavior during radio activity |
+| Sample-to-sample check | Confirms consistency across multiple boards |
+
+---
+
+## Common Antenna Issues
+
+| Symptom | Possible Cause | Check |
+| --- | --- | --- |
+| Weak BLE signal | Keep-out violation or poor placement | Check antenna clearance and enclosure |
+| Device visible only nearby | Antenna detuning or blocked antenna | Check metal, battery, and orientation |
+| Signal changes strongly by direction | Mechanical or antenna placement issue | Test multiple orientations |
+| External antenna not working | Connector, RF trace, or cable issue | Inspect RF path and connector |
+| Different boards behave differently | Assembly or matching variation | Compare soldering, antenna parts, and enclosure assembly |
+
+---
+
+## What Not to Include Here
+
+To keep this page focused:
+
+| Topic | Go To |
+| --- | --- |
+| Power, SWD, reset, GPIO | [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design) |
+| First board bring-up | [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start) |
+| BLE advertising / GATT behavior | [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide) |
+| Sleep and current tuning | [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide) |
+
+---
+
+## Related Pages
+
+- [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design)
+- [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+- [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide)

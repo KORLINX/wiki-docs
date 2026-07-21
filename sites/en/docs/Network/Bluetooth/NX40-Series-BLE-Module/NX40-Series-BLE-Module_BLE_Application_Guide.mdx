@@ -1,0 +1,213 @@
+---
+sidebar_position: 6
+title: NX40 BLE Application Guide
+description: Application-level guide for building BLE advertising, connection-based, GATT, and gateway-based applications with NX40.
+keywords: [NX40, BLE application, Bluetooth Low Energy, advertising, GATT, gateway, sensor data, nRF52840]
+---
+
+# NX40 BLE Application Guide
+
+{/* Image suggestion: BLE application flow diagram: NX40 device → Smartphone / Gateway → Application / Cloud. Suggested path: /img/bluetooth/nx40/nx40-ble-application-flow.png */}
+
+This page explains common BLE application patterns for **NX40 Series** devices.
+
+It focuses on application behavior such as advertising, connection-based communication, GATT services, and gateway-based data flow.
+
+:::note
+This page does not cover hardware bring-up, antenna layout, or low-power tuning. Use the related pages at the end for those topics.
+:::
+
+---
+
+## BLE Application Models
+
+NX40 BLE applications usually follow one of these models.
+
+| Model | Description | Example |
+| --- | --- | --- |
+| Advertising only | Device broadcasts small data without a full connection | Beacon, simple sensor broadcast |
+| Connection-based | Device connects to a phone, gateway, or controller | Wearable, smart sensor, configuration device |
+| GATT service | Device exposes structured data as services and characteristics | Battery, sensor value, device status |
+| Gateway-based | BLE device sends data locally to a gateway, and the gateway forwards it onward | Industrial monitoring, smart building, asset tracking |
+
+---
+
+## Advertising Application
+
+{/* Image suggestion: BLE advertising diagram showing NX40 broadcasting packets to phone/gateway without connection. Suggested path: /img/bluetooth/nx40/nx40-ble-advertising.png */}
+
+Advertising is useful when the device only needs to broadcast small data or be discovered by another device.
+
+Typical advertising use cases:
+
+| Use Case | Description |
+| --- | --- |
+| Beacon | Broadcasts ID, presence, or location-related data |
+| Sensor broadcast | Sends compact sensor data periodically |
+| Device discovery | Allows a phone or gateway to find the device |
+| Status broadcast | Sends simple state without connection |
+| Event notification | Broadcasts an event when something changes |
+
+Advertising design questions:
+
+| Question | Why It Matters |
+| --- | --- |
+| What data should be broadcast? | Advertising payload is limited |
+| How often should the device advertise? | Affects discovery speed and power |
+| Should the device be connectable? | Some devices advertise only, others accept connections |
+| Is privacy required? | Address type and payload design may matter |
+| Is data encrypted elsewhere? | Advertising data may be visible to nearby scanners |
+
+:::tip
+Start with simple advertising first. After the device is visible in a BLE scanner, add application data step by step.
+:::
+
+---
+
+## Connection-Based Application
+
+A connection-based application is useful when a central device needs to read, write, configure, or control the NX40 device.
+
+Common central devices:
+
+| Central Device | Example |
+| --- | --- |
+| Smartphone | Mobile app configuration or monitoring |
+| Gateway | Data collection and local network bridge |
+| PC tool | Development, test, or production setup |
+| Controller | Local control system |
+
+Typical connected actions:
+
+| Action | Example |
+| --- | --- |
+| Read data | Sensor value, battery level, device status |
+| Write configuration | Measurement interval, device mode, threshold |
+| Receive notification | Sensor event, alarm, state change |
+| Control device | Start/stop, output control, mode change |
+| Firmware-related workflow | Project-specific update or maintenance behavior |
+
+---
+
+## GATT Service Design
+
+{/* Image suggestion: GATT structure diagram: Service → Characteristic → Read / Write / Notify. Suggested path: /img/bluetooth/nx40/nx40-gatt-structure.png */}
+
+GATT organizes BLE data into services and characteristics.
+
+| GATT Item | Meaning |
+| --- | --- |
+| Service | A group of related functions |
+| Characteristic | A data point or control item |
+| Read | Central device reads a value |
+| Write | Central device updates a value |
+| Notify | Peripheral sends value changes to central device |
+| Indicate | Peripheral sends value changes with confirmation |
+
+Example structure:
+
+| Service | Characteristic | Operation |
+| --- | --- | --- |
+| Device Information Service | Firmware version | Read |
+| Battery Service | Battery level | Read / Notify |
+| Sensor Service | Sensor value | Read / Notify |
+| Configuration Service | Measurement interval | Read / Write |
+| Control Service | Device mode | Read / Write |
+
+:::tip
+Keep the first GATT design simple. Start with only the characteristics required for the first working application.
+:::
+
+---
+
+## Sensor Data Flow
+
+A common NX40 BLE application sends sensor data to a phone or gateway.
+
+| Step | Description |
+| --- | --- |
+| 1 | Wake up by timer or event |
+| 2 | Read sensor data |
+| 3 | Format the value for advertising or GATT |
+| 4 | Advertise, notify, or wait for read request |
+| 5 | Return to low-power state |
+
+{/* Image suggestion: Sensor data flow diagram: Sensor → NX40 firmware → BLE advertising/GATT → phone/gateway. Suggested path: /img/bluetooth/nx40/nx40-sensor-data-flow.png */}
+
+Design questions:
+
+| Question | Why It Matters |
+| --- | --- |
+| How often does data change? | Affects advertising or notification interval |
+| Does the central need real-time updates? | Determines connection behavior |
+| Is historical data required? | May require storage |
+| Does the data need calibration? | Affects firmware processing |
+| Is power critical? | May require longer intervals and sensor sleep |
+
+---
+
+## Gateway-Based BLE Flow
+
+In many IoT systems, the BLE device does not connect directly to the cloud. Instead, it sends data to a local gateway.
+
+{/* Image suggestion: Gateway-based BLE flow: NX40 sensor device → BLE gateway → network/server/cloud dashboard. Suggested path: /img/bluetooth/nx40/nx40-gateway-flow.png */}
+
+| Step | Description |
+| --- | --- |
+| 1 | NX40 reads sensor or device data |
+| 2 | NX40 advertises or connects to a gateway |
+| 3 | Gateway receives BLE data |
+| 4 | Gateway forwards data to a local server or cloud |
+| 5 | Application displays or processes the data |
+
+This approach is useful for building monitoring, industrial monitoring, asset tracking, and systems with many local BLE devices.
+
+---
+
+## Application Bring-up Checklist
+
+| Step | Check |
+| --- | --- |
+| 1 | Confirm basic firmware runs |
+| 2 | Verify BLE advertising is visible |
+| 3 | Define advertising payload or GATT structure |
+| 4 | Test connection from phone, PC, or gateway |
+| 5 | Test read/write/notify behavior |
+| 6 | Add sensor or application data |
+| 7 | Validate behavior over time |
+| 8 | Optimize power using the Low Power Guide |
+
+---
+
+## Common BLE Application Issues
+
+| Symptom | Possible Cause | Check |
+| --- | --- | --- |
+| Device not visible | Advertising not enabled or RF issue | Check firmware and antenna design |
+| Cannot connect | Device not connectable or connection settings mismatch | Check advertising mode and BLE settings |
+| Data not updating | Notification not enabled or application state not refreshed | Check characteristic behavior |
+| Phone sees old data | Advertising payload not updated | Check application update logic |
+| Gateway misses data | Advertising interval too long or scan window too short | Check both device and gateway settings |
+| Battery drains quickly | BLE timing too aggressive | Review Low Power Guide |
+| Connection drops | RF, interval, or central-side issue | Check antenna, RSSI, and connection parameters |
+
+---
+
+## What Not to Include Here
+
+| Topic | Go To |
+| --- | --- |
+| First board bring-up | [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start) |
+| Power and debug hardware | [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design) |
+| Antenna layout | [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design) |
+| Sleep and current optimization | [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide) |
+| 802.15.4 / Thread application | [NX40 802.15.4 / Thread Guide](./NX40-Series-BLE-Module_802154_Thread_Guide) |
+
+---
+
+## Related Pages
+
+- [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+- [NX40 802.15.4 / Thread Guide](./NX40-Series-BLE-Module_802154_Thread_Guide)

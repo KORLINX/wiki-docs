@@ -1,0 +1,146 @@
+---
+sidebar_position: 4
+title: NX40 Pad / Pin Layout
+description: Pad and pin planning guide for NX40 module integration.
+keywords: [NX40, pad layout, pin layout, pin map, SWD, reset, GPIO, power, ground, PCB integration]
+---
+
+# NX40 Pad / Pin Layout
+
+{/* Image suggestion: NX40 pad/pin layout illustration with labeled groups: power, ground, SWD, reset, GPIO, RF/antenna, Flash-related pins. Suggested path: /img/bluetooth/nx40/module-integration/nx40-pad-pin-layout.png */}
+
+This page explains how to organize NX40 pad and pin planning for custom PCB integration.
+
+Use this page together with the official NX40 pad layout, schematic, and recommended footprint before finalizing the PCB.
+
+:::caution
+Do not use this page as the only source for PCB footprint creation. Always verify against the latest official NX40 mechanical drawing and pad layout.
+:::
+
+---
+
+## Main Signal Groups
+
+| Group | Purpose |
+| --- | --- |
+| Power | Module supply input |
+| Ground | Electrical reference, RF return, and thermal return |
+| SWD | Programming and debugging |
+| Reset | Board recovery and debug control |
+| GPIO | Application signals and peripheral mapping |
+| UART / SPI / I2C | Host or sensor communication |
+| Flash-related pins | Used when external Flash is populated |
+| RF / antenna path | 2.4 GHz wireless path, depending on variant |
+
+---
+
+## Power Pins
+
+| Item | Recommendation |
+| --- | --- |
+| Function | Main module supply |
+| Routing | Keep power path short and stable |
+| Decoupling | Place capacitors close to power pins |
+| Measurement | Add power test point |
+| Verification | Confirm voltage from final NX40 datasheet/schematic |
+
+---
+
+## Ground Pins
+
+Ground pins should be treated as part of both electrical and RF performance.
+
+| Rule | Recommendation |
+| --- | --- |
+| Connect all required GND pins | Do not leave ground pins floating |
+| Use solid ground plane | Keep return path continuous |
+| Add ground vias | Use short vias near ground pads |
+| Avoid ground breaks | Especially near RF and high-speed areas |
+| Provide measurement ground | Add accessible GND test point |
+
+---
+
+## SWD and Reset Pins
+
+| Signal | Purpose | Recommendation |
+| --- | --- | --- |
+| SWDIO | Programming/debug data | Route to header or test pad |
+| SWDCLK | Programming/debug clock | Route to header or test pad |
+| RESET / NRESET | Reset and recovery | Route to button, header, or test pad |
+| GND | Debug reference | Place near debug signals |
+| Target voltage | Debugger reference | Add if required |
+
+Keep these pins accessible for development, recovery, and production programming.
+
+---
+
+## GPIO and Peripheral Pins
+
+GPIO pins should be assigned together with the firmware board configuration.
+
+| Function | Example Use |
+| --- | --- |
+| UART | Logs, host command interface, simple data communication |
+| SPI | External sensors, memory, or peripherals |
+| I2C | Sensors and low-speed devices |
+| PWM | LED, buzzer, or control output |
+| ADC | Analog input |
+| GPIO | Button, interrupt, enable, or status signal |
+
+:::caution
+Do not route GPIO based only on hardware convenience. Confirm firmware pin mapping before PCB release.
+:::
+
+---
+
+## Flash-Related Pins
+
+NX40 `32` models include external SPI Flash. `00` models do not.
+
+| Model Type | Pin Planning Note |
+| --- | --- |
+| 32 models | Reserve Flash-related pins for external Flash operation |
+| 00 models | Confirm whether these pins can be used as GPIO in firmware |
+| Shared designs | Avoid assuming one firmware image fits all hardware variants |
+| Production | Confirm model marking and firmware pairing |
+
+---
+
+## RF / Antenna-Related Area
+
+Antenna-related layout should be checked before finalizing the pad/pin routing.
+
+| Variant | Check |
+| --- | --- |
+| NX40i | Chip antenna keep-out and module placement |
+| NX40E | External antenna path, connector, and ground reference |
+
+For detailed RF layout, use the antenna design page.
+
+---
+
+## Footprint Checklist
+
+Before releasing the PCB footprint:
+
+| Check | Status |
+| --- | --- |
+| Official pad layout reviewed | ☐ |
+| Recommended footprint followed | ☐ |
+| Power pins connected correctly | ☐ |
+| Ground pins connected to solid GND plane | ☐ |
+| SWDIO / SWDCLK accessible | ☐ |
+| RESET / NRESET accessible | ☐ |
+| GPIO functions checked against firmware | ☐ |
+| Flash-related pins checked by model | ☐ |
+| Antenna area reviewed | ☐ |
+| Test points added | ☐ |
+
+---
+
+## Related Pages
+
+- [NX40 PCB Integration](./NX40-Module-Integration_PCB_Integration)
+- [NX40 Model Selection](./NX40-Module-Integration_Model_Selection)
+- [NX40 Handling & Soldering](./NX40-Module-Integration_Handling_Soldering)
+- [NX40 Module Integration FAQ](./NX40-Module-Integration_FAQ)

@@ -1,0 +1,110 @@
+---
+sidebar_position: 2
+title: NX40 Model Selection
+description: Guide for selecting the correct NX40 module variant based on antenna type and external Flash requirement.
+keywords: [NX40, model selection, NX40i32, NX40E32, NX40i00, NX40E00, chip antenna, external antenna, SPI Flash]
+---
+
+# NX40 Model Selection
+
+{/* Image suggestion: 2x2 model selection matrix showing antenna option on one axis and Flash option on the other axis. Suggested path: /img/bluetooth/nx40/module-integration/nx40-model-selection-matrix.png */}
+
+This page helps you select the correct NX40 module variant before starting PCB design.
+
+NX40 variants are selected mainly by two hardware decisions:
+
+1. Antenna type
+2. External Flash requirement
+
+---
+
+## Model Lineup
+
+| Model | Antenna | Flash | Typical Direction |
+| --- | --- | --- | --- |
+| NX40i32 | Chip antenna | 32 Mbit SPI Flash | Compact design with external Flash |
+| NX40E32 | External antenna | 32 Mbit SPI Flash | External antenna design with external Flash |
+| NX40i00 | Chip antenna | None | Compact design without external Flash |
+| NX40E00 | External antenna | None | External antenna design without external Flash |
+
+:::note
+Confirm the final ordering code, antenna connector type, Flash part, and hardware revision against the official NX40 documentation before production.
+:::
+
+---
+
+## Naming Rule
+
+{/* Image suggestion: Naming rule diagram explaining NX40 + i/E + 32/00. Suggested path: /img/bluetooth/nx40/module-integration/nx40-naming-rule.png */}
+
+| Code Part | Meaning |
+| --- | --- |
+| `NX40` | NX40 Series module |
+| `i` | Integrated chip antenna |
+| `E` | External antenna variant |
+| `32` | 32 Mbit SPI Flash |
+| `00` | No external Flash |
+
+---
+
+## Antenna Selection
+
+Choose the antenna type before PCB layout.
+
+| Option | Use When |
+| --- | --- |
+| Chip antenna | The product can provide proper antenna keep-out and module placement |
+| External antenna | The antenna must be placed away from the PCB or outside a constrained enclosure |
+
+:::tip
+Antenna selection affects PCB placement, enclosure design, RF validation, and production testing. Decide this before routing the board.
+:::
+
+---
+
+## Flash Selection
+
+| Option | Use When |
+| --- | --- |
+| 32 Mbit SPI Flash | Firmware or application requires external storage or additional memory margin |
+| No external Flash | Firmware does not require external storage and the design should remain simpler |
+
+:::caution
+Firmware configuration must match the mounted Flash option. A firmware image configured for external Flash may fail or behave unexpectedly on a no-Flash model.
+:::
+
+---
+
+## Selection Guide
+
+| Requirement | Recommended Direction |
+| --- | --- |
+| Compact product with simple antenna layout | NX40i variant |
+| Product with metal enclosure or antenna constraints | NX40E variant |
+| Application needs external storage | 32 model |
+| Application does not need external storage | 00 model |
+| Prototype with uncertain memory requirement | Start with 32 model for more margin |
+| Final cost/space optimization | Re-check whether external Flash is still required |
+
+---
+
+## Decision Checklist
+
+Before finalizing the NX40 model, check:
+
+| Question | Status |
+| --- | --- |
+| Is chip antenna or external antenna required? | ☐ |
+| Does the firmware require external Flash? | ☐ |
+| Does the enclosure affect antenna placement? | ☐ |
+| Is SWD access available for bring-up and production? | ☐ |
+| Does the selected model match the firmware board configuration? | ☐ |
+| Has the selected variant been tested on prototype hardware? | ☐ |
+
+---
+
+## Related Pages
+
+- [NX40 PCB Integration](./NX40-Module-Integration_PCB_Integration)
+- [NX40 Pad / Pin Layout](./NX40-Module-Integration_Pad_Pin_Layout)
+- [NX40 Module Integration FAQ](./NX40-Module-Integration_FAQ)

@@ -1,0 +1,174 @@
+---
+sidebar_position: 3
+title: NX40 PCB Integration
+description: Practical PCB integration checklist for mounting and bringing up the NX40 module on a custom host board.
+keywords: [NX40, PCB integration, custom PCB, BLE module, SWD, reset, GPIO, external Flash, antenna]
+---
+
+# NX40 PCB Integration
+
+{/* Image suggestion: Custom host PCB block diagram with NX40 connected to power, SWD header, reset, host MCU, sensors, external Flash option, and antenna. Suggested path: /img/bluetooth/nx40/module-integration/nx40-pcb-integration-flow.png */}
+
+This page provides a practical checklist for integrating the **NX40 module** into a custom host PCB.
+
+It focuses on board-level integration. Detailed pad/pin grouping is covered in [NX40 Pad / Pin Layout](./NX40-Module-Integration_Pad_Pin_Layout), and assembly handling is covered in [NX40 Handling & Soldering](./NX40-Module-Integration_Handling_Soldering).
+
+---
+
+## PCB Integration Flow
+
+| Step | Action |
+| --- | --- |
+| 1 | Select the NX40 model |
+| 2 | Place the module on the host PCB |
+| 3 | Connect power and ground |
+| 4 | Add required decoupling capacitors |
+| 5 | Route SWD programming/debug pins |
+| 6 | Route reset and required GPIO |
+| 7 | Check external Flash option and firmware configuration |
+| 8 | Check chip antenna area or external RF path |
+| 9 | Add test points for bring-up |
+| 10 | Validate the first prototype |
+
+---
+
+## Module Placement
+{/* Image suggestion: Good and bad module placement examples: edge placement, antenna area clear, avoid battery/metal. Suggested path: /img/bluetooth/nx40/module-integration/nx40-module-placement-examples.png */}
+
+Place the module so that power, debug, GPIO, and antenna constraints can be satisfied.
+
+| Area | Recommendation |
+| --- | --- |
+| Antenna side | Keep clear from metal, battery, shield, and dense copper |
+| Debug access | Keep SWD pins accessible |
+| Test points | Add test points for power, ground, reset, and debug |
+| Mechanical clearance | Avoid locations exposed to cable stress or enclosure pressure |
+| RF validation | Test placement with the final enclosure |
+
+---
+
+## Power and Ground
+
+| Signal / Area | Recommendation |
+| --- | --- |
+| Power rail | Follow the final NX40 schematic and datasheet |
+| GND | Connect all required ground pads to a solid ground reference |
+| Decoupling | Place capacitors close to power pins |
+| Return path | Keep ground return short and low impedance |
+| Power test point | Add a test point for measurement |
+| Current limit | Use a current-limited supply during first power-on |
+
+:::caution
+Do not assume NX15 power values for NX40. Confirm the final NX40 power requirement from the NX40 schematic or datasheet.
+:::
+
+---
+
+## Programming and Debug Access
+
+Keep SWD access available during development and production.
+
+{/* Image suggestion: SWD test pad layout showing SWDIO, SWDCLK, GND, RESET/NRESET, and target voltage. Suggested path: /img/bluetooth/nx40/module-integration/nx40-swd-test-pads.png */}
+
+| Signal | Purpose | Recommendation |
+| --- | --- | --- |
+| SWDIO | Programming/debug data | Route to header or test pad |
+| SWDCLK | Programming/debug clock | Route to header or test pad |
+| RESET / NRESET | Reset and recovery | Route to header, button, or test pad |
+| GND | Debug reference | Place close to SWD signals |
+| Target voltage | Debugger reference | Add if required by the debugger |
+
+:::tip
+Even if the final product does not expose a debug connector, test pads are strongly recommended for flashing, recovery, and production programming.
+:::
+
+---
+
+## External Flash Consideration
+
+NX40 models may be built with or without external SPI Flash.
+
+| Model Type | Integration Check |
+| --- | --- |
+| 32 models | Confirm Flash part, routing, and firmware configuration |
+| 00 models | Confirm firmware does not require external Flash |
+| Prototype | Check Flash read/write or storage behavior early |
+| Production | Verify correct model and firmware pairing |
+
+:::caution
+A mismatch between hardware Flash option and firmware configuration can cause boot failure, storage errors, or unexpected runtime behavior.
+:::
+
+---
+
+## GPIO and Peripheral Routing
+
+NX40 GPIO and peripheral signals should be routed according to the firmware board configuration.
+
+| Interface | Routing Note |
+| --- | --- |
+| UART | Confirm TX/RX direction and voltage level |
+| SPI | Keep clock and data routing clean |
+| I2C | Add pull-up resistors as required |
+| PWM | Check output load and drive requirement |
+| ADC | Keep analog traces away from noisy signals |
+| GPIO | Confirm active level, pull-up/down, and wake-up behavior |
+| SWD | Keep accessible and avoid unnecessary stubs |
+
+---
+
+## Antenna Integration Reminder
+
+This page does not repeat full antenna rules, but antenna constraints must be checked before PCB release.
+
+| Variant | Required Check |
+| --- | --- |
+| NX40i | Chip antenna keep-out and placement |
+| NX40E | External antenna connector, RF trace, and ground reference |
+
+For full details, see the NX40 antenna design page in the NX40 Series BLE Module section.
+
+---
+
+## Bring-up Test Points
+
+Add test points for early validation.
+
+| Test Point | Purpose |
+| --- | --- |
+| Power rail | Verify supply voltage |
+| GND | Measurement reference |
+| SWDIO | Programming/debug |
+| SWDCLK | Programming/debug |
+| RESET / NRESET | Reset and recovery |
+| UART TX/RX | Optional log or host communication |
+| Key GPIO | Application-specific validation |
+
+---
+
+## First Prototype Checklist
+
+Before firmware testing:
+
+| Check | Status |
+| --- | --- |
+| Correct NX40 model mounted | ☐ |
+| Power rail verified | ☐ |
+| Ground continuity checked | ☐ |
+| No VDD-to-GND short | ☐ |
+| Decoupling capacitors installed | ☐ |
+| SWDIO / SWDCLK accessible | ☐ |
+| Reset path accessible | ☐ |
+| Flash option matches firmware | ☐ |
+| Antenna layout reviewed | ☐ |
+| No visible soldering defect | ☐ |
+| Current limit set for first power-on | ☐ |
+
+---
+
+## Related Pages
+
+- [NX40 Model Selection](./NX40-Module-Integration_Model_Selection)
+- [NX40 Pad / Pin Layout](./NX40-Module-Integration_Pad_Pin_Layout)
+- [NX40 Handling & Soldering](./NX40-Module-Integration_Handling_Soldering)
+- [NX40 Module Integration FAQ](./NX40-Module-Integration_FAQ)

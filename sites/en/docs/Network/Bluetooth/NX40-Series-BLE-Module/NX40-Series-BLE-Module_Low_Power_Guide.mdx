@@ -1,0 +1,228 @@
+---
+sidebar_position: 5
+title: NX40 Low Power Guide
+description: Low-power design guide for NX40 BLE applications, including sleep behavior, advertising interval, connection interval, and current measurement.
+keywords: [NX40, low power, BLE, Bluetooth Low Energy, sleep mode, advertising interval, connection interval, battery life, nRF52840]
+---
+
+# NX40 Low Power Guide
+
+{/* Image suggestion: Low-power cycle diagram: Sleep → Wake up → Read sensor → Advertise / Connect → Send data → Sleep. Suggested path: /img/bluetooth/nx40/nx40-low-power-cycle.png */}
+
+This page explains the low-power design approach for **NX40 Series BLE applications**.
+
+A low-power BLE device should stay in sleep mode most of the time, wake up only when needed, complete its task quickly, and return to sleep.
+
+:::note
+This page focuses on firmware-level and application-level power behavior. Power supply design, debug access, and PCB design are covered in [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design).
+:::
+
+---
+
+## Low-Power Operating Concept
+
+A typical NX40 low-power application follows this cycle:
+
+| Step | Action |
+| --- | --- |
+| 1 | Stay in sleep mode |
+| 2 | Wake up by timer, button, sensor interrupt, or host event |
+| 3 | Read sensor or update application state |
+| 4 | Advertise, connect, or send data |
+| 5 | Disable unused peripherals |
+| 6 | Return to sleep mode |
+
+The average current depends on the balance between active time and sleep time.
+
+---
+
+## Key Low-Power Parameters
+
+{/* Image suggestion: Timeline diagram showing active current peaks and long sleep periods. Suggested path: /img/bluetooth/nx40/nx40-average-current-timeline.png */}
+
+| Parameter | Why It Matters |
+| --- | --- |
+| Sleep current | Determines how much energy the device uses while idle |
+| Wake-up interval | Controls how often the device becomes active |
+| Advertising interval | Controls how often the device broadcasts |
+| Connection interval | Controls how often connected devices exchange data |
+| TX power | Higher TX power can improve range but increases current |
+| Peripheral usage | Sensors, LEDs, UART, SPI, I2C, and debug logs can increase current |
+| Firmware state | Firmware must allow the system to enter sleep |
+
+:::tip
+Battery life is usually determined by average current, not only peak current. Short active bursts can be acceptable if the device returns to sleep quickly.
+:::
+
+---
+
+## Advertising Interval
+
+BLE advertising is commonly used for sensors, beacons, and devices waiting for a connection.
+
+| Advertising Behavior | Impact |
+| --- | --- |
+| Short interval | Faster discovery, higher power consumption |
+| Long interval | Slower discovery, lower power consumption |
+| Continuous advertising | Easy to discover, but may reduce battery life |
+| Event-based advertising | Saves power when advertising is only needed after an event |
+| Stop advertising when idle | Reduces unnecessary radio activity |
+
+Use the longest advertising interval that still meets the product’s discovery and response requirements.
+
+---
+
+## Connection Interval
+
+For connected BLE devices, the connection interval controls how often the peripheral and central device exchange data.
+
+| Connection Setting | Result |
+| --- | --- |
+| Short connection interval | Lower latency, more frequent radio activity |
+| Long connection interval | Lower average current, higher latency |
+| Infrequent data transfer | Can usually use longer intervals |
+| Real-time control | May require shorter intervals |
+| Sensor monitoring | Often works with longer intervals |
+
+Choose the connection interval based on application behavior, not only on the default BLE example.
+
+---
+
+## TX Power
+
+Transmit power affects both wireless range and current consumption.
+
+| TX Power Choice | Effect |
+| --- | --- |
+| Higher TX power | Can improve range, but increases current |
+| Lower TX power | Reduces current, but may reduce range |
+| Fixed TX power | Simpler behavior |
+| Adaptive TX power | Can save energy if supported by application design |
+
+:::note
+Validate TX power together with antenna placement and enclosure design. Increasing TX power cannot fully compensate for poor antenna layout.
+:::
+
+---
+
+## Peripheral Power Management
+
+Unused peripherals should be disabled when the device is in sleep mode.
+
+| Peripheral | Low-Power Recommendation |
+| --- | --- |
+| UART | Disable when logs or host communication are not needed |
+| SPI | Enable only during peripheral access |
+| I2C | Enable only during sensor access |
+| ADC | Enable only during measurement |
+| PWM | Disable when output is not required |
+| LEDs | Avoid keeping LEDs on in battery-powered mode |
+| Sensors | Use sleep, standby, or interrupt mode when available |
+| Debug logs | Reduce or disable in release firmware |
+
+---
+
+## Sensor Duty Cycle
+
+Many NX40 applications may use external sensors. Sensor current can dominate total power consumption if not managed carefully.
+
+| Design Question | Recommendation |
+| --- | --- |
+| How often is data required? | Match measurement rate to actual application need |
+| Can the sensor sleep? | Put sensor into standby between readings |
+| Can an interrupt wake the system? | Use motion, threshold, or event-based wake-up when possible |
+| Is continuous sampling required? | Avoid continuous operation if periodic sampling is enough |
+| Are pull-ups always active? | Review pull-up values and active bus states |
+
+:::tip
+Low-power design must include the whole system, not only the NX40 module.
+:::
+
+---
+
+## Debug and Logging
+
+Debug features are useful during development but may increase current.
+
+| Feature | Development | Release |
+| --- | --- | --- |
+| UART logs | Useful for debugging | Reduce or disable |
+| RTT/debug logs | Useful during firmware development | Disable if not needed |
+| LED indicators | Useful for visual feedback | Avoid always-on LEDs |
+| Debug interface | Keep accessible | Do not leave firmware in debug-heavy mode |
+
+---
+
+## Current Measurement
+
+{/* Image suggestion: Current measurement setup using a power analyzer or current meter connected to an NX40 board. Suggested path: /img/bluetooth/nx40/nx40-current-measurement-setup.png */}
+
+Measure current on real hardware.
+
+Recommended measurements:
+
+| Mode | What to Measure |
+| --- | --- |
+| Boot | Startup current and boot duration |
+| Idle | Current when application is not active |
+| Advertising | Average current during advertising |
+| Connected | Current at selected connection interval |
+| Sensor read | Current during measurement |
+| Sleep | Lowest idle current |
+| Full cycle | Average current over one complete application cycle |
+
+:::caution
+Do not rely only on firmware assumptions. Measure current on the final hardware or prototype board.
+:::
+
+---
+
+## Low-Power Checklist
+
+| Area | Check |
+| --- | --- |
+| Firmware can enter sleep | ☐ |
+| Advertising interval is not too short | ☐ |
+| Connection interval matches application need | ☐ |
+| TX power is not higher than necessary | ☐ |
+| Sensors are disabled or sleeping when idle | ☐ |
+| UART/SPI/I2C/ADC/PWM are disabled when unused | ☐ |
+| LEDs are not always on in battery mode | ☐ |
+| Debug logs are reduced in release build | ☐ |
+| Current is measured on real hardware | ☐ |
+| Battery life is estimated from measured average current | ☐ |
+
+---
+
+## Common Low-Power Issues
+
+| Symptom | Possible Cause | Check |
+| --- | --- | --- |
+| Current is always high | Firmware never enters sleep | Check application state and active peripherals |
+| Sleep current is higher than expected | External components remain active | Check sensors, LEDs, pull-ups, and host circuits |
+| Battery drains quickly | Advertising or connection interval too short | Increase intervals if acceptable |
+| BLE response is slow | Interval too long | Balance latency and power |
+| Current changes after enclosure assembly | RF behavior changed | Check antenna and TX power behavior |
+| Current differs between boards | Assembly or external load variation | Compare hardware, soldering, and sensor states |
+
+---
+
+## What Not to Include Here
+
+To avoid duplicated content:
+
+| Topic | Go To |
+| --- | --- |
+| Power rail and debug hardware | [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design) |
+| Antenna placement and RF path | [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design) |
+| First board bring-up | [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start) |
+| BLE services and data model | [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide) |
+
+---
+
+## Related Pages
+
+- [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+- [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design)
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+- [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide)
