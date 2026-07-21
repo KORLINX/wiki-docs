@@ -7,76 +7,195 @@ const docsTree = [
   {
     label: 'Network',
     children: [
-      {label: 'Network Overview', to: '/docs/Network/'},
-      {label: 'Cellular', to: '/docs/Network/Cellular/Cellular_Intro'},
-      {label: 'LPWAN', to: '/docs/Network/LPWAN/LPWAN_Intro'},
-      {label: 'WiFi', to: '/docs/Network/WiFi/WiFi_Intro'},
-      {label: 'Bluetooth', to: '/docs/Network/Bluetooth/Bluetooth_Intro'},
-      {label: 'Ethernet', to: '/docs/Network/Ethernet/Ethernet_Intro'},
-      {label: 'Satellite', to: '/docs/Network/Satellite/Satellite_Intro'},
+      {
+        label: 'Network Overview',
+        to: '/docs/Network/',
+      },
+
+      {
+        label: 'Cellular',
+        children: [
+          {
+            label: 'Cellular Overview',
+            to: '/docs/Network/Cellular/Cellular_Intro',
+          },
+
+          {
+            label: 'KSE-91A',
+            children: [
+              {
+                label: 'Overview',
+                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Overview',
+              },
+              {
+                label: 'Quick Start',
+                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Quick_Start',
+              },
+              {
+                label: 'Network Attach',
+                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Network_Attach',
+              },
+              {
+                label: 'Send Data',
+                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Send_Data',
+              },
+              {
+                label: 'FAQ',
+                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_FAQ',
+              },
+            ],
+          },
+
+          {
+            label: 'KSP-N51U',
+            children: [
+              {
+                label: 'Overview',
+                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Overview',
+              },
+              {
+                label: 'Quick Start',
+                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Quick_Start',
+              },
+              {
+                label: 'Network Attach',
+                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Network_Attach',
+              },
+              {
+                label: 'Send Data',
+                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Send_Data',
+              },
+              {
+                label: 'FAQ',
+                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_FAQ',
+              },
+            ],
+          },
+
+          {
+            label: 'KSP-N51U-M.2',
+            children: [
+              {
+                label: 'Overview',
+                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Overview',
+              },
+              {
+                label: 'Quick Start',
+                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Quick_Start',
+              },
+              {
+                label: 'Network Attach',
+                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Network_Attach',
+              },
+              {
+                label: 'Send Data',
+                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Send_Data',
+              },
+              {
+                label: 'FAQ',
+                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_FAQ',
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        label: 'LPWAN',
+        to: '/docs/Network/LPWAN/LPWAN_Intro',
+      },
+      {
+        label: 'WiFi',
+        to: '/docs/Network/WiFi/WiFi_Intro',
+      },
+      {
+        label: 'Bluetooth',
+        to: '/docs/Network/Bluetooth/Bluetooth_Intro',
+      },
+      {
+        label: 'Ethernet',
+        to: '/docs/Network/Ethernet/Ethernet_Intro',
+      },
+      {
+        label: 'Satellite',
+        to: '/docs/Network/Satellite/Satellite_Intro',
+      },
     ],
   },
-  {
-    label: 'Cellular',
-    children: [
-      {
-        label: 'KSE-91A',
-        children: [
-          {label: 'Overview', to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Overview'},
-          {label: 'Quick Start', to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Quick_Start'},
-          {label: 'Network Attach', to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Network_Attach'},
-          {label: 'Send Data', to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Send_Data'},
-          {label: 'FAQ', to: '/docs/Network/Cellular/KSE-91A/KSE-91A_FAQ'},
-        ],
-      },
-      {
-        label: 'KSP-N51U',
-        children: [
-          {label: 'Overview', to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Overview'},
-          {label: 'Quick Start', to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Quick_Start'},
-          {label: 'Network Attach', to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Network_Attach'},
-          {label: 'Send Data', to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Send_Data'},
-          {label: 'FAQ', to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_FAQ'},
-        ],
-      },
-      {
-        label: 'KSP-N51U-M.2',
-        children: [
-          {label: 'Overview', to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Overview'},
-          {label: 'Quick Start', to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Quick_Start'},
-          {label: 'Network Attach', to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Network_Attach'},
-          {label: 'Send Data', to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Send_Data'},
-          {label: 'FAQ', to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_FAQ'},
-        ],
-      },
-    ],
-  },
+
   {
     label: 'Bluetooth',
     children: [
-      {label: 'Bluetooth Intro', to: '/docs/Network/Bluetooth/Bluetooth_Intro'},
+      {
+        label: 'Bluetooth Overview',
+        to: '/docs/Network/Bluetooth/Bluetooth_Intro',
+      },
+
       {
         label: 'NX15 Series BLE Module',
         children: [
-          {label: 'Overview', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Overview'},
-          {label: 'Quick Start', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Quick_Start'},
-          {label: 'Hardware Design', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Hardware_Design'},
-          {label: 'Antenna Design', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Antenna_Design'},
-          {label: 'Low Power Guide', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Low_Power_Guide'},
-          {label: 'BLE Application Guide', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_BLE_Application_Guide'},
-          {label: 'Thread / Matter Guide', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Thread_Matter_Guide'},
-          {label: 'FAQ', to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_FAQ'},
+          {
+            label: 'Overview',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Overview',
+          },
+          {
+            label: 'Quick Start',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Quick_Start',
+          },
+          {
+            label: 'Hardware Design',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Hardware_Design',
+          },
+          {
+            label: 'Antenna Design',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Antenna_Design',
+          },
+          {
+            label: 'Low Power Guide',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Low_Power_Guide',
+          },
+          {
+            label: 'BLE Application Guide',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_BLE_Application_Guide',
+          },
+          {
+            label: 'Thread / Matter Guide',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Thread_Matter_Guide',
+          },
+          {
+            label: 'FAQ',
+            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_FAQ',
+          },
         ],
       },
+
       {
         label: 'NX15 Module Integration',
         children: [
-          {label: 'Overview', to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Overview'},
-          {label: 'Model Selection', to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Model_Selection'},
-          {label: 'PCB Integration', to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_PCB_Integration'},
-          {label: 'LGA Pad Layout', to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_LGA_Pad_Layout'},
-          {label: 'Handling & Soldering', to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Handling_Soldering'},
-          {label: 'FAQ', to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_FAQ'},
+          {
+            label: 'Overview',
+            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Overview',
+          },
+          {
+            label: 'Model Selection',
+            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Model_Selection',
+          },
+          {
+            label: 'PCB Integration',
+            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_PCB_Integration',
+          },
+          {
+            label: 'LGA Pad Layout',
+            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_LGA_Pad_Layout',
+          },
+          {
+            label: 'Handling & Soldering',
+            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Handling_Soldering',
+          },
+          {
+            label: 'FAQ',
+            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_FAQ',
+          },
         ],
       },
     ],
