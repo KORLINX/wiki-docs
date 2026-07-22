@@ -1,276 +1,109 @@
 import React, {useEffect, useState} from 'react';
 import Link from '@docusaurus/Link';
 import {useLocation} from '@docusaurus/router';
+
+import sidebars from '@site/sites/en/sidebars';
 import styles from './styles.module.css';
 
-const docsTree = [
-  {
-    label: 'Network',
-    children: [
-      {
-        label: 'Network Overview',
-        to: '/docs/Network/',
-      },
-
-      {
-        label: 'Cellular',
-        children: [
-          {
-            label: 'Cellular Overview',
-            to: '/docs/Network/Cellular/Cellular_Intro',
-          },
-
-          {
-            label: 'KSE-91A',
-            children: [
-              {
-                label: 'Overview',
-                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Overview',
-              },
-              {
-                label: 'Quick Start',
-                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Quick_Start',
-              },
-              {
-                label: 'Network Attach',
-                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Network_Attach',
-              },
-              {
-                label: 'Send Data',
-                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_Send_Data',
-              },
-              {
-                label: 'FAQ',
-                to: '/docs/Network/Cellular/KSE-91A/KSE-91A_FAQ',
-              },
-            ],
-          },
-
-          {
-            label: 'KSP-N51U',
-            children: [
-              {
-                label: 'Overview',
-                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Overview',
-              },
-              {
-                label: 'Quick Start',
-                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Quick_Start',
-              },
-              {
-                label: 'Network Attach',
-                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Network_Attach',
-              },
-              {
-                label: 'Send Data',
-                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_Send_Data',
-              },
-              {
-                label: 'FAQ',
-                to: '/docs/Network/Cellular/KSP-N51U/KSP-N51U_FAQ',
-              },
-            ],
-          },
-
-          {
-            label: 'KSP-N51U-M.2',
-            children: [
-              {
-                label: 'Overview',
-                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Overview',
-              },
-              {
-                label: 'Quick Start',
-                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Quick_Start',
-              },
-              {
-                label: 'Network Attach',
-                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Network_Attach',
-              },
-              {
-                label: 'Send Data',
-                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_Send_Data',
-              },
-              {
-                label: 'FAQ',
-                to: '/docs/Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_FAQ',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        label: 'LPWAN',
-        to: '/docs/Network/LPWAN/LPWAN_Intro',
-      },
-      {
-        label: 'WiFi',
-        to: '/docs/Network/WiFi/WiFi_Intro',
-      },
-      {
-        label: 'Bluetooth',
-        to: '/docs/Network/Bluetooth/Bluetooth_Intro',
-      },
-      {
-        label: 'Ethernet',
-        to: '/docs/Network/Ethernet/Ethernet_Intro',
-      },
-      {
-        label: 'Satellite',
-        to: '/docs/Network/Satellite/Satellite_Intro',
-      },
-    ],
-  },
-
-  {
-    label: 'Bluetooth',
-    children: [
-      {
-        label: 'Bluetooth Overview',
-        to: '/docs/Network/Bluetooth/Bluetooth_Intro',
-      },
-
-      {
-        label: 'NX15 Series BLE Module',
-        children: [
-          {
-            label: 'Overview',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Overview',
-          },
-          {
-            label: 'Quick Start',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Quick_Start',
-          },
-          {
-            label: 'Hardware Design',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Hardware_Design',
-          },
-          {
-            label: 'Antenna Design',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Antenna_Design',
-          },
-          {
-            label: 'Low Power Guide',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Low_Power_Guide',
-          },
-          {
-            label: 'BLE Application Guide',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_BLE_Application_Guide',
-          },
-          {
-            label: 'Thread / Matter Guide',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Thread_Matter_Guide',
-          },
-          {
-            label: 'FAQ',
-            to: '/docs/Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_FAQ',
-          },
-        ],
-      },
-
-      {
-        label: 'NX15 Module Integration',
-        children: [
-          {
-            label: 'Overview',
-            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Overview',
-          },
-          {
-            label: 'Model Selection',
-            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Model_Selection',
-          },
-          {
-            label: 'PCB Integration',
-            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_PCB_Integration',
-          },
-          {
-            label: 'LGA Pad Layout',
-            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_LGA_Pad_Layout',
-          },
-          {
-            label: 'Handling & Soldering',
-            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Handling_Soldering',
-          },
-          {
-            label: 'FAQ',
-            to: '/docs/Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_FAQ',
-          },
-        ],
-      },
-      {
-  label: 'NX40 Series BLE Module',
-  children: [
-    {
-      label: 'Overview',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Overview',
-    },
-    {
-      label: 'Quick Start',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Quick_Start',
-    },
-    {
-      label: 'Hardware Design',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Hardware_Design',
-    },
-    {
-      label: 'Antenna Design',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Antenna_Design',
-    },
-    {
-      label: 'Low Power Guide',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Low_Power_Guide',
-    },
-    {
-      label: 'BLE Application Guide',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_BLE_Application_Guide',
-    },
-    {
-      label: '802.15.4 / Thread Guide',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_802154_Thread_Guide',
-    },
-    {
-      label: 'FAQ',
-      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_FAQ',
-    },
-  ],
-},
-      {
-  label: 'NX40 Module Integration',
-  children: [
-    {
-      label: 'Overview',
-      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Overview',
-    },
-    {
-      label: 'Model Selection',
-      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Model_Selection',
-    },
-    {
-      label: 'PCB Integration',
-      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_PCB_Integration',
-    },
-    {
-      label: 'Pad & Pin Layout',
-      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Pad_Pin_Layout',
-    },
-    {
-      label: 'Handling & Soldering',
-      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Handling_Soldering',
-    },
-    {
-      label: 'FAQ',
-      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_FAQ',
-    },
-  ],
-},
-    ],
-  },
-];
-
-function normalizePath(path) {
-  return path.replace(/\/$/, '');
+function normalizePath(path = '') {
+  const normalized = path.replace(/\/+$/, '');
+  return normalized || '/';
 }
+
+function docIdToPath(id) {
+  const normalizedId = id.replace(/\/index$/, '');
+
+  return `/docs/${normalizedId}`;
+}
+
+function getDefaultLabel(item) {
+  if (item.label) {
+    return item.label;
+  }
+
+  if (item.id) {
+    return item.id.split('/').pop().replaceAll('_', ' ');
+  }
+
+  return 'Untitled';
+}
+
+function getOverviewLabel(categoryLabel) {
+  if (categoryLabel === 'Network') {
+    return 'Network Overview';
+  }
+
+  return `${categoryLabel} Overview`;
+}
+
+function convertSidebarItem(item) {
+  if (!item) {
+    return null;
+  }
+
+  /*
+   * Docusaurus cũng cho phép khai báo document bằng chuỗi ID.
+   */
+  if (typeof item === 'string') {
+    return {
+      label: item.split('/').pop().replaceAll('_', ' '),
+      to: docIdToPath(item),
+    };
+  }
+
+  /*
+   * Document thông thường.
+   */
+  if (item.type === 'doc') {
+    return {
+      label: getDefaultLabel(item),
+      to: docIdToPath(item.id),
+    };
+  }
+
+  /*
+   * Nhóm category.
+   */
+  if (item.type === 'category') {
+    const children = (item.items || [])
+      .map(convertSidebarItem)
+      .filter(Boolean);
+
+    const categoryDoc =
+      item.link?.type === 'doc'
+        ? {
+            label: getOverviewLabel(item.label),
+            to: docIdToPath(item.link.id),
+          }
+        : null;
+
+    /*
+     * Category không có mục con, ví dụ LPWAN, WiFi,
+     * Ethernet và Satellite, sẽ hiển thị như link trực tiếp.
+     */
+    if (children.length === 0 && categoryDoc) {
+      return {
+        label: item.label,
+        to: categoryDoc.to,
+      };
+    }
+
+    return {
+      label: item.label,
+      defaultOpen: item.collapsed === false,
+      children: [
+        ...(categoryDoc ? [categoryDoc] : []),
+        ...children,
+      ],
+    };
+  }
+
+  return null;
+}
+
+const docsTree = sidebars.networkSidebar
+  .map(convertSidebarItem)
+  .filter(Boolean);
 
 function isActive(pathname, to) {
   return normalizePath(pathname) === normalizePath(to);
@@ -281,29 +114,42 @@ function hasActiveChild(node, pathname) {
     return true;
   }
 
-  return node.children?.some((child) => hasActiveChild(child, pathname));
+  return Boolean(
+    node.children?.some((child) => hasActiveChild(child, pathname)),
+  );
 }
 
-function DocsNode({node, pathname, closeDrawer, level = 0}) {
+function DocsNode({
+  node,
+  pathname,
+  closeDrawer,
+  nodeKey,
+}) {
   if (node.children) {
-  return (
-    <details className={styles.docsGroup}>
-      <summary className={styles.docsGroupSummary}>
-        {node.label}
-      </summary>
+    const shouldOpen =
+      node.defaultOpen || hasActiveChild(node, pathname);
 
-      <div className={styles.docsGroupChildren}>
-        {node.children.map((child) => (
-          <DocsNode
-            key={child.label}
-            node={child}
-            pathname={pathname}
-            closeDrawer={closeDrawer}
-            level={level + 1}
-          />
-        ))}
-      </div>
-    </details>
+    return (
+      <details
+        className={styles.docsGroup}
+        open={shouldOpen}
+      >
+        <summary className={styles.docsGroupSummary}>
+          {node.label}
+        </summary>
+
+        <div className={styles.docsGroupChildren}>
+          {node.children.map((child, index) => (
+            <DocsNode
+              key={`${nodeKey}-${child.label}-${index}`}
+              nodeKey={`${nodeKey}-${child.label}-${index}`}
+              node={child}
+              pathname={pathname}
+              closeDrawer={closeDrawer}
+            />
+          ))}
+        </div>
+      </details>
     );
   }
 
@@ -312,7 +158,11 @@ function DocsNode({node, pathname, closeDrawer, level = 0}) {
   return (
     <Link
       to={node.to}
-      className={active ? styles.docsLinkActive : styles.docsLink}
+      className={
+        active
+          ? styles.docsLinkActive
+          : styles.docsLink
+      }
       onClick={closeDrawer}
     >
       {node.label}
@@ -325,9 +175,13 @@ export default function MobileDocsDrawer() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!open) {
+      return undefined;
+    }
 
-    const originalOverflow = document.body.style.overflow;
+    const originalOverflow =
+      document.body.style.overflow;
+
     document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (event) => {
@@ -336,13 +190,25 @@ export default function MobileDocsDrawer() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener(
+      'keydown',
+      handleKeyDown,
+    );
 
     return () => {
-      document.body.style.overflow = originalOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow =
+        originalOverflow;
+
+      window.removeEventListener(
+        'keydown',
+        handleKeyDown,
+      );
     };
   }, [open]);
+
+  const closeDrawer = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={styles.mobileDocsRoot}>
@@ -350,9 +216,17 @@ export default function MobileDocsDrawer() {
         type="button"
         className={styles.mobileDocsButton}
         onClick={() => setOpen(true)}
-        aria-label="Open docs menu"
+        aria-label="Open documentation menu"
+        aria-expanded={open}
+        aria-controls="mobile-docs-drawer"
       >
-        <span className={styles.mobileDocsButtonIcon}>☰</span>
+        <span
+          className={styles.mobileDocsButtonIcon}
+          aria-hidden="true"
+        >
+          ☰
+        </span>
+
         <span>Docs Menu</span>
       </button>
 
@@ -360,15 +234,17 @@ export default function MobileDocsDrawer() {
         <button
           type="button"
           className={styles.mobileDocsBackdrop}
-          aria-label="Close docs menu"
-          onClick={() => setOpen(false)}
+          aria-label="Close documentation menu"
+          onClick={closeDrawer}
         />
       )}
 
       <aside
+        id="mobile-docs-drawer"
         className={`${styles.mobileDocsDrawer} ${
           open ? styles.mobileDocsDrawerOpen : ''
         }`}
+        aria-hidden={!open}
       >
         <div className={styles.mobileDocsHeader}>
           <span>Korlinx Wiki</span>
@@ -376,20 +252,24 @@ export default function MobileDocsDrawer() {
           <button
             type="button"
             className={styles.mobileDocsClose}
-            onClick={() => setOpen(false)}
-            aria-label="Close docs menu"
+            onClick={closeDrawer}
+            aria-label="Close documentation menu"
           >
             ×
           </button>
         </div>
 
-        <nav className={styles.mobileDocsNav}>
-          {docsTree.map((node) => (
+        <nav
+          className={styles.mobileDocsNav}
+          aria-label="Documentation navigation"
+        >
+          {docsTree.map((node, index) => (
             <DocsNode
-              key={node.label}
+              key={`${node.label}-${index}`}
+              nodeKey={`${node.label}-${index}`}
               node={node}
               pathname={location.pathname}
-              closeDrawer={() => setOpen(false)}
+              closeDrawer={closeDrawer}
             />
           ))}
         </nav>
