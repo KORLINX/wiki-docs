@@ -1,0 +1,211 @@
+---
+sidebar_position: 7
+title: NX40 802.15.4 / Thread Guide
+description: Introductory guide for planning 802.15.4 and Thread-based applications with the NX40 Series BLE module.
+keywords: [NX40, 802.15.4, Thread, BLE, nRF52840, multiprotocol, mesh network, low power]
+---
+
+# NX40 802.15.4 / Thread Guide
+
+{/* Image suggestion: Multiprotocol diagram showing NX40 supporting BLE and 802.15.4-based application paths. Suggested path: /img/bluetooth/nx40/nx40-802154-thread-overview.png */}
+
+This page introduces the planning considerations for using the **NX40 Series** in 802.15.4-based applications such as Thread or other low-power mesh networking use cases.
+
+NX40 is based on the **nRF52840** platform, which is commonly used for Bluetooth Low Energy and 2.4 GHz multiprotocol applications.
+
+:::note
+This page is a planning guide. Actual 802.15.4, Thread, or multiprotocol behavior depends on the selected firmware stack, board configuration, memory usage, and application requirements.
+:::
+
+---
+
+## When to Consider 802.15.4 or Thread
+
+BLE is commonly used for local phone connection, advertising, sensors, and gateway-based data collection.
+
+802.15.4 or Thread may be considered when the product requires:
+
+| Requirement | Why 802.15.4 / Thread May Help |
+| --- | --- |
+| Mesh networking | Devices can communicate through a local mesh network |
+| Low-power network nodes | Suitable for battery-powered local device networks |
+| Local device-to-device communication | Useful for smart home, building, or industrial nodes |
+| Gateway or border router architecture | Devices can connect through a local network infrastructure |
+| Non-phone-first operation | Devices do not always need to connect directly to a smartphone |
+
+---
+
+## BLE vs 802.15.4 / Thread
+
+| Technology | Typical Role |
+| --- | --- |
+| BLE | Device discovery, phone connection, local configuration, simple sensor data |
+| 802.15.4 | Low-power 2.4 GHz networking foundation |
+| Thread | IPv6-based low-power mesh network |
+| Gateway / Border Router | Bridges the local wireless network to another network or application layer |
+
+:::tip
+Use BLE when phone connectivity or simple local data exchange is the main requirement. Consider Thread or 802.15.4 when the product needs a local mesh network or gateway-based system.
+:::
+
+---
+
+## Common System Architecture
+
+{/* Image suggestion: System architecture diagram: NX40 end devices → Thread mesh / 802.15.4 network → Border Router / Gateway → Application. Suggested path: /img/bluetooth/nx40/nx40-thread-system-architecture.png */}
+
+A typical 802.15.4 or Thread system may include:
+
+| Component | Role |
+| --- | --- |
+| NX40 end device | Sensor, actuator, switch, or low-power device |
+| Router-capable node | Helps forward packets in the mesh network, depending on stack and role |
+| Border router / gateway | Connects the local network to IP network, application server, or cloud |
+| Application layer | Processes data, controls devices, or displays device status |
+| Commissioning tool | Adds devices to the network, depending on the selected ecosystem |
+
+---
+
+## Development Flow
+
+| Step | Description |
+| --- | --- |
+| 1 | Confirm whether the application requires BLE, 802.15.4, Thread, or multiprotocol behavior |
+| 2 | Select the correct NX40 model variant |
+| 3 | Prepare board configuration and firmware stack |
+| 4 | Build a basic radio or network sample |
+| 5 | Verify device boot and radio operation |
+| 6 | Test network join or local communication |
+| 7 | Validate gateway or border router behavior |
+| 8 | Optimize power consumption and network timing |
+| 9 | Test the final system in the real installation environment |
+
+---
+
+## Firmware Stack Planning
+
+Before starting implementation, confirm the firmware stack and memory requirements.
+
+| Planning Item | Why It Matters |
+| --- | --- |
+| Protocol stack | Determines whether the application uses BLE, 802.15.4, Thread, or multiprotocol |
+| Board definition | Defines pins, Flash usage, antenna configuration, and peripherals |
+| Memory usage | Network stacks may require more firmware and RAM resources |
+| External Flash | May be required depending on firmware and update strategy |
+| Logging | Debug logs can increase memory usage and current consumption |
+| OTA / DFU | Firmware update strategy should be planned early |
+
+:::caution
+Do not assume that a BLE-only firmware configuration is suitable for Thread or 802.15.4. The board target, memory layout, and firmware stack must match the selected application.
+:::
+
+---
+
+## BLE and Thread Coexistence
+
+Some products may use both BLE and Thread in the same user flow.
+
+Common pattern:
+
+| Stage | Technology | Purpose |
+| --- | --- | --- |
+| Device discovery | BLE | Phone or tool discovers the device |
+| Initial setup | BLE | User configures or provisions device |
+| Network operation | Thread / 802.15.4 | Device joins local mesh or low-power network |
+| Maintenance | BLE or network path | Diagnostics, configuration, or update flow |
+
+{/* Image suggestion: Commissioning flow diagram showing BLE setup followed by Thread network join. Suggested path: /img/bluetooth/nx40/nx40-ble-thread-commissioning-flow.png */}
+
+:::note
+Whether BLE commissioning is used depends on the selected firmware stack and product architecture.
+:::
+
+---
+
+## Hardware Design Considerations
+
+802.15.4 and BLE both use the 2.4 GHz radio path, so RF layout remains important.
+
+| Area | Check |
+| --- | --- |
+| Antenna | Follow chip antenna or external antenna design rules |
+| Ground reference | Keep RF ground reference stable |
+| Enclosure | Validate after final mechanical assembly |
+| Power stability | Check power during radio activity |
+| Debug access | Keep SWD access available |
+| External Flash | Confirm if required by the selected stack |
+
+For antenna details, see:
+
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+
+---
+
+## Low-Power Considerations
+
+Network behavior can affect power consumption.
+
+| Factor | Impact |
+| --- | --- |
+| Polling interval | More frequent polling increases power |
+| Network role | Router-like roles may consume more power than sleepy end devices |
+| Radio duty cycle | More radio activity increases average current |
+| Sensor interval | Sensor sampling affects total system current |
+| Gateway availability | Poor network conditions can increase retries |
+| Logging and debug | Active logs can prevent low-power behavior |
+
+For power optimization, see:
+
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+
+---
+
+## Validation Checklist
+
+| Check | Status |
+| --- | --- |
+| Required protocol selected | ☐ |
+| NX40 model variant confirmed | ☐ |
+| Firmware stack selected | ☐ |
+| Board target configured | ☐ |
+| Basic firmware runs | ☐ |
+| Radio operation verified | ☐ |
+| Network join tested | ☐ |
+| Gateway or border router tested | ☐ |
+| Power consumption measured | ☐ |
+| Final enclosure tested | ☐ |
+
+---
+
+## Common Issues
+
+| Symptom | Possible Cause | Check |
+| --- | --- | --- |
+| Device cannot join network | Stack, credentials, or network configuration issue | Check firmware and commissioning setup |
+| Network is unstable | RF signal or gateway placement issue | Check antenna and gateway location |
+| Current is too high | Device role or polling interval unsuitable | Review low-power configuration |
+| BLE works but Thread does not | Firmware stack or board configuration mismatch | Check board target and protocol configuration |
+| Device disappears from network | Power, RF, or network timeout issue | Check logs, power, and signal quality |
+
+---
+
+## What Not to Include Here
+
+To avoid duplicate content:
+
+| Topic | Go To |
+| --- | --- |
+| BLE advertising and GATT | [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide) |
+| First bring-up | [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start) |
+| Hardware design | [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design) |
+| Antenna design | [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design) |
+| Low-power tuning | [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide) |
+
+---
+
+## Related Pages
+
+- [NX40 BLE Application Guide](./NX40-Series-BLE-Module_BLE_Application_Guide)
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+- [NX40 FAQ](./NX40-Series-BLE-Module_FAQ)

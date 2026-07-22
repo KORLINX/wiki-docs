@@ -1,0 +1,184 @@
+---
+sidebar_position: 6
+title: NX40 Module Integration FAQ
+description: Common questions and troubleshooting notes for integrating NX40 into a custom PCB.
+keywords: [NX40, module integration FAQ, PCB troubleshooting, SWD, soldering, antenna, Flash, bring-up]
+---
+
+# NX40 Module Integration FAQ
+
+This FAQ covers common questions when integrating NX40 into a custom PCB.
+
+:::note
+This FAQ focuses on module integration. BLE application behavior, GATT design, low-power tuning, and 802.15.4 / Thread planning are covered in the NX40 Series BLE Module section.
+:::
+
+---
+
+## Model Selection
+
+### Which NX40 model should I choose?
+
+Choose based on antenna type and external Flash requirement.
+
+| Requirement | Direction |
+| --- | --- |
+| Integrated chip antenna | Choose NX40i variant |
+| External antenna | Choose NX40E variant |
+| External Flash required | Choose 32 model |
+| No external Flash required | Choose 00 model |
+
+See:
+
+- [NX40 Model Selection](./NX40-Module-Integration_Model_Selection)
+
+---
+
+### What is the difference between 32 and 00 models?
+
+| Model Code | Flash Option |
+| --- | --- |
+| `32` | External 32 Mbit SPI Flash |
+| `00` | No external Flash |
+
+Use a 32 model if the firmware or application requires external storage. Use a 00 model only when the firmware can run without external Flash.
+
+---
+
+## PCB Bring-up
+
+### The board does not power on. What should I check?
+
+Check:
+
+| Area | Check |
+| --- | --- |
+| Power rail | Confirm correct voltage from NX40 schematic/datasheet |
+| GND | Confirm ground continuity |
+| Short circuit | Check power-to-ground resistance before power-on |
+| Decoupling | Confirm capacitors are installed near power pins |
+| Assembly | Inspect for solder bridge or missing parts |
+| Current limit | Use current-limited first power-on |
+
+---
+
+### I cannot connect through SWD. What should I check?
+
+| Signal | Check |
+| --- | --- |
+| SWDIO | Routed correctly and not shorted |
+| SWDCLK | Routed correctly and not shorted |
+| GND | Common ground between debugger and board |
+| RESET / NRESET | Not held low unexpectedly |
+| Target power | Board is powered |
+| Target voltage reference | Connected if required by debugger |
+
+---
+
+### Firmware flashes but does not run correctly. What should I check?
+
+Possible causes:
+
+| Cause | Check |
+| --- | --- |
+| Wrong board configuration | Confirm board target and pin mapping |
+| Power instability | Measure power during boot |
+| Reset issue | Check reset circuit |
+| Flash mismatch | Confirm firmware matches 32 or 00 model |
+| GPIO conflict | Check pin assignment and reserved functions |
+| Clock issue | Review crystal and clock circuit |
+
+---
+
+## Pad / Pin Layout
+
+### Which signals should always be accessible?
+
+At minimum, keep access to:
+
+| Signal | Reason |
+| --- | --- |
+| Power rail | Measurement and bring-up |
+| GND | Measurement reference |
+| SWDIO | Firmware programming/debug |
+| SWDCLK | Firmware programming/debug |
+| RESET / NRESET | Reset and recovery |
+| UART log pins | Optional bring-up log path |
+| Key GPIO | Application-specific validation |
+
+---
+
+### Can Flash-related pins be used as GPIO?
+
+It depends on the model and firmware configuration.
+
+For 32 models, Flash-related pins may be required for external SPI Flash operation. For 00 models, confirm whether those pins are available in the firmware board configuration before using them as GPIO.
+
+---
+
+## Antenna
+
+### BLE signal is weak on my custom PCB. What should I check?
+
+| Area | Check |
+| --- | --- |
+| Module placement | Antenna side placed correctly |
+| Keep-out | No copper, ground, battery, or metal in the antenna clearance area |
+| Enclosure | Test with final enclosure |
+| External antenna | Check connector, cable, and placement |
+| RF path | Check controlled impedance and ground reference |
+| Assembly | Inspect antenna and matching components |
+
+---
+
+### Can I change antenna type after PCB layout?
+
+Changing from chip antenna to external antenna, or changing module placement, can require PCB redesign and RF re-validation. Decide antenna type before final PCB layout.
+
+---
+
+## Handling and Soldering
+
+### What should I inspect after reflow?
+
+| Item | Purpose |
+| --- | --- |
+| Module alignment | Confirm correct placement |
+| Solder joints | Check for bridge or insufficient solder |
+| Mechanical damage | Check package and antenna area |
+| Power-to-ground resistance | Detect shorts before power-on |
+| Antenna area | Confirm no unexpected metal or contamination |
+
+---
+
+### Can I clean the module after soldering?
+
+Only follow the official NX40 handling guidance. Avoid ultrasonic cleaning, liquid immersion, or aggressive solvent cleaning unless explicitly approved.
+
+---
+
+## Production
+
+### What should be included in production test?
+
+Recommended checks:
+
+| Test | Purpose |
+| --- | --- |
+| Power check | Confirm power rail and current behavior |
+| SWD programming | Confirm programming access |
+| Firmware boot | Confirm application starts |
+| External Flash check | Required for 32 models |
+| BLE advertising | Confirm radio operation |
+| Current measurement | Detect abnormal load |
+| Visual inspection | Confirm assembly quality |
+
+---
+
+## Related Pages
+
+- [NX40 Module Integration Overview](./NX40-Module-Integration_Overview)
+- [NX40 Model Selection](./NX40-Module-Integration_Model_Selection)
+- [NX40 PCB Integration](./NX40-Module-Integration_PCB_Integration)
+- [NX40 Pad / Pin Layout](./NX40-Module-Integration_Pad_Pin_Layout)
+- [NX40 Handling & Soldering](./NX40-Module-Integration_Handling_Soldering)

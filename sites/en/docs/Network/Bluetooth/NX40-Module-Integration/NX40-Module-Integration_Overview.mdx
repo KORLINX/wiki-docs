@@ -1,0 +1,83 @@
+---
+sidebar_position: 1
+title: NX40 Module Integration Overview
+description: Overview of the NX40 module integration path for custom PCB and host hardware design.
+keywords: [NX40, module integration, custom PCB, BLE module, nRF52840, hardware integration]
+---
+
+# NX40 Module Integration Overview
+
+{/* Image suggestion: High-level diagram showing NX40 mounted on a custom host PCB with power, SWD, reset, GPIO, Flash option, and antenna path. Suggested path: /img/bluetooth/nx40/module-integration/nx40-module-integration-overview.png */}
+
+This section is for developers and hardware engineers who integrate the **NX40 module** into a custom PCB or host system.
+
+It focuses on practical module-level integration topics such as model selection, PCB integration, pad/pin planning, antenna-related design checks, handling, soldering, and first prototype troubleshooting.
+
+:::note
+This section is not a general Bluetooth introduction. For BLE concepts, see the Bluetooth Intro page. For product-level usage, see the NX40 Series BLE Module pages.
+:::
+
+---
+
+## Who Should Read This Section?
+
+| User Type | Goal |
+| --- | --- |
+| Hardware engineer | Integrate NX40 into a custom PCB |
+| Firmware engineer | Understand board constraints, debug access, and model options |
+| Production engineer | Prepare SMT assembly, inspection, and first power-on checks |
+| System integrator | Validate power, antenna, programming, and bring-up behavior |
+
+---
+
+## Integration Flow
+
+Use the pages in this order:
+
+| Step | Page | Purpose |
+| --- | --- | --- |
+| 1 | Model Selection | Choose the correct NX40 variant |
+| 2 | PCB Integration | Plan power, ground, debug, reset, GPIO, and antenna area |
+| 3 | Pad / Pin Layout | Understand pad/pin groups and required signals |
+| 4 | Handling & Soldering | Prepare storage, SMT assembly, reflow, and inspection |
+| 5 | FAQ | Check common integration issues |
+
+---
+
+## Integration Scope
+
+| Topic | Covered Here |
+| --- | --- |
+| Model selection | Yes |
+| Custom PCB integration | Yes |
+| Pad / pin planning | Yes |
+| Debug and programming access | Yes |
+| SMT handling and soldering | Yes |
+| Basic integration troubleshooting | Yes |
+| BLE application behavior | No |
+| Low-power firmware tuning | No |
+| General Bluetooth concept | No |
+
+---
+
+## What This Section Does Not Replace
+
+This section does not replace:
+
+- Official NX40 datasheet
+- Final schematic and PCB layout review
+- RF validation report
+- Production test procedure
+- Certification test documentation
+
+Use this section as a practical integration guide before moving to board-level validation and production release.
+
+---
+
+## Related Pages
+
+- [NX40 Model Selection](./NX40-Module-Integration_Model_Selection)
+- [NX40 PCB Integration](./NX40-Module-Integration_PCB_Integration)
+- [NX40 Pad / Pin Layout](./NX40-Module-Integration_Pad_Pin_Layout)
+- [NX40 Handling & Soldering](./NX40-Module-Integration_Handling_Soldering)
+- [NX40 Module Integration FAQ](./NX40-Module-Integration_FAQ)

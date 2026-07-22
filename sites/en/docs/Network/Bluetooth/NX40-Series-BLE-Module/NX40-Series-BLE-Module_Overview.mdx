@@ -1,0 +1,110 @@
+---
+sidebar_position: 1
+title: NX40 Series BLE Module Overview
+description: Short overview of the NX40 Series BLE module and the recommended documentation path.
+keywords: [NX40, NX40 Series, BLE module, Bluetooth Low Energy, nRF52840, IEEE 802.15.4, ANT, 2.4GHz, KORLINX]
+---
+
+# NX40 Series BLE Module Overview
+
+{/* Image suggestion: NX40 module product image showing chip antenna and external antenna variants. Suggested path: /img/bluetooth/nx40/nx40-series-overview.png */}
+
+The **NX40 Series** is a compact wireless module series for Bluetooth Low Energy and 2.4 GHz embedded applications.
+
+The NX40 Series is based on the **nRF52840** platform and is intended for applications such as BLE sensors, beacons, wearable devices, smart home devices, industrial monitoring nodes, and short-range wireless control systems.
+
+This page provides only a short overview. For first bring-up, hardware design, antenna design, low-power behavior, and BLE application development, continue to the dedicated pages listed below.
+
+---
+
+## When to Use NX40
+
+NX40 is suitable when your product needs:
+
+| Requirement | Why NX40 Fits |
+| --- | --- |
+| Bluetooth Low Energy communication | Suitable for short-range wireless devices and sensors |
+| 2.4 GHz multiprotocol capability | Can support BLE and other 2.4 GHz protocol use cases depending on firmware |
+| Compact embedded design | Suitable for integration into custom PCB products |
+| Sensor or beacon behavior | Supports periodic data transmission and advertising-based workflows |
+| Host board integration | Can be used as a module inside a larger embedded system |
+| Low-power IoT direction | Can be used in battery-powered products when firmware and hardware are optimized |
+
+:::note
+This page does not provide a full specification table. Detailed power, pin, RF, and production data should be placed in the dedicated hardware and integration pages after the NX40 datasheet is finalized.
+:::
+
+---
+
+## NX40 Series Positioning
+
+The NX40 Series follows the same model structure as the NX15 family: antenna option and external Flash option.
+
+{/* Image suggestion: Simple model lineup diagram: NX40i = chip antenna, NX40E = u.FL external antenna, 32 = external Flash, 00 = no external Flash. Suggested path: /img/bluetooth/nx40/nx40-model-lineup.png */}
+
+| Model | Antenna | Flash | Description |
+| --- | --- | --- | --- |
+| NX40i32 | Chip antenna | 32 Mbit SPI Flash | Chip antenna variant with external Flash |
+| NX40E32 | u.FL external antenna | 32 Mbit SPI Flash | External antenna variant with external Flash |
+| NX40i00 | Chip antenna | None | Chip antenna variant without external Flash |
+| NX40E00 | u.FL external antenna | None | External antenna variant without external Flash |
+
+:::caution
+Confirm the final model list, mechanical data, pin map, and RF layout details against the official NX40 datasheet before production release.
+:::
+
+---
+
+## Documentation Flow
+
+Use the NX40 documentation in this order:
+
+| Step | Page | Purpose |
+| --- | --- | --- |
+| 1 | Quick Start | Bring up NX40 on a development board or custom host board |
+| 2 | Hardware Design | Review power, debug, GPIO, reset, and board-level design |
+| 3 | Antenna Design | Review chip antenna or u.FL external antenna requirements |
+| 4 | Low Power Guide | Optimize advertising, connection timing, sleep behavior, and current consumption |
+| 5 | BLE Application Guide | Build advertising, connection-based, GATT, or gateway-based BLE applications |
+| 6 | 802.15.4 / Thread Guide | Plan 802.15.4 or Thread-based application behavior when required |
+| 7 | FAQ | Check common bring-up, BLE, antenna, and integration issues |
+
+---
+
+## Main Documentation Areas
+
+| Area | What It Covers |
+| --- | --- |
+| Quick Start | First hardware and firmware bring-up |
+| Hardware Design | Power, ground, debug, reset, GPIO, and interface planning |
+| Antenna Design | Chip antenna placement, u.FL path, and RF validation notes |
+| Low Power Guide | Sleep behavior, radio timing, and current measurement |
+| BLE Application Guide | Advertising, connection, GATT, gateway flow, and application behavior |
+| 802.15.4 / Thread Guide | Directional guide for non-BLE 2.4 GHz workflows |
+| Module Integration | Custom PCB integration, model selection, pad/pin layout, and production handling |
+
+---
+
+## NX40 vs NX15 Documentation Pattern
+
+NX40 follows the same documentation structure as NX15, but the technical content must remain NX40-specific.
+
+| Reused from NX15 documentation | Must be NX40-specific |
+| --- | --- |
+| Page flow | SoC/platform |
+| Page structure | Pin map |
+| Image suggestion style | Power design |
+| Overview / Quick Start pattern | Antenna layout |
+| No-duplicate-content principle | Current consumption |
+| Related page navigation | Mechanical and production data |
+
+---
+
+## Next Step
+
+Start with the Quick Start guide when you are preparing a board, checking the programming path, or verifying the first BLE behavior.
+
+- [NX40 Quick Start](./NX40-Series-BLE-Module_Quick_Start)
+- [NX40 Hardware Design](./NX40-Series-BLE-Module_Hardware_Design)
+- [NX40 Antenna Design](./NX40-Series-BLE-Module_Antenna_Design)
+- [NX40 Low Power Guide](./NX40-Series-BLE-Module_Low_Power_Guide)

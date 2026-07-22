@@ -198,6 +198,72 @@ const docsTree = [
           },
         ],
       },
+      {
+  label: 'NX40 Series BLE Module',
+  children: [
+    {
+      label: 'Overview',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Overview',
+    },
+    {
+      label: 'Quick Start',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Quick_Start',
+    },
+    {
+      label: 'Hardware Design',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Hardware_Design',
+    },
+    {
+      label: 'Antenna Design',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Antenna_Design',
+    },
+    {
+      label: 'Low Power Guide',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Low_Power_Guide',
+    },
+    {
+      label: 'BLE Application Guide',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_BLE_Application_Guide',
+    },
+    {
+      label: '802.15.4 / Thread Guide',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_802154_Thread_Guide',
+    },
+    {
+      label: 'FAQ',
+      to: '/docs/Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_FAQ',
+    },
+  ],
+},
+      {
+  label: 'NX40 Module Integration',
+  children: [
+    {
+      label: 'Overview',
+      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Overview',
+    },
+    {
+      label: 'Model Selection',
+      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Model_Selection',
+    },
+    {
+      label: 'PCB Integration',
+      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_PCB_Integration',
+    },
+    {
+      label: 'Pad & Pin Layout',
+      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Pad_Pin_Layout',
+    },
+    {
+      label: 'Handling & Soldering',
+      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Handling_Soldering',
+    },
+    {
+      label: 'FAQ',
+      to: '/docs/Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_FAQ',
+    },
+  ],
+},
     ],
   },
 ];

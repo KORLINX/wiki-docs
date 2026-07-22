@@ -1,0 +1,151 @@
+---
+sidebar_position: 5
+title: NX40 Handling & Soldering
+description: Handling, SMT assembly, reflow, inspection, and first power-on guidance for NX40 module integration.
+keywords: [NX40, handling, soldering, reflow, SMT, ESD, module assembly, inspection]
+---
+
+# NX40 Handling & Soldering
+
+{/* Image suggestion: SMT assembly flow diagram: storage → open package → pick/place → reflow → inspection → first power-on. Suggested path: /img/bluetooth/nx40/module-integration/nx40-handling-soldering-flow.png */}
+
+This page provides handling and soldering guidance for NX40 module assembly.
+
+NX40 should be handled as an ESD-sensitive SMT wireless module during storage, placement, reflow, inspection, and first power-on.
+
+:::note
+Final storage condition, MSL level, baking condition, and reflow profile should be confirmed from the official NX40 manufacturing or datasheet document.
+:::
+
+---
+
+## Handling Rules
+
+| Rule | Reason |
+| --- | --- |
+| Use ESD protection | Prevent electrostatic damage |
+| Avoid touching pads | Prevent contamination and soldering issues |
+| Inspect before assembly | Check visible cracks, pad damage, or abnormal package condition |
+| Use proper pick-and-place method | Prevent mechanical damage |
+| Avoid mechanical stress | Protect module body and solder joints |
+
+{/* Image suggestion: Proper vacuum pickup area on top of the NX40 module. Suggested path: /img/bluetooth/nx40/module-integration/nx40-vacuum-pickup.png */}
+
+---
+
+## Storage and Floor Life
+
+Track storage and exposure time according to the final NX40 handling specification.
+
+| Item | What to Confirm |
+| --- | --- |
+| Storage temperature | Confirm from NX40 handling specification |
+| Storage humidity | Confirm from NX40 handling specification |
+| MSL level | Confirm before assembly |
+| Floor life | Track after opening moisture barrier bag |
+| Baking requirement | Apply only according to official guidance |
+| Package label | Check part number, quantity, lot code, date code |
+
+:::caution
+Do not reuse NX15 MSL or reflow values for NX40 unless the NX40 document confirms the same requirement.
+:::
+
+---
+
+## Reflow Preparation
+
+Before reflow:
+
+| Check | Status |
+| --- | --- |
+| Correct module variant prepared | ☐ |
+| PCB footprint reviewed | ☐ |
+| Paste mask reviewed | ☐ |
+| Placement orientation checked | ☐ |
+| Moisture handling checked | ☐ |
+| Reflow profile confirmed | ☐ |
+| ESD-safe handling prepared | ☐ |
+
+---
+
+## Reflow and Assembly
+
+Follow the reflow profile approved for NX40.
+
+| Area | Recommendation |
+| --- | --- |
+| Peak temperature | Follow official NX40 reflow profile |
+| Number of reflows | Confirm maximum allowed reflow count |
+| Heating/cooling rate | Follow assembly process limits |
+| Placement | Ensure correct orientation and alignment |
+| Solder paste | Use process compatible with module footprint |
+| Rework | Avoid unnecessary rework on wireless modules |
+
+---
+
+## Cleaning
+
+Cleaning should be confirmed from the official NX40 handling guidance.
+
+| Cleaning Method | Recommendation |
+| --- | --- |
+| Ultrasonic cleaning | Avoid unless explicitly approved |
+| Liquid immersion | Avoid unless explicitly approved |
+| Aggressive solvent | Avoid unless explicitly approved |
+| No-clean process | Preferred when compatible with assembly process |
+
+---
+
+## Post-Reflow Inspection
+
+{/* Image suggestion: Post-reflow inspection checklist showing alignment, solder bridge, missing part, damaged antenna area, and VDD-GND short check. Suggested path: /img/bluetooth/nx40/module-integration/nx40-post-reflow-inspection.png */}
+
+After reflow, inspect the assembly before applying power.
+
+| Check | Purpose |
+| --- | --- |
+| Module alignment | Confirm correct placement |
+| Solder bridge | Check for shorts |
+| Pad wetting | Confirm solder joints are formed properly |
+| Mechanical damage | Check cracks or package damage |
+| Antenna area | Confirm no unexpected metal or contamination |
+| Power short | Check power-to-ground resistance before power-on |
+
+---
+
+## First Power-On After Assembly
+
+Use a current-limited supply during the first power-on.
+
+| Step | Action |
+| --- | --- |
+| 1 | Inspect board visually |
+| 2 | Check power-to-ground resistance |
+| 3 | Set current limit |
+| 4 | Apply power |
+| 5 | Measure power rail |
+| 6 | Try SWD connection |
+| 7 | Flash or run basic firmware |
+| 8 | Verify BLE advertising or debug output |
+
+---
+
+## Production Notes
+
+| Item | Recommendation |
+| --- | --- |
+| Variant control | Confirm NX40i/NX40E and 32/00 model |
+| Firmware pairing | Match firmware to Flash option |
+| ESD control | Use ESD-safe workstation and packaging |
+| Reflow record | Track reflow process and profile |
+| Traceability | Track lot code and date code |
+| Programming | Keep SWD access available |
+| Functional test | Include power, programming, and BLE verification |
+
+---
+
+## Related Pages
+
+- [NX40 PCB Integration](./NX40-Module-Integration_PCB_Integration)
+- [NX40 Pad / Pin Layout](./NX40-Module-Integration_Pad_Pin_Layout)
+- [NX40 Module Integration FAQ](./NX40-Module-Integration_FAQ)
