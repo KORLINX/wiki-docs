@@ -32,6 +32,7 @@ Network attach steps vary by product. Refer to your product's Network Attach doc
 
 ## Guides
 
-:::info Coming Soon
+:::info
+Coming Soon
 Step-by-step getting started guides for each product are in development. See individual product Quick Start pages for now.
 :::

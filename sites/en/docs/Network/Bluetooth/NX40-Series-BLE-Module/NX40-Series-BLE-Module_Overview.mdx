@@ -7,7 +7,11 @@ keywords: [NX40, NX40 Series, BLE module, Bluetooth Low Energy, nRF52840, IEEE 8
 
 # NX40 Series BLE Module Overview
 
-{/* Image suggestion: NX40 module product image showing chip antenna and external antenna variants. Suggested path: /img/bluetooth/nx40/nx40-series-overview.png */}
+<img
+  src="/img/bluetooth/nx40/series/NX40-Series.png"
+  alt="NX40 Series"
+  className="blog-first-image"
+/>
 
 The **NX40 Series** is a compact wireless module series for Bluetooth Low Energy and 2.4 GHz embedded applications.
 
@@ -40,14 +44,56 @@ This page does not provide a full specification table. Detailed power, pin, RF, 
 
 The NX40 Series follows the same model structure as the NX15 family: antenna option and external Flash option.
 
-{/* Image suggestion: Simple model lineup diagram: NX40i = chip antenna, NX40E = u.FL external antenna, 32 = external Flash, 00 = no external Flash. Suggested path: /img/bluetooth/nx40/nx40-model-lineup.png */}
+<img
+  src="/img/bluetooth/nx40/series/NX40_BLE_Series_variants.png"
+  alt="NX40 Module Lineup"
+  className="blog-first-image"
+/>
 
-| Model | Antenna | Flash | Description |
-| --- | --- | --- | --- |
-| NX40i32 | Chip antenna | 32 Mbit SPI Flash | Chip antenna variant with external Flash |
-| NX40E32 | u.FL external antenna | 32 Mbit SPI Flash | External antenna variant with external Flash |
-| NX40i00 | Chip antenna | None | Chip antenna variant without external Flash |
-| NX40E00 | u.FL external antenna | None | External antenna variant without external Flash |
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Antenna</th>
+      <th>Flash</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>NX40i32</td>
+      <td>Chip antenna</td>
+      <td>32 Mbit SPI Flash</td>
+      <td>Chip antenna variant with external Flash</td>
+    </tr>
+
+    <tr>
+      <td>NX40E32</td>
+      <td>u.FL external antenna</td>
+      <td>32 Mbit SPI Flash</td>
+      <td>External antenna variant with external Flash</td>
+    </tr>
+
+    <tr>
+      <td>NX40i00</td>
+      <td>Chip antenna</td>
+      <td>None</td>
+      <td>Chip antenna variant without external Flash</td>
+    </tr>
+
+    <tr>
+      <td>NX40E00</td>
+      <td>u.FL external antenna</td>
+      <td>None</td>
+      <td>External antenna variant without external Flash</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
 
 :::caution
 Confirm the final model list, mechanical data, pin map, and RF layout details against the official NX40 datasheet before production release.
