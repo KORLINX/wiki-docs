@@ -7,7 +7,11 @@ keywords: [NX40, Quick Start, BLE, nRF52840, Bluetooth Low Energy, SWD, firmware
 
 # NX40 Quick Start
 
-{/* Image suggestion: NX40 board or module connected to a PC/debugger for first bring-up. Suggested path: /img/bluetooth/nx40/nx40-quick-start-setup.png */}
+<img
+  src="/img/bluetooth/nx40/quick-start/NX40i-BLE.png"
+  alt="NX40i BLE"
+  className="blog-first-image"
+/>
 
 This guide helps you bring up the **NX40 Series BLE module** for the first time.
 
@@ -42,16 +46,66 @@ This page focuses on the first bring-up flow. Detailed PCB layout, antenna rules
 
 ## 1. Select the NX40 Variant
 
-{/* Image suggestion: NX40 model selection card showing chip antenna vs u.FL and Flash vs no Flash. Suggested path: /img/bluetooth/nx40/nx40-variant-selection.png */}
+<img
+  src="/img/bluetooth/nx40/quick-start/NX40_DK_Variants.png"
+  alt="NX40 Variant"
+  className="blog-first-image"
+/>
 
 Choose the NX40 variant based on antenna type and external Flash requirement.
 
-| Model | Antenna | Flash | Use When |
-| --- | --- | --- | --- |
-| NX40i32 | Chip antenna | 32 Mbit SPI Flash | You need chip antenna integration and external Flash |
-| NX40E32 | u.FL external antenna | 32 Mbit SPI Flash | You need external antenna placement and external Flash |
-| NX40i00 | Chip antenna | None | You need chip antenna integration without external Flash |
-| NX40E00 | u.FL external antenna | None | You need external antenna placement without external Flash |
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Antenna</th>
+      <th>Flash</th>
+      <th>Use When</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>NX40i32</td>
+      <td>Chip antenna</td>
+      <td>32 Mbit SPI Flash</td>
+      <td>
+        You need chip antenna integration and external Flash
+      </td>
+    </tr>
+
+    <tr>
+      <td>NX40E32</td>
+      <td>u.FL external antenna</td>
+      <td>32 Mbit SPI Flash</td>
+      <td>
+        You need external antenna placement and external Flash
+      </td>
+    </tr>
+
+    <tr>
+      <td>NX40i00</td>
+      <td>Chip antenna</td>
+      <td>None</td>
+      <td>
+        You need chip antenna integration without external Flash
+      </td>
+    </tr>
+
+    <tr>
+      <td>NX40E00</td>
+      <td>u.FL external antenna</td>
+      <td>None</td>
+      <td>
+        You need external antenna placement without external Flash
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
 
 :::tip
 For early RF validation, use the same antenna type that your final product is expected to use.

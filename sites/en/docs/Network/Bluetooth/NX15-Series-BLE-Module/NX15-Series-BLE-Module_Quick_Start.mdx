@@ -7,7 +7,11 @@ keywords: [NX15, Quick Start, DEV-NX15, BLE, nRF54L15, Zephyr, nRF Connect SDK, 
 
 # NX15 Quick Start
 
-{/* Image suggestion: DEV-NX15 board connected to a PC by USB Type-C, with NX15 module highlighted. Suggested path: /img/bluetooth/nx15/dev-nx15-quick-start.png */}
+<img
+  src="/img/bluetooth/nx15/quick-start/NX15-dev-kit-front.png"
+  alt="NX15 dev kit font"
+  className="blog-first-image"
+/>
 
 This guide helps you bring up the **NX15 Series BLE module** for the first time.
 
@@ -41,16 +45,66 @@ This page focuses on the first bring-up flow. Detailed PCB layout, antenna desig
 
 ## 1. Select the NX15 Variant
 
-{/* Image suggestion: NX15 model selection card showing chip antenna vs u.FL and Flash vs no Flash. Suggested path: /img/bluetooth/nx15/nx15-variant-selection.png */}
+<img
+  src="/img/bluetooth/nx15/quick-start/NX15-variant-selection.png"
+  alt="NX15 series"
+  className="blog-first-image"
+/>
 
 Choose the NX15 variant based on antenna type and Flash requirement.
 
-| Model | Antenna | Flash | Use When |
-| --- | --- | --- | --- |
-| NX15i32 | Chip antenna | 32 Mbit SPI Flash | You need compact antenna integration and external Flash |
-| NX15E32 | u.FL connector | 32 Mbit SPI Flash | You need external antenna and external Flash |
-| NX15i00 | Chip antenna | None | You need compact module integration without external Flash |
-| NX15E00 | u.FL connector | None | You need external antenna without external Flash |
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Antenna</th>
+      <th>Flash</th>
+      <th>Use When</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>NX15i32</td>
+      <td>Chip antenna</td>
+      <td>32 Mbit SPI Flash</td>
+      <td>
+        You need compact antenna integration and external Flash
+      </td>
+    </tr>
+
+    <tr>
+      <td>NX15E32</td>
+      <td>u.FL connector</td>
+      <td>32 Mbit SPI Flash</td>
+      <td>
+        You need an external antenna and external Flash
+      </td>
+    </tr>
+
+    <tr>
+      <td>NX15i00</td>
+      <td>Chip antenna</td>
+      <td>None</td>
+      <td>
+        You need compact module integration without external Flash
+      </td>
+    </tr>
+
+    <tr>
+      <td>NX15E00</td>
+      <td>u.FL connector</td>
+      <td>None</td>
+      <td>
+        You need an external antenna without external Flash
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
 
 :::tip
 For first evaluation, use the same antenna type that your final product is expected to use. Antenna choice can affect RF performance, layout requirements, and enclosure design.
@@ -66,15 +120,51 @@ There are two common bring-up paths.
 
 Use **DEV-NX15** when you want to evaluate the NX15 module quickly before designing custom hardware.
 
-{/* Image suggestion: DEV-NX15 board overview with labels for USB Type-C, SWD header, RGB LED, reset/user button, sensors, and Li-Po connector. Suggested path: /img/bluetooth/nx15/dev-nx15-board-overview.png*/}
+<img
+  src="/img/bluetooth/nx15/quick-start/NX15-dev-kit-back.png"
+  alt="NX15 DK back"
+  className="blog-first-image"
+/>
 
-| Block | What to Check |
-| --- | --- |
-| USB Type-C | Connect the board to the PC |
-| Debug access | Prepare SWD connection if required |
-| LEDs / buttons | Use them for basic firmware tests |
-| Sensors | Use them later for application examples |
-| Battery connector | Use only when battery-powered testing is required |
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Block</th>
+      <th>What to Check</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>USB Type-C</td>
+      <td>Connect the board to the PC</td>
+    </tr>
+
+    <tr>
+      <td>Debug access</td>
+      <td>Prepare SWD connection if required</td>
+    </tr>
+
+    <tr>
+      <td>LEDs / buttons</td>
+      <td>Use them for basic firmware tests</td>
+    </tr>
+
+    <tr>
+      <td>Sensors</td>
+      <td>Use them later for application examples</td>
+    </tr>
+
+    <tr>
+      <td>Battery connector</td>
+      <td>Use only when battery-powered testing is required</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
 
 Basic preparation:
 
