@@ -66,17 +66,60 @@ Do not power the first prototype before checking VDD/GND continuity and confirmi
 
 ## Programming and Debug Access
 
+<img
+  src="/img/bluetooth/nx15/module-integration/NX15_Pin_map_1.png"
+  alt="NX40 Variant"
+  className="blog-first-image"
+/>
+
+
 Keep SWD access available during development and production.
 
-| Signal | Purpose | Recommendation |
-| --- | --- | --- |
-| SWDIO | Programming/debug data | Route to header or test pad |
-| SWDCLK | Programming/debug clock | Route to header or test pad |
-| NRESET | Reset control | Route to button, header, or test pad |
-| GND | Debug reference | Include near SWD pins |
-| VDD sense | Target voltage reference | Add if required by debugger |
+<div className="spec-table-wrapper">
 
-{/* Image suggestion: SWD programming connector/test-pad layout example. Suggested path: /img/bluetooth/nx15/module-integration/nx15-swd-test-pads.png */}
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Signal</th>
+      <th>Purpose</th>
+      <th>Recommendation</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>SWDIO</td>
+      <td>Programming/debug data</td>
+      <td>Route to header or test pad</td>
+    </tr>
+
+    <tr>
+      <td>SWDCLK</td>
+      <td>Programming/debug clock</td>
+      <td>Route to header or test pad</td>
+    </tr>
+
+    <tr>
+      <td>NRESET</td>
+      <td>Reset control</td>
+      <td>Route to button, header, or test pad</td>
+    </tr>
+
+    <tr>
+      <td>GND</td>
+      <td>Debug reference</td>
+      <td>Include near SWD pins</td>
+    </tr>
+
+    <tr>
+      <td>VDD sense</td>
+      <td>Target voltage reference</td>
+      <td>Add if required by debugger</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
 
 :::tip
 Even if the final product does not expose a debug connector, test pads are recommended for flashing, recovery, and production programming.
