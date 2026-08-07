@@ -1,0 +1,101 @@
+---
+sidebar_position: 2
+title: NX40 Dev Kit Hardware Overview
+description: Overview of the NX40 Dev Kit Hardware for BLE application development and prototyping.
+keywords: [NX40 Dev Kit, DEV-NX40, NX40 development board, BLE development kit, KORLINX]
+---
+
+## Hardware Overview
+
+The **NX40 Dev Kit** provides the board-level hardware needed to evaluate the NX40 module, test BLE applications, read onboard sensors, and develop early firmware prototypes.
+
+This page focuses only on the hardware available on the development board.
+
+<img
+  src="/img/bluetooth/nx40/quick-start/NX40i-BLE.png"
+  alt="NX40 Dev Kit hardware overview"
+  className="blog-first-image"
+/>
+
+| Block | Contents |
+| --- | --- |
+| USB & Debugging | USB Type-C, FTDI FT234XD, ESD/TVS protection, SWD header |
+| LED & Switch | RGB LED, charge/power LEDs, reset button, user button |
+| Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor |
+| Pins & Battery | J3/J5 headers, Li-Po connector, BQ25100 charger IC |
+
+## USB and Debugging
+
+<img
+  src="/img/bluetooth/nx40/series/NX40-Series.png"
+  alt="NX40 Dev Kit hardware overview"
+  className="blog-first-image"
+/>
+
+The NX40 Dev Kit includes USB and debugging interfaces for firmware upload, serial communication, and development testing.
+
+| Hardware | Purpose |
+| --- | --- |
+| USB Type-C | Connects the board to a PC for development |
+| FTDI FT234XD | Provides USB-to-UART communication |
+| SWD header | Used for programming and debugging |
+| ESD / TVS protection | Helps protect USB and external interface areas |
+
+The USB Type-C connector is used as the main PC connection during development.  
+The SWD header is used when firmware programming or debugging is required.
+
+---
+
+## On-board Sensors
+
+The NX40 Dev Kit includes onboard sensors for motion and environmental sensing.
+
+| Sensor | Function |
+| --- | --- |
+| LSM6DS3TR-C | 6-axis IMU for motion and orientation sensing |
+| SHTC3 | Temperature and humidity sensor |
+
+These sensors allow developers to build and test BLE sensor examples directly on the Dev Kit.
+
+Typical test examples include:
+
+| Example | Description |
+| --- | --- |
+| Motion sensing | Read acceleration or orientation-related data |
+| Environmental sensing | Read temperature and humidity values |
+| BLE sensor demo | Send sensor data over BLE advertising or connection-based communication |
+
+---
+
+## Buttons and LEDs
+
+The NX40 Dev Kit includes basic user input and status output components for firmware testing.
+
+| Hardware | Purpose |
+| --- | --- |
+| Reset button | Restarts the board during development |
+| User button | Application input or firmware test input |
+| RGB LED | Application status or test output |
+| Charge / power LEDs | Battery charging and power indication |
+
+The user button and RGB LED are useful for quick firmware validation before adding external peripherals or application-specific hardware.
+
+---
+
+## Headers and Battery Support
+
+<img
+  src="/img/bluetooth/nx40/hardware/NX40_Pin_List.png"
+  alt="NX40 Dev Kit hardware overview"
+  className="blog-first-image"
+/>
+
+The NX40 Dev Kit provides expansion headers and battery-related hardware for prototype development.
+
+| Hardware | Purpose |
+| --- | --- |
+| J3 / J5 headers | Provide access to external signals for testing and prototyping |
+| Li-Po connector | Supports battery-powered prototype testing |
+| BQ25100 charger IC | Provides Li-Po battery charging support |
+
+This makes the board suitable for both USB-powered development and battery-oriented BLE prototype testing.

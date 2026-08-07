@@ -1,0 +1,135 @@
+---
+sidebar_position: 3
+title: NX15 Dev Kit Hardware
+description: Hardware overview of the KORLINX NX15 Dev Kit, including USB, debugging, onboard sensors, buttons, LEDs, headers, battery connector, and charger IC.
+keywords: [NX15 Dev Kit, DEV-NX15, hardware overview, USB Type-C, SWD, FTDI FT234XD, LSM6DS3TR-C, SHTC3, BQ25100, KORLINX]
+---
+
+# NX15 Dev Kit Hardware
+
+<img
+  src="/img/bluetooth/nx15/quick-start/NX15-dev-kit-front.png"
+  alt="NX15 Dev Kit hardware overview"
+  className="blog-first-image"
+/>
+
+The **NX15 Dev Kit** provides the board-level hardware needed to evaluate the NX15 module, test BLE applications, read onboard sensors, and develop early firmware prototypes.
+
+This page focuses only on the hardware available on the development board. For development tools, SDK, Arduino workflow, or software setup, see the Software page.
+
+---
+
+## Hardware Overview
+
+The NX15 Dev Kit includes USB connectivity, debugging access, user input, status output, onboard sensors, expansion headers, and battery-related hardware.
+
+| Block | Contents |
+| --- | --- |
+| USB & Debugging | USB Type-C, FTDI FT234XD, ESD/TVS protection, SWD header |
+| LED & Switch | RGB LED, charge/power LEDs, reset button, user button |
+| Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor |
+| Pins & Battery | J3 / J5 headers, Li-Po connector, BQ25100 charger IC |
+
+:::note
+This page describes the NX15 Dev Kit hardware at board level. It does not replace the NX15 module datasheet, schematic, PCB layout guideline, or antenna design guideline.
+:::
+
+---
+
+## USB and Debugging
+
+{/* <!-- Image suggestion:
+Use a close-up image showing the USB Type-C connector, FTDI FT234XD area, and SWD header.
+Suggested path: /img/bluetooth/nx15/hardware/nx15-usb-debug-area.png
+--> */}
+
+The NX15 Dev Kit includes USB and debugging hardware for development, firmware programming, and serial communication.
+
+| Hardware | Purpose |
+| --- | --- |
+| USB Type-C | Main PC connection during development |
+| FTDI FT234XD | USB-to-UART communication interface |
+| SWD header | Programming and debugging interface |
+| ESD / TVS protection | Protection for USB and external interface areas |
+
+Use the USB Type-C connector to connect the board to a PC. Use the SWD header when firmware programming or debugging is required.
+
+---
+
+## On-board Sensors
+
+{/* <!-- Image suggestion:
+Use a close-up image of the sensor area showing LSM6DS3TR-C and SHTC3.
+Suggested path: /img/bluetooth/nx15/hardware/nx15-onboard-sensors.png
+--> */}
+
+The NX15 Dev Kit includes onboard sensors for motion, orientation, temperature, and humidity-related applications.
+
+| Sensor | Function |
+| --- | --- |
+| LSM6DS3TR-C | 6-axis IMU for motion and orientation sensing |
+| SHTC3 | Temperature and humidity sensor |
+
+These sensors allow developers to build and test BLE sensor examples directly on the Dev Kit.
+
+Typical hardware validation examples include:
+
+| Example | Description |
+| --- | --- |
+| Motion sensing | Read acceleration or orientation-related data |
+| Environmental sensing | Read temperature and humidity values |
+| BLE sensor demo | Send sensor data over BLE advertising or connection-based communication |
+
+---
+
+## Buttons and LEDs
+
+{/* <!-- Image suggestion:
+Use a close-up image showing the reset button, user button, RGB LED, and charge/power LEDs.
+Suggested path: /img/bluetooth/nx15/hardware/nx15-buttons-leds.png
+--> */}
+
+The NX15 Dev Kit includes basic input and output components for firmware testing.
+
+| Hardware | Purpose |
+| --- | --- |
+| Reset button | Restarts the board during development |
+| User button | Application input or firmware test input |
+| RGB LED | Application status or test output |
+| Charge / power LEDs | Battery charging and power indication |
+
+The user button and RGB LED are useful for quick firmware validation before adding external peripherals or application-specific hardware.
+
+---
+
+## Headers and Battery Support
+
+<img
+  src="/img/bluetooth/nx15/hardware/NX15_Pin_List.png"
+  alt="NX15 Dev Kit pin list"
+  className="blog-first-image"
+/>
+
+The NX15 Dev Kit provides expansion headers and battery-related hardware for prototype development.
+
+| Hardware | Purpose |
+| --- | --- |
+| J3 / J5 headers | External signal access for testing and prototyping |
+| Li-Po connector | Battery-powered prototype testing |
+| BQ25100 charger IC | Li-Po battery charging support |
+
+This allows the board to be used for both USB-powered development and battery-oriented BLE prototype testing.
+
+---
+
+## Hardware Use Cases
+
+| Use Case | Hardware Used |
+| --- | --- |
+| BLE bring-up | USB Type-C, SWD header, RGB LED |
+| Sensor demo | LSM6DS3TR-C, SHTC3, BLE connection |
+| Button input test | User button, RGB LED |
+| Debug and programming | SWD header, USB Type-C |
+| Battery prototype | Li-Po connector, BQ25100 charger IC, charge/power LEDs |
+| External peripheral test | J3 / J5 headers |
+
