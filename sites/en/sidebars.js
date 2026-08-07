@@ -152,199 +152,58 @@ const sidebars = {
           items: [
             {
               type: 'category',
-              label: 'NX15 Series BLE Module',
+              label: 'NX15 Dev Kit',
               collapsed: true,
               collapsible: true,
               link: {
                 type: 'generated-index',
-                title: 'NX15 Series BLE Module',
-                description: 'NX15 Series BLE Module documentation',
+                title: 'NX15 Dev Kit',
+                description: 'NX15 Dev Kit documentation',
               },
               items: [
                 {
                   type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Overview',
+                  id: 'Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Overview',
                   label: 'Overview',
                 },
+                // {
+                //   type: 'doc',
+                //   id: 'Network/Bluetooth/NX15-Dev-Kit/NX15-Dev-Kit_Example_Code',
+                //   label: 'Example Code',
+                // },
                 {
                   type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Quick_Start',
-                  label: 'Quick Start',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Hardware_Design',
-                  label: 'Hardware Design',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Antenna_Design',
-                  label: 'Antenna Design',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Low_Power_Guide',
-                  label: 'Low Power Guide',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_BLE_Application_Guide',
-                  label: 'BLE Application Guide',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_Thread_Matter_Guide',
-                  label: 'Thread / Matter Guide',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Series-BLE-Module/NX15-Series-BLE-Module_FAQ',
-                  label: 'FAQ',
+                  id: 'Network/Bluetooth/NX15_Dev_Kit/Hardware',
+                  label: 'Hardware',
                 },
               ],
             },
 
             {
               type: 'category',
-              label: 'NX15 Module Integration',
+              label: 'NX40 Dev Kit',
               collapsed: true,
               collapsible: true,
               link: {
                 type: 'generated-index',
-                title: 'NX15 Module Integration',
-                description:
-                  'Guides for integrating NX15 modules into custom hardware designs.',
+                title: 'NX40 Dev Kit',
+                description: 'NX40 Dev Kit documentation',
               },
               items: [
                 {
                   type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Overview',
+                  id: 'Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Overview',
                   label: 'Overview',
                 },
+                // {
+                //   type: 'doc',
+                //   id: 'Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Example_Code',
+                //   label: 'Example Code',
+                // },
                 {
                   type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Model_Selection',
-                  label: 'Model Selection',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_PCB_Integration',
-                  label: 'PCB Integration',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_LGA_Pad_Layout',
-                  label: 'LGA Pad Layout',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_Handling_Soldering',
-                  label: 'Handling & Soldering',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15-Module-Integration/NX15-Module-Integration_FAQ',
-                  label: 'FAQ',
-                },
-              ],
-            },
-
-            {
-              type: 'category',
-              label: 'NX40 Series BLE Module',
-              collapsed: true,
-              collapsible: true,
-              link: {
-                type: 'generated-index',
-                title: 'NX40 Series BLE Module',
-                description:
-                  'Technical documentation for the NX40 Series BLE Module.',
-              },
-              items: [
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Overview',
-                  label: 'Overview',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Quick_Start',
-                  label: 'Quick Start',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Hardware_Design',
-                  label: 'Hardware Design',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Antenna_Design',
-                  label: 'Antenna Design',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_Low_Power_Guide',
-                  label: 'Low Power Guide',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_BLE_Application_Guide',
-                  label: 'BLE Application Guide',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_802154_Thread_Guide',
-                  label: '802.15.4 / Thread Guide',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Series-BLE-Module/NX40-Series-BLE-Module_FAQ',
-                  label: 'FAQ',
-                },
-              ],
-            },
-
-            {
-              type: 'category',
-              label: 'NX40 Module Integration',
-              collapsed: true,
-              collapsible: true,
-              link: {
-                type: 'generated-index',
-                title: 'NX40 Module Integration',
-                description:
-                  'Guides for integrating NX40 modules into custom hardware designs.',
-              },
-              items: [
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Overview',
-                  label: 'Overview',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Model_Selection',
-                  label: 'Model Selection',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_PCB_Integration',
-                  label: 'PCB Integration',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Pad_Pin_Layout',
-                  label: 'Pad / Pin Layout',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_Handling_Soldering',
-                  label: 'Handling & Soldering',
-                },
-                {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40-Module-Integration/NX40-Module-Integration_FAQ',
-                  label: 'FAQ',
+                  id: 'Network/Bluetooth/NX40_Dev_Kit/Hardware',
+                  label: 'Hardware',
                 },
               ],
             },

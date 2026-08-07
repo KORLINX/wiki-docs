@@ -75,8 +75,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 20px;
-  margin: 2dvh 0rem;
-  margin-right: 20px;
+  margin: 2rem 0;
 }
 
 @media (max-width: 600px) {
@@ -88,6 +87,13 @@
 	.button_tech_support_container a {
 	  width: 100%;
 	  height: auto;
+	}
+
+	.button_email,
+	.button_discord,
+	.button_discussion {
+	  min-height: auto;
+	  padding: 18px;
 	}
   }
   
@@ -235,9 +241,6 @@
 /* Added media query for mobile */
 @media screen and (max-width: 767px) {
 	.button_forum,
-	.button_email,
-	.button_discord,
-	.button_discussion,
 	.button_tech_support_sensecap,
 	.button_tech_support_sensecap2,
 	.button_tech_support_sensecap3 {
@@ -865,33 +868,5 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
   [class*='docRoot'],
   [class*='docMainContainer'] {
     min-height: calc(100vh - var(--korlinx-navbar-height)) !important;
-  }
-}
-
-/* =========================
-   Use mobile "On this page" dropdown on desktop
-   ========================= */
-
-@media (min-width: 997px) {
-  /* Show mobile dropdown TOC on desktop */
-  .theme-doc-toc-mobile {
-    display: block !important;
-    margin-bottom: 24px !important;
-  }
-
-  /* Hide desktop right-side TOC */
-  .theme-doc-toc-desktop {
-    display: none !important;
-  }
-
-  /* Hide empty right TOC column */
-  .row .col:has(.theme-doc-toc-desktop) {
-    display: none !important;
-  }
-
-  /* Let main doc content use the released width */
-  [class*='docItemCol'] {
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
   }
 }
