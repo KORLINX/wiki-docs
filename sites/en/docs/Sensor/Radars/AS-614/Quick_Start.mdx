@@ -1,0 +1,69 @@
+---
+sidebar_position: 2
+title: AS-614 Quick Start
+description: Bench-test, install, connect, and troubleshoot the AnySensing AS-614 radar module in an InCare24 deployment.
+keywords: [AS-614, quick start, InCare24, AS-BW, UART, radar installation, troubleshooting]
+---
+
+# AS-614 Quick Start
+
+Use this guide to check an AS-614 on the bench and commission it as part of an InCare24 installation.
+
+## Bench check
+
+1. **Power the module.** Supply 3.3–7 V and size the source for up to 700 mW. AS-614 has no USB port.
+2. **Connect UART.** Cross TX and RX and connect a common ground.
+3. **Confirm the baud rate.** Different shipments have used different baud rates; verify the setting for the specific units before connecting. **[VERIFY]**
+4. **Select the application mode.** Use Mode 10 only when raw output is required for sensor characterization.
+5. **Confirm operation before mounting.** Resolve power, UART, and firmware issues while the unit is accessible.
+
+## Commission a site
+
+Plan the deployment in three separate phases:
+
+1. **Cable and electrical work:** Complete construction and power work before sensor commissioning.
+2. **Setting visit:** Mount one unit per bed on the supplied ceiling bracket, power it, attach it to the network, and tune it for the room.
+3. **Operator training:** Train nursing staff on the monitoring interface as a scheduled activity.
+
+Per-room tuning is required. Configure directional curtain filtering for the left, right, top, and bottom; account for window walls and floor mattresses; and retune a unit after a bed moves.
+
+> **Installation gap:** Mounting height, tilt angle, bed offset, and coverage footprint are **[TBD]**. Obtain these values from field engineering before installation.
+
+## Connect through AS-BW
+
+AS-614 has GPIO and UART but no onboard USB, Wi-Fi, or BLE. Its documented network path is the AS-BW communication module:
+
+```text
+AS-614 UART → AS-BW → 2.4 GHz Wi-Fi → MQTT
+```
+
+1. Connect AS-BW to the AS-614 UART and share ground.
+2. Supply enough power for both modules.
+3. Configure AS-BW for the deployment.
+4. Record each AS-BW MAC address against its bed number. Per-unit serial numbers are being introduced in addition to MAC addresses. **[VERIFY]**
+
+See [AS-BW Quick Start](../AS-BW/Quick_Start) for network preparation and known configuration gaps.
+
+## Data availability
+
+AS-614 sends ASCII data over UART, with the frame layout selected by operating mode. The per-mode packet formats, status codes, and `outtime` / `wave` commands are **[TBD]** because `260508_summary_radar_payloads.md` was unavailable.
+
+The operator-facing system presents patient state, heart rate in beats per minute, and respiration rate in breaths per minute. AI classification runs on the radar module.
+
+InCare24 data storage, location, format, and retention period are **[TBD]**. Do not promise a retention policy.
+
+## Troubleshooting
+
+| Symptom | Action |
+| --- | --- |
+| Heart rate remains at 74 in Mode 13 | This is a confirmed defect in the June 15, 2026 firmware. Update firmware or avoid Mode 13. |
+| Digits run together or overflow in Mode 5 | This is a confirmed defect in the same firmware. Update firmware. |
+| “Patient absent” appears while the patient is present | Update both radar and AS-BW firmware. Confirm whether the build includes bedridden-hold logic. **[VERIFY]** |
+| Readings change after moving the bed | Re-run the setting procedure. Automatic bed-movement correction is still in development. |
+| Curtains cause detections | Configure the directional curtain filter for the affected side. |
+| A window wall creates noise | Avoid the window wall when possible; otherwise give engineering the room layout. Improved handling is in development. |
+| The patient uses a floor mattress | A floor-mattress mode is in development; request guidance from engineering. |
+
+Use AS-613 for new installations. AS-614 remains supported for installed sites.
+
+Return to the [AS-614 Overview](./Overview) for specifications and the MCU identification issue.

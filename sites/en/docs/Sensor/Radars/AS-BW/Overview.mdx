@@ -1,0 +1,36 @@
+---
+sidebar_position: 1
+title: AS-BW Overview
+description: Learn the role, specifications, and documented limitations of the AnySensing AS-BW Bluetooth and Wi-Fi communication module.
+keywords: [AS-BW, AnySensing, communication module, Bluetooth, Wi-Fi, MQTT, radar gateway]
+---
+
+# AS-BW Overview
+
+The **AS-BW** is a Bluetooth and Wi-Fi communication module, not a radar. It connects to a radar module through UART and forwards the radar stream over 2.4 GHz Wi-Fi. It provides radar interworking and IoT bypass; radar analysis remains on the radar module.
+
+## Specifications
+
+| Item | Specification |
+| --- | --- |
+| Class | Bluetooth / Wi-Fi communication module |
+| Radio | Bluetooth 4.2; 2.4 GHz Wi-Fi only |
+| Radar interfaces | GPIO and UART |
+| Function | Radar interworking, Bluetooth / Wi-Fi, and IoT bypass |
+| Size | 32 × 40 × 4.25 mm |
+| Supply / power | 3.3–7 V / maximum 700 mW |
+| Operating temperature | −40 to 85 °C |
+| Chipset / MCU | **[TBD]** |
+| Certification | **[TBD]** |
+| Reference manual | User Manual v0.10, January 2025 **[TBD]** |
+| Supplied items | Control software, viewer application, and ceiling bracket |
+
+## Documented limitations
+
+The AS-BW user manual incorrectly lists the model name as `AS_614` in its specification table. This is a documentation error; the manual describes AS-BW. A source-document correction is pending.
+
+AS-BW and its viewer application were under active stabilization during 2026. Confirm the installed firmware and viewer versions before investigating a field problem, because a corrected build may already exist.
+
+## Next step
+
+Continue to [AS-BW Quick Start](./Quick_Start) to connect a radar, prepare the site network, configure Wi-Fi and MQTT, and troubleshoot field connectivity.

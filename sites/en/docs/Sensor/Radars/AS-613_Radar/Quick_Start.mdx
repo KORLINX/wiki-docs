@@ -1,0 +1,69 @@
+---
+sidebar_position: 2
+title: AS-613 Radar Quick Start
+description: Power, bench-test, install, connect, and troubleshoot the AnySensing AS-613 multi-target radar module.
+keywords: [AS-613, quick start, AS-BW, UART, radar installation, power supply, troubleshooting]
+---
+
+# AS-613 Radar Quick Start
+
+Use this guide to power and test an AS-613 before mounting it, then connect it through AS-BW for an InCare24 deployment.
+
+> **Power warning:** USB bus power is not sufficient for the current AS-613 revision. Supply at least 5 V / 300 mA through the power port. Size the supply for startup inrush, not average consumption.
+
+## Bench check
+
+1. **Connect a dedicated supply.** Provide at least 5 V / 300 mA at the power port. AS-613 can draw up to 1,000 mW.
+2. **Add communication-module headroom.** If the supply also powers AS-BW, size it for both modules.
+3. **Connect UART.** Cross TX/RX and share ground.
+4. **Confirm the baud rate.** The documented default changed from 921,600 to 460,800. Some customer shipments use 115,200, so confirm the value for each batch. **[VERIFY]**
+5. **Verify operation before mounting.** Resolve power, enumeration, UART, and firmware issues on the bench.
+
+A dedicated USB connection cable is available from Ingenious as a paid accessory.
+
+## Install and tune
+
+1. Mount the unit on the supplied ceiling bracket, one unit per bed.
+2. Connect the radar to AS-BW and record the AS-BW MAC address against the bed number.
+3. Tune curtain filtering independently for each direction.
+4. Account for window walls, floor mattresses, and later bed movement.
+
+> **Installation gap:** Mounting height, tilt angle, offset from the bed, and coverage footprint are **[TBD]**. Obtain them from field engineering before installation.
+
+## Connect through AS-BW
+
+AS-613 provides GPIO, UART, and USB but no onboard network interface. AS-BW carries its UART output over 2.4 GHz Wi-Fi and MQTT. Bluetooth 4.2 is used to configure AS-BW, not to transport radar data.
+
+```text
+AS-613 UART → AS-BW → 2.4 GHz Wi-Fi → MQTT
+```
+
+Devices are identified by MAC address. Downlink commands to an individual radar and per-unit serial numbers are being developed and are not confirmed as shipping features. **[VERIFY]**
+
+See [AS-BW Quick Start](../AS-BW/Quick_Start) for network preparation and configuration gaps.
+
+## Data availability
+
+AS-613 sends ASCII data over UART. Option modes 11, 12, 13, and 14 select the frame layout.
+
+The packet formats, status codes, and `outtime` / `wave` commands are **[TBD]** because `260508_summary_radar_payloads.md` was unavailable. Do not derive and publish a packet specification from observed frames alone.
+
+The monitoring system receives patient state, heart rate, respiration rate, and fall alerts. AI classification runs on the radar before transmission. Some deployments use patient-state information without vital signs.
+
+Data storage and retention are under review and remain **[TBD]**.
+
+## Troubleshooting
+
+| Symptom or question | Action or answer |
+| --- | --- |
+| Module does not start from an ESP32 or host board | Use a dedicated supply of at least 5 V / 300 mA and retest before treating the module as faulty. |
+| USB-UART adapter does not appear | Check the CP2102 bridge version and measure actual current draw; report both to engineering. |
+| Can USB bus power run the module? | No, not on the current revision; use the power port. |
+| Why is power higher than AS-614? | AS-613 reaches 1,000 mW maximum and typically uses 650 mW; include AS-BW when sizing the supply. |
+| How many people can it track? | Up to five. |
+| Does it support long-range AI tracking? | No. That feature used a discontinued TI component and is no longer in the product line. |
+| Is heart rate clinical-grade? | No. Treat radar heart rate as reference information; position the product around contactless respiration, presence, posture, and fall detection. |
+| Why is there no MMIC shield can? | The antenna-in-package device uses an equivalent 3D Faraday structure. Request the existing technical justification document. |
+| Curtains, windows, floor mattresses, or moved beds affect results | Treat these as installation-environment issues and apply the same per-room tuning process used for AS-614. |
+
+Return to the [AS-613 Radar Overview](./Overview) for capabilities and specifications.
