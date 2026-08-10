@@ -262,6 +262,123 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Sensor',
+      collapsed: true,
+      collapsible: true,
+      link: {
+        type: 'generated-index',
+        title: 'Sensor',
+        description: 'KORLINX sensor product documentation',
+      },
+      items: [
+        {
+          type: 'category',
+          label: 'Radars',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'Sensor/Radars/Radar_Intro',
+          },
+          items: [
+            {
+              type: 'category',
+              label: 'AS-611Bn',
+              collapsed: true,
+              collapsible: true,
+              link: {
+                type: 'generated-index',
+                title: 'AS-611Bn',
+                description: 'AS-611Bn radar documentation',
+              },
+              items: [
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-611Bn/Overview',
+                  label: 'Overview',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-611Bn/Quick_Start',
+                  label: 'Quick Start',
+                },
+              ],
+            },
+            {
+              type: 'category',
+              label: 'AS-613 Radar',
+              collapsed: true,
+              collapsible: true,
+              link: {
+                type: 'generated-index',
+                title: 'AS-613 Radar',
+                description: 'AS-613 radar documentation',
+              },
+              items: [
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-613_Radar/Overview',
+                  label: 'Overview',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-613_Radar/Quick_Start',
+                  label: 'Quick Start',
+                },
+              ],
+            },
+            {
+              type: 'category',
+              label: 'AS-614',
+              collapsed: true,
+              collapsible: true,
+              link: {
+                type: 'generated-index',
+                title: 'AS-614',
+                description: 'AS-614 radar documentation',
+              },
+              items: [
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-614/Overview',
+                  label: 'Overview',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-614/Quick_Start',
+                  label: 'Quick Start',
+                },
+              ],
+            },
+            {
+              type: 'category',
+              label: 'AS-BW',
+              collapsed: true,
+              collapsible: true,
+              link: {
+                type: 'generated-index',
+                title: 'AS-BW',
+                description: 'AS-BW communication module documentation',
+              },
+              items: [
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-BW/Overview',
+                  label: 'Overview',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-BW/Quick_Start',
+                  label: 'Quick Start',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'IoT Industrial',
       collapsed: true,
       collapsible: true,
