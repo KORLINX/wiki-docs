@@ -54,14 +54,57 @@ The NX40 module handles wireless communications, field-data processing, protocol
 
 ## Industrial I/O
 
-| I/O | Channels | Electrical function |
-| --- | ---: | --- |
-| Analog input | 2 | Selectable 4–20 mA or 0–5 V input |
-| Analog output | 2 | 4–20 mA current output circuit |
-| Digital input | 2 | 12 V opto-isolated input |
-| Relay output | 2 | Contact output for switching external AC or DC loads |
-| DC output | 2 | 12 V transistor low-side output |
-| GPIO | Project-dependent | Additional control or status signals |
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>I/O</th>
+      <th>Channels</th>
+      <th>Electrical function</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Analog input</td>
+      <td style={{ textAlign: 'center' }}>2</td>
+      <td>Selectable 4–20 mA or 0–5 V input</td>
+    </tr>
+
+    <tr>
+      <td>Analog output</td>
+      <td style={{ textAlign: 'center' }}>2</td>
+      <td>4–20 mA current output circuit</td>
+    </tr>
+
+    <tr>
+      <td>Digital input</td>
+      <td style={{ textAlign: 'center' }}>2</td>
+      <td>12 V opto-isolated input</td>
+    </tr>
+
+    <tr>
+      <td>Relay output</td>
+      <td style={{ textAlign: 'center' }}>2</td>
+      <td>Contact output for switching external AC or DC loads</td>
+    </tr>
+
+    <tr>
+      <td>DC output</td>
+      <td style={{ textAlign: 'center' }}>2</td>
+      <td>12 V transistor low-side output</td>
+    </tr>
+
+    <tr>
+      <td>GPIO</td>
+      <td style={{ textAlign: 'center' }}>Project-dependent</td>
+      <td>Additional control or status signals</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
 
 Potential loads include warning lights, pumps, fans, solenoid valves, auxiliary contactors, and industrial actuators. Verify electrical ratings and protection requirements before connecting a load.
 
@@ -75,22 +118,25 @@ Potential loads include warning lights, pumps, fans, solenoid valves, auxiliary 
 | I²C | Sensor or peripheral expansion |
 | 4-pin header | Project-specific expansion |
 
-## Planned local display
+## Front LCD and Local UI
 
-The planned **1.06-inch front LCD** connects to the mainboard through a dedicated connector. Its interface provides MOSI, SCLK, register-select/data-command, reset, chip-select, and backlight-control signals.
+<img
+  src="/img/Neo_Edge40/Neo-Edge40_LCD.png"
+  alt="Neo Edge40 LCD"
+  className="blog-first-image"
+/>
 
-The intended display content includes:
+NEO-Edge40 is planned to use a **1.06-inch front LCD** for field installation and status checking.
 
-- operating and alarm status;
-- BLE, Zigbee, Ethernet, RS-485, CAN, and cellular status;
-- measured sensor values;
-- relay, DC, analog, and GPIO output states; and
-- device identity and basic communication settings.
+The LCD can be used to display operating status, communication status, sensor values, output status, alarm diagnostics, and basic settings.
 
-## Planned enclosure
+| Screen Item | Displayed Content |
+| --- | --- |
+| Operating Status | Booting, Normal, Warning, Fault, Maintenance Mode |
+| Communication Status | BLE device count, Zigbee node/network status, Ethernet link, RS-485/CAN, LTE registration and signal status |
+| Measured Values | 4–20 mA / 0–5 V converted values, temperature/humidity, internal sensor values |
+| Output Status | Relay 1/2, DC Output 1/2, analog output, GPIO status |
+| Alarm / Diagnostics | Sensor disconnection, out-of-range value, communication failure, power or equipment error codes |
+| Settings | Device ID, communication parameters, thresholds, and basic network information |
 
-The current concept uses a metal enclosure with a front LCD, rear pluggable terminal blocks, and an externally mounted LTE antenna. Enclosure construction, ingress protection, terminal layout, and installation details remain subject to mechanical and certification review.
-
-## Next step
-
-Return to the [NEO-Edge40 Overview](./Neo_Edge40_Overview) to review the system data flow and choose the appropriate field and upper-level connections.
+The LCD helps reduce the need to connect a laptop during installation or inspection.
