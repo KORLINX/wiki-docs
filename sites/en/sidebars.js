@@ -208,6 +208,7 @@ const sidebars = {
               ],
             },
           ],
+          
         },
 
         {
@@ -259,8 +260,44 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'IoT Industrial',
+      collapsed: true,
+      collapsible: true,
+      link: {
+        type: 'generated-index',
+        title: 'IoT Industrial',
+        description: 'IoT Industrial documentation',
+      },
+      items: [
+        {
+          type: 'category',
+          label: 'NEO-Edge40',
+          collapsed: false,
+          collapsible: true,
+          link: {
+            type: 'generated-index',
+            title: 'NEO-Edge40',
+            description: 'Learn about the NEO-Edge40 industrial edge gateway and its hardware.',
+          },
+          items: [
+            {
+              type: 'doc',
+              id: 'IoT_Industrial/Neo_Edge40/Neo_Edge40_Overview',
+              label: 'Overview',
+            },
+            {
+              type: 'doc',
+              id: 'IoT_Industrial/Neo_Edge40/Neo_Edge40_Hardware',
+              label: 'Hardware',
+            },
+          ],
+        },
+      ],
+    },
   ],
-
+ 
   tutorialsSidebar: [
     {
       type: 'doc',

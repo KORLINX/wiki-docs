@@ -1,0 +1,96 @@
+---
+sidebar_position: 2
+title: NEO-Edge40 Hardware
+description: Explore the NEO-Edge40 Rev. 1.0 board layout, communications, industrial I/O, development interfaces, and planned display and enclosure.
+keywords: [NEO-Edge40 hardware, NX40, Ethernet, RS-485, CAN, LTE, analog input, relay output, digital I/O, LCD, industrial controller]
+---
+
+# NEO-Edge40 Hardware
+
+This page identifies the hardware blocks on the **NEO-Edge40 Rev. 1.0** mainboard. If you are new to the product, start with the [NEO-Edge40 Overview](./Neo_Edge40_Overview).
+
+<img
+  src="/img/Neo_Edge40/Neo-Edge40_Hardware.png"
+  alt="Annotated NEO-Edge40 Rev. 1.0 mainboard showing its connectors and major components"
+  className="blog-first-image"
+/>
+
+> **Development status:** The board-level information below describes Rev. 1.0. The LCD, enclosure, output ratings, analog accuracy, isolation ratings, connector pinouts, and certification-related values are not final production specifications unless explicitly confirmed.
+
+## Hardware map
+
+| Area | Hardware | Purpose |
+| --- | --- | --- |
+| Main control | KORLINX NX40 module | BLE / Zigbee communication, edge processing, and control logic |
+| Cellular expansion | KSP-N51U or KSP-N51U-M.2 | Optional LTE-M / NB-IoT communication |
+| Wired communication | RJ45, RS-485, and CAN | Connects LAN systems, industrial devices, and controllers |
+| Field inputs | Analog and digital input connectors | Receives sensor and contact signals |
+| Field outputs | Relay, DC, and analog output connectors | Controls connected field equipment |
+| Development | USB-C, SWD, GPIO, and I²C | Firmware, debugging, and peripheral expansion |
+| Onboard sensors | BMI323 and SHTC3 | Motion and temperature/humidity sensing |
+| Local interface | Button and LCD connector | Local input and planned status display |
+| Power | DC power jack | Main board power input |
+
+## Main controller and wireless
+
+| Item | Specification |
+| --- | --- |
+| Module | KORLINX NX40 |
+| MCU | Nordic Semiconductor nRF52840, Arm Cortex-M4F at 64 MHz |
+| Memory | 1 MB flash and 256 KB RAM |
+| Wireless role | BLE and Zigbee data acquisition and control |
+| Development environment | Arduino IDE with the NX40 board package and libraries |
+
+The NX40 module handles wireless communications, field-data processing, protocol conversion, and I/O control.
+
+## Communication interfaces
+
+| Interface | Board implementation | Typical use |
+| --- | --- | --- |
+| Ethernet | 10/100 Ethernet through an RJ45 port and W5500 controller | LAN, PC, local server, or gateway uplink |
+| RS-485 | One isolated channel | Industrial equipment and protocols such as Modbus RTU |
+| CAN | One channel | CAN-based equipment or controllers |
+| Cellular | Expansion for KSP-N51U or KSP-N51U-M.2 | LTE-M / NB-IoT connectivity at remote sites |
+
+## Industrial I/O
+
+| I/O | Channels | Electrical function |
+| --- | ---: | --- |
+| Analog input | 2 | Selectable 4–20 mA or 0–5 V input |
+| Analog output | 2 | 4–20 mA current output circuit |
+| Digital input | 2 | 12 V opto-isolated input |
+| Relay output | 2 | Contact output for switching external AC or DC loads |
+| DC output | 2 | 12 V transistor low-side output |
+| GPIO | Project-dependent | Additional control or status signals |
+
+Potential loads include warning lights, pumps, fans, solenoid valves, auxiliary contactors, and industrial actuators. Verify electrical ratings and protection requirements before connecting a load.
+
+## Development and expansion
+
+| Interface | Purpose |
+| --- | --- |
+| USB-C | Board connection, serial communication, or firmware work, depending on firmware configuration |
+| SWD | Firmware download and debugging |
+| GPIO | External signal access and control |
+| I²C | Sensor or peripheral expansion |
+| 4-pin header | Project-specific expansion |
+
+## Planned local display
+
+The planned **1.06-inch front LCD** connects to the mainboard through a dedicated connector. Its interface provides MOSI, SCLK, register-select/data-command, reset, chip-select, and backlight-control signals.
+
+The intended display content includes:
+
+- operating and alarm status;
+- BLE, Zigbee, Ethernet, RS-485, CAN, and cellular status;
+- measured sensor values;
+- relay, DC, analog, and GPIO output states; and
+- device identity and basic communication settings.
+
+## Planned enclosure
+
+The current concept uses a metal enclosure with a front LCD, rear pluggable terminal blocks, and an externally mounted LTE antenna. Enclosure construction, ingress protection, terminal layout, and installation details remain subject to mechanical and certification review.
+
+## Next step
+
+Return to the [NEO-Edge40 Overview](./Neo_Edge40_Overview) to review the system data flow and choose the appropriate field and upper-level connections.
