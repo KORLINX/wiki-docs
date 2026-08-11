@@ -5,97 +5,123 @@ description: Overview of the NX40 Dev Kit Hardware for BLE application developme
 keywords: [NX40 Dev Kit, DEV-NX40, NX40 development board, BLE development kit, KORLINX]
 ---
 
-## Hardware Overview
-
-The **NX40 Dev Kit** provides the board-level hardware needed to evaluate the NX40 module, test BLE applications, read onboard sensors, and develop early firmware prototypes.
-
-This page focuses only on the hardware available on the development board.
-
 <img
-  src="/img/bluetooth/nx40/quick-start/NX40i-BLE.png"
+  src="/img/bluetooth/nx40/quick-start/NX40_DK_Variants.png"
   alt="NX40 Dev Kit hardware overview"
   className="blog-first-image"
 />
+
+The **KORLINX NX40 Dev Kit** is a compact development board designed for evaluating, prototyping, and developing applications with the **NX40 Series BLE module**. The NX40 Series is intended for Bluetooth Low Energy and 2.4 GHz embedded applications such as BLE sensors, beacons, wearable devices, smart home devices, industrial monitoring nodes, and short-range wireless control systems.
+
+The Dev Kit provides essential hardware for early development, including **USB Type-C**, **FTDI USB-to-UART**, **SWD debugging**, onboard **LSM6DS3TR-C 6-axis IMU**, **SHTC3 temperature/humidity sensor**, RGB LED, user/reset buttons, expansion headers, Li-Po connector, and battery charging support.
+
+## Hardware Overview
+
+The NX40 Dev Kit includes USB connectivity, debugging access, user input, status output, onboard sensors, expansion headers, and battery-related hardware.
 
 | Block | Contents |
 | --- | --- |
-| USB & Debugging | USB Type-C, FTDI FT234XD, ESD/TVS protection, SWD header |
+| USB & Debugging | USB Type-C, FTDI FT234XD, SWD header |
 | LED & Switch | RGB LED, charge/power LEDs, reset button, user button |
 | Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor |
-| Pins & Battery | J3/J5 headers, Li-Po connector, BQ25100 charger IC |
+| Pins & Battery | J3 / J4 headers, Li-Po connector, BQ25100 charger IC |
 
-## USB and Debugging
+---
+
+### Specification
+
+| Item | Specification |
+| --- | --- |
+| Product | NX40 Dev Kit |
+| Module Series | NX40 Series BLE Module |
+| Wireless | Bluetooth Low Energy / 2.4 GHz embedded applications |
+| Main Platform | nRF52840 platform |
+| Module Models | NX40i32, NX40E32, NX40i00, NX40E00 |
+| Antenna Options | Chip antenna for NX40i, external antenna for NX40E |
+| External Flash | 32 Mbit SPI Flash or no external Flash depending on model |
+| GPIO Summary | 25 GPIO |
+| Module Package | LGA surface-mount module |
+| Module Size | 9.5 × 9.5 × 1.95 mm |
+| Module Pad Pitch | 0.65 mm |
+| Dev Kit USB Interface | USB Type-C |
+| USB-to-UART | FTDI FT234XD |
+| Debug Interface | SWD header |
+| On-board Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor |
+| Buttons | Reset button, user button |
+| LEDs | RGB LED, charge/power LEDs |
+| Expansion | J3 / J4 headers |
+| Battery Support | Li-Po connector, BQ25100 charger IC |
+| Software Platform | nRF Connect SDK / Zephyr RTOS compatible |
+
+:::note
+The uploaded NX40 datasheet contains some copied NX15 text. The hardware block information above follows the DEV-NX40 section and the NX40 pin map illustration.
+:::
+
+---
 
 <img
   src="/img/bluetooth/nx40/series/NX40-Series.png"
-  alt="NX40 Dev Kit hardware overview"
+  alt="NX40 Dev Kit Series"
   className="blog-first-image"
 />
 
-The NX40 Dev Kit includes USB and debugging interfaces for firmware upload, serial communication, and development testing.
+## Features
 
-| Hardware | Purpose |
-| --- | --- |
-| USB Type-C | Connects the board to a PC for development |
-| FTDI FT234XD | Provides USB-to-UART communication |
-| SWD header | Used for programming and debugging |
-| ESD / TVS protection | Helps protect USB and external interface areas |
-
-The USB Type-C connector is used as the main PC connection during development.  
-The SWD header is used when firmware programming or debugging is required.
+- **Compact BLE Development Board:** Provides a ready-to-use platform for evaluating and prototyping applications with the NX40 Series BLE module.
+- **Bluetooth Low Energy Platform:** Designed for BLE sensors, beacons, wearable devices, smart home devices, industrial monitoring nodes, and short-range wireless control applications.
+- **NX40 Module Support:** Supports NX40 chip antenna and external antenna variants, with Flash and no-Flash model options depending on the selected module.
+- **On-board Sensor Support:** Includes an LSM6DS3TR-C 6-axis IMU and an SHTC3 temperature/humidity sensor for motion, orientation, and environmental sensing examples.
+- **Development-ready Hardware:** Provides USB Type-C, FTDI FT234XD USB-to-UART, SWD debugging, RGB LED, charge/power LEDs, reset button, user button, J3/J4 headers, Li-Po connector, and BQ25100 charger IC.
+- **Zephyr-based Development:** Compatible with the nRF Connect SDK and Zephyr RTOS development workflow.
 
 ---
-
-## On-board Sensors
-
-The NX40 Dev Kit includes onboard sensors for motion and environmental sensing.
-
-| Sensor | Function |
-| --- | --- |
-| LSM6DS3TR-C | 6-axis IMU for motion and orientation sensing |
-| SHTC3 | Temperature and humidity sensor |
-
-These sensors allow developers to build and test BLE sensor examples directly on the Dev Kit.
-
-Typical test examples include:
-
-| Example | Description |
-| --- | --- |
-| Motion sensing | Read acceleration or orientation-related data |
-| Environmental sensing | Read temperature and humidity values |
-| BLE sensor demo | Send sensor data over BLE advertising or connection-based communication |
-
----
-
-## Buttons and LEDs
-
-The NX40 Dev Kit includes basic user input and status output components for firmware testing.
-
-| Hardware | Purpose |
-| --- | --- |
-| Reset button | Restarts the board during development |
-| User button | Application input or firmware test input |
-| RGB LED | Application status or test output |
-| Charge / power LEDs | Battery charging and power indication |
-
-The user button and RGB LED are useful for quick firmware validation before adding external peripherals or application-specific hardware.
-
----
-
-## Headers and Battery Support
 
 <img
   src="/img/bluetooth/nx40/hardware/NX40_Pin_List.png"
-  alt="NX40 Dev Kit hardware overview"
+  alt="NX40 Dev Kit Pin List"
   className="blog-first-image"
 />
 
-The NX40 Dev Kit provides expansion headers and battery-related hardware for prototype development.
+## Pin Map
 
-| Hardware | Purpose |
+The NX40 Dev Kit exposes commonly used NX40 module signals through the J3 and J4 header areas. These pins can be used for prototyping, external sensor connection, GPIO testing, analog input testing, and firmware validation.
+
+:::note
+This pin map is based on the NX40 Dev Kit pin illustration. Always confirm the final header mapping with the official schematic before production use.
+:::
+
+### J4 Header
+
+| Pin Order | Pin Label | Type | Description |
+| --- | --- | --- | --- |
+| 1 | P0.22 | GPIO | General-purpose I/O |
+| 2 | P0.21 | GPIO | General-purpose I/O |
+| 3 | P0.20 | GPIO | General-purpose I/O |
+| 4 | P0.10 / NFC2 | GPIO / NFC | GPIO or NFC2 antenna interface |
+| 5 | P0.09 / NFC1 | GPIO / NFC | GPIO or NFC1 antenna interface |
+| 6 | 3.3V | Power | 3.3 V output / board power rail reference |
+| 7 | GND | Ground | Common ground reference |
+| 8 | VBUS | Power | USB bus voltage input |
+
+### J3 Header
+
+| Pin Order | Pin Label | Type | Description |
+| --- | --- | --- | --- |
+| 1 | GND | Ground | Common ground reference |
+| 2 | P0.30 / AIN6 | GPIO / ADC | GPIO or analog input channel AIN6 |
+| 3 | P0.29 / AIN5 | GPIO / ADC | GPIO or analog input channel AIN5 |
+| 4 | P0.28 / AIN4 | GPIO / ADC | GPIO or analog input channel AIN4 |
+| 5 | P0.05 / AIN3 | GPIO / ADC | GPIO or analog input channel AIN3 |
+| 6 | P0.04 / AIN2 | GPIO / ADC | GPIO or analog input channel AIN2 |
+| 7 | P0.03 / AIN1 | GPIO / ADC | GPIO or analog input channel AIN1 |
+| 8 | P0.01 / AIN0 | GPIO / ADC | GPIO or analog input channel AIN0 |
+
+---
+
+## Pin Map Summary
+
+| Header | Pins |
 | --- | --- |
-| J3 / J5 headers | Provide access to external signals for testing and prototyping |
-| Li-Po connector | Supports battery-powered prototype testing |
-| BQ25100 charger IC | Provides Li-Po battery charging support |
+| J4 | P0.22, P0.21, P0.20, P0.10/NFC2, P0.09/NFC1, 3.3V, GND, VBUS |
+| J3 | GND, P0.30/AIN6, P0.29/AIN5, P0.28/AIN4, P0.05/AIN3, P0.04/AIN2, P0.03/AIN1, P0.01/AIN0 |
 
-This makes the board suitable for both USB-powered development and battery-oriented BLE prototype testing.

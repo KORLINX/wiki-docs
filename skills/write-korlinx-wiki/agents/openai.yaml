@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write KORLINX Wiki"
+  short_description: "Create clear, verified KORLINX product docs"
+  default_prompt: "Use $write-korlinx-wiki to create or improve documentation for a KORLINX product."

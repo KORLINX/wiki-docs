@@ -1,0 +1,115 @@
+---
+sidebar_position: 1
+title: NEO-Edge40 Overview
+description: Learn what the KORLINX NEO-Edge40 industrial edge gateway does, how data moves through it, and which interfaces are available.
+keywords: [NEO-Edge40, industrial edge gateway, industrial controller, BLE gateway, Zigbee gateway, Ethernet, RS-485, CAN, LTE-M, NB-IoT, industrial I/O, KORLINX]
+---
+
+# NEO-Edge40 Overview
+
+The **KORLINX NEO-Edge40** connects wireless sensors, industrial equipment, and field I/O to local or remote systems. It combines data collection, edge processing, communications, and output control on one platform.
+
+<img
+  src="/img/Neo_Edge40/NEO-Edge40_Overview.png"
+  alt="Top view of the NEO-Edge40 Rev. 1.0 mainboard"
+  className="blog-first-image"
+/>
+
+> **Development status:** This documentation describes the NEO-Edge40 Rev. 1.0 platform. Planned features and values that still require hardware or certification review are identified on the [Hardware](./Neo_Edge40_Hardware) page. Confirm final specifications before designing a production system.
+
+## At a glance
+
+| Need | NEO-Edge40 capability |
+| --- | --- |
+| Collect wireless sensor data | BLE and Zigbee through the KORLINX NX40 module |
+| Connect industrial equipment | Ethernet, RS-485, and CAN |
+| Read field signals | Analog and opto-isolated digital inputs |
+| Control field equipment | Relay, DC, analog, and GPIO outputs |
+| Connect a remote site | Optional LTE-M / NB-IoT expansion |
+| Process data locally | Filtering, conversion, status evaluation, alarms, protocol conversion, and control logic |
+| Check status on site | Planned front LCD for values, communications, alarms, and output states |
+
+## How it works
+
+NEO-Edge40 sits between field devices and an upper-level system such as a PC, local server, cloud platform, or industrial controller.
+
+1. **Collect:** Receive data from BLE or Zigbee devices, wired equipment, and analog or digital inputs.
+2. **Process:** Filter and convert values, evaluate status, apply alarm rules, or run local control logic.
+3. **Connect or control:** Send data upstream through Ethernet, cellular, RS-485, or CAN, and operate field outputs when required.
+
+```text
+Sensors and field equipment
+            ↓
+    NEO-Edge40 processing
+        ↙             ↘
+Upper-level system   Field outputs
+```
+
+## Choose a connection
+
+<img
+  src="/img/Neo_Edge40/NEO-Edge40_connection.png"
+  alt="Neo Edge40 Connection"
+  className="blog-first-image"
+/>
+
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Connection</th>
+      <th>Use it for</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>BLE / Zigbee</td>
+      <td>Wireless sensors, beacons, and nodes</td>
+    </tr>
+
+    <tr>
+      <td>Ethernet</td>
+      <td>A LAN, local server, PC, or gateway uplink</td>
+    </tr>
+
+    <tr>
+      <td>RS-485</td>
+      <td>Industrial instruments and field equipment</td>
+    </tr>
+
+    <tr>
+      <td>CAN</td>
+      <td>CAN-based equipment or controller integration</td>
+    </tr>
+
+    <tr>
+      <td>LTE-M / NB-IoT</td>
+      <td>
+        Remote sites without a wired network; requires the optional cellular module
+      </td>
+    </tr>
+
+    <tr>
+      <td>Analog / digital inputs</td>
+      <td>Current, voltage, and contact signals from field sensors</td>
+    </tr>
+
+    <tr>
+      <td>Relay / DC / analog outputs</td>
+      <td>Switching or controlling connected equipment</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+## Typical applications
+
+- BLE or Zigbee sensor hubs
+- Factory equipment monitoring and local control
+- Smart agriculture and environmental monitoring
+- Building and energy-management systems
+- Remote telemetry over LTE-M or NB-IoT
+- OEM industrial controllers

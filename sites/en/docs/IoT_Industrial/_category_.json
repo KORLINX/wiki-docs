@@ -1,0 +1,11 @@
+{
+  "label": "IoT Industrial",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "title": "IoT Industrial",
+    "description": "Industrial IoT gateways, controllers, and integration guides."
+  },
+  "collapsed": true,
+  "collapsible": true
+}

@@ -1,0 +1,75 @@
+---
+sidebar_position: 1
+title: Radar Modules Overview
+description: Compare the AnySensing AS-611Bn, AS-613, and AS-614 radar modules and the AS-BW communication module.
+keywords: [AnySensing, radar module, 60 GHz radar, AS-611Bn, AS-613, AS-614, AS-BW]
+---
+
+# Radar Modules Overview
+
+The AnySensing product family includes three 60 GHz radar modules for distance, vital-sign, presence, posture, and fall-detection applications. The family also includes the AS-BW communication module, which connects a radar module to a Wi-Fi network.
+
+## Choose a module
+
+| Model | Class | Role |
+| --- | --- | --- |
+| [AS-611Bn](./AS-611Bn/Overview) | 60 GHz pulsed radar module, 1 TX / 1 RX | Single-target distance sensing or single-person vital-sign sensing. Designed for OEM integration and equipped with onboard Bluetooth Low Energy (BLE). |
+| [AS-614](./AS-614/Overview) | 60 GHz frequency-modulated continuous-wave (FMCW) AI radar module, 1 TX / 4 RX | The incumbent bed sensor in deployed InCare24 hospital systems. It remains in production while AS-613 progressively replaces it in new installations. |
+| [AS-613](./AS-613_Radar/Overview) | 60 GHz FMCW AI radar module, 1 TX / 3 RX | The current flagship model for new installations and conversions. Supports multiple targets—up to five people—fall detection, and posture detection. |
+| [AS-BW](./AS-BW/Overview) | Bluetooth / Wi-Fi communication module | Not a radar. Carries a radar module's UART stream over 2.4 GHz Wi-Fi as the communication-module half of an InCare24 ceiling unit. |
+
+## Understand the model numbers
+
+The radar model number describes its frequency band and antenna configuration:
+
+```text
+AS(ABC)
+
+AS = AnySensing
+A  = frequency band (6 = 60 GHz)
+B  = number of TX antennas
+C  = number of RX antennas
+suffix B = BLE-equipped model
+```
+
+| Model | Meaning |
+| --- | --- |
+| AS-611 | 60 GHz, 1 TX, 1 RX |
+| AS-611B / AS-611Bn | BLE-equipped AS-611 |
+| AS-613 | 60 GHz, 1 TX, 3 RX |
+| AS-614 | 60 GHz, 1 TX, 4 RX |
+| AS-622 | 60 GHz, 2 TX, 2 RX; outside the scope of this documentation |
+
+AS-BW does not follow this naming rule because it is a communication module rather than a radar. Current documents are standardizing `AS-611Bn` as `AS-611B`. **[VERIFY]**
+
+## Compare specifications
+
+The comparison below comes from the internal radar-module master comparison sheet dated June 14, 2026, which was compiled from product datasheets and manuals.
+
+| Item | AS-611Bn | AS-614 | AS-613 | AS-BW |
+| --- | --- | --- | --- | --- |
+| Class | 60 GHz pulsed radar | 60 GHz FMCW AI radar | 60 GHz FMCW AI radar | Bluetooth / Wi-Fi module |
+| TX / RX | 1 / 1 | 1 / 4 | 1 / 3 | — |
+| Antenna gain | 2 dBi | 3 dBi | 3 dBi | — |
+| EIRP | 10 dBm | 10 dBm | 11 dBm | — |
+| Beamwidth, horizontal / vertical | 65° / 55° | 100° / 100° | 120° / 120° | — |
+| Distance range | 1 / 2.5 / 5 / 7.5 / 10 m modes | Maximum 8 m | Maximum 8 m; 9 m wall-mounted | — |
+| Vital-sign range | Near: 0.15–0.5 m<br />Far: 0.4–2.0 m | Maximum 3 m | Maximum 5 m; 3 m combined | — |
+| Range resolution | 10–120 mm, depending on mode | 12 cm | 12 cm | — |
+| Vital-sign accuracy | More than 90% at steady state; respiration more than 95% | Approximately 85% | Approximately 85% | — |
+| People tracked | 1 | 1 | Up to 5 | — |
+| Size | 32 × 30 × 3.35 mm | 32 × 30 × 3.35 mm | 32 × 30 × 3.35 mm | 32 × 40 × 4.25 mm |
+| Weight | **[TBD]** | 3.07 g | 3.15 g | **[TBD]** |
+| Supply voltage | 3.3–7 V | 3.3–7 V | 3.3–7 V | 3.3–7 V |
+| Power | 0.3 W | Maximum 700 mW | Maximum 1,000 mW; typically 650 mW | Maximum 700 mW |
+| Operating temperature | −40 to 85 °C | −40 to 85 °C | −20 to 85 °C | −40 to 85 °C |
+| Interfaces | GPIO, UART, BLE | GPIO, UART | GPIO, UART, USB | GPIO, UART, Bluetooth 4.2, 2.4 GHz Wi-Fi |
+| Radar IC / MCU | Acconeer A121 / Nordic nRF52840 | Socionext SC1240 / Geehy AP32F411CE **[VERIFY]** | Infineon BGT60CUTR13 / CY8C6148LQI | **[TBD]** |
+| Certification | KC, FCC | KC, FCC | KC, FCC; TELEC in progress | **[TBD]** |
+
+## Continue with a product
+
+- [AS-611Bn Overview](./AS-611Bn/Overview)
+- [AS-613 Overview](./AS-613_Radar/Overview)
+- [AS-614 Overview](./AS-614/Overview)
+- [AS-BW Overview](./AS-BW/Overview)
