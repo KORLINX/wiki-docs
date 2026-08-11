@@ -1,0 +1,49 @@
+---
+sidebar_position: 1
+title: AS-613 Radar Overview
+description: Learn the capabilities, specifications, and design notes of the AnySensing AS-613 60 GHz multi-target AI radar module.
+keywords: [AS-613, AnySensing, 60 GHz radar, FMCW radar, fall detection, vital signs, multi-target radar]
+---
+
+# AS-613 Radar Overview
+
+The **AS-613** is a 60 GHz multi-channel frequency-modulated continuous-wave (FMCW) AI radar with one transmit and three receive antennas. It performs analysis on the module and supports multiple targets, contactless vital signs, fall detection, posture, presence, and position sensing.
+
+AS-613 is the current flagship model, is in volume production, and is used for new hospital installations and conversions from AS-614.
+
+## What it can sense
+
+- Heart rate, breathing rate, and heart-rate variability using RMSSD and SDNN
+- Respiration waveform and breathing anomalies
+- AI fall detection and posture classification: lying, sitting, and standing
+- Presence, occupancy, and vacancy for up to five people
+- Distance and X/Y/Z position up to 8 m
+
+## Specifications
+
+| Item | Specification |
+| --- | --- |
+| Class | 60 GHz multi-channel FMCW radar with onboard AI analysis |
+| TX / RX | 1 / 3 |
+| Antenna gain / EIRP | 3 dBi / 11 dBm |
+| Beamwidth | 120° horizontal / 120° vertical |
+| Distance range | Maximum 8 m; 9 m wall-mounted; 12 cm resolution |
+| Vital-sign range | Maximum 5 m; 3 m when combined with other functions; approximately 85% accuracy |
+| People tracked | Up to 5 |
+| Size / weight | 32 × 30 × 3.35 mm / 3.15 g |
+| Supply / power | 3.3–7 V / maximum 1,000 mW; typically 650 mW |
+| Operating temperature | −20 to 85 °C |
+| Interfaces | GPIO, UART, USB |
+| Radar IC | Infineon BGT60CUTR13, XENSIV 60 GHz |
+| MCU | CY8C6148LQI, PSoC 6 |
+| Option modes | 11, 12, 13, and 14 |
+| Certifications | KC and FCC; TELEC certification in progress for Japan |
+| Reference manual | User Manual v1.00, May 2026 **[TBD]** |
+
+## Antenna-in-package design
+
+The BGT60CUTR13 uses an antenna-in-package design and cannot use a conventional shield can. Its package provides an equivalent three-dimensional Faraday structure. Ingenious holds a technical justification document, including an English appendix for overseas certification submissions. Request that document when a customer or test house asks about shielding.
+
+## Next step
+
+Continue to [AS-613 Radar Quick Start](./Quick_Start) for power requirements, commissioning, AS-BW connectivity, data limitations, and troubleshooting.

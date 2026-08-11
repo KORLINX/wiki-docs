@@ -1,0 +1,44 @@
+---
+sidebar_position: 1
+title: AS-614 Overview
+description: Learn the capabilities, specifications, and documented limitations of the AnySensing AS-614 60 GHz FMCW AI radar module.
+keywords: [AS-614, AnySensing, 60 GHz radar, FMCW radar, vital signs, presence sensor, InCare24]
+---
+
+# AS-614 Overview
+
+The **AS-614** is a 60 GHz frequency-modulated continuous-wave (FMCW) AI radar module with one transmit and four receive antennas. The board designation is **RB-614**. It performs AI analysis on the module for position, vital signs, presence, occupancy count, and hospital-bed monitoring.
+
+AS-614 remains in production and is installed in existing InCare24 systems. New installations are moving to AS-613, while AS-614 development focuses on stability in hospital environments.
+
+## Specifications
+
+| Item | Specification |
+| --- | --- |
+| Class | 60 GHz multi-channel FMCW radar with onboard AI analysis |
+| TX / RX | 1 / 4 |
+| Antenna gain / EIRP | 3 dBi / 10 dBm |
+| Beamwidth | 100° horizontal / 100° vertical |
+| Distance range | Maximum 8 m; 12 cm resolution |
+| Vital-sign range | Maximum 3 m; approximately 85% accuracy |
+| People tracked | 1 |
+| Size / weight | 32 × 30 × 3.35 mm / 3.07 g |
+| Supply / power | 3.3–7 V / maximum 700 mW |
+| Operating temperature | −40 to 85 °C |
+| Interfaces | GPIO and UART; no USB |
+| Radar IC / MCU | Socionext SC1240 / Geehy AP32F411CE **[VERIFY]** |
+| Certifications | KC and FCC |
+| Functions | Position, vital signs, presence, occupancy count, and hospital-bed monitoring |
+| Reference manual | User Manual v5.00, January 2025; latest identified version v5.5 **[TBD]** |
+
+## Operating modes
+
+AS-614 uses numbered operating modes. Mode 10 outputs raw data. The complete mapping of mode numbers to behavior is **[TBD]** because the packet reference `260508_summary_radar_payloads.md` was not available with the source document.
+
+## MCU identification
+
+The 2023 RB-614 v1.0 hardware folder identifies a GigaDevice GD32F303CBT6, while the current internal record identifies a Geehy AP32F411CE. The part may have changed between revisions, but that has not been confirmed. Do not quote the MCU to customers until engineering resolves the discrepancy. **[VERIFY]**
+
+## Next step
+
+Continue to [AS-614 Quick Start](./Quick_Start) for bench checks, site commissioning, AS-BW network attachment, data limitations, and field troubleshooting.

@@ -1,0 +1,76 @@
+---
+sidebar_position: 2
+title: AS-BW Quick Start
+description: Connect, power, provision, and troubleshoot the AnySensing AS-BW communication module for radar data over Wi-Fi and MQTT.
+keywords: [AS-BW, quick start, Wi-Fi, Bluetooth, MQTT, radar communication module, InCare24]
+---
+
+# AS-BW Quick Start
+
+Use this guide to assemble an AS-BW with a radar module, prepare the site network, provision connectivity, and verify data before completing installation.
+
+## Before going onsite
+
+Confirm all of the following before installation:
+
+- A 2.4 GHz SSID is reachable at every installation point; AS-BW does not support 5 GHz.
+- Credentials will remain valid on installation day.
+- The network does not block the device with a captive portal, MAC allow-list, or client isolation.
+- You have the deployment-specific Wi-Fi and MQTT settings sheet from Ingenious.
+- The current AS-BW firmware, BLE configuration software, and viewer are available.
+
+If usable 2.4 GHz coverage is unavailable, stop and raise the network design with Ingenious.
+
+## Assemble and verify
+
+1. **Assemble the unit.** Install the radar module and AS-BW in the enclosure on the supplied ceiling bracket.
+2. **Connect UART.** Wire the radar to AS-BW and share ground.
+3. **Size the supply for both modules.** The heaviest documented pair is AS-613 at up to 1,000 mW plus AS-BW at up to 700 mW. Include startup headroom.
+4. **Configure over Bluetooth.** Use the BLE configuration software supplied by Ingenious to enter Wi-Fi credentials and MQTT parameters.
+5. **Record identity.** Map the AS-BW MAC address to the bed number.
+6. **Verify with the viewer.** Confirm operation before leaving the room or replacing the ceiling tile.
+
+> **Provisioning gap:** The exact SSID/password workflow, access-point behavior, DHCP or static addressing, ports, firewall rules, NTP, and TLS settings are **[TBD]**. Obtain the deployment settings sheet before going onsite.
+
+## Network behavior
+
+| Link | Purpose |
+| --- | --- |
+| Bluetooth 4.2 | Configuration only |
+| 2.4 GHz Wi-Fi | Network transport |
+| MQTT | Radar-data transport to the deployment broker |
+| MAC address | Device identity on the server |
+
+Per-unit serial numbers are being introduced in addition to MAC addresses. **[VERIFY]**
+
+## Data forwarding
+
+AS-BW forwards the radar module's output; it does not transform or analyze the payload.
+
+| Item | Value |
+| --- | --- |
+| Transport | MQTT over 2.4 GHz Wi-Fi |
+| Payload | Radar-module output forwarded unchanged |
+| Device identity | MAC address |
+| Broker address and port | Deployment-specific **[TBD]** |
+| Topic structure | Deployment-specific **[TBD]** |
+| Credentials, QoS, TLS, and LWT | **[TBD]** |
+| Downlink to an individual radar | Requested, not confirmed as shipping **[VERIFY]** |
+
+Do not invent MQTT settings. No common broker address, topic hierarchy, credential scheme, QoS level, or TLS policy is documented; these values are supplied per deployment.
+
+InCare24 data storage and retention are under review and remain **[TBD]**.
+
+## Troubleshooting
+
+| Symptom or question | Action or answer |
+| --- | --- |
+| Manual shows model `AS_614` | This is a known typo in the AS-BW manual, not a different module. |
+| Unit does not join Wi-Fi | Confirm 2.4 GHz is enabled, the SSID is visible at the mounting point, and credentials were written successfully. |
+| Need to identify a physical unit | Use the recorded MAC-address-to-bed mapping. |
+| Unit resets while the radar is active | Increase supply headroom for the combined radar and AS-BW peak load. A power-path revision is in progress. **[VERIFY]** |
+| Need to send a command to one radar over MQTT | This capability is in development and not confirmed as shipping. **[VERIFY]** |
+| Unit joins Wi-Fi but server receives nothing | Check client isolation, captive portal, MAC allow-listing, broker address, and broker port; escalate with the MAC address. |
+| Need a retention period | Storage and retention are undefined. **[TBD]** |
+
+Return to the [AS-BW Overview](./Overview) for specifications and known documentation limitations.

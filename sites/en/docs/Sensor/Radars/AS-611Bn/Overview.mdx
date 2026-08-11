@@ -1,0 +1,64 @@
+---
+sidebar_position: 1
+title: AS-611Bn Overview
+description: Learn the capabilities, specifications, connectors, and pinout of the AnySensing AS-611Bn 60 GHz radar module.
+keywords: [AS-611Bn, AnySensing, 60 GHz radar, pulsed radar, vital signs, distance sensor, BLE]
+---
+
+# AS-611Bn Overview
+
+The **AS-611Bn** is a 60 GHz pulsed radar module for single-target distance sensing or single-person vital-sign sensing. Its 32 × 30 mm board integrates the antenna, millimeter-wave integrated circuit, and digital signal processor. The module communicates through UART, and the AS-611Bn variant also provides Bluetooth Low Energy (BLE).
+
+The product is available with separate distance-sensing and vital-sign firmware. Their command sets are different: a distance unit does not accept vital-sign commands, and a vital-sign unit does not accept distance commands. Check the unit label and firmware type before configuration.
+
+## At a glance
+
+| Item | Specification |
+| --- | --- |
+| Radar | 60 GHz pulsed radar |
+| Antenna | 1 TX, EIRP 10 dBm; 1 RX; gain 2 dBi |
+| RF pattern at −3 dB | Horizontal 65°; vertical 55° |
+| Supply / power | 3.3–7 VDC / 0.3 W |
+| Operating / storage temperature | −40 to 85 °C / −55 to 125 °C |
+| Board size | 32.0 × 30.0 × 3.35 mm without connector; 32.0 × 30.0 × 5.1 mm with connector |
+| Interfaces | GPIO, 3.3 V TTL UART, BLE on AS-611Bn |
+| Distance modes | 1 m, 2.5 m, 5 m, 7.5 m, and 10 m |
+| Vital-sign range | Near: 0.15–0.5 m; far: 0.4–2.0 m; detection angle 70° |
+| Vital-sign accuracy | More than 90% at steady state; respiration more than 95%; more than 90% below 1 m and more than 80% above 1 m |
+| Vital-sign outputs | Breathing rate and waveform, heart rate and waveform, heart-rate variability (HRV) |
+| Target profiles | Human, small dog up to 13 kg, large dog above 13 kg, and cat |
+
+## Connectors
+
+| Connector | Function |
+| --- | --- |
+| J1 | 2.54 mm pin header for power and both UART channels |
+| J2 | 12505WR-06 six-position connector for power and UART 1 |
+| J4 / J5 | USB-C power input; USB data is not available |
+
+Any one of J1, J2, J4, or J5 can power the module. USB-C supplies power only, so read radar data through UART or BLE.
+
+## Pinout
+
+Pin 1 on J1 and J2 is identified by a square pad.
+
+| Pin | Signal | J1 | J2 |
+| ---: | --- | --- | --- |
+| 1 | VCC | 3.3–7 V power | 3.3–7 V power |
+| 2 | GND | Ground | Ground |
+| 3 | GPIO | Input / output | Input / output |
+| 4 | NRST | Not connected or high: normal; low: reset | Not connected or high: normal; low: reset |
+| 5 | UART TX 1 | UART 1 transmit | UART transmit |
+| 6 | UART RX 1 | UART 1 receive | UART receive |
+| 7 | UART TX 2 | UART 2 transmit | Not used |
+| 8 | UART RX 2 | UART 2 receive | Not used |
+
+The board has four 3 mm mounting holes positioned 2.5 mm from the edges. Aim the face of the radar die at the target.
+
+## Status LED
+
+The indicator LED flashes when the module outputs data. A blinking LED therefore indicates that the module is operating and transmitting. The complete LED-state table is **[TBD]**.
+
+## Next step
+
+Continue to [AS-611Bn Quick Start](./Quick_Start) to power the module, connect UART or BLE, tune detection, read output frames, and troubleshoot common problems.

@@ -1,0 +1,157 @@
+---
+sidebar_position: 2
+title: AS-611Bn Quick Start
+description: Power, connect, configure, and read distance or vital-sign data from the AnySensing AS-611Bn radar module.
+keywords: [AS-611Bn, quick start, UART, BLE, distance sensing, vital signs, radar data]
+---
+
+# AS-611Bn Quick Start
+
+Use this guide to power an AS-611Bn, establish UART or BLE communication, tune its detection mode, and interpret its output.
+
+> **Before you begin:** Confirm whether the module runs distance-sensing or vital-sign firmware. The two firmware types use different commands.
+
+## First data over UART
+
+1. **Apply power.** Supply 3.3–7 V through USB-C, J1, or J2. USB-C provides power only.
+2. **Connect UART.** Cross UART TX 1 and RX 1 with the host and connect a common ground. Use a 3.3 V TTL interface; do not connect the module directly to RS-232.
+3. **Configure the serial port.** Use the settings below.
+4. **Check communication.** Send `ping`. The documented reply is `allive`. **[VERIFY]** The spelling must be confirmed on hardware.
+5. **Observe output.** The module starts transmitting at power-up. Send `stop` to pause and `start` to resume. The `help` command displays settings but stops output, so send `start` afterward.
+6. **Aim and tune.** For vital signs, aim the antenna face toward the chest. Front-facing placement is most accurate. Under-mattress use in close-range mode is **[VERIFY]** for this generation.
+
+All commands are lowercase.
+
+| UART setting | Value |
+| --- | --- |
+| Baud rate | 115,200 bps |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
+| Signal level | 3.3 V TTL |
+| Encoding | ASCII command-line interface |
+
+## Tune a distance unit
+
+Apply settings in this order so that each change isolates one part of the detection problem.
+
+| Step | Command | Default / range | Purpose |
+| ---: | --- | --- | --- |
+| 1 | `distmode n` | `2`; `1`, `2`, `5`, `7`, `10` | Select the maximum distance mode |
+| 2 | `objnum n` | `5`; 1–10 | Set the number of reported objects |
+| 3 | `sensum n` | `1`; 1–15 | Set detections per second |
+| 4 | `sengain n` | `2`; 0–10 | Increase amplification until small nearby objects appear, then reduce by one |
+| 5 | `senlevel n` | `30`; 10–500 | Raise the threshold for clutter or lower it for missed targets |
+| 6 | `complevel n` | `3`; 1–9 | Require a target to be stronger than its surroundings |
+| 7 | `dispzone`, `dispdiff`, `dispmove`, `offspace` | — | Select zone, changed-data, moving-target, or separator output behavior |
+
+Longer modes also increase the minimum distance:
+
+| Mode | Detection range | Resolution |
+| --- | --- | --- |
+| `distmode 1` | 150–1,000 mm | 10 mm |
+| `distmode 2` | 150–2,520 mm | 30 mm |
+| `distmode 5` | 300–5,040 mm | 60 mm |
+| `distmode 7` | 500–7,580 mm | 120 mm |
+| `distmode 10` | 500–10,100 mm | 120 mm |
+
+## Tune a vital-sign unit
+
+| Command | Default / range | Purpose |
+| --- | --- | --- |
+| `mode 0` / `mode 1` | `1` | `0`: 150–510 mm close range; `1`: 400–2,020 mm long range |
+| `dislimit n` | 1,500 mm | Limit long-range detection; `0` restores 1,500 mm and clears `distfixed` |
+| `distfixed n` | `0` | Lock detection to ±20 mm in close mode or ±200 mm in long mode; clears `dislimit` |
+| `human`, `sdog`, `ldog`, `cat` | `human` | Select the target profile; `object` reports the selection |
+| `onwave` / `offwave` | `onwave` | Output waveforms at 20 Hz or summary values at 1 Hz |
+| `len` / `pwr` / `off` | `off` | Put target distance, reflected energy, or nothing in the spare field |
+
+Common commands are `ping`, `start`, `stop`, `reset`, and `help`. Separator commands are `oncomma`, `onblacnk`, and `offspace`; the spelling `onblacnk` is reproduced from the manual and remains **[VERIFY]**.
+
+## Connect over BLE
+
+BLE is available only on AS-611Bn. The module implements the Nordic UART Service (NUS), so an NUS-compatible client can exchange the same serial data.
+
+| Item | Value |
+| --- | --- |
+| Service | Nordic UART Service |
+| Service UUID | `6E400001-B5A3-F393-E0A9-E50E24DCCA9E` |
+| TX UUID, module to client | `6E400003-B5A3-F393-E0A9-E50E24DCCA9E` |
+| RX UUID, client to module | `6E400002-B5A3-F393-E0A9-E50E24DCCA9E` |
+| Advertised name | `AS_611Bn` **[VERIFY]** |
+
+For an onsite check, use the UART utility in nRF Toolbox and scan for the module. Changing a setting reboots the module and disconnects BLE. A new command can also drop the BLE link; reconnect before continuing.
+
+AS-611Bn output does not contain a device ID, and no ID-assignment command is documented. Connect multiple modules to separate UART ports. A per-module addressing scheme is **[TBD]**.
+
+## Read distance data
+
+Frames are ASCII, begin with a start character, and end with `!`. Select one separator style before writing a parser.
+
+| Command | Style | Example | Length |
+| --- | --- | --- | ---: |
+| `oncomma` | Comma-separated, default | `#A,BBBB,CCCC,DDDDD,EEE,FFF,GGG!` | 31 bytes |
+| `onblacnk` | Space-separated | `#A BBBB CCCC DDDDD EEE FFF GGG!` | 31 bytes |
+| `offspace` | No separator | `#ABBBBCCCCDDDDDEEEFFFGGG!` | 25 bytes |
+
+| Field | Bytes | Meaning |
+| --- | ---: | --- |
+| `#` | 1 | Distance-frame start |
+| `A` | 1 | Object number |
+| `BBBB` | 4 | X coordinate; unsupported on this model |
+| `CCCC` | 4 | Y coordinate; unsupported on this model |
+| `DDDDD` | 5 | Forward distance in millimeters |
+| `EEE` | 3 | Reflected energy |
+| `FFF`, `GGG` | 3 each | Spare fields |
+| `!` | 1 | Frame end |
+
+Zone mode uses `#ZAAAAAAAAAA!`. Each of the ten `A` characters represents one equal distance zone and is `1` when occupied. Enable it with `dispzone 1`.
+
+## Read vital-sign data
+
+Complex mode (`onwave`) is the default and outputs 20 frames per second:
+
+```text
+@A,B,CCC,DD,EE,FF.FF,GG.GG,HHH!
+```
+
+| Field | Meaning |
+| --- | --- |
+| `A` | Object number |
+| `B` | Detection status |
+| `CCC` | Heart rate in beats per minute |
+| `DD` | Respiration rate in breaths per minute |
+| `EE` | HRV in milliseconds |
+| `FF.FF` | Heart-rate waveform sample |
+| `GG.GG` | Respiration waveform sample |
+| `HHH` | Distance with `len`, energy with `pwr`, or empty with `off` |
+
+Simple mode (`offwave`) omits the waveforms and outputs once per second:
+
+```text
+@A,B,CCC,DD,EE,FFF!
+```
+
+| Status | Meaning |
+| ---: | --- |
+| 0 | No target |
+| 1 | Target moving too much for vital-sign measurement |
+| 2 | Target detected; vital signs are being calculated |
+| 3 | Vital signs are available |
+| 4 | Target detected but breathing is not detected |
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| No UART data | Check whether the LED flashes, verify 115,200 bps, cross TX/RX, share ground, confirm power, and send `start`. |
+| Unwanted detections | Reduce `sengain`, raise `senlevel`, then raise `complevel`, one at a time. Remove moving or metallic reflectors. |
+| Missed target | Check the mode's minimum distance, then raise `sengain` or lower `senlevel`. |
+| Vital signs drop out | Remove obstructions and nearby reflectors or movement; narrow the range with `dislimit` or `distfixed`; ensure only one person is present. |
+| X and Y remain empty | Expected: this model reports forward distance in Z only. |
+| Command rejected | Confirm lowercase spelling and that the command matches the unit's distance or vital-sign firmware. |
+| Performance changed after environmental or temperature change | Send `reset` to recalibrate while retaining settings. |
+| LED is disruptive | A switchable LED has been requested, but availability for the installed firmware is **[VERIFY]**. |
+
+Return to the [AS-611Bn Overview](./Overview) for electrical and connector information.
