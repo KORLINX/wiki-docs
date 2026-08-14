@@ -8,6 +8,8 @@
 .docusaurus
 .cache-loader
 
+/skills/write-korlinx-wiki/
+
 # Misc
 .DS_Store
 .env.local
