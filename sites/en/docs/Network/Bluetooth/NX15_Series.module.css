@@ -281,85 +281,6 @@
   font-weight: 600;
 }
 
-
-/* =========================
-   VARIANT TABLE
-   ========================= */
-
-.tableWrapper {
-  width: 100%;
-  overflow-x: auto;
-
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 12px;
-}
-
-.variantTable {
-  display: table;
-  width: 100%;
-  min-width: 100%;
-  margin: 0;
-
-  border-collapse: collapse;
-  table-layout: auto;
-}
-
-.variantTable th,
-.variantTable td {
-  padding: 14px 16px;
-
-  border: 0;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-
-  text-align: left;
-  vertical-align: middle;
-
-  font-size: 1rem;
-  line-height: 1.5;
-
-  word-break: normal;
-  overflow-wrap: normal;
-}
-
-/* Remove Infima paragraph spacing inside table cells */
-.variantTable th p,
-.variantTable td p {
-  margin: 0;
-  padding: 0;
-}
-
-.variantTable th {
-  background: var(--ifm-color-emphasis-100);
-
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.variantTable tbody tr:last-child td {
-  border-bottom: 0;
-}
-
-.variantTable th:nth-child(1),
-.variantTable td:nth-child(1) {
-  width: 13%;
-}
-
-.variantTable th:nth-child(2),
-.variantTable td:nth-child(2) {
-  width: 18%;
-}
-
-.variantTable th:nth-child(3),
-.variantTable td:nth-child(3) {
-  width: 22%;
-}
-
-.variantTable th:nth-child(4),
-.variantTable td:nth-child(4) {
-  width: 47%;
-}
-
-
 /* =========================
    START HERE
    ========================= */
@@ -492,6 +413,230 @@
 
   font-size: 0.9rem;
 }
+
+/* =========================================================
+   MODEL VARIANTS
+   Desktop / Tablet = Table
+   Mobile = Cards
+   ========================================================= */
+
+.variantDesktop {
+  display: block;
+
+  width: 100%;
+  overflow-x: auto;
+
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.variantMobile {
+  display: none;
+}
+
+
+/* ---------- DESKTOP / TABLET TABLE ---------- */
+
+.variantTable {
+  display: table;
+
+  width: 100%;
+  min-width: 680px;
+  margin: 0;
+
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.variantTable thead {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.variantTable th,
+.variantTable td {
+  padding: 12px 10px;
+
+  border: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+
+  text-align: left;
+  vertical-align: middle;
+
+  font-size: 1rem;
+  line-height: 1.5;
+
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.variantTable th {
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.variantTable tbody tr:nth-child(even) {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.variantTable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Remove Infima margins inside table */
+.variantTable th p,
+.variantTable td p {
+  margin: 0;
+  padding: 0;
+}
+
+.variantTable th:nth-child(1),
+.variantTable td:nth-child(1) {
+  width: 13%;
+}
+
+.variantTable th:nth-child(2),
+.variantTable td:nth-child(2) {
+  width: 18%;
+}
+
+.variantTable th:nth-child(3),
+.variantTable td:nth-child(3) {
+  width: 22%;
+}
+
+.variantTable th:nth-child(4),
+.variantTable td:nth-child(4) {
+  width: 47%;
+}
+
+.variantTable td:first-child strong {
+  white-space: nowrap;
+}
+
+
+/* ---------- MOBILE CARD BASE ---------- */
+
+.variantCard {
+  overflow: hidden;
+
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+
+  background: var(--ifm-background-surface-color);
+}
+
+.variantCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+
+  background: var(--ifm-color-emphasis-100);
+}
+
+.variantCardHeader h3 {
+  margin: 0;
+
+  font-size: 1.08rem;
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+.variantBadge,
+.variantBadgeSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+.variantBadge {
+  border: 1px solid rgba(68, 156, 255, 0.35);
+
+  color: var(--ifm-color-primary);
+  background: rgba(68, 156, 255, 0.12);
+}
+
+.variantBadgeSecondary {
+  border: 1px solid var(--ifm-color-emphasis-300);
+
+  color: var(--ifm-color-emphasis-700);
+  background: transparent;
+}
+
+.variantMeta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  padding: 14px 16px;
+
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.variantMeta > div {
+  min-width: 0;
+}
+
+.variantMeta > div + div {
+  margin-left: 14px;
+  padding-left: 14px;
+
+  border-left: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.variantMeta span,
+.variantUse > span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--ifm-color-emphasis-600);
+
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.variantMeta strong {
+  display: block;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.variantUse {
+  padding: 14px 16px 16px;
+}
+
+.variantUse p {
+  margin: 0;
+
+  color: var(--ifm-color-emphasis-800);
+
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
 /* =========================================================
    TABLET — 701px to 996px
    ========================================================= */
@@ -603,70 +748,6 @@
   .featureList span {
     font-size: 0.68rem;
   }
-
-
-  /* ---------- MODEL TABLE ---------- */
-
-  .tableWrapper {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .variantTable {
-    width: 100%;
-    min-width: 620px;
-
-    table-layout: fixed;
-  }
-
-.variantTable th,
-.variantTable td {
-  padding: 12px 10px;
-
-  border: 0;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-
-  text-align: left;
-  vertical-align: middle;
-
-  font-size: 0.9rem;
-  line-height: 1.5;
-
-  word-break: normal;
-  overflow-wrap: normal;
-}
-
-/* Remove Infima paragraph spacing inside table cells */
-.variantTable th p,
-.variantTable td p {
-  margin: 0;
-  padding: 0;
-}
-
-  .variantTable th:nth-child(1),
-  .variantTable td:nth-child(1) {
-    width: 14%;
-  }
-
-  .variantTable th:nth-child(2),
-  .variantTable td:nth-child(2) {
-    width: 19%;
-  }
-
-  .variantTable th:nth-child(3),
-  .variantTable td:nth-child(3) {
-    width: 20%;
-  }
-
-  .variantTable th:nth-child(4),
-  .variantTable td:nth-child(4) {
-    width: 47%;
-  }
-
-  .variantTable td:first-child strong {
-    white-space: nowrap;
-  }
-
 
   /* ---------- START HERE ---------- */
 
@@ -882,76 +963,6 @@
 
     font-size: 0.68rem;
   }
-
-
-  /* ---------- MODEL TABLE ---------- */
-
-  .tableWrapper {
-    width: 100%;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .variantTable {
-    width: 620px;
-    min-width: 620px;
-
-    table-layout: fixed;
-  }
-
-.variantTable th,
-.variantTable td {
-  padding: 12px 10px;
-
-  border: 0;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-
-  text-align: left;
-  vertical-align: middle;
-
-  font-size: 0.85rem;
-  line-height: 1.5;
-
-  word-break: normal;
-  overflow-wrap: normal;
-}
-
-/* Remove Infima paragraph spacing inside table cells */
-.variantTable th p,
-.variantTable td p {
-  margin: 0;
-  padding: 0;
-}
-
-  .variantTable th:nth-child(1),
-  .variantTable td:nth-child(1) {
-    width: 90px;
-  }
-
-  .variantTable th:nth-child(2),
-  .variantTable td:nth-child(2) {
-    width: 115px;
-  }
-
-  .variantTable th:nth-child(3),
-  .variantTable td:nth-child(3) {
-    width: 125px;
-  }
-
-  .variantTable th:nth-child(4),
-  .variantTable td:nth-child(4) {
-    width: 290px;
-  }
-
-  .variantTable td:first-child strong {
-    white-space: nowrap;
-    word-break: keep-all;
-    overflow-wrap: normal;
-  }
-
 
   /* ---------- START HERE ---------- */
 
