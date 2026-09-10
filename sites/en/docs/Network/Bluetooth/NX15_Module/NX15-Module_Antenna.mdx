@@ -1,0 +1,146 @@
+---
+sidebar_position: 4
+title: NX15 Module Antenna
+description: Antenna design guidance for NX15i chip antenna and NX15E u.FL external antenna variants.
+keywords:
+  [
+    NX15 antenna,
+    NX15i chip antenna,
+    NX15E external antenna,
+    u.FL antenna,
+    BLE antenna design,
+    RF keep-out,
+    2.4 GHz antenna,
+    KORLINX,
+  ]
+---
+
+# NX15 Module Antenna
+
+The **NX15 Series** provides two antenna options depending on the selected model:
+
+| Model Type | Antenna Type | Typical Use |
+| --- | --- | --- |
+| NX15i Series | Integrated chip antenna | Compact products with simple antenna integration |
+| NX15E Series | u.FL external antenna connector | Products requiring external antenna placement or improved RF performance |
+
+This page summarizes the antenna design guidance for both module variants.
+
+:::caution
+RF performance depends on the host PCB, enclosure, ground structure, antenna placement, cable routing, and final installation environment. Always verify RF performance on the completed product.
+:::
+
+---
+
+## NX15i Chip Antenna Layout Guidance
+
+<img
+  src="/img/bluetooth/nx15/antenna/NX15i-chip-antenna-keepout.png"
+  alt="NX15i chip antenna keep-out zone"
+  className="blog-first-image"
+/>
+
+The NX15i Series uses an integrated **Abracon AANI-CH-0133-Q 2.4 GHz ceramic chip antenna**. This option is suitable for compact products where the antenna can be placed near the outer edge of the host PCB.
+
+For best RF performance, place the module so that the antenna side faces outward and is kept clear of copper, ground, components, shields, batteries, metal enclosures, or cables.
+
+---
+
+## NX15i Antenna Design Rules
+
+| Design Item | Recommendation |
+| --- | --- |
+| Antenna placement | Place the antenna side near the host PCB edge or corner |
+| Keep-out area | Do not place copper, GND, signal traces, vias, or components in the antenna clearance area |
+| Ground plane | Use the largest practical continuous host PCB ground plane; ≥40 mm² is recommended |
+| Ground quality | Avoid slots or splits in the ground plane near the RF area |
+| Conductive objects | Keep batteries, shields, connectors, cables, and metal parts away from the antenna area |
+| Enclosure | Verify RF performance with the final enclosure material and mechanical structure |
+
+---
+
+## NX15i Antenna Reference Values
+
+| Parameter | Value / Guideline |
+| --- | --- |
+| Operating Frequency | 2400–2500 MHz |
+| Antenna Impedance | 50 Ω nominal |
+| VSWR | &lt; 2.0 : 1 reference value |
+| Peak Gain | 1.1 dBi reference value |
+| Average Total Efficiency | 49% reference value |
+| Chip Antenna Size | 1.6 × 0.8 × 0.4 mm |
+| Host PCB Ground Plane | ≥40 mm² recommended; a larger uninterrupted area is preferred |
+| Recommended Placement | Host PCB edge or corner |
+
+:::note
+The host PCB ground plane recommendation is a design guideline. Final antenna performance must be verified on the completed product.
+:::
+
+---
+
+## NX15E External Antenna / 50 Ω RF Interface
+
+| Parameter | Requirement / Reference | Notes |
+| --- | --- | --- |
+| RF Connector | On-module u.FL / UMCC | Use a compatible 50 Ω mating cable / pigtail |
+| External Antenna Impedance | 50 Ω nominal | Use a 2.4 GHz antenna with 50 Ω feed impedance |
+| Operating Band | 2400–2483.5 MHz | BLE / IEEE 802.15.4 operation |
+| Reference Antenna | TE Connectivity 2108923 Series | Only the 2.4 GHz characteristics are relevant to NX15E |
+| Reference VSWR | &lt; 1.6 : 1 @ 2.4–2.5 GHz | TE 2108923 Series |
+| Reference Peak Gain | 2.5 dBi @ 2.4–2.5 GHz | TE 2108923 Series |
+| Reference Avg. Efficiency | 85% @ 2.4–2.5 GHz | TE 2108923 Series |
+| Coaxial Cable | 50 Ω | Keep the cable as short as practical |
+| Host PCB RF Trace | Not required | RF path terminates at the on-module RF connector |
+| Antenna Placement | Clear of metal / enclosure obstructions | Final enclosure and cable routing can affect RF performance |
+
+
+The NX15E Series provides an on-module u.FL / UMCC-compatible 50 Ω RF connector for an external 2.4 GHz antenna.
+
+This option is useful when the antenna must be placed away from the main PCB, outside an enclosure, or in a location with better RF exposure.
+
+---
+
+## NX15E External Antenna Guidelines
+
+| Design Item | Recommendation |
+| --- | --- |
+| RF connector | Use a compatible u.FL / UMCC 50 Ω mating cable or pigtail |
+| Antenna impedance | Use a 50 Ω nominal 2.4 GHz antenna |
+| Operating band | Use an antenna suitable for BLE / IEEE 802.15.4 operation |
+| Coaxial cable | Keep the cable as short as practical |
+| Cable routing | Avoid routing the cable over noisy digital circuits, switching power stages, or large metal structures |
+| Antenna placement | Keep the antenna clear of metal and enclosure obstructions |
+| Verification | Verify RF performance and regulatory compliance with the final antenna, cable, enclosure, and installation |
+
+---
+
+## External Antenna Selection
+
+When selecting an external antenna for NX15E, check the following:
+
+- Frequency range
+- 50 Ω feed impedance
+- VSWR
+- Gain
+- Efficiency
+- Connector type
+- Cable length
+- Enclosure position
+- Regulatory and certification requirements
+
+:::caution
+Alternative antennas may require additional certification or registration depending on the target market and regulatory scope. Confirm the final antenna approval requirements before public release or mass production.
+:::
+
+{/* Technical confirmation required before public release:
+- The draft says the TE Connectivity 2108923 Series was used for NX15E KC certification
+  and that alternative antennas must be registered before use. Confirm the exact approved wording.
+- Confirm the final approved external-antenna list and keep-out illustration.
+- Confirm how the ≥40 mm² host ground-plane area is measured. */}
+
+## Related Pages
+
+- [NX15 Module Overview](./NX15-Module_Overview)
+- [NX15 Module Specifications](./NX15-Module_Specifications)
+- [NX15 Module Pin Map](./NX15-Module_Pin_Map)
+- [NX15 Module Handling](./NX15-Module_Handling)

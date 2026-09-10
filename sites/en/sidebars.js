@@ -11,6 +11,9 @@ const sidebars = {
         id: 'Network/index',
       },
       items: [
+        // =====================================================
+        // Cellular
+        // =====================================================
         {
           type: 'category',
           label: 'Cellular',
@@ -21,6 +24,9 @@ const sidebars = {
             id: 'Network/Cellular/Cellular_Intro',
           },
           items: [
+            // -------------------------------------------------
+            // KSE-91A
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'KSE-91A',
@@ -60,6 +66,9 @@ const sidebars = {
               ],
             },
 
+            // -------------------------------------------------
+            // KSP-N51U
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'KSP-N51U',
@@ -99,6 +108,9 @@ const sidebars = {
               ],
             },
 
+            // -------------------------------------------------
+            // KSP-N51U-M.2
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'KSP-N51U-M.2',
@@ -140,6 +152,9 @@ const sidebars = {
           ],
         },
 
+        // =====================================================
+        // Bluetooth
+        // =====================================================
         {
           type: 'category',
           label: 'Bluetooth',
@@ -150,35 +165,86 @@ const sidebars = {
             id: 'Network/Bluetooth/Bluetooth_Intro',
           },
           items: [
+            // -------------------------------------------------
+            // NX15 Series
+            // Custom cover page
+            // -------------------------------------------------
             {
               type: 'category',
-              label: 'NX15 Dev Kit',
+              label: 'NX15 Series',
               collapsed: true,
               collapsible: true,
               link: {
-                type: 'generated-index',
-                title: 'NX15 Dev Kit',
-                description: 'NX15 Dev Kit documentation',
+                type: 'doc',
+                id: 'Network/Bluetooth/NX15_Series',
               },
               items: [
+                // ---------------------------------------------
+                // NX15 Module
+                // No generated-index
+                // ---------------------------------------------
                 {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Overview',
-                  label: 'Overview',
+                  type: 'category',
+                  label: 'NX15 Module',
+                  collapsed: true,
+                  collapsible: true,
+                  items: [
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Module/NX15-Module_Overview',
+                      label: 'Overview',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Module/NX15-Module_Specifications',
+                      label: 'Specifications',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Module/NX15-Module_Pin_Map',
+                      label: 'Pin Map',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Module/NX15-Module_Antenna',
+                      label: 'Antenna',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Module/NX15-Module_Handling',
+                      label: 'Handling & Soldering',
+                    },
+                  ],
                 },
-                // {
-                //   type: 'doc',
-                //   id: 'Network/Bluetooth/NX15-Dev-Kit/NX15-Dev-Kit_Example_Code',
-                //   label: 'Example Code',
-                // },
+
+                // ---------------------------------------------
+                // NX15 Dev Kit
+                // No generated-index
+                // ---------------------------------------------
                 {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX15_Dev_Kit/Hardware',
-                  label: 'Hardware',
+                  type: 'category',
+                  label: 'NX15 Dev Kit',
+                  collapsed: true,
+                  collapsible: true,
+                  items: [
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Overview',
+                      label: 'Overview',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Dev_Kit/Hardware',
+                      label: 'Hardware',
+                    },
+                  ],
                 },
               ],
             },
 
+            // -------------------------------------------------
+            // NX40 Dev Kit
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'NX40 Dev Kit',
@@ -195,11 +261,6 @@ const sidebars = {
                   id: 'Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Overview',
                   label: 'Overview',
                 },
-                // {
-                //   type: 'doc',
-                //   id: 'Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Example_Code',
-                //   label: 'Example Code',
-                // },
                 {
                   type: 'doc',
                   id: 'Network/Bluetooth/NX40_Dev_Kit/Hardware',
@@ -208,9 +269,11 @@ const sidebars = {
               ],
             },
           ],
-          
         },
 
+        // =====================================================
+        // LPWAN
+        // =====================================================
         {
           type: 'category',
           label: 'LPWAN',
@@ -223,6 +286,9 @@ const sidebars = {
           items: [],
         },
 
+        // =====================================================
+        // WiFi
+        // =====================================================
         {
           type: 'category',
           label: 'WiFi',
@@ -235,6 +301,9 @@ const sidebars = {
           items: [],
         },
 
+        // =====================================================
+        // Ethernet
+        // =====================================================
         {
           type: 'category',
           label: 'Ethernet',
@@ -247,6 +316,9 @@ const sidebars = {
           items: [],
         },
 
+        // =====================================================
+        // Satellite
+        // =====================================================
         {
           type: 'category',
           label: 'Satellite',
@@ -260,6 +332,10 @@ const sidebars = {
         },
       ],
     },
+
+    // =========================================================
+    // Sensor
+    // =========================================================
     {
       type: 'category',
       label: 'Sensor',
@@ -281,6 +357,9 @@ const sidebars = {
             id: 'Sensor/Radars/Radar_Intro',
           },
           items: [
+            // -------------------------------------------------
+            // AS-611Bn
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'AS-611Bn',
@@ -304,6 +383,10 @@ const sidebars = {
                 },
               ],
             },
+
+            // -------------------------------------------------
+            // AS-613 Radar
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'AS-613 Radar',
@@ -327,6 +410,10 @@ const sidebars = {
                 },
               ],
             },
+
+            // -------------------------------------------------
+            // AS-614
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'AS-614',
@@ -350,6 +437,10 @@ const sidebars = {
                 },
               ],
             },
+
+            // -------------------------------------------------
+            // AS-BW
+            // -------------------------------------------------
             {
               type: 'category',
               label: 'AS-BW',
@@ -377,6 +468,10 @@ const sidebars = {
         },
       ],
     },
+
+    // =========================================================
+    // IoT Industrial
+    // =========================================================
     {
       type: 'category',
       label: 'IoT Industrial',
@@ -388,6 +483,9 @@ const sidebars = {
         description: 'IoT Industrial documentation',
       },
       items: [
+        // -----------------------------------------------------
+        // NEO-Edge40
+        // -----------------------------------------------------
         {
           type: 'category',
           label: 'NEO-Edge40',
@@ -396,7 +494,8 @@ const sidebars = {
           link: {
             type: 'generated-index',
             title: 'NEO-Edge40',
-            description: 'Learn about the NEO-Edge40 industrial edge gateway and its hardware.',
+            description:
+              'Learn about the NEO-Edge40 industrial edge gateway and its hardware.',
           },
           items: [
             {
@@ -414,13 +513,17 @@ const sidebars = {
       ],
     },
   ],
- 
+
+  // ===========================================================
+  // Tutorials
+  // ===========================================================
   tutorialsSidebar: [
     {
       type: 'doc',
       id: 'Tutorials/Tutorials_Intro',
       label: 'Tutorials Overview',
     },
+
     {
       type: 'category',
       label: 'Getting Started',
@@ -432,6 +535,7 @@ const sidebars = {
       },
       items: [],
     },
+
     {
       type: 'category',
       label: 'Cloud Integration',
@@ -443,6 +547,7 @@ const sidebars = {
       },
       items: [],
     },
+
     {
       type: 'category',
       label: 'Industrial',
@@ -454,6 +559,7 @@ const sidebars = {
       },
       items: [],
     },
+
     {
       type: 'category',
       label: 'Advanced',

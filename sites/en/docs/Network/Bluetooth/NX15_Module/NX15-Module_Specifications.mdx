@@ -1,0 +1,238 @@
+---
+sidebar_position: 2
+title: NX15 Module Specifications
+description: Key specifications of the KORLINX NX15 Series BLE module, including CPU, memory, wireless, RF, power, package, interface, antenna, and model options.
+keywords:
+  [
+    NX15 specifications,
+    NX15 module,
+    BLE 5.4,
+    nRF54L15,
+    LGA module,
+    Bluetooth Low Energy,
+    KORLINX,
+  ]
+---
+
+# NX15 Module Specifications
+
+This page summarizes the main specifications of the **KORLINX NX15 Series BLE module**.
+
+It is intended as a quick reference for developers and hardware engineers before reviewing the detailed pin map, antenna, and handling pages.
+
+:::note
+This page summarizes information from the NX15 datasheet for Wiki use.
+
+For final production design, always refer to the official datasheet, schematic, and engineering release documents.
+:::
+
+---
+
+## Key Specifications
+
+| Item | Specification |
+| --- | --- |
+| Product Series | NX15 Series |
+| Product Type | Bluetooth Low Energy module |
+| Main SoC | Nordic nRF54L15 |
+| CPU | 128 MHz Arm Cortex-M33 |
+| Coprocessor | 128 MHz RISC-V coprocessor |
+| Internal Memory | 1.5 MB internal NVM, 256 KB RAM |
+| External Flash | Optional external Flash depending on model |
+| Wireless | Bluetooth LE 5.4 |
+| 802.15.4 Support | Thread / Zigbee capable |
+| Matter Support | Matter over Thread capable depending on software stack |
+| RF Output Power | TX up to +8 dBm |
+| RX Sensitivity | See RF characteristics section in the full datasheet |
+| Nominal Voltage | 3.3 V |
+| Operating Supply Range | 1.7 V to 3.6 V |
+| Operating Temperature | -40°C to +105°C |
+| Power Regulation | Integrated DC-DC and LDO regulators |
+| Package | LGA surface-mount module |
+| Module Size | 9.5 × 9.5 × 1.95 mm |
+| Module Weight | &lt; 0.5 g |
+| Pad Pitch | 0.65 mm |
+| Interfaces | UART, SPI, I2C, PWM, ADC, PDM, GPIO, SWD |
+| SDK / RTOS | nRF Connect SDK / Zephyr RTOS |
+| Security | Arm TrustZone, PSA Certified Level 2 |
+
+{/* Technical confirmation required: confirm whether PSA Certified Level 2 applies
+to the NX15 module as shipped or only to the underlying nRF54L15 platform. */}
+
+---
+
+## Model Lineup
+
+<img
+  src="/img/bluetooth/nx15/module-integration/NX15-model-lineup.png"
+  alt="NX15 module model lineup"
+  className="blog-first-image"
+/>
+
+| Model | Antenna | Flash | GPIO | Primary Use |
+| --- | --- | --- | --- | --- |
+| NX15i32 | Chip antenna | 32 Mbit SPI Flash | 25 | Compact form factor with external Flash |
+| NX15E32 | u.FL connector | 32 Mbit SPI Flash | 25 | External antenna with maximum RF performance |
+| NX15i00 | Chip antenna | None | 25 | Compact IoT node with full GPIO access |
+| NX15E00 | u.FL connector | None | 25 | External antenna with full GPIO access |
+
+---
+
+## Ordering Code
+
+| Order Code | Meaning |
+| --- | --- |
+| NX15i32 | Integrated chip antenna, 32 Mbit SPI Flash |
+| NX15i00 | Integrated chip antenna, no external Flash |
+| NX15E32 | u.FL external antenna, 32 Mbit SPI Flash |
+| NX15E00 | u.FL external antenna, no external Flash |
+
+---
+
+## Mechanical Information
+
+<img
+  src="/img/bluetooth/nx15/module-integration/NX15-module-dimensions.png"
+  alt="NX15 module dimensions"
+  className="blog-first-image nx15-module-dimensions"
+/>
+
+<div className="spec-table-wrapper">
+
+<table className="spec-table">
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Value</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Length</td>
+      <td>9.5 mm</td>
+      <td>Module body</td>
+    </tr>
+    <tr>
+      <td>Width</td>
+      <td>9.5 mm</td>
+      <td>Module body</td>
+    </tr>
+    <tr>
+      <td>Height</td>
+      <td>1.95 mm</td>
+      <td>With shield</td>
+    </tr>
+    <tr>
+      <td>Weight</td>
+      <td>&lt; 0.5 g</td>
+      <td>Typical target</td>
+    </tr>
+    <tr>
+      <td>Package</td>
+      <td>LGA</td>
+      <td>Surface-mount module</td>
+    </tr>
+    <tr>
+      <td>Pad Pitch</td>
+      <td>0.65 mm</td>
+      <td>Landing pattern reference</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+---
+
+## Absolute Maximum Ratings
+
+:::danger
+Absolute maximum ratings are stress limits, not normal operating conditions. Prolonged operation at or near these limits may affect module reliability.
+:::
+
+| Parameter | Symbol | Minimum | Maximum | Unit |
+| --- | --- | ---: | ---: | --- |
+| Supply Voltage | VDD_nRF | -0.3 | +3.6 | V |
+| GPIO Voltage | VGPIO | -0.3 | VDD_nRF + 0.3 | V |
+| Input Current, Any Pin | IMAX | - | ±10 | mA |
+| Storage Temperature | TSTG | -55 | +125 | °C |
+| Solder Reflow Temperature | TREFLOW | - | 260 | °C |
+| ESD Rating, Human Body Model | VESD | - | 2000 | V |
+
+---
+
+## Recommended Operating Conditions
+
+| Parameter | Symbol | Minimum | Typical | Maximum | Unit |
+| --- | --- | ---: | ---: | ---: | --- |
+| Supply Voltage | VDD_nRF | 1.7 | 3.3 | 3.6 | V |
+| Operating Temperature | TOPER | -40 | - | +105 | °C |
+| GPIO Input High Voltage | VIH | 0.7 × VDD_nRF | - | VDD_nRF | V |
+| GPIO Input Low Voltage | VIL | GND | - | 0.3 × VDD_nRF | V |
+| GPIO High-Level Output | VOH | VDD_nRF - 0.4 | - | VDD_nRF | V |
+| GPIO Low-Level Output | VOL | GND | - | GND + 0.4 | V |
+| GPIO Output Current, Standard Drive | IGPIO_SD | - | - | 0.5* | mA |
+| GPIO Output Current, High Drive | IGPIO_HD | - | 3 | 5* | mA |
+
+\* GPIO output current depends on VDD_nRF, drive-strength configuration, load conditions, and firmware settings. Standard-drive output is specified at a 0.5 mA load. High-drive output current is typically 3 mA at VDD_nRF ≥ 1.7 V and up to 5 mA at VDD_nRF ≥ 2.7 V.
+
+---
+
+## Electrical and RF Summary
+
+| Item | Typical / Range | Unit | Condition |
+| --- | --- | --- | --- |
+| Arm Cortex-M33 Clock | 128 | MHz | 128 MHz Arm Cortex-M33 |
+| RISC-V Coprocessor Clock | 128 | MHz | 128 MHz RISC-V coprocessor |
+| Internal NVM | 1.5 | MB | Internal NVM |
+| RAM | 256 | KB | RAM |
+| External Flash | Optional | - | Depending on model |
+| Frequency Band | 2402–2480 | MHz | BLE 5.4 |
+| Maximum TX Output Power | +8 | dBm | TX up to +8 dBm |
+| Antenna Impedance | 50 | Ω | Chip antenna or external antenna |
+
+{/* Draft datasheet values withheld from the public table pending confirmation:
+- RX sensitivity: the draft refers to an RF characteristics section but provides no numeric value.
+- TX current at +3 dBm: 6.8 mA, described only as BLE advertising.
+- RX active current: 5.2 mA, described only as BLE scanning.
+- Sleep current: 0.7–2.9 µA, RAM off at 3 V.
+Confirm whether these are measured module values, SoC reference values, or design targets,
+and provide complete test conditions before publication. */}
+
+---
+
+## Interface Summary
+
+NX15 provides configurable embedded interfaces for host communication, sensor connection, peripheral control, programming, and debugging.
+
+| Interface | Available Resources | Typical Use |
+| --- | --- | --- |
+| UART / UARTE | 2 | Host communication or serial peripheral connection |
+| SPI | 3, including SPI up to 32 MHz | External sensors, memory, or high-speed peripheral connection |
+| I2C | 2 | Sensor or low-speed peripheral connection |
+| PWM | 4 | LED, buzzer, control, or signal output |
+| ADC | 8 channels | Analog input for external sensors |
+| PDM | 1 | Digital microphone interface |
+| GPIO | P0, P1, and P2 ports | General digital input/output |
+| SWD | SWDIO and SWDCLK | Programming and debugging |
+
+:::caution
+GPIO and peripheral functions are configurable by firmware. Confirm the final pin assignment, firmware configuration, and model-specific restrictions before using a pin in a custom design.
+:::
+
+---
+
+{/* Internal release notes:
+- Matter over Thread support depends on the selected software stack.
+- Flash terminology and pin usage require confirmation; the draft alternates between
+  external Flash and Flash internal to the module.
+- The uploaded filename says REV 2.1 while the cover says DATASHEET_Rev01.
+- The model table states 25 GPIO; document how P2.07/SWO is treated before final release. */}
+
+## Related Pages
+
+- [NX15 Module Overview](./NX15-Module_Overview)
+- [NX15 Module Pin Map](./NX15-Module_Pin_Map)
+- [NX15 Module Antenna](./NX15-Module_Antenna)
+- [NX15 Module Handling](./NX15-Module_Handling)

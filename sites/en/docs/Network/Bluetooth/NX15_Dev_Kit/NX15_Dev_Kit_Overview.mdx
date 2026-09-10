@@ -2,7 +2,16 @@
 sidebar_position: 1
 title: NX15 Dev Kit Overview
 description: Overview of the KORLINX NX15 Dev Kit for BLE application development, prototyping, and firmware validation.
-keywords: [NX15 Dev Kit, DEV-NX15, BLE development kit, KORLINX, Bluetooth Low Energy, prototyping]
+keywords:
+  [
+    NX15 Dev Kit,
+    DEV-NX15,
+    BLE development kit,
+    KORLINX,
+    Bluetooth Low Energy,
+    nRF54L15,
+    prototyping,
+  ]
 ---
 
 # NX15 Dev Kit Overview
@@ -13,9 +22,25 @@ keywords: [NX15 Dev Kit, DEV-NX15, BLE development kit, KORLINX, Bluetooth Low E
   className="blog-first-image"
 />
 
-The **NX15 Dev Kit** is a compact development board for evaluating and prototyping applications with the **KORLINX NX15 Series BLE module**.
+The **KORLINX NX15 Dev Kit** is a compact development board for evaluating, prototyping, and developing applications with the **NX15 Series BLE module**.
 
-It helps developers quickly start BLE application testing, onboard sensor validation, user input/output testing, and early firmware development before moving to a custom product design.
+It is designed to help developers quickly test BLE applications, validate onboard sensors, check user input/output behavior, and begin firmware development before moving to a custom product design.
+
+:::note
+This page describes the **NX15 Dev Kit**.
+
+For module-level information such as model lineup, LGA pad layout, antenna design, electrical specifications, and soldering guidance, refer to the **NX15 Module** pages.
+:::
+
+---
+
+## What Is the NX15 Dev Kit?
+
+The NX15 Dev Kit is an evaluation and development board built around the NX15 Series BLE module.
+
+It provides the hardware needed for early development, including USB connection, serial communication, debugging access, onboard sensors, buttons, LEDs, expansion headers, and battery-related hardware.
+
+The board is intended for development and validation. It is not a replacement for the NX15 module datasheet or the final custom PCB design guide.
 
 ---
 
@@ -24,26 +49,44 @@ It helps developers quickly start BLE application testing, onboard sensor valida
 | Task | Description |
 | --- | --- |
 | BLE application testing | Test BLE advertising, connection, and data transfer behavior |
-| Sensor prototyping | Build examples using onboard motion and environmental sensors |
-| Firmware validation | Check firmware behavior using buttons, LEDs, serial output, and debugging access |
-| Battery-oriented testing | Prototype BLE workflows with battery-related hardware |
-| Early product evaluation | Validate application ideas before custom PCB development |
+| Sensor prototyping | Build examples using onboard motion and temperature/humidity sensors |
+| Firmware validation | Check firmware behavior using buttons, LEDs, serial output, and debug access |
+| Header signal testing | Access selected module signals through the J3 and J5 headers |
+| Battery-oriented testing | Prototype BLE workflows with Li-Po battery and charging-related hardware |
+| Early product evaluation | Validate application ideas before designing a custom PCB |
 
 ---
 
-## Main Documentation Flow
+## Main Hardware Capabilities
+
+| Area | Description |
+| --- | --- |
+| USB connection | USB Type-C connection for development and PC interface |
+| USB-to-UART | FTDI FT234XD USB-to-UART interface |
+| Debugging | SWD header for firmware programming and debugging |
+| User interface | Reset button, user button, RGB LED, charge LED, and power LED |
+| Sensors | LSM6DS3TR-C 6-axis IMU and SHTC3 temperature/humidity sensor |
+| Expansion | J3 and J5 headers for selected signal access |
+| Battery support | Li-Po connector and BQ25100 charger IC |
+
+---
+
+## Recommended Documentation Flow
 
 | Page | Purpose |
 | --- | --- |
-| Hardware | Learn what hardware is available on the NX15 Dev Kit |
-| Software | Prepare the development environment and software workflow |
-| Example Code | Run official examples when they are available |
+| NX15 Dev Kit Overview | Understand what the Dev Kit is and what it is used for |
+| NX15 Dev Kit Hardware | Review board-level hardware blocks, USB/debug interface, headers, battery support, and J3/J5 pin map |
+| NX15 Module Overview | Understand the NX15 module itself |
+| NX15 Module Specifications | Review module-level specifications, model lineup, RF, electrical, and mechanical information |
+| NX15 Module Pin Map | Review the external LGA pad map of the NX15 module |
+| NX15 Module Antenna | Review antenna guidance for NX15i and NX15E variants |
+| NX15 Module Handling | Review packing, storage, soldering, and handling notes |
 
-:::note
-Example Code content will be updated after the official NX15 Dev Kit examples are confirmed.
-:::
-
+---
 
 ## Related Pages
 
 - [NX15 Dev Kit Hardware](./Hardware)
+- [NX15 Module Overview](../NX15_Module/NX15-Module_Overview)
+- [NX15 Module Specifications](../NX15_Module/NX15-Module_Specifications)
