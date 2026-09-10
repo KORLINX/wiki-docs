@@ -1,0 +1,448 @@
+---
+title: NX15 Series
+sidebar_label: NX15 Series
+description: Explore the KORLINX NX15 Bluetooth Low Energy series, including the NX15 Dev Kit and NX15 Module.
+hide_table_of_contents: true
+hide_title: true
+---
+
+import Link from '@docusaurus/Link';
+import styles from './NX15_Series.module.css';
+
+<div className={styles.seriesPage}>
+
+<section className={styles.hero}>
+  <div className={styles.heroContent}>
+    <span className={styles.eyebrow}>
+      BLUETOOTH LOW ENERGY
+    </span>
+
+    <h1>NX15 Series</h1>
+
+    <p className={styles.heroLead}>
+      A compact Bluetooth Low Energy platform for evaluation,
+      prototyping, and embedded product integration.
+    </p>
+
+    <div className={styles.heroActions}>
+      <Link
+        className={styles.primaryButton}
+        to="/docs/Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Overview"
+      >
+        Explore Dev Kit
+      </Link>
+
+      <Link
+        className={styles.secondaryButton}
+        to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Overview"
+      >
+        Explore Module
+      </Link>
+    </div>
+  </div>
+
+  <div className={styles.heroVisual}>
+    <img
+      src="/img/bluetooth/nx15/series/nx15-series.png"
+      alt="KORLINX NX15 Series"
+    />
+  </div>
+</section>
+
+
+<section className={styles.section}>
+
+  <div className={styles.sectionHeader}>
+    <span className={styles.sectionEyebrow}>
+      PRODUCT FAMILY
+    </span>
+
+    <h2>Choose Your Development Path</h2>
+
+    <p>
+      Start with the development kit for evaluation and testing,
+      or use the NX15 Module when you are ready for product integration.
+    </p>
+  </div>
+
+
+  <div className={styles.productGrid}>
+
+    <Link
+      className={styles.productCard}
+      to="/docs/Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Overview"
+    >
+      <div className={styles.productImage}>
+        <img
+          src="/img/bluetooth/nx15/series/nx15-dev-kit.png"
+          alt="NX15 Dev Kit"
+        />
+      </div>
+
+      <div className={styles.productBody}>
+        <span className={styles.productType}>
+          DEVELOPMENT KIT
+        </span>
+
+        <h3>NX15 Dev Kit</h3>
+
+        <p>
+          A development platform for evaluating the NX15,
+          validating hardware functions, and testing firmware.
+        </p>
+
+        <div className={styles.featureList}>
+          <span>USB Type-C</span>
+          <span>SWD Debug</span>
+          <span>Buttons & LEDs</span>
+          <span>On-board Sensors</span>
+        </div>
+
+        <span className={styles.cardLink}>
+          View Dev Kit Documentation →
+        </span>
+      </div>
+    </Link>
+
+
+    <Link
+      className={styles.productCard}
+      to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Overview"
+    >
+      <div className={styles.productImage}>
+        <img
+          src="/img/bluetooth/nx15/series/nx15-module.png"
+          alt="NX15 Module"
+        />
+      </div>
+
+      <div className={styles.productBody}>
+        <span className={styles.productType}>
+          EMBEDDED MODULE
+        </span>
+
+        <h3>NX15 Module</h3>
+
+        <p>
+          A compact Bluetooth Low Energy module designed for
+          direct integration into embedded products.
+        </p>
+
+        <div className={styles.featureList}>
+          <span>Chip / u.FL Antenna</span>
+          <span>Optional SPI Flash</span>
+          <span>Compact Integration</span>
+          <span>Hardware Design</span>
+        </div>
+
+        <span className={styles.cardLink}>
+          View Module Documentation →
+        </span>
+      </div>
+    </Link>
+
+  </div>
+</section>
+
+
+<section className={styles.section}>
+  <div className={styles.sectionHeader}>
+    <span className={styles.sectionEyebrow}>
+      MODEL OPTIONS
+    </span>
+
+    <h2>NX15 Module Variants</h2>
+
+    <p>
+      Select the antenna and external Flash configuration
+      that matches your hardware requirements.
+    </p>
+  </div>
+
+  {/* Desktop / Tablet */}
+  <div className={styles.variantDesktop}>
+    <table className={styles.variantTable}>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Antenna</th>
+          <th>Flash</th>
+          <th>Use When</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td><strong>NX15i32</strong></td>
+          <td>Chip antenna</td>
+          <td>32 Mbit SPI Flash</td>
+          <td>
+            You need compact antenna integration and external Flash
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>NX15E32</strong></td>
+          <td>u.FL connector</td>
+          <td>32 Mbit SPI Flash</td>
+          <td>
+            You need an external antenna and external Flash
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>NX15i00</strong></td>
+          <td>Chip antenna</td>
+          <td>None</td>
+          <td>
+            You need compact module integration without external Flash
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>NX15E00</strong></td>
+          <td>u.FL connector</td>
+          <td>None</td>
+          <td>
+            You need an external antenna without external Flash
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  {/* Mobile */}
+  <div className={styles.variantMobile}>
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX15i32</h3>
+        <span className={styles.variantBadge}>32 Mbit Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>Chip antenna</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>32 Mbit SPI Flash</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <p>
+          You need compact antenna integration and external Flash.
+        </p>
+      </div>
+    </div>
+
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX15E32</h3>
+        <span className={styles.variantBadge}>32 Mbit Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>u.FL connector</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>32 Mbit SPI Flash</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <p>
+          You need an external antenna and external Flash.
+        </p>
+      </div>
+    </div>
+
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX15i00</h3>
+        <span className={styles.variantBadgeSecondary}>No Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>Chip antenna</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>None</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <p>
+          You need compact module integration without external Flash.
+        </p>
+      </div>
+    </div>
+
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX15E00</h3>
+        <span className={styles.variantBadgeSecondary}>No Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>u.FL connector</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>None</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <p>
+          You need an external antenna without external Flash.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section className={styles.startSection}>
+
+  <div className={styles.sectionHeader}>
+    <span className={styles.sectionEyebrow}>
+      START HERE
+    </span>
+
+    <h2>Follow Your Development Stage</h2>
+  </div>
+
+
+  <div className={styles.stepGrid}>
+
+    <Link
+      className={styles.stepCard}
+      to="/docs/Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Overview"
+    >
+      <span className={styles.stepNumber}>01</span>
+
+      <h3>Evaluate NX15</h3>
+
+      <p>
+        Start with the NX15 Dev Kit and become familiar
+        with the development platform.
+      </p>
+
+      <span>Dev Kit Overview →</span>
+    </Link>
+
+
+    <Link
+      className={styles.stepCard}
+      to="/docs/Network/Bluetooth/NX15_Dev_Kit/Hardware"
+    >
+      <span className={styles.stepNumber}>02</span>
+
+      <h3>Understand the Hardware</h3>
+
+      <p>
+        Review USB, debugging, buttons, LEDs,
+        sensors, and available hardware interfaces.
+      </p>
+
+      <span>Hardware →</span>
+    </Link>
+
+
+    <Link
+      className={styles.stepCard}
+      to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Overview"
+    >
+      <span className={styles.stepNumber}>03</span>
+
+      <h3>Integrate the Module</h3>
+
+      <p>
+        Continue with specifications, pin mapping,
+        antenna requirements, and handling guidelines.
+      </p>
+
+      <span>Module Overview →</span>
+    </Link>
+
+  </div>
+</section>
+
+
+<section className={styles.resources}>
+
+  <div className={styles.resourceIntro}>
+    <span className={styles.sectionEyebrow}>
+      TECHNICAL DOCUMENTATION
+    </span>
+
+    <h2>NX15 Resources</h2>
+
+    <p>
+      Jump directly to the technical information required
+      for evaluation or hardware integration.
+    </p>
+  </div>
+
+
+  <div className={styles.resourceGrid}>
+
+    <Link to="/docs/Network/Bluetooth/NX15_Dev_Kit/Hardware">
+      <strong>Dev Kit Hardware</strong>
+      <span>Board interfaces and hardware blocks →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Specifications">
+      <strong>Specifications</strong>
+      <span>NX15 module technical specifications →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Pin_Map">
+      <strong>Pin Map</strong>
+      <span>Module pins and signal definitions →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Antenna">
+      <strong>Antenna</strong>
+      <span>Antenna variants and integration guidance →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Handling">
+      <strong>Handling & Soldering</strong>
+      <span>Assembly and module handling guidance →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Example_Code">
+      <strong>Example Code</strong>
+      <span>Start application development →</span>
+    </Link>
+
+  </div>
+
+</section>
+
+</div>

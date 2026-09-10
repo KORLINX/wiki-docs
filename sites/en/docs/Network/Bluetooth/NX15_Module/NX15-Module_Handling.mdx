@@ -1,0 +1,135 @@
+---
+sidebar_position: 5
+title: NX15 Module Handling
+description: Packing, storage, MSL, soldering, reflow, and handling notes for the KORLINX NX15 Series BLE module.
+keywords:
+  [
+    NX15 handling,
+    NX15 soldering,
+    NX15 reflow,
+    NX15 MSL,
+    NX15 tape reel,
+    BLE module soldering,
+    KORLINX,
+  ]
+---
+
+# NX15 Module Handling
+
+This page summarizes important handling, packing, storage, and soldering notes for the **KORLINX NX15 Series BLE module**.
+
+NX15 is an LGA surface-mount module and should be handled using proper ESD, moisture, and reflow process controls.
+
+:::caution
+This page is a Wiki summary for handling reference. For production assembly, always follow the official datasheet, approved manufacturing process, and EMS/SMT process requirements.
+:::
+
+---
+
+## Tape and Reel Packing
+
+<img
+  src="/img/bluetooth/nx15/handling/NX15-tape-reel-msl-packaging.png"
+  alt="NX15 tape and reel and MSL packaging"
+  className="blog-first-image nx15-handling-packaging-image"
+/>
+
+| Item | Specification |
+| --- | --- |
+| Packaging | Tape and reel, SMT feeder ready |
+| Moisture Barrier Bag | MSL Level 3 handling |
+| Label Information | Part number, quantity, lot code, MSL level, date code |
+| Order Contact | sales@samplepcb.co.kr |
+
+---
+
+## Storage Conditions
+
+| Condition | Specification |
+| --- | --- |
+| Storage Temperature | 5°C to 35°C, unopened |
+| Storage Humidity | 20% to 70% RH, unopened |
+| Shelf Life | 12 months from shipment date |
+| MSL Level | MSL 3 (IPC/JEDEC J-STD-020) |
+| Floor Life | ≤168 hours at &lt;30°C / &lt;60% RH |
+| Baking | 125°C +5/-0°C, 24 hours, one time max |
+| Corrosive Atmosphere | Avoid Cl₂, NH₃, SO₂, or NOx |
+
+---
+
+## Handling Guidelines
+
+Follow these guidelines when handling NX15 modules:
+
+- Use proper ESD protection.
+- Avoid touching LGA pads with bare hands.
+- Inspect modules for cracks, shield damage, contamination, or pad damage before assembly.
+- Keep modules in the moisture barrier bag until assembly.
+- Track floor life after opening the package.
+- Use vacuum nozzle pickup on the module top surface only.
+- Do not apply mechanical stress to the shield, RF connector, or antenna area.
+
+---
+
+## Reflow Soldering
+
+<img
+  src="/img/bluetooth/nx15/handling/NX15-reflow-soldering-profile.png"
+  alt="NX15 reflow soldering profile"
+  className="blog-first-image nx15-reflow-profile-image"
+/>
+
+| Zone | Temperature | Duration |
+| --- | --- | --- |
+| Preheat | 25°C to 150°C | 60 to 120 s |
+| Soak | 150°C to 200°C | 60 to 120 s |
+| Reflow Peak | ≤260°C | Max 30 s above 250°C |
+| Cooling | 260°C to 25°C | &lt;6°C/s ramp-down |
+| Number of Reflows | - | Maximum 2 times |
+
+:::caution
+Do not exceed the recommended reflow peak temperature or number of reflows. Excessive thermal stress may damage the module or degrade RF performance.
+:::
+
+{/* Manufacturing confirmation required: the MSL, baking, floor-life, and reflow
+values above are transcribed from the draft datasheet. Confirm that they are approved
+production requirements before final public release. */}
+
+---
+
+## Cleaning Notice
+
+Cleaning is not recommended.
+
+The NX15 module is moisture-sensitive. Ultrasonic cleaning or liquid immersion may damage internal components or degrade RF performance.
+
+If cleaning is required by the production process, use only a method approved for the final manufacturing process.
+
+---
+
+## Production Checklist
+
+Before production assembly, confirm the following:
+
+| Check Item | Description |
+| --- | --- |
+| MSL control | Confirm MSL Level 3 handling and floor life tracking |
+| Storage condition | Confirm unopened storage temperature and humidity |
+| Baking condition | Bake only when required and within the approved limit |
+| Reflow profile | Confirm peak temperature, soak time, and cooling rate |
+| Reflow count | Do not exceed the maximum number of reflows |
+| ESD control | Apply ESD-safe handling during storage, inspection, and assembly |
+| Visual inspection | Check shield, antenna area, RF connector, and LGA pads |
+| Cleaning process | Avoid ultrasonic cleaning or liquid immersion unless approved |
+
+{/* Internal release notes:
+- Confirm whether an approved cleaning-process exception exists.
+- Confirm the final production packaging image.
+- Confirm whether the Wiki should show a sales or technical-support contact. */}
+
+## Related Pages
+
+- [NX15 Module Overview](./NX15-Module_Overview)
+- [NX15 Module Specifications](./NX15-Module_Specifications)
+- [NX15 Module Pin Map](./NX15-Module_Pin_Map)
+- [NX15 Module Antenna](./NX15-Module_Antenna)

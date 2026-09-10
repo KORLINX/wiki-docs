@@ -305,6 +305,31 @@
   border-radius: 16px;
 }
 
+.nx15-module-dimensions {
+  width: 65%;
+}
+
+.nx15-handling-packaging-image {
+  width: 100%;
+}
+
+.nx15-reflow-profile-image {
+  width: 60%;
+}
+
+.nx15-lga-pad-layout-image {
+  width: 100%;
+}
+
+@media (max-width: 576px) {
+  .nx15-module-dimensions,
+  .nx15-handling-packaging-image,
+  .nx15-reflow-profile-image,
+  .nx15-lga-pad-layout-image {
+    width: 100%;
+  }
+}
+
 /* Table below img */
 .spec-table-wrapper {
   width: 100%;

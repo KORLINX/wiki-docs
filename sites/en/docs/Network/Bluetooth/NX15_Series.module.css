@@ -1,0 +1,1056 @@
+.seriesPage {
+  width: 100%;
+}
+
+
+/* =========================
+   HERO
+   ========================= */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 48px;
+  align-items: center;
+
+  min-height: 390px;
+  margin-bottom: 72px;
+  padding: 52px;
+
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--ifm-background-surface-color),
+      var(--ifm-background-color)
+    );
+
+  overflow: hidden;
+}
+
+.eyebrow,
+.sectionEyebrow {
+  display: inline-block;
+
+  color: var(--ifm-color-primary);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+}
+
+.heroContent h1 {
+  margin: 10px 0 16px;
+
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.heroLead {
+  max-width: 570px;
+
+  margin-bottom: 26px;
+
+  color: var(--ifm-color-emphasis-700);
+
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 150px;
+  height: 44px;
+  padding: 0 20px;
+  margin: 0;
+
+  box-sizing: border-box;
+
+  border-radius: 8px;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none !important;
+}
+
+/* Override Infima paragraph margin inside hero buttons */
+.primaryButton p,
+.secondaryButton p {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.primaryButton {
+  border: 1px solid var(--ifm-color-primary);
+  color: #fff !important;
+  background: var(--ifm-color-primary);
+}
+
+.primaryButton:hover {
+  color: #fff !important;
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-dark);
+}
+
+.secondaryButton {
+  border: 1px solid var(--ifm-color-emphasis-400);
+  color: var(--ifm-font-color-base) !important;
+  background: transparent;
+}
+
+.secondaryButton:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary) !important;
+}
+
+.heroVisual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.heroVisual img {
+  width: 100%;
+  max-width: 560px;
+  max-height: 330px;
+  border-radius: 12px;
+
+  object-fit: cover;
+}
+
+
+/* =========================
+   SECTIONS
+   ========================= */
+
+.section {
+  margin: 72px 0;
+}
+
+.sectionHeader {
+  max-width: 760px;
+  margin-bottom: 30px;
+}
+
+.sectionHeader h2 {
+  margin: 7px 0 10px;
+
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  letter-spacing: -0.025em;
+}
+
+.sectionHeader p {
+  margin: 0;
+
+  color: var(--ifm-color-emphasis-700);
+
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+
+/* =========================
+   PRODUCT CARDS
+   ========================= */
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.productCard {
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 16px;
+
+  color: inherit !important;
+  background: var(--ifm-background-surface-color);
+
+  text-decoration: none !important;
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.productCard:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--ifm-color-primary);
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.productImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+  padding: 16px;
+
+  background: #ffffff;
+}
+
+.productImage img {
+  width: 100%;
+  max-width: 500px;
+  max-height: 280px;
+
+  object-fit: cover;
+}
+
+.productBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  padding: 25px;
+}
+
+.productType {
+  margin-bottom: 8px;
+
+  color: var(--ifm-color-primary);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.productBody h3 {
+  margin: 0 0 11px;
+
+  font-size: 1.4rem;
+}
+
+.productBody p {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.featureList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  margin: 8px 0 22px;
+}
+
+.featureList span {
+  padding: 4px 9px;
+
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 999px;
+
+  background: var(--ifm-color-emphasis-100);
+
+  font-size: 0.73rem;
+}
+
+.cardLink {
+  margin-top: auto;
+
+  color: var(--ifm-color-primary);
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   VARIANT TABLE
+   ========================= */
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+}
+
+.variantTable {
+  display: table;
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.variantTable th,
+.variantTable td {
+  padding: 14px 16px;
+
+  border: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+
+  text-align: left;
+  vertical-align: middle;
+
+  font-size: 1rem;
+  line-height: 1.5;
+
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+/* Remove Infima paragraph spacing inside table cells */
+.variantTable th p,
+.variantTable td p {
+  margin: 0;
+  padding: 0;
+}
+
+.variantTable th {
+  background: var(--ifm-color-emphasis-100);
+
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.variantTable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.variantTable th:nth-child(1),
+.variantTable td:nth-child(1) {
+  width: 13%;
+}
+
+.variantTable th:nth-child(2),
+.variantTable td:nth-child(2) {
+  width: 18%;
+}
+
+.variantTable th:nth-child(3),
+.variantTable td:nth-child(3) {
+  width: 22%;
+}
+
+.variantTable th:nth-child(4),
+.variantTable td:nth-child(4) {
+  width: 47%;
+}
+
+
+/* =========================
+   START HERE
+   ========================= */
+
+.startSection {
+  margin: 72px 0;
+  padding: 42px;
+
+  border-radius: 18px;
+
+  background: var(--ifm-color-emphasis-100);
+}
+
+.stepGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stepCard {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 190px;
+  padding: 26px;
+
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 13px;
+
+  color: inherit !important;
+  background: var(--ifm-background-color);
+
+  text-decoration: none !important;
+}
+
+.stepCard > span:last-child {
+  margin-top: auto;
+
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.stepCard:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--ifm-color-primary);
+}
+
+.stepNumber {
+  display: block;
+
+  margin-bottom: 22px;
+
+  color: var(--ifm-color-primary);
+
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.stepCard h3 {
+  margin-bottom: 10px;
+}
+
+.stepCard p {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.stepCard > span:last-child {
+  color: var(--ifm-color-primary);
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   RESOURCES
+   ========================= */
+
+.resources {
+  margin-top: 72px;
+}
+
+.resourceIntro {
+  max-width: 680px;
+  margin-bottom: 28px;
+}
+
+.resourceIntro h2 {
+  margin: 7px 0 10px;
+}
+
+.resourceIntro p {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.resourceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.resourceGrid a {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  min-height: 82px;
+  padding: 20px 22px;
+
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+
+  color: inherit !important;
+  background: var(--ifm-background-surface-color);
+
+  text-decoration: none !important;
+
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
+}
+
+.resourceGrid a:hover {
+  transform: translateY(-2px);
+  border-color: var(--ifm-color-primary);
+}
+
+.resourceGrid span {
+  color: var(--ifm-color-emphasis-700);
+
+  font-size: 0.9rem;
+}
+/* =========================================================
+   TABLET — 701px to 996px
+   ========================================================= */
+
+@media (min-width: 701px) and (max-width: 996px) {
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 24px;
+
+    min-height: auto;
+    margin-bottom: 56px;
+    padding: 32px;
+  }
+
+  .heroVisual {
+    order: initial;
+  }
+
+  .heroVisual img {
+    width: 100%;
+    max-width: 340px;
+    max-height: 250px;
+
+    object-fit: contain;
+  }
+
+  .heroContent h1 {
+    margin: 8px 0 14px;
+
+    font-size: 2.5rem;
+  }
+
+  .heroLead {
+    margin-bottom: 20px;
+
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .heroActions {
+    gap: 10px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 136px;
+    height: 42px;
+    padding: 0 10px;
+
+    font-size: 0.84rem;
+  }
+
+
+  /* ---------- GENERAL SECTION ---------- */
+
+  .section {
+    margin: 56px 0;
+  }
+
+  .sectionHeader {
+    margin-bottom: 24px;
+  }
+
+  .sectionHeader h2 {
+    font-size: 1.8rem;
+  }
+
+  .sectionHeader p {
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+
+
+  /* ---------- PRODUCT CARDS ---------- */
+
+  .productGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .productImage {
+    min-height: 185px;
+    padding: 14px;
+  }
+
+  .productImage img {
+    max-width: 300px;
+    max-height: 180px;
+
+    object-fit: contain;
+  }
+
+  .productBody {
+    padding: 20px 18px;
+  }
+
+  .productBody h3 {
+    font-size: 1.2rem;
+  }
+
+  .productBody p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .featureList span {
+    font-size: 0.68rem;
+  }
+
+
+  /* ---------- MODEL TABLE ---------- */
+
+  .tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .variantTable {
+    width: 100%;
+    min-width: 620px;
+
+    table-layout: fixed;
+  }
+
+.variantTable th,
+.variantTable td {
+  padding: 12px 10px;
+
+  border: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+
+  text-align: left;
+  vertical-align: middle;
+
+  font-size: 0.9rem;
+  line-height: 1.5;
+
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+/* Remove Infima paragraph spacing inside table cells */
+.variantTable th p,
+.variantTable td p {
+  margin: 0;
+  padding: 0;
+}
+
+  .variantTable th:nth-child(1),
+  .variantTable td:nth-child(1) {
+    width: 14%;
+  }
+
+  .variantTable th:nth-child(2),
+  .variantTable td:nth-child(2) {
+    width: 19%;
+  }
+
+  .variantTable th:nth-child(3),
+  .variantTable td:nth-child(3) {
+    width: 20%;
+  }
+
+  .variantTable th:nth-child(4),
+  .variantTable td:nth-child(4) {
+    width: 47%;
+  }
+
+  .variantTable td:first-child strong {
+    white-space: nowrap;
+  }
+
+
+  /* ---------- START HERE ---------- */
+
+  .startSection {
+    margin: 56px 0;
+    padding: 30px 26px;
+  }
+
+  .startSection .sectionHeader {
+    margin-bottom: 22px;
+  }
+
+  .startSection .sectionHeader h2 {
+    font-size: 1.75rem;
+  }
+
+  .stepGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .stepCard {
+    min-width: 0;
+    min-height: 220px;
+    padding: 18px 15px;
+  }
+
+  .stepNumber {
+    margin-bottom: 14px;
+
+    font-size: 0.68rem;
+  }
+
+  .stepCard h3 {
+    margin: 0 0 8px;
+
+    font-size: 0.96rem;
+    line-height: 1.3;
+  }
+
+  .stepCard p {
+    margin-bottom: 14px;
+
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .stepCard > span:last-child {
+    margin-top: auto;
+
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+
+  /* ---------- RESOURCES ---------- */
+
+  .resourceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================================================
+   MOBILE — 700px and below
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .seriesPage {
+    width: 100%;
+    min-width: 0;
+  }
+
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 22px;
+
+    min-height: auto;
+    margin-bottom: 44px;
+    padding: 20px 18px;
+
+    border-radius: 14px;
+  }
+
+  .heroVisual {
+    order: -1;
+
+    width: 100%;
+  }
+
+  .heroVisual img {
+    display: block;
+
+    width: 100%;
+    max-width: 300px;
+    max-height: 220px;
+    margin: 0 auto;
+
+    object-fit: contain;
+  }
+
+  .heroContent h1 {
+    margin: 8px 0 14px;
+
+    font-size: 2.2rem;
+    line-height: 1.08;
+  }
+
+  .heroLead {
+    margin-bottom: 20px;
+
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+
+  .heroActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    height: 42px;
+    padding: 0 8px;
+
+    font-size: 0.82rem;
+  }
+
+
+  /* ---------- GENERAL SECTIONS ---------- */
+
+  .section {
+    margin: 44px 0;
+  }
+
+  .sectionHeader {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .sectionHeader h2 {
+    margin: 6px 0 10px;
+
+    font-size: 1.35rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+
+    white-space: nowrap;
+  }
+
+  .sectionHeader p {
+    margin: 0;
+
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+
+  /* ---------- PRODUCT CARDS ---------- */
+
+  .productGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .productCard {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .productImage {
+    min-height: 180px;
+    padding: 14px;
+  }
+
+  .productImage img {
+    width: 100%;
+    max-width: 270px;
+    max-height: 165px;
+
+    object-fit: contain;
+  }
+
+  .productBody {
+    padding: 20px 18px;
+  }
+
+  .productBody h3 {
+    margin-bottom: 9px;
+
+    font-size: 1.25rem;
+  }
+
+  .productBody p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .featureList {
+    gap: 5px;
+
+    margin-bottom: 18px;
+  }
+
+  .featureList span {
+    padding: 4px 8px;
+
+    font-size: 0.68rem;
+  }
+
+
+  /* ---------- MODEL TABLE ---------- */
+
+  .tableWrapper {
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .variantTable {
+    width: 620px;
+    min-width: 620px;
+
+    table-layout: fixed;
+  }
+
+.variantTable th,
+.variantTable td {
+  padding: 12px 10px;
+
+  border: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+
+  text-align: left;
+  vertical-align: middle;
+
+  font-size: 0.85rem;
+  line-height: 1.5;
+
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+/* Remove Infima paragraph spacing inside table cells */
+.variantTable th p,
+.variantTable td p {
+  margin: 0;
+  padding: 0;
+}
+
+  .variantTable th:nth-child(1),
+  .variantTable td:nth-child(1) {
+    width: 90px;
+  }
+
+  .variantTable th:nth-child(2),
+  .variantTable td:nth-child(2) {
+    width: 115px;
+  }
+
+  .variantTable th:nth-child(3),
+  .variantTable td:nth-child(3) {
+    width: 125px;
+  }
+
+  .variantTable th:nth-child(4),
+  .variantTable td:nth-child(4) {
+    width: 290px;
+  }
+
+  .variantTable td:first-child strong {
+    white-space: nowrap;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+
+
+  /* ---------- START HERE ---------- */
+
+  .startSection {
+    margin: 44px 0;
+    padding: 24px 18px;
+
+    border-radius: 14px;
+  }
+
+  .startSection .sectionHeader {
+    margin-bottom: 20px;
+  }
+
+  .startSection .sectionHeader h2 {
+    font-size: 1.24rem;
+
+    white-space: nowrap;
+  }
+
+  .stepGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stepCard {
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+
+    padding: 18px;
+  }
+
+  .stepNumber {
+    margin-bottom: 12px;
+  }
+
+  .stepCard h3 {
+    min-height: 0;
+    margin: 0 0 8px;
+
+    font-size: 1.02rem;
+  }
+
+  .stepCard p {
+    margin-bottom: 15px;
+
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .stepCard > span:last-child {
+    margin-top: 0;
+
+    font-size: 0.88rem;
+  }
+
+
+  /* ---------- RESOURCES ---------- */
+
+  .resources {
+    margin-top: 44px;
+  }
+
+  .resourceIntro {
+    margin-bottom: 20px;
+  }
+
+  .resourceGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .resourceGrid a {
+    min-height: auto;
+    padding: 16px 18px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+  .sectionHeader h2 {
+    font-size: 1.18rem;
+  }
+
+  .startSection .sectionHeader h2 {
+    font-size: 1.12rem;
+  }
+
+  .heroContent h1 {
+    font-size: 2rem;
+  }
+
+  .heroActions {
+    grid-template-columns: 1fr;
+  }
+}
