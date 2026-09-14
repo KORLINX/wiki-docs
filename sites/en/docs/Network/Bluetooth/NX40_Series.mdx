@@ -1,0 +1,436 @@
+---
+title: NX40 Series
+sidebar_label: NX40 Series
+description: Explore the KORLINX NX40 2.4 GHz multiprotocol series, including the NX40 Dev Kit and NX40 Module.
+keywords: [NX40 Series, NX40 Module, NX40 Dev Kit, nRF52840, Bluetooth Low Energy, IEEE 802.15.4, KORLINX]
+hide_table_of_contents: true
+hide_title: true
+---
+
+import Link from '@docusaurus/Link';
+import styles from './NX40_Series.module.css';
+
+<div className={styles.seriesPage}>
+
+<section className={styles.hero}>
+  <div className={styles.heroContent}>
+    <span className={styles.eyebrow}>
+      BLUETOOTH LOW ENERGY
+    </span>
+
+# NX40 Series
+
+    <div className={styles.heroLead}>
+      A compact nRF52840-based 2.4 GHz platform for evaluation,
+      prototyping, and embedded product integration.
+    </div>
+
+    <div className={styles.heroActions}>
+      <Link
+        className={styles.primaryButton}
+        to="/docs/Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Overview"
+      >
+        Explore Dev Kit
+      </Link>
+
+      <Link
+        className={styles.secondaryButton}
+        to="/docs/Network/Bluetooth/NX40_Module/NX40-Module_Overview"
+      >
+        Explore Module
+      </Link>
+    </div>
+  </div>
+
+  <div className={styles.heroVisual}>
+    <img
+      src="/img/bluetooth/nx40/series/NX40-Series.png"
+      alt="KORLINX NX40 Series"
+    />
+  </div>
+</section>
+
+
+<section className={styles.section}>
+
+  <div className={styles.sectionHeader}>
+    <span className={styles.sectionEyebrow}>
+      PRODUCT FAMILY
+    </span>
+
+    <h2>Choose Your Development Path</h2>
+
+    <div>
+      Start with the development kit for evaluation and testing,
+      or use the NX40 Module when you are ready for product integration.
+    </div>
+  </div>
+
+
+  <div className={styles.productGrid}>
+
+    <Link
+      className={styles.productCard}
+      to="/docs/Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Overview"
+    >
+      <div className={styles.productImage}>
+        <img
+          src="/img/bluetooth/nx40/series/NX40_BLE_Series_variants.png"
+          alt="NX40 Dev Kit"
+        />
+      </div>
+
+      <div className={styles.productBody}>
+        <span className={styles.productType}>
+          DEVELOPMENT KIT
+        </span>
+
+        <h3>NX40 Dev Kit</h3>
+
+        <div>
+          A development platform for evaluating the NX40,
+          validating hardware functions, and testing firmware.
+        </div>
+
+        <div className={styles.featureList}>
+          <span>USB Type-C</span>
+          <span>SWD Debug</span>
+          <span>Buttons & LEDs</span>
+          <span>On-board Sensors</span>
+        </div>
+
+        <span className={styles.cardLink}>
+          View Dev Kit Documentation →
+        </span>
+      </div>
+    </Link>
+
+
+    <Link
+      className={styles.productCard}
+      to="/docs/Network/Bluetooth/NX40_Module/NX40-Module_Overview"
+    >
+      <div className={styles.productImage}>
+        <img
+          src="/img/bluetooth/nx40/module-integration/NX40-module-options.png"
+          alt="NX40 Module"
+        />
+      </div>
+
+      <div className={styles.productBody}>
+        <span className={styles.productType}>
+          EMBEDDED MODULE
+        </span>
+
+        <h3>NX40 Module</h3>
+
+        <div>
+          A compact multiprotocol wireless module designed for
+          direct integration into embedded products.
+        </div>
+
+        <div className={styles.featureList}>
+          <span>Integrated / External Antenna</span>
+          <span>Optional 32 Mbit Flash</span>
+          <span>Compact Integration</span>
+          <span>Hardware Design</span>
+        </div>
+
+        <span className={styles.cardLink}>
+          View Module Documentation →
+        </span>
+      </div>
+    </Link>
+
+  </div>
+</section>
+
+
+<section className={styles.section}>
+  <div className={styles.sectionHeader}>
+    <span className={styles.sectionEyebrow}>
+      MODEL OPTIONS
+    </span>
+
+    <h2>NX40 Module Variants</h2>
+
+    <div>
+      Select the antenna and external Flash configuration
+      that matches your hardware requirements.
+    </div>
+  </div>
+
+  {/* Desktop / Tablet */}
+  <div className={styles.variantDesktop}>
+    <table className={styles.variantTable}>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Antenna</th>
+          <th>Flash</th>
+          <th>Use When</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td><strong>NX40i32</strong></td>
+          <td>Chip antenna</td>
+          <td>32 Mbit serial Flash</td>
+          <td>You need compact antenna integration and additional Flash</td>
+        </tr>
+
+        <tr>
+          <td><strong>NX40E32</strong></td>
+          <td>External-antenna connector</td>
+          <td>32 Mbit serial Flash</td>
+          <td>You need an external antenna and additional Flash</td>
+        </tr>
+
+        <tr>
+          <td><strong>NX40i00</strong></td>
+          <td>Chip antenna</td>
+          <td>None</td>
+          <td>You need compact module integration without additional Flash</td>
+        </tr>
+
+        <tr>
+          <td><strong>NX40E00</strong></td>
+          <td>External-antenna connector</td>
+          <td>None</td>
+          <td>You need an external antenna without additional Flash</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  {/* Mobile */}
+  <div className={styles.variantMobile}>
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX40i32</h3>
+        <span className={styles.variantBadge}>32 Mbit Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>Chip antenna</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>32 Mbit serial Flash</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <div>
+          You need compact antenna integration and external Flash.
+        </div>
+      </div>
+    </div>
+
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX40E32</h3>
+        <span className={styles.variantBadge}>32 Mbit Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>External-antenna connector</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>32 Mbit serial Flash</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <div>
+          You need an external antenna and external Flash.
+        </div>
+      </div>
+    </div>
+
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX40i00</h3>
+        <span className={styles.variantBadgeSecondary}>No Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>Chip antenna</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>None</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <div>
+          You need compact module integration without external Flash.
+        </div>
+      </div>
+    </div>
+
+
+    <div className={styles.variantCard}>
+      <div className={styles.variantCardHeader}>
+        <h3>NX40E00</h3>
+        <span className={styles.variantBadgeSecondary}>No Flash</span>
+      </div>
+
+      <div className={styles.variantMeta}>
+        <div>
+          <span>Antenna</span>
+          <strong>External-antenna connector</strong>
+        </div>
+
+        <div>
+          <span>Flash</span>
+          <strong>None</strong>
+        </div>
+      </div>
+
+      <div className={styles.variantUse}>
+        <span>Recommended when</span>
+        <div>
+          You need an external antenna without external Flash.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section className={styles.startSection}>
+
+  <div className={styles.sectionHeader}>
+    <span className={styles.sectionEyebrow}>
+      START HERE
+    </span>
+
+    <h2>Follow Your Development Stage</h2>
+  </div>
+
+
+  <div className={styles.stepGrid}>
+
+    <Link
+      className={styles.stepCard}
+      to="/docs/Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Overview"
+    >
+      <span className={styles.stepNumber}>01</span>
+
+      <h3>Evaluate NX40</h3>
+
+      <div>
+        Start with the NX40 Dev Kit and become familiar
+        with the development platform.
+      </div>
+
+      <span>Dev Kit Overview →</span>
+    </Link>
+
+
+    <Link
+      className={styles.stepCard}
+      to="/docs/Network/Bluetooth/NX40_Dev_Kit/Hardware"
+    >
+      <span className={styles.stepNumber}>02</span>
+
+      <h3>Understand the Hardware</h3>
+
+      <div>
+        Review USB, debugging, buttons, LEDs,
+        sensors, and available hardware interfaces.
+      </div>
+
+      <span>Hardware →</span>
+    </Link>
+
+
+    <Link
+      className={styles.stepCard}
+      to="/docs/Network/Bluetooth/NX40_Module/NX40-Module_Overview"
+    >
+      <span className={styles.stepNumber}>03</span>
+
+      <h3>Integrate the Module</h3>
+
+      <div>
+        Continue with specifications, pin mapping,
+        antenna requirements, and handling guidelines.
+      </div>
+
+      <span>Module Overview →</span>
+    </Link>
+
+  </div>
+</section>
+
+
+<section className={styles.resources}>
+
+  <div className={styles.resourceIntro}>
+    <span className={styles.sectionEyebrow}>
+      TECHNICAL DOCUMENTATION
+    </span>
+
+    <h2>NX40 Resources</h2>
+
+    <div>
+      Jump directly to the technical information required
+      for evaluation or hardware integration.
+    </div>
+  </div>
+
+
+  <div className={styles.resourceGrid}>
+
+    <Link to="/docs/Network/Bluetooth/NX40_Dev_Kit/Hardware">
+      <strong>Dev Kit Hardware</strong>
+      <span>Board interfaces and hardware blocks →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX40_Module/NX40-Module_Specifications">
+      <strong>Specifications</strong>
+      <span>NX40 module technical specifications →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX40_Module/NX40-Module_Pin_Map">
+      <strong>Pin Map</strong>
+      <span>Module pins and signal definitions →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX40_Module/NX40-Module_Antenna">
+      <strong>Antenna</strong>
+      <span>Antenna variants and integration guidance →</span>
+    </Link>
+
+    <Link to="/docs/Network/Bluetooth/NX40_Module/NX40-Module_Handling">
+      <strong>Handling & Soldering</strong>
+      <span>Assembly and module handling guidance →</span>
+    </Link>
+
+  </div>
+
+</section>
+
+</div>

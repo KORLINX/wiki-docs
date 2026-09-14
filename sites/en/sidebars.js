@@ -243,28 +243,68 @@ const sidebars = {
             },
 
             // -------------------------------------------------
-            // NX40 Dev Kit
+            // NX40 Series
             // -------------------------------------------------
             {
               type: 'category',
-              label: 'NX40 Dev Kit',
+              label: 'NX40 Series',
               collapsed: true,
               collapsible: true,
               link: {
-                type: 'generated-index',
-                title: 'NX40 Dev Kit',
-                description: 'NX40 Dev Kit documentation',
+                type: 'doc',
+                id: 'Network/Bluetooth/NX40_Series',
               },
               items: [
                 {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Overview',
-                  label: 'Overview',
+                  type: 'category',
+                  label: 'NX40 Module',
+                  collapsed: true,
+                  collapsible: true,
+                  items: [
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Module/NX40-Module_Overview',
+                      label: 'Overview',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Module/NX40-Module_Specifications',
+                      label: 'Specifications',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Module/NX40-Module_Pin_Map',
+                      label: 'Pin Map',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Module/NX40-Module_Antenna',
+                      label: 'Antenna',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Module/NX40-Module_Handling',
+                      label: 'Handling & Soldering',
+                    },
+                  ],
                 },
                 {
-                  type: 'doc',
-                  id: 'Network/Bluetooth/NX40_Dev_Kit/Hardware',
-                  label: 'Hardware',
+                  type: 'category',
+                  label: 'NX40 Dev Kit',
+                  collapsed: true,
+                  collapsible: true,
+                  items: [
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Dev_Kit/NX40_Dev_Kit_Overview',
+                      label: 'Overview',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Dev_Kit/Hardware',
+                      label: 'Hardware',
+                    },
+                  ],
                 },
               ],
             },
