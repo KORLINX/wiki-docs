@@ -13,13 +13,15 @@ NX40 is an LGA surface-mount module. Use ESD, moisture, placement, and thermal-p
 
 ## Receiving and Storage
 
-<img src="/img/bluetooth/nx40/handling/NX40-tape-reel-packaging.png" alt="NX40 modules in carrier tape and moisture-barrier reel packaging" className="blog-first-image nx40-handling-packaging-image" />
-
 The photograph is reproduced from the complete review draft. It illustrates the packaging format; it does not approve the printed MSL information or packing limits.
 
 ### Draft Source Values
 
 These values are retained from the original datasheet for review. Use the release requirement column to determine what must be confirmed before production.
+
+<img src="/img/bluetooth/nx40/handling/NX40-tape-reel-packaging.png" alt="NX40 modules in carrier tape and moisture-barrier reel packaging" className="blog-first-image nx40-handling-packaging-image" />
+
+<div className="spec-table-wrapper">
 
 | Item | Draft source value | Release requirement |
 | --- | --- | --- |
@@ -28,6 +30,8 @@ These values are retained from the original datasheet for review. Use the releas
 | Shelf life | 12 months from shipment | Confirm packaging, barrier bag, desiccant, and HIC process |
 | Baking | 125°C for 24 hours | Confirm component limits, carrier compatibility, and J-STD-033 procedure |
 | Unopened storage | 5–35°C, 20–70% RH | Confirm controlled warehouse and warranty conditions |
+
+</div>
 
 Before production, obtain the approved values for:
 
@@ -51,11 +55,13 @@ Before production, obtain the approved values for:
 
 ## Reflow Soldering
 
-<img src="/img/bluetooth/nx40/handling/NX40-reflow-profile.png" alt="Draft NX40 reflow soldering profile diagram" className="blog-first-image nx40-reflow-profile-image" />
-
 The diagram is reproduced from the complete review draft. Its `≤260°C` label remains a draft value until confirmed by NX40 module and assembly qualification.
 
 The production reflow profile must be based on the approved NX40 assembly qualification and the final PCB thermal mass, paste, stencil, component density, and oven.
+
+<img src="/img/bluetooth/nx40/handling/NX40-reflow-profile.png" alt="Draft NX40 reflow soldering profile diagram" className="blog-first-image nx40-reflow-profile-image" />
+
+<div className="spec-table-wrapper">
 
 | Profile item | Draft source value | Required controlled value |
 | --- | --- | --- |
@@ -66,6 +72,8 @@ The production reflow profile must be based on the approved NX40 assembly qualif
 | Time within 5°C of peak | Not specified | Pending process approval |
 | Ramp-down rate | &lt;6°C/s | Pending process approval |
 | Maximum reflow cycles | 2 | Pending module qualification |
+
+</div>
 
 Do not use the nRF52840 package limit alone as the NX40 module reflow specification.
 
