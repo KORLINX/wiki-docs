@@ -1,0 +1,97 @@
+---
+sidebar_position: 5
+title: NX40 Module Handling
+description: Storage, moisture control, SMT assembly, reflow, and handling guidance for the KORLINX NX40 Series module.
+keywords: [NX40 handling, NX40 soldering, NX40 reflow, NX40 MSL, LGA module, KORLINX]
+---
+
+# NX40 Module Handling
+
+NX40 is an LGA surface-mount module. Use ESD, moisture, placement, and thermal-process controls appropriate to the released production specification.
+
+> **Production status:** The supplied draft does not contain sufficient module qualification evidence to publish MSL, floor-life, baking, reflow, and tape-and-reel values as approved NX40 production limits.
+
+## Receiving and Storage
+
+<img src="/img/bluetooth/nx40/handling/NX40-tape-reel-packaging.png" alt="NX40 modules in carrier tape and moisture-barrier reel packaging" className="blog-first-image nx40-handling-packaging-image" />
+
+The photograph is reproduced from the complete review draft. It illustrates the packaging format; it does not approve the printed MSL information or packing limits.
+
+### Draft Source Values
+
+These values are retained from the original datasheet for review. Use the release requirement column to determine what must be confirmed before production.
+
+| Item | Draft source value | Release requirement |
+| --- | --- | --- |
+| Module MSL | MSL 3 | Confirm with the NX40 module-level J-STD-020 classification report |
+| Floor life | ≤168 hours at &lt;30°C / &lt;60% RH | Publish only after MSL 3 approval |
+| Shelf life | 12 months from shipment | Confirm packaging, barrier bag, desiccant, and HIC process |
+| Baking | 125°C for 24 hours | Confirm component limits, carrier compatibility, and J-STD-033 procedure |
+| Unopened storage | 5–35°C, 20–70% RH | Confirm controlled warehouse and warranty conditions |
+
+Before production, obtain the approved values for:
+
+| Control | Required release information |
+| --- | --- |
+| Moisture sensitivity level | Approved NX40 MSL classification and governing standard |
+| Shelf life | Duration and sealed storage temperature/humidity |
+| Floor life | Time, temperature, and humidity after opening |
+| Baking | Trigger, temperature, duration, tray/reel limitation, and maximum cycles |
+| Packaging | Moisture barrier bag, desiccant, humidity indicator, and label content |
+
+## Handling Guidelines
+
+- Use an ESD-controlled workstation and grounded handling equipment.
+- Keep modules in approved moisture-barrier packaging until assembly.
+- Avoid touching or contaminating the LGA pads.
+- Inspect the shield, antenna area or RF connector, package edges, and pads before placement.
+- Pick up the module with an approved vacuum nozzle on the top surface.
+- Avoid mechanical load on the shield, chip antenna, and external-antenna connector.
+- Track the lot, package-open time, exposure condition, and bake history.
+
+## Reflow Soldering
+
+<img src="/img/bluetooth/nx40/handling/NX40-reflow-profile.png" alt="Draft NX40 reflow soldering profile diagram" className="blog-first-image nx40-reflow-profile-image" />
+
+The diagram is reproduced from the complete review draft. Its `≤260°C` label remains a draft value until confirmed by NX40 module and assembly qualification.
+
+The production reflow profile must be based on the approved NX40 assembly qualification and the final PCB thermal mass, paste, stencil, component density, and oven.
+
+| Profile item | Draft source value | Required controlled value |
+| --- | --- | --- |
+| Ramp-up rate | Not specified | Pending process approval |
+| Preheat / soak | 150–200°C for 60–120 seconds | Pending qualified profile |
+| Time above liquidus | Not specified | Pending process approval |
+| Peak package temperature | ≤260°C | Pending module qualification |
+| Time within 5°C of peak | Not specified | Pending process approval |
+| Ramp-down rate | &lt;6°C/s | Pending process approval |
+| Maximum reflow cycles | 2 | Pending module qualification |
+
+Do not use the nRF52840 package limit alone as the NX40 module reflow specification.
+
+## Cleaning
+
+Do not use ultrasonic cleaning or liquid immersion unless the process has been validated for the complete module. Confirm flux compatibility and residue requirements with the EMS/SMT process owner.
+
+## Tape and Reel
+
+Carrier-tape dimensions, pocket orientation, pitch, reel diameter, quantity per reel, leader/trailer lengths, cover-tape peel force, and label fields remain subject to the approved packing drawing.
+
+## Production Checklist
+
+| Check | Confirmation |
+| --- | --- |
+| Incoming material | Correct model, lot, packaging condition, and exposure history |
+| Footprint | Released land pattern, orientation, courtyard, and paste aperture |
+| Moisture control | Approved MSL, floor life, storage, and bake procedure |
+| Thermal process | Approved profile and allowed cycle count |
+| Placement | Qualified nozzle, force, position, and rotation |
+| Inspection | Joint quality, alignment, shield, antenna/connector, and contamination |
+| Traceability | Lot, oven profile, exposure time, rework, and inspection records |
+
+## Related Pages
+
+- [NX40 Module Overview](./NX40-Module_Overview)
+- [NX40 Module Specifications](./NX40-Module_Specifications)
+- [NX40 Module Pin Map](./NX40-Module_Pin_Map)
+- [NX40 Module Antenna](./NX40-Module_Antenna)

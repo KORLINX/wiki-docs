@@ -1,0 +1,65 @@
+---
+sidebar_position: 1
+title: NX40 Module Overview
+description: Overview of the KORLINX NX40 Series 2.4 GHz multiprotocol wireless module and its antenna and memory variants.
+keywords: [NX40, NX40 Module, nRF52840, Bluetooth Low Energy, IEEE 802.15.4, KORLINX]
+---
+
+# NX40 Module Overview
+
+<img src="/img/bluetooth/nx40/series/NX40-overview.png" alt="NX40 integrated and external antenna module variants" className="blog-first-image" />
+
+The **KORLINX NX40 Series** is a compact 2.4 GHz multiprotocol wireless module based on the Nordic Semiconductor **nRF52840-CKAA**. It integrates the SoC, 32 MHz crystal, RF matching network, shielding, and an antenna connection in a 9.5 × 9.5 mm LGA package.
+
+NX40i models include a ceramic chip antenna. NX40E models route RF to an on-module micro-coax connector. Models ending in `32` add 32 Mbit serial multi-I/O Flash; models ending in `00` omit this memory.
+
+> **Technical review status:** The module routing, mechanical tolerances, module-level electrical characterization, antenna qualification, and production-process limits require approval against the released BOM, PCB, and qualification records before production use.
+
+## Main Highlights
+
+- 64 MHz Arm Cortex-M4 processor with floating-point unit
+- 1 MB embedded Flash and 256 kB RAM in the nRF52840 SoC
+- Bluetooth Low Energy 1 Mbps, 2 Mbps, and coded PHY support
+- IEEE 802.15.4 radio capability at 250 kbps
+- USB 2.0 full-speed device and common embedded interfaces
+- Integrated-antenna and external-antenna options
+- Optional 32 Mbit serial multi-I/O Flash
+- 9.5 × 9.5 × 1.95 mm nominal LGA module envelope
+
+Protocol availability depends on the released firmware, software stack, qualification, and regional configuration.
+
+## Application Examples
+
+| Category | Examples | Status |
+| --- | --- | --- |
+| Industrial IoT | Wireless sensors, asset monitoring, equipment interfaces | Validate the final application and radio environment |
+| Smart building | Lighting, environmental sensing, access and occupancy devices | Protocol stack and certification dependent |
+| Consumer and wearable | Human-interface devices and health or fitness peripherals | End-product qualification dependent |
+| Connected products | Bluetooth LE, Thread, or Zigbee nodes | Requires an approved software stack |
+
+## Model Options
+
+<img src="/img/bluetooth/nx40/module-integration/NX40-module-options.png" alt="NX40 integrated and external antenna module variants" className="blog-first-image" />
+
+| Model | Antenna | Additional Flash | Description |
+| --- | --- | --- | --- |
+| NX40i32 | Integrated ceramic antenna | 32 Mbit | Integrated antenna with additional serial Flash |
+| NX40E32 | External-antenna connector | 32 Mbit | External antenna with additional serial Flash |
+| NX40i00 | Integrated ceramic antenna | None | Integrated antenna without additional Flash |
+| NX40E00 | External-antenna connector | None | External antenna without additional Flash |
+
+{/* Product-owner confirmation required: approve lowercase “i” in all order codes and confirm the exact connector manufacturer and part number. */}
+
+## Documentation Flow
+
+| Page | Use it to |
+| --- | --- |
+| [Specifications](./NX40-Module_Specifications) | Review electrical, RF, mechanical, memory, and interface information |
+| [Pin Map](./NX40-Module_Pin_Map) | Review external LGA signals and module-internal connections |
+| [Antenna](./NX40-Module_Antenna) | Integrate the NX40i chip antenna or select an NX40E external antenna |
+| [Handling & Soldering](./NX40-Module_Handling) | Plan storage, SMT assembly, reflow, and inspection |
+
+## Related Pages
+
+- [NX40 Dev Kit Overview](../NX40_Dev_Kit/NX40_Dev_Kit_Overview)
+- [NX40 Dev Kit Hardware](../NX40_Dev_Kit/Hardware)

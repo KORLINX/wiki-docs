@@ -5,6 +5,8 @@ description: Overview of the NX40 Dev Kit Hardware for BLE application developme
 keywords: [NX40 Dev Kit, DEV-NX40, NX40 development board, BLE development kit, KORLINX]
 ---
 
+# NX40 Dev Kit Hardware Overview
+
 <img
   src="/img/bluetooth/nx40/quick-start/NX40_DK_Variants.png"
   alt="NX40 Dev Kit hardware overview"
@@ -39,7 +41,7 @@ The NX40 Dev Kit includes USB connectivity, debugging access, user input, status
 | Module Models | NX40i32, NX40E32, NX40i00, NX40E00 |
 | Antenna Options | Chip antenna for NX40i, external antenna for NX40E |
 | External Flash | 32 Mbit SPI Flash or no external Flash depending on model |
-| GPIO Summary | 25 GPIO |
+| GPIO Summary | Counting policy pending module-level technical approval |
 | Module Package | LGA surface-mount module |
 | Module Size | 9.5 × 9.5 × 1.95 mm |
 | Module Pad Pitch | 0.65 mm |
@@ -51,11 +53,11 @@ The NX40 Dev Kit includes USB connectivity, debugging access, user input, status
 | LEDs | RGB LED, charge/power LEDs |
 | Expansion | J3 / J4 headers |
 | Battery Support | Li-Po connector, BQ25100 charger IC |
-| Software Platform | nRF Connect SDK / Zephyr RTOS compatible |
+| Software Platform | nRF Connect SDK / Zephyr RTOS workflow, subject to released board support and firmware verification |
 
-:::note
-The uploaded NX40 datasheet contains some copied NX15 text. The hardware block information above follows the DEV-NX40 section and the NX40 pin map illustration.
-:::
+{/* Source review note: the supplied NX40 draft contains copied NX15 wording. This
+page uses the DEV-NX40 block and NX40 pin illustration; confirm against the released
+Dev Kit schematic before public release. */}
 
 ---
 
@@ -124,4 +126,3 @@ This pin map is based on the NX40 Dev Kit pin illustration. Always confirm the f
 | --- | --- |
 | J4 | P0.22, P0.21, P0.20, P0.10/NFC2, P0.09/NFC1, 3.3V, GND, VBUS |
 | J3 | GND, P0.30/AIN6, P0.29/AIN5, P0.28/AIN4, P0.05/AIN3, P0.04/AIN2, P0.03/AIN1, P0.01/AIN0 |
-

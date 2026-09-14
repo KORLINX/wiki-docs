@@ -305,19 +305,23 @@
   border-radius: 16px;
 }
 
-.nx15-module-dimensions {
+.nx15-module-dimensions,
+.nx40-module-dimensions {
   width: 65%;
 }
 
-.nx15-handling-packaging-image {
+.nx15-handling-packaging-image,
+.nx40-handling-packaging-image {
   width: 100%;
 }
 
-.nx15-reflow-profile-image {
+.nx15-reflow-profile-image,
+.nx40-reflow-profile-image {
   width: 60%;
 }
 
-.nx15-lga-pad-layout-image {
+.nx15-lga-pad-layout-image,
+.nx40-lga-pad-layout-image {
   width: 100%;
 }
 
@@ -325,7 +329,11 @@
   .nx15-module-dimensions,
   .nx15-handling-packaging-image,
   .nx15-reflow-profile-image,
-  .nx15-lga-pad-layout-image {
+  .nx15-lga-pad-layout-image,
+  .nx40-module-dimensions,
+  .nx40-handling-packaging-image,
+  .nx40-reflow-profile-image,
+  .nx40-lga-pad-layout-image {
     width: 100%;
   }
 }

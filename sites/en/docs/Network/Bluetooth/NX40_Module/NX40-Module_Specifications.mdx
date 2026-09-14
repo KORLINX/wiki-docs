@@ -1,0 +1,121 @@
+---
+sidebar_position: 2
+title: NX40 Module Specifications
+description: Electrical, RF, mechanical, memory, and interface specifications for the KORLINX NX40 Series module.
+keywords: [NX40 specifications, nRF52840, Bluetooth Low Energy, LGA module, KORLINX]
+---
+
+# NX40 Module Specifications
+
+This page separates **nRF52840 component reference values** from NX40 module design data. Component values are useful for planning, but they are not module-level guarantees.
+
+> **Note:** Use the released NX40 datasheet, schematic, BOM, controlled mechanical drawing, and qualification report for production design.
+
+## Key Specifications
+
+| Item | Specification | Status |
+| --- | --- | --- |
+| Main SoC | Nordic Semiconductor nRF52840-CKAA | Component identification |
+| CPU | 64 MHz Arm Cortex-M4 with FPU | SoC capability |
+| SoC memory | 1 MB Flash, 256 kB RAM | SoC capability |
+| Additional Flash | 32 Mbit on `32` models; none on `00` models | Exact device/BOM pending approval |
+| Radio | Bluetooth Low Energy PHYs and IEEE 802.15.4 at 250 kbps | Availability depends on software and qualification |
+| TX setting | −20 to +8 dBm | nRF52840 reference range |
+| USB | USB 2.0 full-speed device | Host implementation requires review |
+| Interfaces | GPIO, ADC, UART/UARTE, SPI, QSPI, TWI/I²C, PWM, PDM, I²S, NFC-A, SWD | Pin assignment depends on firmware |
+| Package | LGA surface-mount module | KORLINX design data |
+| Size | 9.5 × 9.5 × 1.95 mm nominal | Tolerances pending controlled drawing |
+
+## Recommended Operating Conditions
+
+| Parameter | Min. | Nom. | Max. | Unit | Condition |
+| --- | ---: | ---: | ---: | --- | --- |
+| VDD | 1.7 | 3.3 | 3.6 | V | nRF52840 normal-voltage reference; NX40 nominal approval pending |
+| VDDH | 2.5 | 3.7 | 5.5 | V | High-voltage reference; confirm support and load behavior by model |
+| VBUS | 4.35 | 5.0 | 5.5 | V | USB supply reference; does not alone power every module rail |
+| Ambient temperature | −40 | 25 | +85 | °C | SoC range; NX40 module qualification pending |
+
+## Absolute Maximum Ratings
+
+| Parameter | Min. | Max. | Unit | Basis |
+| --- | ---: | ---: | --- | --- |
+| VDD | −0.3 | +3.9 | V | nRF52840 component limit |
+| VDDH | −0.3 | +5.8 | V | nRF52840 component limit |
+| VBUS | −0.3 | +5.8 | V | nRF52840 component limit |
+| GPIO voltage, VDD ≤ 3.6 V | −0.3 | VDD + 0.3 | V | nRF52840 component limit |
+| RF input | — | +10 | dBm | nRF52840 component limit |
+| Storage temperature | −40 | +125 | °C | SoC limit; module qualification pending |
+
+Absolute maximum ratings are stress limits and do not describe normal operation. Module ESD and production limits remain subject to NX40 qualification.
+
+## SoC RF and Current Reference
+
+| Item | Typical / range | Condition |
+| --- | --- | --- |
+| BLE 1 Mbps sensitivity | −95 dBm | Short packet, ideal transmitter |
+| BLE coded 125 kbps sensitivity | −103 dBm | Typical SoC value |
+| IEEE 802.15.4 sensitivity | −100 dBm | 250 kbps, typical SoC value |
+| TX current at +8 dBm | 16.40 mA | BLE 1 Mbps, HFXO, DC/DC, 3 V |
+| RX current | 6.26 mA | BLE 1 Mbps, HFXO, DC/DC, 3 V |
+| System OFF current | 0.40 µA | 3 V, no RAM retention |
+
+{/* Technical confirmation required: publish module measurements for all four variants with supply pin, voltage, regulator mode, firmware/SDK, PHY, TX power, Flash state, temperature, sample count, and instrument. */}
+
+## NX40 Module Characterization
+
+The complete review draft reserves the following table for module-level results. It is included here so that SoC reference values are not mistaken for measured NX40 performance.
+
+| Mode | Required condition | NX40i00 | NX40E00 | NX40i32 | NX40E32 |
+| --- | --- | --- | --- | --- | --- |
+| System OFF | Supply, RAM retention, wake sources, temperature | Pending | Pending | Pending | Pending |
+| System ON idle | Clock, regulator, firmware, peripherals | Pending | Pending | Pending | Pending |
+| BLE RX | 1 Mbps PHY and defined receiver state | Pending | Pending | Pending | Pending |
+| BLE TX | +8 dBm and defined packet/interval | Pending | Pending | Pending | Pending |
+| Flash read/write | Bus mode, clock, pattern, and duty cycle | N/A | N/A | Pending | Pending |
+
+## Software Capability Boundary
+
+| Capability | Hardware basis | Evidence required for an NX40 product claim |
+| --- | --- | --- |
+| nRF Connect SDK / Zephyr | Supported by the underlying Nordic platform | Tested SDK version, board target, repository, and release notes |
+| Bluetooth Low Energy | Supported radio PHY | Bluetooth qualification identifiers and tested controller/host stack |
+| Thread / Zigbee | IEEE 802.15.4 radio capability | Qualified stack version and interoperability evidence |
+| Matter over Thread | Software dependent | Matter SDK version, certification scope, and validated application |
+| USB | Full-speed device hardware | Validated host design and firmware example |
+| Additional Flash | `32` variants only | Confirmed JEDEC ID, driver, modes, frequency, and power management |
+
+## Regulatory and Environmental Status
+
+| Evidence item | NX40i | NX40E | Release requirement |
+| --- | --- | --- | --- |
+| KC certification ID | Pending | Pending | Publish exact ID and covered models |
+| Approved antenna | Integrated | Pending | Record external antenna part number, gain, and cable |
+| Bluetooth qualification | Pending | Pending | Publish QDID/DID and declaration owner |
+| FCC / ISED / CE / UKCA / Japan | Pending | Pending | Do not imply modular approval without identifiers |
+| RoHS / REACH | Pending | Pending | Supplier declaration and applicable scope |
+| PSA Certified claim | Not established for the module | Not established for the module | Clarify whether a claim applies only to an SDK or platform configuration |
+
+## Mechanical Information
+
+<img src="/img/bluetooth/nx40/module-integration/NX40-module-dimensions-source.png" alt="NX40 nominal dimensions and bottom LGA side" className="blog-first-image nx40-module-dimensions" />
+
+<div className="spec-table-wrapper">
+<table className="spec-table">
+<thead><tr><th>Parameter</th><th>Nominal value</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Length</td><td>9.5 mm</td><td>Tolerance pending</td></tr>
+<tr><td>Width</td><td>9.5 mm</td><td>Tolerance pending</td></tr>
+<tr><td>Height</td><td>1.95 mm with shield</td><td>Maximum and tolerance pending</td></tr>
+<tr><td>Weight</td><td>&lt; 0.5 g</td><td>Target; measured specification pending</td></tr>
+<tr><td>Package</td><td>LGA</td><td>Pad finish and coplanarity pending</td></tr>
+<tr><td>Pad pitch</td><td>0.65 mm</td><td>Controlled land pattern pending</td></tr>
+</tbody>
+</table>
+</div>
+
+## Related Pages
+
+- [NX40 Module Overview](./NX40-Module_Overview)
+- [NX40 Module Pin Map](./NX40-Module_Pin_Map)
+- [NX40 Module Antenna](./NX40-Module_Antenna)
+- [NX40 Module Handling](./NX40-Module_Handling)
