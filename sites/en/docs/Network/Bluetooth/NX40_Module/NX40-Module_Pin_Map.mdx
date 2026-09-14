@@ -13,11 +13,13 @@ The NX40 LGA interface exposes power, ground, USB, debug, GPIO, analog, NFC, and
 
 ## LGA Pad Layout
 
-<img src="/img/bluetooth/nx40/module-integration/NX40-LGA Pad Layout.png" alt="NX40 external LGA functional pad layout" className="blog-first-image nx40-lga-pad-layout-image" />
-
 {/* Technical conflict: confirm whether the drawing is the module bottom view or the host PCB top view, and add the controlled pad numbers and pin-1 mark before using it for a footprint. */}
 
-## Power, USB, and Debug Signals
+### Power, USB, and Debug Signals
+
+<img src="/img/bluetooth/nx40/module-integration/NX40-LGA Pad Layout.png" alt="NX40 external LGA functional pad layout" className="blog-first-image nx40-lga-pad-layout-image" />
+
+<div className="spec-table-wrapper">
 
 | Signal | WLCSP ball(s) | Primary role | Integration note |
 | --- | --- | --- | --- |
@@ -30,6 +32,8 @@ The NX40 LGA interface exposes power, ground, USB, debug, GPIO, analog, NFC, and
 | D− / D+ | J8 / K8 | USB data | Route as a controlled 90 Ω differential pair |
 | P0.18 / nRESET | K6 | GPIO / reset / QSPI CSN | Function depends on firmware configuration |
 | SWDIO / SWDCLK | J2 / H2 | Programming and debug | Keep accessible for production programming and recovery |
+
+</div>
 
 ## Exposed GPIO-Capable Signals
 

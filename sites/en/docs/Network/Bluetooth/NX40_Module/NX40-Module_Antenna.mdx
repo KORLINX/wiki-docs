@@ -16,11 +16,13 @@ keywords: [NX40 antenna, NX40i, NX40E, chip antenna, external antenna, RF keepou
 
 ## NX40i Integrated Antenna
 
-<img src="/img/bluetooth/nx40/antenna/NX40i Chip Antenna Layout Guidance.png" alt="Draft NX40i host PCB antenna keep-out and ground-plane concept" className="blog-first-image" />
-
 > **Verification required:** The restored layout image contains the legacy `GND Plane ≥40 mm²` statement. The component datasheet does not establish this as a universal NX40 host-PCB rule. Use the image for engineering comparison only until KORLINX releases a dimensioned NX40 keep-out drawing and supporting RF measurements.
 
 The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic antenna. The following values describe the antenna component on Abracon's 46 × 20 mm evaluation board in free space. They do not describe the completed NX40 module or customer host product.
+
+<img src="/img/bluetooth/nx40/antenna/NX40i Chip Antenna Layout Guidance.png" alt="Draft NX40i host PCB antenna keep-out and ground-plane concept" className="blog-first-image" />
+
+<div className="spec-table-wrapper">
 
 | Component parameter | Abracon reference value | Publication status |
 | --- | --- | --- |
@@ -31,6 +33,8 @@ The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic an
 | Average total efficiency | 49% | Evaluation-board reference |
 | Antenna size | 1.6 × 0.8 × 0.4 mm | Component dimension |
 | Local clearance | 5 × 3 mm | Abracon evaluation-layout reference |
+
+</div>
 
 ### Host Layout Guidance
 
@@ -45,6 +49,8 @@ The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic an
 
 <img src="/img/bluetooth/nx40/module-integration/NX40E.png" alt="NX40E module with external-antenna micro-coax connector" className="blog-first-image" />
 
+<div className="spec-table-wrapper">
+
 | Parameter | Requirement / reference | Notes |
 | --- | --- | --- |
 | RF connector | On-module micro-coax connector | Exact manufacturer and part number pending approval |
@@ -56,6 +62,8 @@ The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic an
 | Reference average efficiency | 85% at 2.4–2.5 GHz | Antenna-family reference |
 | Coaxial cable | 50 Ω | Keep the cable as short as practical |
 | Host PCB RF trace | Not required | RF terminates at the on-module connector |
+
+</div>
 
 ### External Antenna Selection
 

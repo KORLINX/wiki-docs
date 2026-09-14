@@ -29,19 +29,19 @@ For the **NX15 Dev Kit J3 / J5 header pin map**, see the NX15 Dev Kit Hardware p
 
 ## LGA Pad Layout
 
+The NX15 module uses an LGA package for surface-mount integration. The external pads provide access to the main power, ground, debug, reset, GPIO, and configurable peripheral functions.
+
+For production PCB design, always confirm the final pad assignment with the official datasheet, schematic, and engineering release documents.
+
+### System, Power, and Debug Pins
+
 <img
   src="/img/bluetooth/nx15/module-integration/NX15_Pin_map_1.png"
   alt="NX15 module external LGA pad map"
   className="blog-first-image nx15-lga-pad-layout-image"
 />
 
-The NX15 module uses an LGA package for surface-mount integration. The external pads provide access to the main power, ground, debug, reset, GPIO, and configurable peripheral functions.
-
-For production PCB design, always confirm the final pad assignment with the official datasheet, schematic, and engineering release documents.
-
----
-
-## System, Power, and Debug Pins
+<div className="spec-table-wrapper">
 
 | Pad / Signal | Type | Nordic CSP47 Ball | Function | Design Note |
 | --- | --- | --- | --- | --- |
@@ -50,6 +50,8 @@ For production PCB design, always confirm the final pad assignment with the offi
 | NRESET | Reset | D2 | Pin reset with on-chip pull-up | Route to a reset button and/or debug connector; keep accessible for bring-up and recovery |
 | SWDIO | Debug | F2 | Serial wire data | Route to an SWD header or test pad |
 | SWDCLK | Debug | E3 | Serial wire clock input with on-chip pull-down | Route with SWDIO and keep the trace short |
+
+</div>
 
 :::tip
 Keep reset and SWD access available during early bring-up. This helps firmware programming, debugging, and device recovery.
