@@ -19,7 +19,8 @@ This tutorial builds the complete Matter over Thread workflow from source.
 
 You will select a Matter sample, build it for an approved NX board target, flash the result, commission the device over Bluetooth Low Energy, and send a Matter command over Thread.
 
-:::caution Required validation
+:::caution
+Required validation
 The commands use placeholders for KORLINX-specific targets and paths. Replace them only with values validated on the corresponding NX hardware revision and SDK release.
 :::
 
@@ -100,7 +101,8 @@ west list
 
 Confirm that the Matter source required by the approved release is available.
 
-:::note Matter source location
+:::note
+Matter source location
 Matter support is integrated in nRF Connect SDK v3.4.0 and earlier. Nordic provides Matter samples through the Matter Add-on for later releases. This tutorial must use one validated approach and must not mix commands or sample paths from different releases.
 :::
 
@@ -459,7 +461,7 @@ The tutorial is complete when:
 | Device joins Thread but commands fail | Confirm IPv6/mDNS reachability, node ID, endpoint, cluster, access control, and controller state. |
 | On/Off command succeeds but the LED does not change | Confirm the application callback and board-specific LED mapping. |
 
-## Developer reference keywords
+{/* ## Developer reference keywords
 
 - `west build`
 - `west flash`
@@ -474,7 +476,7 @@ The tutorial is complete when:
 - `chip-tool pairing ble-thread`
 - `chip-tool onoff`
 - `Matter endpoint`
-- `OnOff cluster`
+- `OnOff cluster` */}
 
 ## Official references
 
