@@ -1,0 +1,186 @@
+---
+title: AS-611Bn Command and Data Reference
+sidebar_label: Command and Data Reference
+sidebar_position: 6
+description: Lowercase ASCII commands, documented defaults, ranges, acknowledgements, and fixed-width data frames for AS-611Bn.
+keywords:
+  - AS-611Bn command reference
+  - AS-611Bn protocol
+  - AS-611Bn data format
+  - radar UART command
+  - radar frame parser
+---
+
+# AS-611Bn Command and Data Reference
+
+This page condenses the command and frame information in the supplied manual. All commands are lowercase ASCII.
+
+:::note Firmware-specific reference
+This page follows the supplied manual marked Ver.4.0 Jun.2026. Confirm command support for the installed function and firmware. Commands are shown without a terminator because the manual does not specify one. Examples are documented syntax, not captured transactions.
+:::
+
+## Common commands
+
+| Command | Example | Documented default/range | Function |
+| --- | --- | --- | --- |
+| `mode` | `mode 1` | Default `1`; `1` or `2` | `1`: distance, `2`: vital sign |
+| `start` | `start` | — | Start data output |
+| `stop` | `stop` | — | Stop data output |
+| `baud` | `baud 460800` | Default 460800; 115200, 230400, 460800, 921600 | Save baud rate and reboot |
+| `reset` | `reset` | — | Software reset and reinitialize current mode |
+| `freset` | `freset` | — | Hardware/cold reset; factory-default restoration is not specified |
+| `test` | `test 0` | Default `0`; `0` or `1` | Normal or test/debug wave output |
+
+Documented mode responses:
+
+```text
+=DISTANCE!
+=VITAL!
+```
+
+## Distance-mode commands
+
+| Command | Example | Default | Range | Function |
+| --- | --- | ---: | --- | --- |
+| `zmin` | `zmin 25` | 25 cm | 10 to `zmax - 25` cm | Minimum range |
+| `zmax` | `zmax 300` | 300 cm | 50–2000 cm | Maximum range |
+| `pmode` | `pmode 0` | 0 | 0, 1, 2 | Balanced, fast, accurate |
+| `sena` | `sena 50` | 50% | 0–100% | CFAR sensitivity |
+| `sort` | `sort 0` | 0 | 0, 1 | Distance-first or strength-first |
+| `outtime` | `outtime 1` | 1 | 0, 1 | 0: documented 15 Hz; 1: once per second |
+
+## Vital-mode commands
+
+| Command | Example | Default | Range | Function |
+| --- | --- | ---: | --- | --- |
+| `zmin` | `zmin 25` | 25 cm | 15 to `zmax - 25` cm | Minimum vital-sign range |
+| `zmax` | `zmax 150` | 150 cm | 40–250 cm | Maximum vital-sign range |
+| `wave` | `wave 1` | 0 | 0, 1 | 0: simple, 1: waveform |
+| `exten` | `exten 1` | 0 | 0, 1 | 0: no HRV extension, 1: add RMSSD and SDNN |
+
+## Distance frame
+
+```text
+#ABBBBCCC!
+```
+
+| Segment | Width | Meaning |
+| --- | ---: | --- |
+| `#` | 1 | Start |
+| `A` | 1 | Object index |
+| `BBBB` | 4 | Distance, cm |
+| `CCC` | 3 | Reflected strength |
+| `!` | 1 | End |
+
+Example: `#10250045!` = object 1, 250 cm, strength 45.
+
+No target: `#0!` every 15 seconds.
+
+## Vital state
+
+| Value | Meaning |
+| ---: | --- |
+| `0` | No target |
+| `1` | Target moving |
+| `2` | Target calculating |
+| `3` | Vital-sign result |
+
+## Simple vital frame
+
+```text
+%ABBBCCDDD!
+```
+
+| Segment | Width | Meaning |
+| --- | ---: | --- |
+| `%` | 1 | Start |
+| `A` | 1 | State |
+| `BBB` | 3 | Heart rate per minute |
+| `CC` | 2 | Breathing rate per minute |
+| `DDD` | 3 | Distance, cm |
+| `!` | 1 | End |
+
+Rate: once per second.
+
+Extended simple frame:
+
+```text
+%ABBBCCDDEEFFF!
+```
+
+`DD`: RMSSD ms; `EE`: SDNN ms; `FFF`: distance cm.
+
+## Waveform vital frame
+
+```text
+@ABBBCCDEEEFFF!
+```
+
+| Segment | Width | Meaning |
+| --- | ---: | --- |
+| `@` | 1 | Start |
+| `A` | 1 | State |
+| `BBB` | 3 | Heart rate per minute |
+| `CC` | 2 | Breathing rate per minute |
+| `D` | 1 | Heart-beat pulse: 1 at each beat, otherwise 0 |
+| `EEE` | 3 | Respiration waveform, 0–999 |
+| `FFF` | 3 | Distance, cm |
+| `!` | 1 | End |
+
+Rate: 10 frames per second.
+
+Extended waveform frame:
+
+```text
+@ABBBCCDDEEFGGGHHH!
+```
+
+`DD`: RMSSD ms; `EE`: SDNN ms; `F`: heart pulse; `GGG`: respiration waveform; `HHH`: distance cm.
+
+No target: `%0!` or `@0!` every 15 seconds.
+
+## Frame lengths and unresolved encoding
+
+The lengths below are calculated from the literal ASCII layouts, including start and end markers and excluding any additional transport terminator.
+
+| Format | Layout-derived length | Manual's length label |
+| --- | ---: | --- |
+| Distance | 10 bytes | 10 bytes |
+| Simple vital | 11 bytes | 10 bytes — inconsistent |
+| Extended simple vital | 15 bytes | Not stated |
+| Waveform vital | 15 bytes | 14 bytes — inconsistent |
+| Extended waveform vital | 19 bytes | Not stated |
+
+Use these as candidate layouts, not firmware-verified packet lengths. Capture actual output for every `wave`/`exten` combination before enforcing a strict parser. The manual also leaves these details undefined:
+
+- Encoding of object 10 in the one-character object-index field, grouping of multiple target frames, and the meaning of a complete 15 Hz cycle.
+- Numeric padding, overflow, signedness, rounding, and invalid/unavailable sentinels.
+- RMSSD/SDNN values above 99 ms and the time window used to calculate HRV.
+- Command echoes, most acknowledgements/errors, response timeouts, and status/diagnostic frames.
+
+Output cadence does not establish how frequently each physiological value is independently recalculated. Moving/calculating states must not be treated as confirmed vital-sign measurements.
+
+{/* IMAGE TODO [AS611-IMG-13]: Missing: frame anatomy diagram for distance and all four wave/exten combinations. Confirm raw bytes and resolve simple 10-vs-11 / waveform 14-vs-15 length conflicts, index 10 and HRV field limits before labeling it definitive. */}
+
+## Parser requirements
+
+The following are host-integration recommendations, not extra device commands:
+
+1. Separate measurement markers (`#`, `%`, `@`) from documented mode replies (`=DISTANCE!`, `=VITAL!`) and boot/status messages. Preserve unknown echoes or errors for inspection.
+2. Buffer partial messages through `!`, while enforcing a host buffer limit and a timeout chosen for the tested connection. Recover from an incomplete or malformed message at a recognized boundary; never wait indefinitely.
+3. Handle `#0!`, `%0!`, and `@0!` before fixed-width measurement parsing. Recognize the boot banner separately.
+4. Validate lengths and field encodings against raw captures for the active mode, `wave`, and `exten` settings. Do not silently truncate a value or invent an object-10 encoding.
+5. Treat only state `3` as an available vital-sign result. Keep moving/calculating and unavailable fields distinct from measured zero values.
+6. Allow multiple frames in one UART read or BLE notification and one frame across multiple reads/notifications.
+7. After a mode change or reboot, discard incomplete old measurement frames and establish the current configuration before decoding new data.
+8. Timestamp and retain raw frames, configuration, and firmware version during validation.
+
+## Boot frame
+
+The manual documents:
+
+```text
+#AS_611B_4.0!
+```
+
+Do not parse this as distance data. Detect the prefix or validate the distance-frame length before numeric conversion.

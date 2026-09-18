@@ -1,0 +1,94 @@
+---
+title: AS-611Bn
+sidebar_label: AS-611Bn
+slug: /Sensor/Radars/AS-611Bn
+description: Explore AS-611Bn 60 GHz radar documentation for distance detection, single-person vital-sign sensing, and UART or BLE integration.
+keywords: [AS-611Bn, 60 GHz radar, distance detection, vital-sign sensing, UART, BLE]
+hide_table_of_contents: true
+hide_title: true
+---
+
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import styles from './Cover.module.css';
+
+<div className={styles.coverPage}>
+  <section className={styles.hero} aria-labelledby="as611-title">
+    <div className={styles.heroContent}>
+      <span className={styles.eyebrow}>60 GHz PULSED RADAR</span>
+      <h1 id="as611-title">AS-611Bn</h1>
+      <p className={styles.heroLead}>A compact radar module for object-distance and single-person vital-sign sensing, with UART and Bluetooth Low Energy connectivity.</p>
+      <div className={styles.heroActions}>
+        <Link className={styles.primaryButton} to="/docs/Sensor/Radars/AS-611Bn/Quick_Start">Quick Start</Link>
+        <Link className={styles.secondaryButton} to="/docs/Sensor/Radars/AS-611Bn/Overview">Explore Module</Link>
+      </div>
+    </div>
+    <div className={styles.heroVisual}>
+      <img src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/AS-611Bn.png')} alt="AS-611Bn radar module with USB-C and board connector" width="3600" height="2400" fetchPriority="high" />
+    </div>
+  </section>
+
+  <section className={styles.section} aria-labelledby="sensing-title">
+    <div className={styles.sectionHeader}>
+      <h2 id="sensing-title">Choose Your Sensing Guide</h2>
+      <p>Follow the guide for the function supported by your unit. The manual lists distance and vital-sign options; confirm the installed SKU and firmware before selecting a mode.</p>
+    </div>
+    <div className={styles.productGrid}>
+      <Link className={styles.productCard} to="/docs/Sensor/Radars/AS-611Bn/Distance_Detection">
+        <span className={styles.productType}>DISTANCE DETECTION</span>
+        <h3>Measure Object Distance</h3>
+        <p>Configure the measurement zone, adjust sensitivity, and read distance and reflected signal strength for stationary or moving objects.</p>
+        <div className={styles.featureList}><span>Range configuration</span><span>Target sorting</span><span>ASCII output</span></div>
+        <span className={styles.cardLink}>Distance Detection →</span>
+      </Link>
+      <Link className={styles.productCard} to="/docs/Sensor/Radars/AS-611Bn/Vital_Sign_Detection">
+        <span className={styles.productType}>VITAL-SIGN DETECTION</span>
+        <h3>Read Single-Person Vital Signs</h3>
+        <p>Position one person in front of the sensor and interpret heart rate, breathing rate, respiration waveform, and optional HRV fields.</p>
+        <div className={styles.featureList}><span>One person</span><span>Heart & breathing rate</span><span>Optional HRV</span></div>
+        <span className={styles.cardLink}>Vital-Sign Detection →</span>
+      </Link>
+    </div>
+  </section>
+
+{/* IMAGE TODO [AS611-IMG-02]: Optional: comparison illustration for distance and single-person vital-sign functions. Existing cards already provide navigation. If added, do not depict separate hardware/firmware SKUs until the D/V relationship is confirmed. */}
+
+  <section className={styles.startSection} aria-labelledby="start-title">
+    <div className={styles.sectionHeader}>
+      <h2 id="start-title">From Connection to Sensor Data</h2>
+    </div>
+    <div className={styles.stepGrid}>
+      <Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-611Bn/Overview">
+        <span className={styles.stepNumber}>01</span>
+        <h3>Know Your Module</h3>
+        <p>Review the documented specifications, connector signals, function options, and operating limits.</p>
+        <span className={styles.cardLink}>Module Overview →</span>
+      </Link>
+      <Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-611Bn/Quick_Start">
+        <span className={styles.stepNumber}>02</span>
+        <h3>Make the First Connection</h3>
+        <p>Prepare power and 3.3 V UART, check the startup message, and identify the first data frames.</p>
+        <span className={styles.cardLink}>Quick Start →</span>
+      </Link>
+      <Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-611Bn/UART_and_BLE">
+        <span className={styles.stepNumber}>03</span>
+        <h3>Integrate Your Host</h3>
+        <p>Connect through UART or Nordic UART Service and handle data streams and reconnection.</p>
+        <span className={styles.cardLink}>UART and BLE →</span>
+      </Link>
+    </div>
+  </section>
+
+  <section className={styles.section} aria-labelledby="resources-title">
+    <div className={styles.sectionHeader}>
+      <h2 id="resources-title">AS-611Bn Resources</h2>
+      <p>Go directly to configuration, protocol details, or troubleshooting.</p>
+    </div>
+    <div className={styles.resourceGrid}>
+      <Link to="/docs/Sensor/Radars/AS-611Bn/Distance_Detection"><strong>Distance Detection</strong><span>Range, sensitivity, sorting, and output timing →</span></Link>
+      <Link to="/docs/Sensor/Radars/AS-611Bn/Vital_Sign_Detection"><strong>Vital-Sign Detection</strong><span>Subject placement, states, waveforms, and HRV →</span></Link>
+      <Link to="/docs/Sensor/Radars/AS-611Bn/Command_and_Data_Reference"><strong>Command and Data Reference</strong><span>Commands, ASCII layouts, and parser considerations →</span></Link>
+      <Link to="/docs/Sensor/Radars/AS-611Bn/FAQ"><strong>FAQ and Troubleshooting</strong><span>Power, communication, and measurement questions →</span></Link>
+    </div>
+  </section>
+</div>

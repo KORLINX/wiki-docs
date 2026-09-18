@@ -1,0 +1,88 @@
+---
+title: AS-611Bn FAQ and Troubleshooting
+sidebar_label: FAQ and Troubleshooting
+sidebar_position: 7
+description: Answers to common AS-611Bn power, UART, BLE, distance, vital-sign, and data-parsing questions.
+keywords:
+  - AS-611Bn troubleshooting
+  - AS-611Bn no data
+  - radar false detection
+  - vital-sign radar unstable
+  - Nordic UART Service troubleshooting
+---
+
+# AS-611Bn FAQ and Troubleshooting
+
+## Does the USB-C connector carry data?
+
+The supplied manual says the USB-C connectors supply power only. Use UART or BLE for measurement data. GPIO is listed only as input/output; a measurement-data function is not defined.
+
+## Why is there no UART output?
+
+Check the power supply, common ground, TX-to-RX crossing, 3.3 V logic level, selected serial port, and terminal configuration. The documented default is 460800 bps, 8 data bits, no parity, 1 stop bit, and no flow control.
+
+## Why are the characters unreadable?
+
+Possible causes include a baud-rate mismatch, incompatible electrical levels, wiring problems, or noise. After the `baud` command, reopen the port at the new rate because the module is documented to reboot.
+
+## Why does the command not work?
+
+Commands must be lowercase. Obtain the required line ending for the installed firmware from the supplier; the supplied manual does not define it.
+
+## Why does my application mistake the boot banner for a target?
+
+The boot banner starts with `#`, the same start character as distance data. Validate frame length and numeric fields, and explicitly recognize the approved boot/status frames.
+
+## Why do I receive `#0!`, `%0!`, or `@0!`?
+
+These are documented no-target frames. Check the configured range, sensor direction, obstruction, and target/subject placement. The manual says they are sent every 15 seconds while no target is detected.
+
+## Why are there too many distance targets?
+
+Reduce `sena`, narrow `zmin`/`zmax`, remove nearby reflectors, and check the mounting angle and enclosure. Higher sensitivity can detect weaker objects but also more clutter.
+
+## Why is a small distance target missed?
+
+Increase `sena` carefully, reduce clutter, narrow the detection zone, and compare `pmode` options using the same target and test geometry.
+
+## Why do vital-sign values remain in moving or calculating state?
+
+Use one person only, face the radar toward the chest, remove obstructions and nearby motion, and remain steady for more than 20 seconds. Reduce `zmax` when strong reflectors exist behind or beside the subject.
+
+## Can AS-611Bn measure two people's vital signs?
+
+No. The supplied manual documents one-person vital-sign detection and warns that additional people can reduce or prevent correct detection.
+
+## Can it measure animal vital signs?
+
+The detailed function section supports only human vital-sign detection. Animal sensing is not established for this model by the supplied manual.
+
+## Is AS-611Bn a medical device?
+
+The supplied manual does not establish medical-device certification or diagnostic performance. It is not sufficient evidence to classify the module or validate a medical application.
+
+## Why does BLE disconnect after changing a setting?
+
+A baud change is documented to reboot the module. For other settings the manual is inconsistent about pause versus reboot. If a disconnect occurs, reconnect and re-enable notifications; do not assume every setting has identical behavior.
+
+## Which BLE characteristic should the app write?
+
+In Nordic UART Service the client writes to RX (`6E400002-B5A3-F393-E0A9-E50E24DCCA9E`) and receives notifications from TX (`6E400003-B5A3-F393-E0A9-E50E24DCCA9E`). Confirm the module's discovered properties and permissions. See [UART and BLE](./UART_and_BLE.mdx#gatt-uuids).
+
+## Are settings retained after power is removed?
+
+The distance section says settings are stored in non-volatile memory; `baud` is also documented as saved. The complete per-mode persistence list is unspecified. `freset` is described as a cold reset, not a documented restore-to-factory-defaults command.
+
+## Why is a range command rejected?
+
+The limits depend on each other: `zmin` must be at least 25 cm below `zmax`. A new minimum can be invalid against a saved maximum. Follow the intermediate-minimum sequence in the guide for the selected mode, and check each command before proceeding.
+
+## Why does a vital frame not match the stated byte count?
+
+The supplied manual's labels disagree with its field layout. The simple pattern sums to 11 bytes, while the waveform pattern sums to 15 bytes. See the [frame-length comparison](./Command_and_Data_Reference.mdx#frame-lengths-and-unresolved-encoding). Confirm raw firmware output before choosing strict parser lengths.
+
+{/* IMAGE TODO [AS611-IMG-14]: Missing: troubleshooting flow covering power, connector orientation, logic levels, UART baud, boot string, command terminator and sensing scene. Base decisions on verified checks; no suitable source asset exists. */}
+
+## Where should I report an undocumented response?
+
+Record the product SKU, board revision, firmware version, connection type, power conditions, exact command bytes, raw response, timestamp, and reproduction steps. Do not discard or reinterpret unknown frames.

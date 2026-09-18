@@ -1,0 +1,155 @@
+---
+title: Configure AS-611Bn Vital-Sign Detection
+sidebar_label: Vital-Sign Detection
+sidebar_position: 4
+description: Position one subject, configure the AS-611Bn vital-sign variant, and interpret heart rate, breathing rate, waveform, distance, and HRV fields.
+keywords:
+  - AS-611Bn vital-sign detection
+  - contactless breathing rate
+  - radar heart rate
+  - radar HRV
+  - 60 GHz vital-sign sensor
+---
+
+# Configure AS-611Bn Vital-Sign Detection
+
+This guide describes single-person vital-sign sensing in the supplied manual marked Ver.4.0 Jun.2026. Confirm function support and command termination for your installed firmware before using the examples. See [Quick Start](./Quick_Start.mdx) for connection prerequisites.
+
+:::note Measurement scope
+The supplied manual does not establish medical-device certification or diagnostic performance. This guide explains sensor output and does not validate a medical application.
+:::
+
+## Detection conditions
+
+- One person only
+- Configurable 0.15–2.5 m range; default 0.25–1.5 m
+- Front-facing chest placement gives the best documented result
+- The subject should remain steady for more than 20 seconds
+- Small movements or conversation may be tolerated but reduce accuracy
+- Other people, obstructions, nearby metal, moving objects, and highly reflective surfaces can reduce or prevent detection
+
+## Step 1: Position the sensor and subject
+
+Point the radar toward the subject's chest. Keep the subject inside the configured range and remove obstacles and moving/reflective objects around the sensing path.
+
+{/* IMAGE TODO [AS611-IMG-09]: Missing: single-person chest-facing placement illustration, with blocked chest, additional people and nearby moving/reflective objects as incorrect cases. No suitable source asset exists. */}
+
+## Step 2: Select vital-sign mode and range
+
+```text
+stop
+mode 2
+```
+
+After confirming the selected mode, establish the default range through an intermediate minimum:
+
+```text
+zmin 15
+zmax 150
+zmin 25
+```
+
+This sequence is derived from the manual's range constraints, not a hardware test. The temporary minimum of 15 cm is compatible with every documented vital-mode maximum (40–250 cm). Send each command separately and allow reconfiguration to finish. If any command fails, establish the actual state before proceeding.
+
+The documented mode response is:
+
+```text
+=VITAL!
+```
+
+| Setting | Documented range | Default |
+| --- | --- | --- |
+| `zmin` | 15 to `zmax - 25` cm | 25 cm |
+| `zmax` | 40 to 250 cm | 150 cm |
+
+If reflective clutter is present, reduce `zmax` to include only the subject.
+
+## Step 3: Select the output type
+
+### Simple output
+
+```text
+wave 0
+exten 0
+start
+```
+
+The simple frame is sent once per second:
+
+```text
+%ABBBCCDDD!
+```
+
+| Field | Meaning |
+| --- | --- |
+| `A` | State: 0 no target, 1 moving, 2 calculating, 3 vital-sign result |
+| `BBB` | Heart rate per minute |
+| `CC` | Breathing rate per minute |
+| `DDD` | Distance in centimeters |
+
+### Waveform output
+
+```text
+wave 1
+exten 0
+start
+```
+
+The waveform frame is documented at 10 Hz:
+
+```text
+@ABBBCCDEEEFFF!
+```
+
+It adds a one-digit heart-beat pulse (1 at a beat, otherwise 0) and a three-digit respiration waveform value (0–999). This pulse is not a continuous cardiac waveform or ECG. The 10 Hz figure describes output cadence, not a validated update rate for independently calculated HR/BR/HRV results.
+
+### Add HRV fields
+
+```text
+exten 1
+```
+
+Extended simple format:
+
+```text
+%ABBBCCDDEEFFF!
+```
+
+Extended waveform format:
+
+```text
+@ABBBCCDDEEFGGGHHH!
+```
+
+`DD` is documented as RMSSD in milliseconds and `EE` as SDNN in milliseconds. The manual does not define the calculation window, invalid values, or encoding above 99 ms. Consult the [frame-length and field-limit notes](./Command_and_Data_Reference.mdx#frame-lengths-and-unresolved-encoding) before implementing a parser.
+
+## Step 4: Wait for a stable result
+
+After `start`, interpret the reported state. The manual defines these values but does not specify a mandatory transition sequence:
+
+| State | Meaning | Action |
+| ---: | --- | --- |
+| 0 | No target | Check range, angle, and obstructions |
+| 1 | Target moving | Ask the subject to remain steady |
+| 2 | Calculating | Continue waiting without changing the scene |
+| 3 | Vital-sign result | Record values and raw frames |
+
+The manual recommends remaining stable for more than 20 seconds for reliable heart-rate results. This is a subject-condition requirement, not a guaranteed result deadline or HRV calculation window.
+
+When no target is detected, `%0!` or `@0!` is documented every 15 seconds.
+
+{/* IMAGE TODO [AS611-IMG-10]: Missing: actual vital-sign state captures with raw frames. A state diagram must not imply a mandatory sequence or a guaranteed result at 20 seconds; confirm observed behavior first. */}
+
+## Pass criteria
+
+- Exactly one subject is inside the approved sensing zone.
+- The stream reaches state `3`; do not assume it must occur at a fixed time.
+- Distance is consistent with the test setup.
+- HR/BR and optional HRV fields stay within the confirmed encoding limits.
+- Raw logs and the reference instrument are recorded for any accuracy claim.
+
+## Next steps
+
+- [Integrate UART or BLE →](./UART_and_BLE.mdx)
+- [Implement the exact frame parser →](./Command_and_Data_Reference.mdx)
+- [Review limitations and troubleshooting →](./FAQ.mdx)

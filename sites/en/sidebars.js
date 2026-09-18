@@ -406,9 +406,8 @@ const sidebars = {
               collapsed: true,
               collapsible: true,
               link: {
-                type: 'generated-index',
-                title: 'AS-611Bn',
-                description: 'AS-611Bn radar documentation',
+                type: 'doc',
+                id: 'Sensor/Radars/AS-611Bn/Cover',
               },
               items: [
                 {
@@ -420,6 +419,31 @@ const sidebars = {
                   type: 'doc',
                   id: 'Sensor/Radars/AS-611Bn/Quick_Start',
                   label: 'Quick Start',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-611Bn/Distance_Detection',
+                  label: 'Distance Detection',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-611Bn/Vital_Sign_Detection',
+                  label: 'Vital-Sign Detection',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-611Bn/UART_and_BLE',
+                  label: 'UART and BLE',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-611Bn/Command_and_Data_Reference',
+                  label: 'Command and Data Reference',
+                },
+                {
+                  type: 'doc',
+                  id: 'Sensor/Radars/AS-611Bn/FAQ',
+                  label: 'FAQ and Troubleshooting',
                 },
               ],
             },

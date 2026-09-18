@@ -1,157 +1,135 @@
 ---
+title: Get Started with AS-611Bn
+sidebar_label: Quick Start
 sidebar_position: 2
-title: AS-611Bn Quick Start
-description: Power, connect, configure, and read distance or vital-sign data from the AnySensing AS-611Bn radar module.
-keywords: [AS-611Bn, quick start, UART, BLE, distance sensing, vital signs, radar data]
+description: Connect AS-611Bn over UART and identify the first documented distance or vital-sign frames.
+keywords: [AS-611Bn, quick start, UART, radar setup]
 ---
 
-# AS-611Bn Quick Start
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
 
-Use this guide to power an AS-611Bn, establish UART or BLE communication, tune its detection mode, and interpret its output.
+# Get Started with AS-611Bn
 
-> **Before you begin:** Confirm whether the module runs distance-sensing or vital-sign firmware. The two firmware types use different commands.
+Use this guide with a board whose connector pinout and installed function have been confirmed. Choose the distance or vital-sign procedure for that unit; both functions are not established for every SKU.
 
-## First data over UART
+## Before you begin
 
-1. **Apply power.** Supply 3.3–7 V through USB-C, J1, or J2. USB-C provides power only.
-2. **Connect UART.** Cross UART TX 1 and RX 1 with the host and connect a common ground. Use a 3.3 V TTL interface; do not connect the module directly to RS-232.
-3. **Configure the serial port.** Use the settings below.
-4. **Check communication.** Send `ping`. The documented reply is `allive`. **[VERIFY]** The spelling must be confirmed on hardware.
-5. **Observe output.** The module starts transmitting at power-up. Send `stop` to pause and `start` to resume. The `help` command displays settings but stops output, so send `start` afterward.
-6. **Aim and tune.** For vital signs, aim the antenna face toward the chest. Front-facing placement is most accurate. Under-mattress use in close-range mode is **[VERIFY]** for this generation.
+- AS-611Bn with a confirmed hardware revision and connector orientation
+- A compatible power supply for the fitted power-input option
+- A 3.3 V logic USB-to-UART adapter and a serial terminal
+- The command line ending specified for the installed firmware
 
-All commands are lowercase.
+:::note Command termination
+The supplied v4.0 manual requires lowercase ASCII commands but does not specify CR, LF, CRLF, or another terminator. Obtain the correct setting from the supplier before sending the command examples below. Each line shows command text, not a complete byte-level transaction.
+:::
 
-| UART setting | Value |
+## 1. Connect power and UART
+
+<figure className={images.figure}>
+  <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/AS-611Bn_3.png')} alt="Close-up views of the AS-611Bn radar package, six-position board connector, and USB-C port" width="3600" height="2400" loading="lazy" />
+  <figcaption>Left to right: radar package, board connector, and USB-C port. USB-C supplies power only.</figcaption>
+</figure>
+
+{/* IMAGE SOURCE [AS611-IMG-04]: AS-611Bn_4.png approved for use by the user. Its J1 numbering and J2 NRST/TX/RX ordering differ from manual v4.0 page 2. Preserve this source distinction; do not silently rewrite the manual-derived table. */}
+
+<figure className={images.figure}>
+  <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/AS-611Bn_4.png')} alt="AS-611Bn connector illustration with J1 pin-header numbering and J2 signal tables" width="3600" height="2400" loading="lazy" />
+  <figcaption>AS-611Bn connector illustration. The numbering and J2 signal order differ from the supplied manual; confirm the pinout for your board revision before wiring.</figcaption>
+</figure>
+
+With power disconnected, confirm the actual connector's pin numbering using the [hardware overview](./Overview.mdx#signals-listed-for-j1-and-j2).
+
+| Module signal | Connection |
 | --- | --- |
-| Baud rate | 115,200 bps |
+| VCC | Regulated supply appropriate for the confirmed input; manual VCC range is 3.3–7.0 VDC |
+| GND | Supply ground and adapter ground |
+| UART TX1 | Adapter RX |
+| UART RX1 | Adapter TX |
+
+Leave NRST unconnected for normal operation as described in the manual. GPIO and UART2 are not needed for this procedure. If using the fitted USB-C power input, confirm its supply requirements; USB-C is power-only and does not replace the UART data connection.
+
+:::warning Electrical levels
+The adapter's TX/RX logic must be 3.3 V compatible. Do not connect directly to RS-232 or apply the module's supply voltage to signal pins. Use one confirmed power-input path for this setup.
+:::
+
+{/* IMAGE TODO [AS611-IMG-05]: Missing: UART wiring diagram showing confirmed VCC/GND, crossed TX/RX, 3.3 V logic, and one approved power path. Product photographs do not establish a wiring diagram; verify the pin map first. */}
+
+## 2. Open the terminal and apply power
+
+| Setting | Documented default |
+| --- | --- |
+| Baud rate | 460800 bps |
 | Data bits | 8 |
 | Parity | None |
 | Stop bits | 1 |
 | Flow control | None |
-| Signal level | 3.3 V TTL |
-| Encoding | ASCII command-line interface |
+| Encoding | ASCII |
 
-## Tune a distance unit
+A previously configured unit may retain a different baud rate. The documented supported values are 115200, 230400, 460800, and 921600 bps.
 
-Apply settings in this order so that each change isolates one part of the detection problem.
-
-| Step | Command | Default / range | Purpose |
-| ---: | --- | --- | --- |
-| 1 | `distmode n` | `2`; `1`, `2`, `5`, `7`, `10` | Select the maximum distance mode |
-| 2 | `objnum n` | `5`; 1–10 | Set the number of reported objects |
-| 3 | `sensum n` | `1`; 1–15 | Set detections per second |
-| 4 | `sengain n` | `2`; 0–10 | Increase amplification until small nearby objects appear, then reduce by one |
-| 5 | `senlevel n` | `30`; 10–500 | Raise the threshold for clutter or lower it for missed targets |
-| 6 | `complevel n` | `3`; 1–9 | Require a target to be stronger than its surroundings |
-| 7 | `dispzone`, `dispdiff`, `dispmove`, `offspace` | — | Select zone, changed-data, moving-target, or separator output behavior |
-
-Longer modes also increase the minimum distance:
-
-| Mode | Detection range | Resolution |
-| --- | --- | --- |
-| `distmode 1` | 150–1,000 mm | 10 mm |
-| `distmode 2` | 150–2,520 mm | 30 mm |
-| `distmode 5` | 300–5,040 mm | 60 mm |
-| `distmode 7` | 500–7,580 mm | 120 mm |
-| `distmode 10` | 500–10,100 mm | 120 mm |
-
-## Tune a vital-sign unit
-
-| Command | Default / range | Purpose |
-| --- | --- | --- |
-| `mode 0` / `mode 1` | `1` | `0`: 150–510 mm close range; `1`: 400–2,020 mm long range |
-| `dislimit n` | 1,500 mm | Limit long-range detection; `0` restores 1,500 mm and clears `distfixed` |
-| `distfixed n` | `0` | Lock detection to ±20 mm in close mode or ±200 mm in long mode; clears `dislimit` |
-| `human`, `sdog`, `ldog`, `cat` | `human` | Select the target profile; `object` reports the selection |
-| `onwave` / `offwave` | `onwave` | Output waveforms at 20 Hz or summary values at 1 Hz |
-| `len` / `pwr` / `off` | `off` | Put target distance, reflected energy, or nothing in the spare field |
-
-Common commands are `ping`, `start`, `stop`, `reset`, and `help`. Separator commands are `oncomma`, `onblacnk`, and `offspace`; the spelling `onblacnk` is reproduced from the manual and remains **[VERIFY]**.
-
-## Connect over BLE
-
-BLE is available only on AS-611Bn. The module implements the Nordic UART Service (NUS), so an NUS-compatible client can exchange the same serial data.
-
-| Item | Value |
-| --- | --- |
-| Service | Nordic UART Service |
-| Service UUID | `6E400001-B5A3-F393-E0A9-E50E24DCCA9E` |
-| TX UUID, module to client | `6E400003-B5A3-F393-E0A9-E50E24DCCA9E` |
-| RX UUID, client to module | `6E400002-B5A3-F393-E0A9-E50E24DCCA9E` |
-| Advertised name | `AS_611Bn` **[VERIFY]** |
-
-For an onsite check, use the UART utility in nRF Toolbox and scan for the module. Changing a setting reboots the module and disconnects BLE. A new command can also drop the BLE link; reconnect before continuing.
-
-AS-611Bn output does not contain a device ID, and no ID-assignment command is documented. Connect multiple modules to separate UART ports. A per-module addressing scheme is **[TBD]**.
-
-## Read distance data
-
-Frames are ASCII, begin with a start character, and end with `!`. Select one separator style before writing a parser.
-
-| Command | Style | Example | Length |
-| --- | --- | --- | ---: |
-| `oncomma` | Comma-separated, default | `#A,BBBB,CCCC,DDDDD,EEE,FFF,GGG!` | 31 bytes |
-| `onblacnk` | Space-separated | `#A BBBB CCCC DDDDD EEE FFF GGG!` | 31 bytes |
-| `offspace` | No separator | `#ABBBBCCCCDDDDDEEEFFFGGG!` | 25 bytes |
-
-| Field | Bytes | Meaning |
-| --- | ---: | --- |
-| `#` | 1 | Distance-frame start |
-| `A` | 1 | Object number |
-| `BBBB` | 4 | X coordinate; unsupported on this model |
-| `CCCC` | 4 | Y coordinate; unsupported on this model |
-| `DDDDD` | 5 | Forward distance in millimeters |
-| `EEE` | 3 | Reflected energy |
-| `FFF`, `GGG` | 3 each | Spare fields |
-| `!` | 1 | Frame end |
-
-Zone mode uses `#ZAAAAAAAAAA!`. Each of the ten `A` characters represents one equal distance zone and is `1` when occupied. Enable it with `dispzone 1`.
-
-## Read vital-sign data
-
-Complex mode (`onwave`) is the default and outputs 20 frames per second:
+The manual lists this startup string:
 
 ```text
-@A,B,CCC,DD,EE,FF.FF,GG.GG,HHH!
+#AS_611B_4.0!
 ```
 
-| Field | Meaning |
-| --- | --- |
-| `A` | Object number |
-| `B` | Detection status |
-| `CCC` | Heart rate in beats per minute |
-| `DD` | Respiration rate in breaths per minute |
-| `EE` | HRV in milliseconds |
-| `FF.FF` | Heart-rate waveform sample |
-| `GG.GG` | Respiration waveform sample |
-| `HHH` | Distance with `len`, energy with `pwr`, or empty with `off` |
+Record the actual string and firmware information. The banner is a status message, not a distance frame.
 
-Simple mode (`offwave`) omits the waveforms and outputs once per second:
+{/* IMAGE TODO [AS611-IMG-06]: Missing: real terminal screenshot of startup with UART settings, exact boot string, and firmware identity. Capture hardware output; do not present the manual example as a measured log. */}
+
+## 3. Choose the supported sensing function
+
+### Distance
+
+For a unit confirmed to support the documented distance commands:
 
 ```text
-@A,B,CCC,DD,EE,FFF!
+stop
+mode 1
 ```
 
-| Status | Meaning |
-| ---: | --- |
-| 0 | No target |
-| 1 | Target moving too much for vital-sign measurement |
-| 2 | Target detected; vital signs are being calculated |
-| 3 | Vital signs are available |
-| 4 | Target detected but breathing is not detected |
+The documented mode response is `=DISTANCE!`. Follow [Distance Detection](./Distance_Detection.mdx#step-3-set-the-measurement-range) to establish a valid range, then select output timing and start:
 
-## Troubleshooting
+```text
+outtime 1
+start
+```
 
-| Symptom | Check |
-| --- | --- |
-| No UART data | Check whether the LED flashes, verify 115,200 bps, cross TX/RX, share ground, confirm power, and send `start`. |
-| Unwanted detections | Reduce `sengain`, raise `senlevel`, then raise `complevel`, one at a time. Remove moving or metallic reflectors. |
-| Missed target | Check the mode's minimum distance, then raise `sengain` or lower `senlevel`. |
-| Vital signs drop out | Remove obstructions and nearby reflectors or movement; narrow the range with `dislimit` or `distfixed`; ensure only one person is present. |
-| X and Y remain empty | Expected: this model reports forward distance in Z only. |
-| Command rejected | Confirm lowercase spelling and that the command matches the unit's distance or vital-sign firmware. |
-| Performance changed after environmental or temperature change | Send `reset` to recalibrate while retaining settings. |
-| LED is disruptive | A switchable LED has been requested, but availability for the installed firmware is **[VERIFY]**. |
+The manual's illustrative frame `#10250045!` means object 1 at 250 cm with reflected strength 45. Your measured values will depend on the scene. A documented no-target message is `#0!`, emitted every 15 seconds while no object is detected.
 
-Return to the [AS-611Bn Overview](./Overview) for electrical and connector information.
+### Vital sign
+
+For a unit confirmed to support the documented vital-sign commands:
+
+```text
+stop
+mode 2
+```
+
+The documented response is `=VITAL!`. Follow [Vital-Sign Detection](./Vital_Sign_Detection.mdx#step-2-select-vital-sign-mode-and-range) to establish the range, then send:
+
+```text
+wave 0
+exten 0
+start
+```
+
+Place one person within the configured zone, with the radar facing the chest. Ask the subject to remain steady for more than 20 seconds; this does not guarantee a result at a fixed time.
+
+The documented simple frame pattern is `%ABBBCCDDD!`: state, heart rate, breathing rate, and distance in centimeters. State `3` means a vital-sign result is available. Interpret the fields using the [protocol reference](./Command_and_Data_Reference.mdx#simple-vital-frame), including its frame-length discrepancy note.
+
+## 4. Check the result
+
+- Confirm readable serial data at the unit's configured baud rate.
+- Confirm the selected mode response before interpreting measurement frames.
+- For distance, compare a measured target distance with the actual setup. A no-target message verifies communication, not ranging accuracy.
+- For vital signs, wait for state `3`; moving/calculating states are not confirmed measurements.
+- Retain raw data, settings, board revision, and firmware information when investigating an unexpected result.
+
+## Continue
+
+- [Configure distance detection](./Distance_Detection.mdx)
+- [Configure vital-sign detection](./Vital_Sign_Detection.mdx)
+- [Connect over BLE](./UART_and_BLE.mdx)
+- [Troubleshoot a connection or measurement](./FAQ.mdx)
