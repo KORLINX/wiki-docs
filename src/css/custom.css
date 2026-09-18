@@ -325,6 +325,10 @@
   width: 100%;
 }
 
+.tutorial-nx-image {
+  width: 100%;
+}
+
 @media (max-width: 576px) {
   .nx15-module-dimensions,
   .nx15-handling-packaging-image,

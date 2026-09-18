@@ -1,0 +1,199 @@
+---
+title: Introduction to Matter for NX Families
+sidebar_label: Introduction to Matter
+sidebar_position: 1
+description: A concise orientation to Matter, Bluetooth LE commissioning, Thread networking, and the development path for KORLINX NX families.
+keywords:
+  - Matter
+  - Matter over Thread
+  - Bluetooth LE commissioning
+  - Thread Border Router
+  - NX15
+  - NX40
+  - KORLINX
+---
+
+# Introduction to Matter for NX Families
+
+Matter is an IP-based application protocol for interoperable connected devices. In this tutorial series, an NX device is commissioned over Bluetooth Low Energy and then communicates as a Matter device over Thread.
+
+This page provides the minimum terminology required before you begin. It is not a detailed protocol lesson.
+
+:::caution Validation scope
+The workflow in this series targets NX15 and NX40 development platforms. The final hardware revision, board target, SDK version, sample configuration, and supported controller ecosystem must be confirmed by KORLINX R&D before publication.
+:::
+
+{/* VERIFY WITH R&D [INTRO-V01]:
+Confirm that both NX15 and NX40 are included in the first public Matter tutorial release.
+Confirm the approved wording for Matter support versus hardware radio capability.
+*/}
+
+## Matter in the NX workflow
+
+The target workflow is:
+
+1. An uncommissioned NX device advertises over Bluetooth Low Energy.
+2. A Matter commissioner discovers the device and opens a secure commissioning session.
+3. The commissioner provides operational credentials and the Thread Operational Dataset.
+4. The NX device joins the Thread network.
+5. A Matter controller communicates with the device over IPv6 and Thread.
+
+Bluetooth Low Energy is used for commissioning. It is not the normal Matter application transport after the device has joined Thread.
+
+{/* IMAGE NOTE [INTRO-IMG-01]:
+Type: Technical workflow diagram
+Content: NX15 or NX40 -> BLE commissioning -> Commissioner -> Thread network -> Thread Border Router -> Matter Controller
+Purpose: Distinguish the temporary BLE commissioning path from normal Thread communication
+Status: Design after R&D approves the workflow and product labels
+*/}
+
+<img
+  src="/img/tutorials/nx-families/INTRO-IMG-01.png"
+  alt="NX Families tutorial: NX15 or NX40 to BLE commissioning to Commissioner to Thread network to Thread Border Router to Matter Controller"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Components you need to recognize
+
+| Component | Role in this series |
+| --- | --- |
+| NX Matter device | The device being built, flashed, commissioned, and controlled. |
+| Commissioner | Adds the NX device to a Matter fabric. |
+| Controller | Reads device state and sends Matter commands after commissioning. |
+| Thread Border Router | Connects the Thread IPv6 mesh to the adjacent IP network. |
+| Matter fabric | The trust domain that contains the commissioned Matter nodes. |
+| CHIP Tool | A development controller used to commission and test Matter devices. |
+
+One physical hub can perform more than one role. For example, a commercial hub can act as commissioner, controller, and Thread Border Router.
+
+## Matter data model keywords
+
+You do not need to understand the complete Matter data model before starting the practical tutorials. Keep these keywords available when you need to inspect an application or search the official documentation.
+
+| Keyword | Short meaning |
+| --- | --- |
+| Node | An addressable Matter device or logical resource. |
+| Endpoint | A functional part of a node. |
+| Device Type | The standardized behavior assigned to an endpoint. |
+| Cluster | A group of related functions. |
+| Attribute | A state or configuration value. |
+| Command | An action requested by a controller. |
+| Event | A notable occurrence reported by a device. |
+
+**Developer reference keywords:** `Matter data model`, `Matter Node`, `Endpoint 0`, `Device Type`, `Cluster`, `Attribute`, `Command`, `Event`
+
+{/* IMAGE NOTE [INTRO-IMG-02]:
+Type: Simplified hierarchy diagram
+Content: Node -> Endpoint -> Device Type -> Cluster -> Attributes, Commands, and Events
+Purpose: Provide a visual keyword map without a detailed protocol explanation
+*/}
+
+<img
+  src="/img/tutorials/nx-families/INTRO-IMG-02.png"
+  alt="NX Families tutorial: Node to Endpoint to Device Type to Cluster to Attributes, Commands, and Events"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Tutorial path
+
+Follow the series in this order:
+
+1. [Set Up the Matter Development Environment for NX Families](./set-up-matter-development-environment-for-nx-families)
+2. [Getting Started with Matter Quickly on NX Families](./getting-started-with-matter-quickly-on-nx-families)
+3. [Matter Development with NX Families](./matter-development-with-nx-families)
+4. [Matter Development Framework Overview](./matter-development-framework-overview)
+
+{/* ## Developer reference keywords
+
+- `Matter commissioning`
+- `PASE`
+- `device attestation`
+- `operational credentials`
+- `Matter fabric`
+- `Thread Operational Dataset`
+- `Matter over Thread`
+- `Bluetooth LE commissioning`
+- `Thread Border Router`
+- `CHIP Tool`
+- `Matter multi-admin` */}
+
+## Official references
+
+- [Connectivity Standards Alliance - Matter](https://csa-iot.org/all-solutions/matter/)
+- [Nordic Semiconductor - Matter in nRF Connect SDK](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/protocols/matter/index.html)
+- [Google Home Developers - Matter primer](https://developers.home.google.com/matter/primer)
+
+## 🎉 You're Ready!
+
+<div className="ready-intro">
+
+### You Know the NX Matter Development Path
+
+You can now distinguish commissioning from normal Matter communication and recognize the main components used in a Matter over Thread system.
+
+This is enough context to begin the practical setup.
+
+</div>
+
+### Here's what you accomplished:
+
+- ✅ Identified Matter as the application protocol
+- ✅ Identified Bluetooth Low Energy as the commissioning link
+- ✅ Identified Thread as the operational network used in this series
+- ✅ Recognized the commissioner, controller, and Thread Border Router roles
+- ✅ Learned the main Matter data model keywords
+- ✅ Reviewed the complete NX Matter tutorial path
+
+## What's Next?
+
+<div className="quickstart-ready-cards">
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🛠️</div>
+<h4>Environment Setup</h4>
+
+Install the required Nordic development tools and verify that your NX board is detected.
+
+[Set Up the Environment →](./set-up-matter-development-environment-for-nx-families)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">⚡</div>
+<h4>Matter Quick Start</h4>
+
+Use a validated firmware package to commission an NX device without building from source.
+
+[Preview Quick Start →](./getting-started-with-matter-quickly-on-nx-families)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🏗️</div>
+<h4>Framework Overview</h4>
+
+Review the project areas used to configure the Matter data model and application behavior.
+
+[Explore the Framework →](./matter-development-framework-overview)
+
+</div>
+
+</div>
+
+> You have the required Matter vocabulary. Continue with the development environment setup before connecting or flashing an NX board.
+
+{/* COMPONENT NOTE [UI-READY-INTRO]:
+Render this section using the approved KORLINX "You're Ready" design.
+Desktop: three cards in one row. Tablet: two columns. Mobile: one column.
+The first card is the primary next step.
+*/}
+
+{/* KORLINX INTERNAL REVIEW BEFORE PUBLICATION
+1. Resolve INTRO-V01.
+2. Confirm all internal URLs.
+3. Add author, technical reviewer, last validated date, and change history.
+4. Configure TechArticle and BreadcrumbList at the Docusaurus template level.
+*/}
