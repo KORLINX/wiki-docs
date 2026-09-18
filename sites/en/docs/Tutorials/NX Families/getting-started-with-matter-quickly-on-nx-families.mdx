@@ -1,0 +1,431 @@
+---
+title: Getting Started with Matter Quickly on NX Families
+sidebar_label: Getting Started with Matter Quickly
+sidebar_position: 3
+description: Flash a validated Matter firmware package, commission an NX device over Bluetooth Low Energy, and control it over Thread.
+keywords:
+  - NX Matter Quick Start
+  - Matter over Thread
+  - Bluetooth LE commissioning
+  - NX15 Matter
+  - NX40 Matter
+  - Matter light sample
+---
+
+# Getting Started with Matter Quickly on NX Families
+
+This tutorial is the shortest path from a connected NX development board to a commissioned Matter device.
+
+You will flash a validated firmware package, commission the device over Bluetooth Low Energy, join it to a Thread network, and verify one Matter command. You do not need to build the firmware from source in this tutorial.
+
+:::caution Publication gate
+Do not publish this tutorial until KORLINX provides a tested prebuilt firmware package, setup code, supported board list, flash procedure, LED and button behavior, and validated commissioner ecosystem.
+:::
+
+{/* VERIFY WITH R&D [QUICK-V01]:
+Provide a public, versioned prebuilt Matter sample for NX15, NX40, or each supported board separately.
+Required metadata: file name, SHA-256, firmware version, SDK/Matter version, hardware revision, build configuration, validation date, and reviewer.
+*/}
+
+## What you will do
+
+1. Download the validated Matter sample.
+2. Connect the NX development board.
+3. Erase and flash the firmware.
+4. Confirm Bluetooth Low Energy advertising.
+5. Commission the device using its QR code or manual pairing code.
+6. Join the device to Thread.
+7. Send a Matter command and confirm the device response.
+
+{/* IMAGE NOTE [QUICK-IMG-01]:
+Type: Workflow diagram
+Content: Download -> Connect -> Flash -> BLE Commission -> Join Thread -> Control
+Purpose: Show the complete Quick Start path before the detailed steps
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-01.png"
+  alt="NX Families tutorial: Download to Connect to Flash to BLE Commission to Join Thread to Control"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Required hardware
+
+| Item | Requirement |
+| --- | --- |
+| NX development platform | `[CONFIRM: NX15, NX40, or both]` |
+| USB cable | Data-capable cable compatible with the selected board |
+| Development host | Computer with the environment from the previous tutorial |
+| Commissioner/controller | `[CONFIRM: Google Home, Apple Home, CHIP Tool, or another tested option]` |
+| Thread Border Router | Required for the Matter over Thread workflow |
+| Local network | The controller and Border Router must be reachable as required by the selected setup |
+
+{/* VERIFY WITH R&D [QUICK-V02]:
+Confirm the exact Thread Border Router and commissioner/controller combinations tested by KORLINX.
+Do not state general ecosystem compatibility from one successful setup.
+*/}
+
+## Required files and information
+
+Before continuing, obtain all items listed below from the KORLINX release location.
+
+| Item | Working placeholder |
+| --- | --- |
+| Firmware package | `[FIRMWARE_FILE]` |
+| Firmware version | `[FIRMWARE_VERSION]` |
+| SHA-256 checksum | `[SHA256]` |
+| Supported hardware revision | `[HW_REVISION]` |
+| Setup QR code | `[QR_CODE_FILE_OR_URL]` |
+| Manual pairing code | `[MANUAL_PAIRING_CODE]` |
+| Expected serial settings | `[SERIAL_SETTINGS]` |
+| Expected LED/button behavior | `[BOARD_UI_BEHAVIOR]` |
+
+:::warning Development credentials only
+Use only the setup code and test credentials supplied with the validated development package. Do not copy credentials from screenshots, third-party tutorials, or another device.
+:::
+
+## Step 1: Download and verify the firmware package
+
+1. Download `[FIRMWARE_FILE]` from `[KORLINX_RELEASE_URL]`.
+2. Confirm that the package supports your NX board and hardware revision.
+3. Calculate the SHA-256 checksum.
+
+On Linux:
+
+```bash
+sha256sum [FIRMWARE_FILE]
+```
+
+On macOS:
+
+```bash
+shasum -a 256 [FIRMWARE_FILE]
+```
+
+On Windows PowerShell:
+
+```powershell
+Get-FileHash [FIRMWARE_FILE] -Algorithm SHA256
+```
+
+4. Compare the result with the published checksum.
+
+Do not flash the package if the checksum does not match.
+
+{/* IMAGE NOTE [QUICK-IMG-02]:
+Type: Download panel and terminal screenshot
+Content: Firmware release metadata beside a successful SHA-256 comparison
+Purpose: Show developers how to select and verify the correct package
+Sensitive information: Hide private release paths and local usernames
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-02.png"
+  alt="NX Families tutorial: Firmware release metadata beside a successful SHA-256 comparison"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 2: Connect the NX development board
+
+1. Disconnect external loads that are not required by the sample.
+2. Connect the board to the development host using the approved USB or debug connection.
+3. Open an SDK terminal.
+4. Confirm that the device is detected:
+
+```bash
+nrfutil device list
+```
+
+5. Record the device identifier and serial port.
+
+{/* IMAGE NOTE [QUICK-IMG-03]:
+Type: Hardware connection photograph
+Content: NX board, USB/debug port, power state, and any required jumper positions
+Purpose: Prevent connection and power errors before flashing
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-03.png"
+  alt="NX Families tutorial: NX board, USB/debug port, power state, and any required jumper positions"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 3: Erase and flash the prebuilt firmware
+
+Use the validated KORLINX programming method.
+
+### Using Programmer
+
+1. Open **Programmer** in nRF Connect for Desktop.
+2. Select the connected device.
+3. Select **Add file** and open `[FIRMWARE_FILE]`.
+4. Confirm that the memory layout is accepted.
+5. Select the approved erase option.
+6. Select **Write** or **Erase and Write**.
+7. Wait for the programming and verification steps to complete.
+
+{/* VERIFY WITH R&D [QUICK-V03]:
+Confirm whether Programmer supports the final package and board connection.
+Provide the exact erase mode and whether additional images must be flashed together.
+*/}
+
+{/* IMAGE NOTE [QUICK-IMG-04]:
+Type: Screenshot sequence
+Content: Device selection -> Add file -> memory map -> erase option -> successful write verification
+Purpose: Show the complete validated programming workflow
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-04.png"
+  alt="NX Families tutorial: Device selection to Add file to memory map to erase option to successful write verification"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 4: Open the serial log
+
+1. Open the validated serial terminal.
+2. Select the recorded serial port.
+3. Apply `[SERIAL_SETTINGS]`.
+4. Reset the board.
+5. Confirm that the expected Matter sample log appears.
+
+The pass condition must include a KORLINX-approved log message such as:
+
+```text
+[EXPECTED_UNCOMMISSIONED_OR_ADVERTISING_LOG]
+```
+
+{/* VERIFY WITH R&D [QUICK-V04]:
+Provide the exact startup, commissioning-window, Thread-join, and operational log messages.
+*/}
+
+{/* IMAGE NOTE [QUICK-IMG-05]:
+Type: Serial Terminal screenshot
+Content: First complete boot after flashing with the expected advertising state highlighted
+Purpose: Establish a visible pass condition before commissioning
+Sensitive information: Hide unique device credentials if they appear in the log
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-05.png"
+  alt="NX Families tutorial: First complete boot after flashing with the expected advertising state highlighted"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 5: Confirm the commissioning window
+
+After startup, the sample should enter a commissionable state and advertise over Bluetooth Low Energy for a limited period.
+
+Confirm the state using the approved LED behavior or serial log.
+
+If the commissioning window has closed, use the validated button action or reset procedure to open it again.
+
+```text
+Commissioning action: [CONFIRM_BUTTON_OR_RESET_ACTION]
+Advertising duration: [CONFIRM_DURATION]
+Expected LED state: [CONFIRM_LED_PATTERN]
+```
+
+{/* VERIFY WITH R&D [QUICK-V05]:
+Confirm the button number, press duration, LED pattern, advertising timeout, and factory-reset behavior for NX15 and NX40.
+Nordic DK button and LED numbering must not be copied to KORLINX hardware without validation.
+*/}
+
+## Step 6: Obtain the onboarding code
+
+Use one of the following values supplied with the validated firmware package:
+
+- Matter setup QR code
+- Manual pairing code
+- Pairing payload displayed in the approved serial log
+
+Do not publish a shared development passcode as if it were suitable for production.
+
+{/* IMAGE NOTE [QUICK-IMG-06]:
+Type: QR and manual-code example layout
+Content: Clearly labeled development-only example with all real credentials replaced
+Purpose: Show where the onboarding information is used without exposing an active credential
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-06.png"
+  alt="NX Families tutorial: Clearly labeled development-only example with all real credentials replaced"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 7: Commission the NX device
+
+The exact screens depend on the validated commissioner. The required flow is:
+
+1. Open the selected Matter commissioner application.
+2. Choose **Add device** or the equivalent command.
+3. Scan the QR code or enter the manual pairing code.
+4. Keep the NX device close enough for the Bluetooth Low Energy commissioning connection.
+5. Select or confirm the target Matter fabric.
+6. Allow the commissioner to transfer the Thread Operational Dataset.
+7. Wait until the device joins the Thread network.
+8. Assign the device name and room if the application requests them.
+
+{/* IMAGE NOTE [QUICK-IMG-07]:
+Type: Mobile screenshot sequence
+Content: Add device -> scan code -> connect -> credential setup -> Thread join -> success
+Purpose: Show the complete validated commissioner flow
+Requirement: Capture the final KORLINX-tested ecosystem; do not use the Nordic Korean screenshots as final public images
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-07.png"
+  alt="NX Families tutorial: Add device to scan code to connect to credential setup to Thread join to success"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+:::note Bluetooth Low Energy and Thread
+Bluetooth Low Energy is used to open and complete the commissioning session. After commissioning, normal Matter application commands in this workflow use IPv6 over Thread.
+:::
+
+## Step 8: Verify the Matter command
+
+Open the commissioned device in the selected controller and perform the function implemented by the sample.
+
+For a light sample:
+
+1. Send **On**.
+2. Confirm that the assigned LED or load turns on.
+3. Send **Off**.
+4. Confirm that the assigned LED or load turns off.
+5. Check the serial log for the corresponding application event.
+
+{/* VERIFY WITH R&D [QUICK-V06]:
+Confirm the sample device type, endpoint, controlled LED or load, and expected application behavior.
+*/}
+
+{/* IMAGE NOTE [QUICK-IMG-08]:
+Type: Result image pair
+Content: Controller showing On/Off and NX board showing the matching physical state
+Purpose: Provide visual evidence that commissioning and operational control succeeded
+*/}
+
+<img
+  src="/img/tutorials/nx-families/QUICK-IMG-08.png"
+  alt="NX Families tutorial: Controller showing On/Off and NX board showing the matching physical state"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Expected result
+
+The Quick Start is complete when:
+
+- The validated firmware is programmed successfully.
+- The device opens a Bluetooth Low Energy commissioning window.
+- The commissioner accepts the onboarding code.
+- The device joins the selected Thread network.
+- The device appears in the Matter controller.
+- The sample responds to the expected Matter command.
+- The serial log shows the expected commissioned and operational state.
+
+## Troubleshooting
+
+| Problem | Action |
+| --- | --- |
+| Firmware checksum does not match | Download the package again and confirm that the correct board variant was selected. |
+| Programmer cannot detect the board | Check the cable, power, debugger connection, USB permissions, and device selection. |
+| No Bluetooth Low Energy advertisement is found | Reset the board or use the validated action to reopen the commissioning window. |
+| QR code is rejected | Confirm that the QR code belongs to the exact firmware instance and that the device has been reset to the expected state. |
+| Commissioning stops while configuring Thread | Confirm the Thread Border Router, dataset, local network, and controller compatibility. |
+| Device was already commissioned | Remove it from the previous fabric or perform the validated factory-reset procedure. |
+| Matter command has no physical effect | Confirm the correct device type, endpoint, LED mapping, and sample firmware. |
+
+## Developer reference keywords
+
+- `Matter commissioning window`
+- `Bluetooth LE advertising`
+- `Matter setup payload`
+- `manual pairing code`
+- `Matter fabric`
+- `Thread Operational Dataset`
+- `Thread Border Router`
+- `Matter controller`
+- `device attestation`
+- `factory reset`
+
+## Official references
+
+- [Nordic Semiconductor - Matter Template sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/matter/template/README.html)
+- [Nordic Semiconductor - Matter in nRF Connect SDK](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/protocols/matter/index.html)
+- [Google Home Developers - Commissionable and operational discovery](https://developers.home.google.com/matter/primer/commissionable-and-operational-discovery)
+
+## 🎉 You're Ready!
+
+<div className="ready-intro">
+
+### Your First NX Matter Device Is Commissioned
+
+You've flashed a validated sample, commissioned the NX device over Bluetooth Low Energy, and controlled it over Thread.
+
+You are now ready to build the same workflow from source.
+
+</div>
+
+### Here's what you accomplished:
+
+- ✅ Downloaded and verified the firmware package
+- ✅ Connected and programmed the NX development board
+- ✅ Confirmed the commissioning window
+- ✅ Used a Matter onboarding code
+- ✅ Commissioned the device over Bluetooth Low Energy
+- ✅ Joined the device to a Thread network
+- ✅ Sent and verified a Matter command
+
+## What's Next?
+
+<div className="quickstart-ready-cards">
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🧩</div>
+<h4>Build from Source</h4>
+
+Configure, build, flash, commission, and test the Matter sample from its source code.
+
+[Start Matter Development →](./matter-development-with-nx-families)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🏗️</div>
+<h4>Framework Overview</h4>
+
+Learn where the Matter Node, Endpoint, Clusters, and application callbacks are configured.
+
+[Explore the Framework →](./matter-development-framework-overview)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🛠️</div>
+<h4>Environment Setup</h4>
+
+Review the SDK, toolchain, board detection, and serial-terminal setup.
+
+[Review the Environment →](./set-up-matter-development-environment-for-nx-families)
+
+</div>
+
+</div>
+
+> Your NX device can now join a Matter fabric and respond over Thread. Continue by reproducing the result from the validated source release.
+
+{/* COMPONENT NOTE [UI-READY-QUICK]:
+Render this section using the approved KORLINX "You're Ready" design.
+Desktop: three cards in one row. Tablet: two columns. Mobile: one column.
+*/}
+
+{/* KORLINX INTERNAL REVIEW BEFORE PUBLICATION
+1. Resolve QUICK-V01 through QUICK-V06.
+2. Replace every bracketed placeholder.
+3. Test the full flow from a factory-reset board on every supported NX platform.
+4. Record the hardware revision, firmware version, SDK/Matter version, controller, Border Router, test date, and reviewer.
+5. Confirm that all screenshots are KORLINX-owned or approved for reuse.
+*/}

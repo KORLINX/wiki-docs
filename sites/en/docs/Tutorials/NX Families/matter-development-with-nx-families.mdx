@@ -1,0 +1,561 @@
+---
+title: Matter Development with NX Families
+sidebar_label: Matter Development with NX Families
+sidebar_position: 4
+description: Configure, build, flash, commission, and test a Matter over Thread sample on a KORLINX NX development platform.
+keywords:
+  - NX Matter development
+  - Matter over Thread
+  - nRF Connect SDK Matter
+  - west build
+  - CHIP Tool
+  - NX15
+  - NX40
+---
+
+# Matter Development with NX Families
+
+This tutorial builds the complete Matter over Thread workflow from source.
+
+You will select a Matter sample, build it for an approved NX board target, flash the result, commission the device over Bluetooth Low Energy, and send a Matter command over Thread.
+
+:::caution Required validation
+The commands use placeholders for KORLINX-specific targets and paths. Replace them only with values validated on the corresponding NX hardware revision and SDK release.
+:::
+
+## What you will do
+
+1. Open the approved SDK workspace.
+2. Select the Matter sample and NX board target.
+3. Configure the application.
+4. Build and flash the firmware.
+5. Prepare a Thread network and CHIP Tool.
+6. Commission the NX device over Bluetooth Low Energy.
+7. Send a Matter command.
+8. Confirm the application and serial-log response.
+
+{/* IMAGE NOTE [DEV-IMG-01]:
+Type: Workflow diagram
+Content: Source -> Configure -> Build -> Flash -> BLE commission -> Thread -> CHIP Tool command -> Device response
+Purpose: Show the complete development loop
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-01.png"
+  alt="NX Families tutorial: Source to Configure to Build to Flash to BLE commission to Thread to CHIP Tool command to Device response"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Prerequisites
+
+Complete the following tutorials first:
+
+- [Introduction to Matter for NX Families](./introduction-to-matter-for-nx-families)
+- [Set Up the Matter Development Environment for NX Families](./set-up-matter-development-environment-for-nx-families)
+
+Prepare:
+
+- A supported NX development platform
+- The KORLINX-approved SDK workspace
+- The matching toolchain
+- The KORLINX NX board definition
+- A Matter sample source tree
+- A data-capable USB cable and required debugger
+- A serial terminal
+- A Thread Border Router
+- CHIP Tool compatible with the selected SDK and Matter release
+
+## Validated configuration
+
+Complete this table before publishing the tutorial.
+
+| Item | NX15 | NX40 |
+| --- | --- | --- |
+| Hardware revision | `[CONFIRM]` | `[CONFIRM]` |
+| Board target | `[NX15_BOARD_TARGET]` | `[NX40_BOARD_TARGET]` |
+| SDK release | `[CONFIRM]` | `[CONFIRM]` |
+| Matter version | `[CONFIRM]` | `[CONFIRM]` |
+| Sample path | `[CONFIRM]` | `[CONFIRM]` |
+| Build configuration | `[CONFIRM]` | `[CONFIRM]` |
+| Debug interface | `[CONFIRM]` | `[CONFIRM]` |
+| Serial settings | `[CONFIRM]` | `[CONFIRM]` |
+| Tested Border Router | `[CONFIRM]` | `[CONFIRM]` |
+| Tested controller | `[CONFIRM]` | `[CONFIRM]` |
+
+{/* VERIFY WITH R&D [DEV-V01]:
+Complete the validated configuration table from actual test records.
+If NX15 and NX40 require different source branches or configurations, split the affected steps into explicit tabs or separate sections.
+*/}
+
+## Step 1: Open the approved SDK workspace
+
+Open the nRF Connect SDK installation from VS Code or start an SDK terminal.
+
+Confirm the workspace state:
+
+```bash
+west topdir
+west list
+```
+
+Confirm that the Matter source required by the approved release is available.
+
+:::note Matter source location
+Matter support is integrated in nRF Connect SDK v3.4.0 and earlier. Nordic provides Matter samples through the Matter Add-on for later releases. This tutorial must use one validated approach and must not mix commands or sample paths from different releases.
+:::
+
+**Developer reference keywords:** `west manifest`, `sdk-nrf`, `ncs-matter add-on`, `connectedhomeip`, `Matter release compatibility`
+
+{/* IMAGE NOTE [DEV-IMG-02]:
+Type: VS Code screenshot
+Content: Active SDK, toolchain, application folder, and board target area
+Purpose: Confirm that the correct workspace is open before configuration
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-02.png"
+  alt="NX Families tutorial: Active SDK, toolchain, application folder, and board target area"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 2: Locate the Matter sample
+
+Use the KORLINX-approved sample path:
+
+```text
+[MATTER_SAMPLE_PATH]
+```
+
+The recommended first sample is a Matter light or minimal template because it provides a visible command result and a limited application surface.
+
+Confirm that the sample contains the expected files before continuing:
+
+```text
+CMakeLists.txt
+prj.conf
+src/
+boards/ or board-specific overlays, when required
+sysbuild/, when required by the selected release
+```
+
+{/* VERIFY WITH R&D [DEV-V02]:
+Confirm whether the public tutorial uses the Nordic Matter light_bulb sample, Matter template sample, or a KORLINX-maintained derivative.
+Provide the versioned public source URL and commit.
+*/}
+
+{/* IMAGE NOTE [DEV-IMG-03]:
+Type: File-tree screenshot
+Content: Approved Matter sample with the main application, configuration, board, and source areas highlighted
+Purpose: Help the developer confirm that the correct sample is open
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-03.png"
+  alt="NX Families tutorial: Approved Matter sample with the main application, configuration, board, and source areas highlighted"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 3: Select the NX board target
+
+Set the board target for the connected NX development platform.
+
+```text
+NX15: [NX15_BOARD_TARGET]
+NX40: [NX40_BOARD_TARGET]
+```
+
+Do not substitute the following Nordic development-kit targets as NX targets:
+
+```text
+nrf54l15dk/nrf54l15/cpuapp
+nrf52840dk/nrf52840
+```
+
+Those targets confirm Nordic SoC and DK sample support, but the KORLINX board definition must describe the actual NX hardware.
+
+**Developer reference keywords:** `Zephyr custom board`, `board.yaml`, `Devicetree`, `Kconfig.defconfig`, `board target qualifiers`
+
+{/* VERIFY WITH R&D [DEV-V03]:
+Confirm whether KORLINX will publish the NX board definitions in the Wiki repository, an SDK repository, or a separate board-support package.
+*/}
+
+## Step 4: Review the application configuration
+
+Review the following files or configuration areas before building:
+
+- `prj.conf`
+- Board-specific `.conf` files
+- Devicetree `.overlay` files
+- Partition or sysbuild configuration
+- Matter device configuration
+- Application LED and button mapping
+
+Confirm that the build is configured for Matter over Thread, not Matter over Wi-Fi.
+
+Do not change settings that are not required for this tutorial.
+
+**Developer reference keywords:** `CONFIG_CHIP`, `Matter over Thread Kconfig`, `OpenThread`, `sysbuild`, `partition manager`, `Devicetree overlay`
+
+{/* VERIFY WITH R&D [DEV-V04]:
+Provide the exact configuration changes required for NX15 and NX40.
+Confirm flash layout, external-memory use, bootloader configuration, and Matter factory-data behavior for the tutorial build.
+*/}
+
+{/* IMAGE NOTE [DEV-IMG-04]:
+Type: Code screenshot or configuration diff
+Content: Only the settings the developer must confirm or change
+Purpose: Avoid showing a complete configuration file when only a few options matter
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-04.png"
+  alt="NX Families tutorial: Only the settings the developer must confirm or change"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 5: Build the Matter sample
+
+From the approved SDK terminal, run:
+
+```bash
+west build -p always -b [NX_BOARD_TARGET] [MATTER_SAMPLE_PATH]
+```
+
+If the approved out-of-tree application requires sysbuild explicitly, use:
+
+```bash
+west build -p always --sysbuild -b [NX_BOARD_TARGET] [MATTER_SAMPLE_PATH]
+```
+
+Do not add `--sysbuild` automatically. Use the command validated for the selected SDK and repository layout.
+
+The build passes when it completes without an error and produces the expected flashable output.
+
+```text
+Expected output file: [CONFIRM]
+Expected build completion text: [CONFIRM]
+```
+
+{/* VERIFY WITH R&D [DEV-V05]:
+Run clean builds for NX15 and NX40 and provide the exact commands, output file paths, build duration range, flash usage, RAM usage, and pass text.
+*/}
+
+{/* IMAGE NOTE [DEV-IMG-05]:
+Type: Terminal screenshot
+Content: Final successful build lines with the output path and memory usage visible
+Purpose: Provide a clear build pass condition
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-05.png"
+  alt="NX Families tutorial: Final successful build lines with the output path and memory usage visible"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 6: Flash the NX development board
+
+1. Connect the board and confirm that it is detected.
+2. Flash the current build:
+
+```bash
+west flash
+```
+
+3. Reset the board if the runner does not reset it automatically.
+4. Open the serial terminal using the validated settings.
+5. Confirm the expected boot and commissioning-window logs.
+
+If an erase is required before the first Matter test, use only the approved erase procedure for the board and debugger.
+
+{/* VERIFY WITH R&D [DEV-V06]:
+Confirm the west flash runner, debugger requirement, reset behavior, and erase procedure for both NX platforms.
+Provide the expected log sequence after a clean flash.
+*/}
+
+{/* IMAGE NOTE [DEV-IMG-06]:
+Type: Terminal and hardware image pair
+Content: Successful west flash output and the matching board state after reset
+Purpose: Confirm programming success before commissioning
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-06.png"
+  alt="NX Families tutorial: Successful west flash output and the matching board state after reset"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 7: Prepare the Matter over Thread test network
+
+Prepare one validated test environment:
+
+- Thread Border Router
+- CHIP Tool host or validated commercial Matter controller
+- IPv6 connectivity between the controller and Border Router
+- Compatible CHIP Tool package for the selected SDK and Matter release
+
+Obtain the active Thread Operational Dataset from the Border Router.
+
+```text
+Thread dataset: [ACTIVE_OPERATIONAL_DATASET_HEX]
+```
+
+Treat the dataset as test-environment information. Do not publish credentials for a private operational network.
+
+**Developer reference keywords:** `OpenThread Border Router`, `OTBR`, `active operational dataset`, `IPv6`, `mDNS`, `Matter CHIP Tool`
+
+{/* VERIFY WITH R&D [DEV-V07]:
+Document one reproducible Border Router setup and the approved command for retrieving its active dataset.
+Confirm the compatible CHIP Tool build or package.
+*/}
+
+{/* IMAGE NOTE [DEV-IMG-07]:
+Type: Network topology and terminal screenshot
+Content: CHIP Tool host, Border Router, Thread network, NX device, and successful dataset retrieval
+Purpose: Show the required test topology and dataset source
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-07.png"
+  alt="NX Families tutorial: CHIP Tool host, Border Router, Thread network, NX device, and successful dataset retrieval"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 8: Open the commissioning window
+
+Confirm that the NX device is advertising over Bluetooth Low Energy.
+
+If required, use the validated button or reset action:
+
+```text
+Commissioning action: [CONFIRM]
+Expected advertising log: [CONFIRM]
+Expected LED pattern: [CONFIRM]
+```
+
+If the device belongs to an earlier Matter fabric, remove it from that fabric or perform the validated factory-reset procedure before continuing.
+
+## Step 9: Commission with CHIP Tool
+
+Set the values used by your test environment:
+
+```text
+Node ID: [NODE_ID]
+Thread dataset: [ACTIVE_OPERATIONAL_DATASET_HEX]
+Setup PIN code: [SETUP_PIN_CODE]
+Discriminator: [DISCRIMINATOR]
+```
+
+Run the Matter over Thread commissioning command:
+
+```bash
+chip-tool pairing ble-thread [NODE_ID] hex:[ACTIVE_OPERATIONAL_DATASET_HEX] [SETUP_PIN_CODE] [DISCRIMINATOR]
+```
+
+The command passes when CHIP Tool reports successful commissioning and the NX serial log reports that the device joined the Matter fabric and Thread network.
+
+:::warning Test values
+Never copy setup codes, discriminators, datasets, or certificates from a screenshot. Use values generated or assigned for the exact development image being tested.
+:::
+
+{/* VERIFY WITH R&D [DEV-V08]:
+Validate the command against the exact CHIP Tool version and NX firmware build.
+Provide sanitized example output and the accepted node-ID format.
+*/}
+
+{/* IMAGE NOTE [DEV-IMG-08]:
+Type: Split terminal screenshot
+Content: Successful CHIP Tool commissioning output beside the corresponding NX device log
+Purpose: Show success from both the commissioner and device perspectives
+Sensitive information: Mask datasets, setup codes, certificates, and unique device identifiers
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-08.png"
+  alt="NX Families tutorial: Successful CHIP Tool commissioning output beside the corresponding NX device log"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 10: Send a Matter command
+
+For an On/Off Light sample, send **On** to the validated endpoint:
+
+```bash
+chip-tool onoff on [NODE_ID] [ENDPOINT_ID]
+```
+
+Then send **Off**:
+
+```bash
+chip-tool onoff off [NODE_ID] [ENDPOINT_ID]
+```
+
+Confirm both:
+
+- The physical LED or connected load changes state.
+- The serial log reports the expected application event.
+
+```text
+Node ID: [CONFIRM]
+Application endpoint: [CONFIRM]
+Controlled LED or load: [CONFIRM]
+```
+
+**Developer reference keywords:** `OnOff cluster 0x0006`, `Matter endpoint`, `chip-tool onoff`, `attribute update callback`
+
+{/* VERIFY WITH R&D [DEV-V09]:
+Confirm the sample endpoint, device type, cluster, LED mapping, and expected log message.
+*/}
+
+{/* IMAGE NOTE [DEV-IMG-09]:
+Type: Result sequence
+Content: CHIP Tool On command -> board On state -> Off command -> board Off state
+Purpose: Demonstrate the complete operational command path
+*/}
+
+<img
+  src="/img/tutorials/nx-families/DEV-IMG-09.png"
+  alt="NX Families tutorial: CHIP Tool On command to board On state to Off command to board Off state"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 11: Rebuild after a controlled change
+
+Make one small, validated application change, such as the initial LED state or an approved identification value.
+
+Rebuild and flash:
+
+```bash
+west build -p always -b [NX_BOARD_TARGET] [MATTER_SAMPLE_PATH]
+west flash
+```
+
+Repeat the relevant verification step and confirm that the change is present.
+
+Do not modify vendor identifiers, product identifiers, certificates, device types, or cluster definitions unless the tutorial explicitly requires it.
+
+## Expected result
+
+The tutorial is complete when:
+
+- The Matter sample builds from the approved source release.
+- The output is flashed to the correct NX development platform.
+- The device opens a Bluetooth Low Energy commissioning window.
+- CHIP Tool commissions the device using the Thread Operational Dataset.
+- The device joins the Thread network.
+- CHIP Tool sends a command to the correct endpoint.
+- The physical device and serial log show the expected response.
+- A controlled source change can be rebuilt and verified.
+
+## Troubleshooting
+
+| Problem | Action |
+| --- | --- |
+| Board target is unknown | Stop and obtain the KORLINX board-support package and approved target from R&D. |
+| CMake or Kconfig error | Confirm the SDK release, toolchain, sample branch, board definition, and configuration files are from the same validated set. |
+| Build runs out of memory | Use the approved build configuration and review partition, logging, feature, and external-memory requirements. |
+| `west flash` cannot find the board | Check the debugger, cable, power, device permissions, and selected runner. |
+| BLE commissioning window is not visible | Reset the board or use the approved action to reopen the window. |
+| CHIP Tool cannot commission | Confirm the CHIP Tool version, dataset, setup code, discriminator, Bluetooth access, and factory-reset state. |
+| Device joins Thread but commands fail | Confirm IPv6/mDNS reachability, node ID, endpoint, cluster, access control, and controller state. |
+| On/Off command succeeds but the LED does not change | Confirm the application callback and board-specific LED mapping. |
+
+## Developer reference keywords
+
+- `west build`
+- `west flash`
+- `sysbuild`
+- `Matter light bulb sample`
+- `Matter Template sample`
+- `Zephyr custom board`
+- `Devicetree overlay`
+- `Kconfig`
+- `OpenThread Border Router`
+- `Thread Operational Dataset`
+- `chip-tool pairing ble-thread`
+- `chip-tool onoff`
+- `Matter endpoint`
+- `OnOff cluster`
+
+## Official references
+
+- [Nordic Semiconductor - Matter in nRF Connect SDK](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/protocols/matter/index.html)
+- [Nordic Semiconductor - Matter Template sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/matter/template/README.html)
+- [Matter Project - Working with CHIP Tool](https://project-chip.github.io/connectedhomeip-doc/development_controllers/chip-tool/chip_tool_guide.html)
+
+## 🎉 You're Ready!
+
+<div className="ready-intro">
+
+### You Built and Controlled an NX Matter Device
+
+You've built the Matter sample from source, flashed it to an NX development platform, commissioned it over Bluetooth Low Energy, and controlled it over Thread.
+
+You are now ready to identify where the application behavior and Matter data model are implemented.
+
+</div>
+
+### Here's what you accomplished:
+
+- ✅ Opened the validated SDK and Matter source
+- ✅ Selected the correct NX board target
+- ✅ Reviewed the Matter over Thread configuration
+- ✅ Built and flashed the application
+- ✅ Prepared the Thread test network
+- ✅ Commissioned the device with CHIP Tool
+- ✅ Sent a Matter command to the correct endpoint
+- ✅ Verified the physical and serial-log response
+- ✅ Rebuilt the application after a controlled change
+
+## What's Next?
+
+<div className="quickstart-ready-cards">
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🏗️</div>
+<h4>Framework Overview</h4>
+
+Locate the Matter Node, Endpoint, Clusters, attributes, commands, and application callbacks.
+
+[Explore the Framework →](./matter-development-framework-overview)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">⚡</div>
+<h4>Quick Start</h4>
+
+Return to the prebuilt workflow when you need a clean commissioning reference.
+
+[Review Quick Start →](./getting-started-with-matter-quickly-on-nx-families)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">📚</div>
+<h4>Developer Resources</h4>
+
+Continue with the validated KORLINX examples, board support, and SDK references.
+
+**Resource link:** Pending confirmation of the public developer-resource URL.
+
+</div>
+
+</div>
+
+> You can now reproduce the complete NX Matter development loop from source to an operational Matter command.
+
+{/* COMPONENT NOTE [UI-READY-DEV]:
+Render this section using the approved KORLINX "You're Ready" design.
+Desktop: three cards in one row. Tablet: two columns. Mobile: one column.
+*/}
+
+{/* KORLINX INTERNAL REVIEW BEFORE PUBLICATION
+1. Resolve DEV-V01 through DEV-V09.
+2. Replace every bracketed placeholder.
+3. Run the complete tutorial from a clean host and factory-reset device for each supported platform.
+4. Store the command log, build output, test date, hardware revision, SDK/Matter version, Border Router, CHIP Tool version, and reviewer.
+5. Confirm that no private Thread dataset or active device credential appears in text or screenshots.
+*/}

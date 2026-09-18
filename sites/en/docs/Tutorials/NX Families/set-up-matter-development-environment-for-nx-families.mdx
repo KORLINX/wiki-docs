@@ -1,0 +1,373 @@
+---
+title: Set Up the Matter Development Environment for NX Families
+sidebar_label: Set Up the Development Environment
+sidebar_position: 2
+description: Install the Nordic SDK, matching toolchain, and SEGGER J-Link software required to build, flash, debug, and test Matter applications on KORLINX NX development platforms.
+keywords:
+  - NX Matter development environment
+  - nRF Connect SDK
+  - nRF Connect for VS Code
+  - nRF Connect for Desktop
+  - SEGGER J-Link
+  - SWD
+  - NX15
+  - NX40
+---
+
+# Set Up the Matter Development Environment for NX Families
+
+This tutorial prepares the tools required to build, flash, debug, and test a Matter application on an NX development platform.
+
+By the end of this tutorial, the selected SDK and matching toolchain will be installed, SEGGER J-Link will be ready, and the host computer will be prepared to connect to the NX development board through its approved SWD and serial interfaces.
+
+:::caution 
+Use the validated release
+This draft uses nRF Connect SDK v3.4.0 as the working baseline from the supplied Nordic training material. KORLINX R&D must confirm the final SDK version, Matter source location, board target, J-Link configuration, and supported host operating systems before publication.
+:::
+
+## What you will prepare
+
+- nRF Connect for Desktop
+- Visual Studio Code
+- nRF Connect for VS Code Extension Pack
+- The KORLINX-approved nRF Connect SDK release
+- A matching toolchain
+- SEGGER J-Link Software and Documentation Pack
+- A KORLINX-approved SEGGER J-Link probe
+- The approved SWD cable or adapter for the selected NX development board
+- A data-capable USB cable
+- A serial terminal for logs
+
+## Supported NX platforms
+
+| Platform | SoC family | Tutorial status |
+| --- | --- | --- |
+| NX15 development platform | Nordic nRF54L15 | Pending board-target, J-Link target-name, and hardware-revision confirmation |
+| NX40 development platform | Nordic nRF52840 | Pending board-target, J-Link target-name, and hardware-revision confirmation |
+
+## Host requirements
+
+Use a host operating system supported by the approved nRF Connect SDK release, SEGGER J-Link software, and selected Matter testing tools.
+
+| Item | Requirement |
+| --- | --- |
+| Host OS | `[CONFIRM: Ubuntu / Windows / macOS support matrix]` |
+| Free storage | At least 5 GB recommended for the SDK and toolchain installation |
+| Network access | Required to download the SDK, toolchain, extensions, J-Link software, and dependencies |
+| Debug probe | KORLINX-approved SEGGER J-Link model |
+| Target connection | Approved SWD connection for the selected NX development-board revision |
+| USB access | Data-capable USB cable and permission to access the J-Link and serial devices |
+
+## Step 1: Install nRF Connect for Desktop
+
+1. Download [nRF Connect for Desktop](https://www.nordicsemi.com/Products/Development-tools/nRF-Connect-for-Desktop/Download).
+2. Install the application for your operating system.
+3. Open nRF Connect for Desktop.
+4. Install or open the following applications when required:
+   - Programmer
+   - Serial Terminal
+   - Quick Start, if KORLINX confirms support for the selected NX platform
+
+<img
+  src="/img/tutorials/nx-families/ENV-IMG-01.png"
+  alt="NX Families tutorial: nRF Connect for Desktop application list with Programmer and Serial Terminal highlighted"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+:::note Quick Start availability
+The supplied Nordic training material demonstrates Quick Start with an nRF54LM20 DK. It does not confirm that Quick Start provides a package for NX15 or NX40. The Quick Start application must remain optional until KORLINX validates the board and firmware package.
+:::
+
+## Step 2: Install Visual Studio Code
+
+1. Download [Visual Studio Code](https://code.visualstudio.com/Download).
+2. Install and open the application.
+3. Open the **Extensions** view.
+
+<img
+  src="/img/tutorials/nx-families/ENV-IMG-02.png"
+  alt="NX Families tutorial: Visual Studio Code with the Extensions view open"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 3: Install the nRF Connect Extension Pack
+
+1. Search for **nRF Connect for VS Code Extension Pack** in the VS Code Marketplace.
+2. Confirm that the publisher is Nordic Semiconductor.
+3. Select **Install**.
+4. Restart VS Code if requested.
+5. Confirm that the nRF Connect view is available in the Activity Bar.
+
+The extension pack installs the tools required to manage SDKs, toolchains, applications, build configurations, connected devices, and serial terminals.
+
+<img
+  src="/img/tutorials/nx-families/ENV-IMG-03.png"
+  alt="NX Families tutorial: Official nRF Connect for VS Code Extension Pack page"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 4: Install the approved nRF Connect SDK
+
+1. Open the **nRF Connect** view in VS Code.
+2. Select **Manage SDKs**.
+3. Select **Install SDK**.
+4. Choose the KORLINX-approved version.
+5. Select an installation directory with sufficient free space.
+6. Wait until the SDK installation completes successfully.
+
+Use the following working value only during internal review:
+
+```text
+nRF Connect SDK: v3.4.0
+```
+
+<img
+  src="/img/tutorials/nx-families/ENV-IMG-04.png"
+  alt="NX Families tutorial: Install the approved nRF Connect SDK"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 5: Install the matching toolchain
+
+1. In the nRF Connect view, select **Manage Toolchains**.
+2. Install the toolchain that matches the approved SDK release.
+3. Wait until the toolchain status shows that the installation is complete.
+
+The SDK and toolchain versions must match unless KORLINX R&D documents a supported exception.
+
+<img
+  src="/img/tutorials/nx-families/ENV-IMG-05.png"
+  alt="NX Families tutorial: Matching nRF Connect SDK toolchain installed"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 6: Install the SEGGER J-Link software
+
+The NX development board uses an external SEGGER J-Link probe for programming and debugging through the SWD interface.
+
+1. Download the [SEGGER J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/).
+2. Install the package for your host operating system.
+3. Restart the host computer if requested.
+4. Open a terminal.
+5. Start J-Link Commander:
+
+```text
+Windows: JLink.exe
+Linux/macOS: JLinkExe
+```
+
+6. Confirm that J-Link Commander opens and displays the installed software version.
+7. Enter `Exit` to close J-Link Commander:
+
+```text
+J-Link> Exit
+```
+
+## Step 7: Open an SDK terminal
+
+Open a terminal from the installed SDK and run:
+
+```bash
+west --version
+```
+
+Confirm that the command completes without an environment error.
+
+**Developer reference keywords:** `west workspace`, `Zephyr SDK`, `NCS toolchain`, `environment variables`, `J-Link runner`
+
+<img
+  src="/img/tutorials/nx-families/ENV-IMG-06.png"
+  alt="NX Families tutorial: Successful west version verification in the SDK terminal"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 8: Connect the NX development board through J-Link
+
+1. Disconnect power from the NX development board.
+2. Connect the approved J-Link cable or adapter to the NX board's SWD interface.
+3. Confirm the required signals according to the approved hardware guide:
+
+| J-Link signal | NX board signal | Purpose |
+| --- | --- | --- |
+| `VTref` | Target reference voltage | Allows J-Link to detect the target I/O voltage |
+| `SWDIO` | `SWDIO` | SWD data |
+| `SWCLK` | `SWDCLK` | SWD clock |
+| `GND` | `GND` | Common ground |
+| `RESET` | `nRESET` | Target reset, when required |
+
+4. Check the cable orientation before applying power.
+5. Connect the J-Link probe to the host computer.
+6. Power the NX development board using its approved power input.
+7. Start J-Link Commander:
+
+```text
+Windows: JLink.exe
+Linux/macOS: JLinkExe
+```
+
+8. List the connected J-Link probes:
+
+```text
+J-Link> ShowEmuList USB
+```
+
+9. Confirm that the expected J-Link serial number appears.
+10. Select the KORLINX-approved target device and SWD interface:
+
+```text
+J-Link> Device [CONFIRM: SEGGER device name]
+J-Link> SelectInterface SWD
+J-Link> Speed [CONFIRM: SWD speed in kHz]
+J-Link> Connect
+```
+
+11. Confirm that J-Link detects the target voltage and establishes a connection to the NX device.
+12. Enter `Exit` after completing the verification:
+
+```text
+J-Link> Exit
+```
+
+:::caution
+Target power
+Do not use the J-Link probe to power the NX development board unless the approved hardware guide explicitly permits it. `VTref` is used to detect the target reference voltage and must be connected as specified in the board connection guide.
+:::
+
+<img
+  src="/img/tutorials/nx-families/NX40_Jlink_DevKit.png"
+  alt="NX Families tutorial: NX development board connected to SEGGER J-Link through SWD"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 9: Verify serial access
+
+The J-Link SWD connection is used for programming and debugging. Serial logs may use a separate USB-to-UART interface, USB CDC interface, or an approved J-Link virtual COM port, depending on the NX board revision and selected J-Link model.
+
+1. Confirm the approved serial-log interface for the selected NX development board.
+2. If an external USB-to-UART adapter is required, connect it according to the approved hardware guide.
+3. Open **Serial Terminal** in nRF Connect for Desktop or another VT100/ANSI-compatible terminal.
+4. Select the verified NX board serial port.
+5. Apply the KORLINX-approved serial settings.
+6. Reset the board.
+7. Confirm that the expected boot or application logs are displayed.
+
+Serial ports normally appear as:
+
+| Operating system | Typical format |
+| --- | --- |
+| Windows | `COMx` |
+| Linux | `/dev/ttyACMx` or `/dev/ttyUSBx` |
+| macOS | `/dev/tty.*` |
+
+Use these values only after confirmation:
+
+```text
+Baud rate: [CONFIRM]
+Data bits: 8
+Parity: None
+Stop bits: 1
+Flow control: [CONFIRM]
+```
+
+:::note Serial interface
+Do not assume that the J-Link USB connection automatically provides the NX serial-log port. J-Link virtual COM support depends on the probe model and the NX hardware connection.
+:::
+
+## Expected result
+
+The environment is ready when all applicable checks below are complete:
+
+- VS Code opens the nRF Connect view.
+- The approved SDK is installed.
+- The matching toolchain is installed.
+- `west --version` completes without an environment error.
+- J-Link Commander opens successfully.
+- The connected J-Link probe appears in `ShowEmuList USB`.
+- J-Link detects the NX target voltage.
+- J-Link establishes an SWD connection to the selected NX device.
+- The serial terminal can open the NX log interface, when supported.
+- The expected startup log is displayed, when serial logging is part of the validated workflow.
+
+## Troubleshooting
+
+| Problem | Action |
+| --- | --- |
+| The nRF Connect view is missing | Confirm that the complete Nordic extension pack is installed and enabled. |
+| The SDK installation fails | Check network access, free storage, installation permissions, and proxy settings. |
+| `west` is not found | Open a terminal from the installed SDK or activate the SDK environment again. |
+| J-Link Commander is not found | Install the SEGGER J-Link Software and Documentation Pack and reopen the terminal. |
+| The J-Link probe is not listed | Check the J-Link USB cable, host USB port, driver installation, and whether another application is using the probe. |
+| J-Link does not detect target voltage | Check NX board power, GND, VTref, and the SWD cable orientation. |
+| J-Link cannot connect to the target | Confirm the SEGGER device name, SWDIO/SWDCLK wiring, reset connection, target power, and approved SWD speed. |
+| The serial port is not available | Confirm the approved serial interface, connect the required USB-to-UART adapter if applicable, and check host serial-port permissions. |
+| The serial port cannot be opened | Close other terminal applications and check host serial-port permissions. |
+| The toolchain version differs from the SDK | Install and select the toolchain that matches the approved SDK release. |
+
+
+## Official references
+
+- [nRF Connect for Desktop](https://www.nordicsemi.com/Products/Development-tools/nRF-Connect-for-Desktop)
+- [nRF Connect for VS Code](https://docs.nordicsemi.com/bundle/nrf-connect-vscode/page/index.html)
+- [Matter in nRF Connect SDK](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/protocols/matter/index.html)
+- [SEGGER J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/)
+- [SEGGER J-Link Commander](https://kb.segger.com/J-Link_Commander)
+- [Zephyr: Building, Flashing and Debugging](https://docs.zephyrproject.org/latest/develop/west/build-flash-debug.html)
+
+## 🎉 You're Ready!
+
+<div className="quickstart-ready">
+<div>
+<h3>Your NX Matter Development Environment Is Ready</h3>
+<p>You've installed the required Nordic development tools and SEGGER J-Link software, and verified the approved connection path to your NX development board.</p>
+<p>Your system is now prepared for the validated Matter Quick Start or build-from-source workflow.</p>
+</div>
+
+<div className="quickstart-ready-checklist">
+<strong>Here's what you accomplished:</strong>
+<ul>
+<li>✅ Installed nRF Connect for Desktop</li>
+<li>✅ Installed Visual Studio Code and the Nordic extension pack</li>
+<li>✅ Installed the selected nRF Connect SDK</li>
+<li>✅ Installed the matching toolchain</li>
+<li>✅ Installed and opened SEGGER J-Link Commander</li>
+<li>✅ Verified the SDK terminal environment</li>
+<li>✅ Connected the NX development board to J-Link through SWD</li>
+<li>✅ Confirmed communication between J-Link and the NX target</li>
+<li>✅ Confirmed serial access when supported</li>
+</ul>
+</div>
+
+<h3>What's Next?</h3>
+
+<div className="quickstart-ready-cards">
+<div className="quickstart-ready-card">
+<div className="quickstart-ready-icon" aria-hidden="true">⚡</div>
+<h4>Matter Quick Start</h4>
+
+Flash a validated Matter sample and commission the NX device without building from source.
+
+[Continue to Quick Start →](./getting-started-with-matter-quickly-on-nx-families)
+</div>
+
+<div className="quickstart-ready-card">
+<div className="quickstart-ready-icon" aria-hidden="true">🧩</div>
+<h4>Build from Source</h4>
+
+Configure, build, flash, and test the Matter sample using the approved board target and J-Link runner.
+
+[Open Matter Development →](./matter-development-with-nx-families)
+</div>
+
+<div className="quickstart-ready-card">
+<div className="quickstart-ready-icon" aria-hidden="true">📘</div>
+<h4>Matter Concepts</h4>
+
+Review the commissioning, Thread, and data model keywords used in the series.
+
+[Return to the Introduction →](./introduction-to-matter-for-nx-families)
+</div>
+</div>
+
+> Your tools are installed and the NX board connection has been verified through SEGGER J-Link. Continue with the validated Quick Start package before modifying the Matter source code.
+
+</div>

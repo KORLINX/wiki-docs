@@ -611,6 +611,40 @@ const sidebars = {
       },
       items: [],
     },
+
+    {
+      type: 'category',
+      label: 'NX Families',
+      collapsed: true,
+      collapsible: true,
+      items: [
+        {
+          type: 'doc',
+          id: 'Tutorials/NX Families/introduction-to-matter-for-nx-families',
+          label: 'Introduction to Matter',
+        },
+        {
+          type: 'doc',
+          id: 'Tutorials/NX Families/set-up-matter-development-environment-for-nx-families',
+          label: 'Set Up the Development Environment',
+        },
+        {
+          type: 'doc',
+          id: 'Tutorials/NX Families/getting-started-with-matter-quickly-on-nx-families',
+          label: 'Getting Started with Matter Quickly',
+        },
+        {
+          type: 'doc',
+          id: 'Tutorials/NX Families/matter-development-with-nx-families',
+          label: 'Matter Development',
+        },
+        {
+          type: 'doc',
+          id: 'Tutorials/NX Families/matter-development-framework-overview',
+          label: 'Development Framework Overview',
+        },
+      ],
+    },
   ],
 };
 

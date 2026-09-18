@@ -1,0 +1,536 @@
+---
+title: Matter Development Framework Overview for NX Families
+sidebar_label: Matter Development Framework Overview
+sidebar_position: 5
+description: Locate the configuration, Matter data model, application callbacks, and board integration points in an NX Matter project.
+keywords:
+  - NX Matter framework
+  - Matter data model
+  - Matter endpoint
+  - Matter cluster
+  - nRF Connect SDK Matter
+  - Zephyr application structure
+---
+
+# Matter Development Framework Overview for NX Families
+
+This tutorial shows where to look when modifying an NX Matter application.
+
+You will map the project structure, locate the Matter data model, trace a command from the Matter stack to the hardware, and verify one controlled application change. The tutorial does not explain every source-code line.
+
+:::caution Project-specific content
+The exact files and APIs depend on the KORLINX source release and the selected nRF Connect SDK or Matter Add-on version. Replace the placeholders only after reviewing the validated NX sample repository.
+:::
+
+## What you will do
+
+1. Open the validated Matter project.
+2. Identify the build and board configuration files.
+3. Locate the application entry point.
+4. Locate the Matter Node and Endpoint configuration.
+5. Identify the Clusters used by the sample.
+6. Trace an On/Off command to the hardware callback.
+7. Make and verify one controlled application change.
+
+{/* IMAGE NOTE [FW-IMG-01]:
+Type: Project map diagram
+Content: Build configuration -> Matter data model -> application callback -> board driver -> physical LED or load
+Purpose: Show the developer path through the project without explaining every file
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-01.png"
+  alt="NX Families tutorial: Build configuration to Matter data model to application callback to board driver to physical LED or load"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Prerequisites
+
+Complete:
+
+- [Set Up the Matter Development Environment for NX Families](./set-up-matter-development-environment-for-nx-families)
+- [Matter Development with NX Families](./matter-development-with-nx-families)
+
+Prepare:
+
+- The validated NX Matter source repository
+- The approved SDK and toolchain
+- The correct NX board target
+- A successfully commissioned test device
+- CHIP Tool or the validated Matter controller
+- A serial terminal
+
+## Step 1: Open the validated project
+
+Open the project used in the previous tutorial.
+
+Record the source identity:
+
+```text
+Repository: [SOURCE_REPOSITORY]
+Release or commit: [SOURCE_VERSION]
+SDK release: [SDK_VERSION]
+Matter version: [MATTER_VERSION]
+Board target: [NX_BOARD_TARGET]
+```
+
+Do not analyze or modify a different branch from the one used in the successful build and commissioning test.
+
+{/* VERIFY WITH R&D [FW-V01]:
+Provide the public repository URL, release tag or commit, supported board targets, and license information.
+*/}
+
+## Step 2: Map the project structure
+
+Identify the locations responsible for the following functions.
+
+| Area | What to locate |
+| --- | --- |
+| Build | `CMakeLists.txt`, sample metadata, and build configuration |
+| Application configuration | `prj.conf` and optional configuration fragments |
+| Board configuration | Board definition, `.conf`, Devicetree, and overlay files |
+| Application source | Entry point, application task, and callbacks |
+| Matter data model | `.zap`, generated model, endpoint, or cluster configuration |
+| Hardware integration | LED, button, sensor, or load drivers |
+| Storage | Settings and persistent application-state handling |
+| Tests | Unit, integration, commissioning, or hardware test scripts |
+
+Use the project file tree and search tools to locate these areas. Do not assume that every project uses the same filenames.
+
+Example search commands:
+
+```bash
+find . -maxdepth 3 -type f \( -name 'prj*.conf' -o -name '*.overlay' -o -name '*.zap' -o -name 'CMakeLists.txt' \)
+```
+
+```bash
+rg -n "endpoint|cluster|attribute|Matter|CHIP" .
+```
+
+**Developer reference keywords:** `Zephyr application structure`, `Matter ZAP file`, `generated data model`, `Kconfig fragment`, `Devicetree overlay`
+
+{/* IMAGE NOTE [FW-IMG-02]:
+Type: Annotated project tree
+Content: Highlight only the build, configuration, data-model, application, board, and test areas
+Purpose: Give developers a project map before they open individual files
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-02.png"
+  alt="NX Families tutorial: Highlight only the build, configuration, data-model, application, board, and test areas"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 3: Locate the application entry point
+
+Find the function or application task that performs the initial startup.
+
+Identify where the project:
+
+- Initializes the board interface
+- Initializes the Matter stack
+- Registers application callbacks
+- Starts the application event loop
+- Reports startup errors
+
+Use source search rather than reading every file from the top.
+
+```bash
+rg -n "main\(|AppTask|Init|Matter|StartApp" src
+```
+
+Record the confirmed entry point:
+
+```text
+Application entry file: [CONFIRM]
+Initialization function: [CONFIRM]
+Application task or event loop: [CONFIRM]
+```
+
+{/* VERIFY WITH R&D [FW-V02]:
+Confirm the entry point and application lifecycle used by the public NX sample.
+*/}
+
+{/* IMAGE NOTE [FW-IMG-03]:
+Type: Focused code screenshot
+Content: Application entry point with calls to board, Matter, and event-loop initialization highlighted
+Purpose: Show the control flow without annotating every code line
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-03.png"
+  alt="NX Families tutorial: Application entry point with calls to board, Matter, and event-loop initialization highlighted"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 4: Locate the Matter data model
+
+Identify how the application defines or loads its Matter data model.
+
+For the selected sample, record:
+
+```text
+Node creation location: [CONFIRM]
+Application endpoint: [CONFIRM]
+Device Type: [CONFIRM]
+Server Clusters: [CONFIRM]
+Client Clusters: [CONFIRM_OR_NONE]
+Data-model source: [ZAP_OR_CODE_OR_GENERATED_CONFIGURATION]
+```
+
+For a basic light sample, the application normally exposes a lighting Device Type and an On/Off Cluster. Publish only the exact model reported by the validated build.
+
+**Developer reference keywords:** `Matter Node`, `Endpoint 0`, `application endpoint`, `Device Type`, `server cluster`, `client cluster`, `generated data model`
+
+{/* VERIFY WITH R&D [FW-V03]:
+Export the actual endpoint and cluster list from the validated sample.
+Confirm whether the data model is generated from ZAP, created in code, or supplied through another configuration flow.
+*/}
+
+{/* IMAGE NOTE [FW-IMG-04]:
+Type: Data-model hierarchy diagram
+Content: Validated Node -> Endpoints -> Device Type -> implemented Clusters
+Purpose: Show only the model present in the NX sample
+Status: Create after FW-V03 is resolved
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-04.png"
+  alt="NX Families tutorial: Validated Node to Endpoints to Device Type to implemented Clusters"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 5: Locate the application callbacks
+
+Find the code that receives a Matter state change and applies it to the hardware.
+
+Search for the validated cluster or attribute names:
+
+```bash
+rg -n "OnOff|Attribute|Update|Callback|Identify" src
+```
+
+Identify the complete control path:
+
+```text
+Matter command
+-> target Endpoint and Cluster
+-> attribute or command callback
+-> application event
+-> board driver
+-> physical LED or load
+```
+
+Record the confirmed files and functions:
+
+```text
+Matter callback: [CONFIRM]
+Application handler: [CONFIRM]
+Board driver function: [CONFIRM]
+Physical output: [CONFIRM]
+```
+
+Do not describe callbacks that are not used by the selected sample.
+
+{/* VERIFY WITH R&D [FW-V04]:
+Trace the On/Off path in the validated source and confirm each function and file.
+*/}
+
+{/* IMAGE NOTE [FW-IMG-05]:
+Type: Control-flow diagram
+Content: CHIP Tool On command -> On/Off Cluster -> application callback -> NX board driver -> LED
+Purpose: Connect the Matter command to the observable hardware result
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-05.png"
+  alt="NX Families tutorial: CHIP Tool On command to On/Off Cluster to application callback to NX board driver to LED"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 6: Locate board-specific integration
+
+Identify where the project maps generic application actions to NX hardware.
+
+Check:
+
+- LED aliases and GPIO assignments
+- Button aliases and input behavior
+- Reset and commissioning-window action
+- Debug or serial interface
+- External flash or storage definition, when used
+- Board-specific configuration fragments
+
+Useful searches:
+
+```bash
+rg -n "led|button|gpio|alias|chosen|flash" boards src
+```
+
+After a successful build, inspect the generated Devicetree output:
+
+```bash
+rg -n "led|button|gpio|alias|chosen|flash" build/zephyr/zephyr.dts
+```
+
+Use the generated Devicetree only to confirm the effective build configuration.
+
+**Developer reference keywords:** `Devicetree alias`, `GPIO phandle`, `chosen node`, `partition manager`, `board.cpp`, `hardware abstraction`
+
+{/* VERIFY WITH R&D [FW-V05]:
+Confirm the NX15 and NX40 LED, button, storage, and debug mappings.
+Document differences between the two platforms rather than forcing one shared mapping.
+*/}
+
+{/* IMAGE NOTE [FW-IMG-06]:
+Type: Board image and configuration callout
+Content: Physical LED/button labels matched to the corresponding board configuration entries
+Purpose: Prevent developers from copying Nordic DK numbering to NX hardware
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-06.png"
+  alt="NX Families tutorial: Physical LED/button labels matched to the corresponding board configuration entries"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 7: Inspect build-time configuration
+
+Open the validated `prj.conf` and related configuration files.
+
+Identify only the settings relevant to:
+
+- Matter support
+- Thread networking
+- Bluetooth Low Energy commissioning
+- Logging
+- Persistent storage
+- Shell or diagnostic features used by the tutorial
+- Bootloader or sysbuild requirements
+
+Check the effective configuration after building:
+
+```bash
+rg -n "CONFIG_CHIP|CONFIG_OPENTHREAD|CONFIG_BT|CONFIG_SETTINGS" build/zephyr/.config
+```
+
+Do not treat one configuration file as the complete build state. Kconfig defaults, board definitions, sysbuild, and configuration fragments can contribute to the final result.
+
+**Developer reference keywords:** `Kconfig merge`, `effective configuration`, `build/zephyr/.config`, `Matter Kconfig`, `OpenThread Kconfig`
+
+## Step 8: Make one controlled change
+
+Choose one application-level change approved for the tutorial, for example:
+
+- Change a log message used for identification
+- Change an initial non-security application value
+- Change the physical output used by the sample, if a validated alternative exists
+- Add a visible application event that does not modify the Matter data model
+
+Do not change:
+
+- Vendor ID or Product ID
+- Device attestation credentials
+- Setup passcodes
+- Matter certificates
+- Device Type or Cluster definitions
+- Partition layout
+- Bootloader configuration
+
+unless the tutorial explicitly requires and validates that change.
+
+Record the selected modification:
+
+```text
+File: [CONFIRM]
+Original behavior: [CONFIRM]
+Modified behavior: [CONFIRM]
+Verification method: [CONFIRM]
+```
+
+{/* VERIFY WITH R&D [FW-V06]:
+Select one safe, repeatable change for the public tutorial and provide the exact file, location, and expected result.
+*/}
+
+{/* IMAGE NOTE [FW-IMG-07]:
+Type: Before-and-after code snippet
+Content: Only the approved application change and its visible result
+Purpose: Demonstrate where developers can begin modifying the sample safely
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-07.png"
+  alt="NX Families tutorial: Only the approved application change and its visible result"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Step 9: Build, flash, and verify
+
+Rebuild and flash using the validated commands:
+
+```bash
+west build -p always -b [NX_BOARD_TARGET] [MATTER_SAMPLE_PATH]
+west flash
+```
+
+If the device state must be cleared for the test, perform the validated factory-reset procedure.
+
+Commission the device if required, repeat the relevant Matter command, and confirm the controlled change.
+
+Capture:
+
+- Build result
+- Flash result
+- Serial log
+- Matter command result
+- Physical device state
+
+{/* IMAGE NOTE [FW-IMG-08]:
+Type: Verification evidence panel
+Content: Build success, command success, serial log, and physical result
+Purpose: Show that the source change reached the running application
+*/}
+
+<img
+  src="/img/tutorials/nx-families/FW-IMG-08.png"
+  alt="NX Families tutorial: Build success, command success, serial log, and physical result"
+  className="blog-first-image tutorial-nx-image"
+/>
+
+## Expected result
+
+The framework walkthrough is complete when you can:
+
+- Locate the build and board configuration.
+- Identify the application entry point.
+- Identify the Matter data-model source.
+- Record the implemented Endpoint, Device Type, and Clusters.
+- Trace an On/Off command to the board driver.
+- Locate the NX-specific LED and button mapping.
+- Identify the effective Matter, Thread, BLE, logging, and storage configuration.
+- Make, build, flash, and verify one controlled application change.
+
+## Troubleshooting
+
+| Problem | Action |
+| --- | --- |
+| A referenced file does not exist | Confirm the repository release and search for the function or configuration keyword instead of copying a path from another SDK version. |
+| Endpoint or Cluster values differ | Use the generated data model or runtime report from the validated build. |
+| Source changes do not affect the device | Confirm that the correct application and board target were rebuilt and flashed. |
+| LED behavior differs between NX15 and NX40 | Check the board-specific Devicetree aliases and driver implementation. |
+| Configuration value appears disabled | Inspect the effective `build/zephyr/.config` and the complete Kconfig merge. |
+| Commissioning data is lost after a rebuild | Confirm whether the flash or erase procedure cleared persistent storage. |
+| A Matter command succeeds but no callback runs | Confirm the target node, endpoint, cluster, attribute, access control, and callback registration. |
+
+## Developer reference keywords
+
+- `Matter application architecture`
+- `Matter Node and Endpoint`
+- `Matter Device Type`
+- `Matter Cluster`
+- `attribute update callback`
+- `Matter ZAP`
+- `generated data model`
+- `Zephyr application structure`
+- `Devicetree overlay`
+- `Kconfig effective configuration`
+- `Matter event loop`
+- `board abstraction`
+- `persistent storage`
+
+## Official references
+
+- [Nordic Semiconductor - Matter in nRF Connect SDK](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/protocols/matter/index.html)
+- [Nordic Semiconductor - Matter Template sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/matter/template/README.html)
+- [Google Home Developers - Matter data model](https://developers.home.google.com/matter/primer/device-data-model)
+
+## 🎉 You're Ready!
+
+<div className="ready-intro">
+
+### You Can Navigate an NX Matter Application
+
+You've mapped the project, located the Matter data model and board integration, traced a command to the hardware, and verified one controlled change.
+
+You can now continue with the validated NX examples and application-specific development resources.
+
+</div>
+
+### Here's what you accomplished:
+
+- ✅ Mapped the Matter project structure
+- ✅ Located the application entry point
+- ✅ Identified the Matter data-model source
+- ✅ Recorded the Endpoint, Device Type, and Clusters
+- ✅ Traced a Matter command to the board driver
+- ✅ Located NX-specific hardware configuration
+- ✅ Inspected the effective build configuration
+- ✅ Built and verified a controlled application change
+
+## What's Next?
+
+<div className="quickstart-ready-cards">
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">📚</div>
+<h4>Developer Resources</h4>
+
+Continue with KORLINX board support, released examples, SDK references, and source repositories.
+
+**Resource link:** Pending confirmation of the public developer-resource URL.
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">📘</div>
+<h4>NX Product Documentation</h4>
+
+Review the approved hardware interfaces, pin mappings, electrical limits, and integration guidance.
+
+[Open NX15 documentation →](/docs/Network/Bluetooth/NX15_Series)  
+[Open NX40 documentation →](/docs/Network/Bluetooth/NX40_Series)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🧩</div>
+<h4>Repeat the Build Workflow</h4>
+
+Return to the complete build, flash, commissioning, and CHIP Tool procedure.
+
+[Review Matter Development →](./matter-development-with-nx-families)
+
+</div>
+
+<div className="quickstart-ready-card">
+
+<div className="quickstart-ready-icon" aria-hidden="true">🛠️</div>
+<h4>Troubleshooting</h4>
+
+Use the Wiki support flow when your build, flashing, commissioning, or command result differs from the validated example.
+
+**Support link:** Pending confirmation of the public support URL.
+
+</div>
+
+</div>
+
+> You can now identify the main integration points in an NX Matter application and continue with a validated product use case.
+
+{/* COMPONENT NOTE [UI-READY-FW]:
+Render this section using the approved KORLINX "You're Ready" design.
+Desktop: four cards in one row. Tablet: two columns. Mobile: one column.
+No card should link to production provisioning or a commercial CTA.
+*/}
+
+{/* KORLINX INTERNAL REVIEW BEFORE PUBLICATION
+1. Resolve FW-V01 through FW-V06.
+2. Replace every bracketed placeholder.
+3. Confirm that source paths and API names match the validated release.
+4. Verify the complete control path on NX15 and NX40 independently.
+5. Confirm Developer Resources, Product Docs, and Support URLs.
+6. Record the hardware revision, source commit, SDK/Matter version, test date, and reviewer.
+*/}
