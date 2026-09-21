@@ -20,7 +20,8 @@ Use this guide with a board whose connector pinout and installed function have b
 - A 3.3 V logic USB-to-UART adapter and a serial terminal
 - The command line ending specified for the installed firmware
 
-:::note Command termination
+:::note
+Command termination
 The supplied v4.0 manual requires lowercase ASCII commands but does not specify CR, LF, CRLF, or another terminator. Obtain the correct setting from the supplier before sending the command examples below. Each line shows command text, not a complete byte-level transaction.
 :::
 
@@ -49,7 +50,8 @@ With power disconnected, confirm the actual connector's pin numbering using the 
 
 Leave NRST unconnected for normal operation as described in the manual. GPIO and UART2 are not needed for this procedure. If using the fitted USB-C power input, confirm its supply requirements; USB-C is power-only and does not replace the UART data connection.
 
-:::warning Electrical levels
+:::warning
+Electrical levels
 The adapter's TX/RX logic must be 3.3 V compatible. Do not connect directly to RS-232 or apply the module's supply voltage to signal pins. Use one confirmed power-input path for this setup.
 :::
 

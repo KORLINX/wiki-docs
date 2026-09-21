@@ -13,7 +13,8 @@ import images from './ContentImages.module.css';
 
 AS-611Bn is a compact 60 GHz pulsed radar module with an integrated antenna and signal processing. The supplied manual describes distance detection and single-person vital-sign detection, with sensor data available over UART or Bluetooth Low Energy (BLE).
 
-:::note Documentation scope
+:::note
+Documentation scope
 This guide follows the supplied user manual marked **Ver.4.0 Jun.2026**. Check the installed model and firmware before applying commands. The manual lists D/V function options and a mode-selection command, but does not establish whether every commercial unit supports both functions.
 :::
 
@@ -106,7 +107,8 @@ Confirm connector orientation and pin numbering against the actual board revisio
 
 The manual additionally labels J1 pins 7/8 as UART TX2/RX2. Their availability and function on a specific AS-611Bn revision need confirmation. They are not extra positions on the six-position J2 connector.
 
-:::warning UART voltage
+:::warning
+UART voltage
 UART uses 3.3 V logic. The supply range does not imply that signal pins tolerate 7 V. Use a compatible UART adapter and common ground; do not connect directly to RS-232.
 :::
 
