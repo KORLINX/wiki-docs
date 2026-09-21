@@ -11,6 +11,9 @@ keywords:
   - radar ASCII protocol
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
+
 # Use UART and Bluetooth Low Energy with AS-611Bn
 
 AS-611Bn exchanges lowercase ASCII commands and fixed-format sensor frames over 3.3 V TTL UART or a BLE GATT interface documented as Nordic UART Service (NUS).
@@ -46,7 +49,14 @@ baud 115200
 
 The manual says the setting is saved, then the module reboots. Reopen the host port at the new rate. If using BLE, reconnect after the reboot.
 
-{/* IMAGE TODO [AS611-IMG-11]: Missing: measured command/reconfiguration timeline, distinguishing output pause from reboot and actual BLE disconnect. Capture behavior per firmware/command before drawing the sequence. */}
+{/* IMAGE SOURCE [AS611-IMG-11]: User-supplied IMG-11.png. Documented baud behavior; not a measured timing diagram. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-11.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-11 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-11.png')} alt="Baud-rate change followed by module reboot and host reconnection" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Example for baud 115200: reopen UART at 115200 bps after reboot, or reconnect BLE and enable notifications. Other settings may pause output without rebooting. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-11.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## BLE identity
 
@@ -78,7 +88,14 @@ These UUIDs match [Nordic's NUS definition](https://github.com/nrfconnect/sdk-nr
 
 The supplied manual suggests the UART utility in nRF Toolbox. Use an NUS-compatible client that exposes the required characteristics and notification controls.
 
-{/* IMAGE TODO [AS611-IMG-12]: Missing: BLE client screenshots showing scan, AS_611B identity, NUS service, RX write, TX notifications and real frames. Record app/firmware versions; hide unrelated device identifiers. */}
+{/* IMAGE SOURCE [AS611-IMG-12]: User-supplied IMG-12.png. Correct uppercase MODE 1 to lowercase mode 1 in source artwork. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-12.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-12 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-12.png')} alt="Illustrative BLE scan, Nordic UART Service and command exchange" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>BLE client mockup, not an application capture. Send lowercase mode 1, not the uppercase MODE 1 shown in the artwork. Write to NUS RX and subscribe to TX notifications. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-12.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## Integration rules
 

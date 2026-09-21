@@ -1,5 +1,6 @@
 /* Follow the NX15/NX40 cover layout using the existing site theme. */
 .coverPage { width: 100%; min-width: 0; }
+.functionIllustration { width: 50%; margin-inline: auto; }
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);

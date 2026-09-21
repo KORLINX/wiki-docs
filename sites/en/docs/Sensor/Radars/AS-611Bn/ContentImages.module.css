@@ -32,6 +32,12 @@
   border-radius: 12px;
   background: #fff;
 }
+.imageLink { display: block; }
+.imageLink:focus-visible {
+  outline: 3px solid var(--ifm-color-primary);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
 .figure figcaption {
   margin-top: 10px;
   color: var(--ifm-color-emphasis-700);

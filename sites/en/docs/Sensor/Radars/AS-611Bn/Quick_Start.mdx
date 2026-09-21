@@ -55,7 +55,14 @@ Electrical levels
 The adapter's TX/RX logic must be 3.3 V compatible. Do not connect directly to RS-232 or apply the module's supply voltage to signal pins. Use one confirmed power-input path for this setup.
 :::
 
-{/* IMAGE TODO [AS611-IMG-05]: Missing: UART wiring diagram showing confirmed VCC/GND, crossed TX/RX, 3.3 V logic, and one approved power path. Product photographs do not establish a wiring diagram; verify the pin map first. */}
+{/* IMAGE SOURCE [AS611-IMG-05]: User-supplied IMG-05.png. Correct reversed UART arrows and VCD typo to VDC in source artwork. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-05.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-05 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-05.png')} alt="AS-611Bn power and UART connection overview" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Connect module TX to adapter RX, and adapter TX to module RX, with common GND. Follow the signal table and confirmed connector pinout; the arrows in this illustration do not represent verified signal direction or physical pin locations. Supply units are VDC. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-05.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## 2. Open the terminal and apply power
 
@@ -78,7 +85,14 @@ The manual lists this startup string:
 
 Record the actual string and firmware information. The banner is a status message, not a distance frame.
 
-{/* IMAGE TODO [AS611-IMG-06]: Missing: real terminal screenshot of startup with UART settings, exact boot string, and firmware identity. Capture hardware output; do not present the manual example as a measured log. */}
+{/* IMAGE SOURCE [AS611-IMG-06]: User-supplied IMG-06.png. Supplied illustrative terminal, not measured evidence. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-06.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-06 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-06.png')} alt="Illustrative serial terminal showing the AS-611Bn startup banner" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Illustrative terminal view. #AS_611B_4.0! is output by the module at startup or reset, not a command to send. The displayed values are examples, not a hardware validation log. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-06.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## 3. Choose the supported sensing function
 

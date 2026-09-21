@@ -11,6 +11,9 @@ keywords:
   - 60 GHz vital-sign sensor
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
+
 # Configure AS-611Bn Vital-Sign Detection
 
 This guide describes single-person vital-sign sensing in the supplied manual marked Ver.4.0 Jun.2026. Confirm function support and command termination for your installed firmware before using the examples. See [Quick Start](./Quick_Start.mdx) for connection prerequisites.
@@ -33,7 +36,14 @@ The supplied manual does not establish medical-device certification or diagnosti
 
 Point the radar toward the subject's chest. Keep the subject inside the configured range and remove obstacles and moving/reflective objects around the sensing path.
 
-{/* IMAGE TODO [AS611-IMG-09]: Missing: single-person chest-facing placement illustration, with blocked chest, additional people and nearby moving/reflective objects as incorrect cases. No suitable source asset exists. */}
+{/* IMAGE SOURCE [AS611-IMG-09]: User-supplied IMG-09.png. Illustrative placement, not validated mounting geometry. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-09.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-09 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-09.png')} alt="Recommended chest-facing placement and sources of interference" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Place one person within the configured range with a clear path to the chest. Remaining steady for more than 20 seconds is a measurement condition, not a guaranteed result deadline. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-09.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## Step 2: Select vital-sign mode and range
 
@@ -139,7 +149,14 @@ The manual recommends remaining stable for more than 20 seconds for reliable hea
 
 When no target is detected, `%0!` or `@0!` is documented every 15 seconds.
 
-{/* IMAGE TODO [AS611-IMG-10]: Missing: actual vital-sign state captures with raw frames. A state diagram must not imply a mandatory sequence or a guaranteed result at 20 seconds; confirm observed behavior first. */}
+{/* IMAGE SOURCE [AS611-IMG-10]: User-supplied IMG-10.png. Arrows describe an example only, not a guaranteed state machine. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-10.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-10 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-10.png')} alt="Illustration of moving, calculating and vital-sign result states" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>State meanings are illustrated here. The manual does not guarantee a fixed 1-to-2-to-3 transition sequence or a 20-second calculation time. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-10.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## Pass criteria
 

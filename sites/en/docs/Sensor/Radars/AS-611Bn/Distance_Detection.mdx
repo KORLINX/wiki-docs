@@ -11,6 +11,9 @@ keywords:
   - AS-611Bn commands
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
+
 # Configure AS-611Bn Distance Detection
 
 This guide describes the distance function in the supplied manual marked Ver.4.0 Jun.2026. Confirm function support and command termination for your installed firmware before applying the examples. See [Quick Start](./Quick_Start.mdx) for connection prerequisites.
@@ -30,7 +33,14 @@ The configurable range is 0.1–20 m, but the manual separately limits guarantee
 
 Place the radar with a clear view of the area of interest. Remove unnecessary nearby metal and moving reflectors. Start with a narrow range that contains the target.
 
-{/* IMAGE TODO [AS611-IMG-07]: Missing: placement diagram showing radar, zmin/zmax, target and unwanted reflectors. Use verified beam data only if angles are shown; no suitable source asset exists. */}
+{/* IMAGE SOURCE [AS611-IMG-07]: User-supplied IMG-07.png. Nominal beam angle is manual-derived, not an RF measurement. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-07.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-07 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-07.png')} alt="Distance sensing zone between zmin and zmax with target and external reflector" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Conceptual distance zone using the documented defaults of 25–300 cm. The drawing is not to scale and does not represent a measured antenna pattern. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-07.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## Step 2: Select distance mode
 
@@ -126,7 +136,14 @@ Example:
 
 This manual example represents object 1 at 250 cm with strength 45; it is not a captured measurement. When no object is detected, the documented output is `#0!` every 15 seconds.
 
-{/* IMAGE TODO [AS611-IMG-08]: Missing: real multi-target and no-target terminal captures with object index, distance and reflected strength annotated. Confirm index 10 and grouping before labeling; retain original logs. */}
+{/* IMAGE SOURCE [AS611-IMG-08]: User-supplied IMG-08.png. Keep examples distinct from validation evidence. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-08.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-08 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-08.png')} alt="Illustrative distance frames with object index, distance and reflected strength" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Illustrative frames, not measured logs. The 380 cm and 520 cm examples require a configured maximum beyond the default 300 cm. Spaces in the anatomy legend only separate fields visually. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-08.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## Recommended validation record
 

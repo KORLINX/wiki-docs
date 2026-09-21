@@ -8,6 +8,8 @@ hide_table_of_contents: true
 hide_title: true
 ---
 
+import images from './ContentImages.module.css';
+
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './Cover.module.css';
@@ -51,7 +53,14 @@ import styles from './Cover.module.css';
     </div>
   </section>
 
-{/* IMAGE TODO [AS611-IMG-02]: Optional: comparison illustration for distance and single-person vital-sign functions. Existing cards already provide navigation. If added, do not depict separate hardware/firmware SKUs until the D/V relationship is confirmed. */}
+{/* IMAGE SOURCE [AS611-IMG-02]: User-supplied IMG-02.png. Firmware/SKU wording in the image remains unverified. */}
+
+<figure className={images.figure}>
+  <a className={`${images.imageLink} ${styles.functionIllustration}`} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-02.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-02 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-02.png')} alt="Distance and single-person vital-sign sensing options" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Illustration of the documented function options. Confirm support on the ordered SKU; the manual does not establish separate firmware or mode switching on every unit. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-02.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
   <section className={styles.startSection} aria-labelledby="start-title">
     <div className={styles.sectionHeader}>

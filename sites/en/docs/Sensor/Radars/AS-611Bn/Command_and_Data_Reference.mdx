@@ -11,6 +11,9 @@ keywords:
   - radar frame parser
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
+
 # AS-611Bn Command and Data Reference
 
 This page condenses the command and frame information in the supplied manual. All commands are lowercase ASCII.
@@ -161,7 +164,14 @@ Use these as candidate layouts, not firmware-verified packet lengths. Capture ac
 
 Output cadence does not establish how frequently each physiological value is independently recalculated. Moving/calculating states must not be treated as confirmed vital-sign measurements.
 
-{/* IMAGE TODO [AS611-IMG-13]: Missing: frame anatomy diagram for distance and all four wave/exten combinations. Confirm raw bytes and resolve simple 10-vs-11 / waveform 14-vs-15 length conflicts, index 10 and HRV field limits before labeling it definitive. */}
+{/* IMAGE SOURCE [AS611-IMG-13]: User-supplied IMG-13.png. Correct HR widths in all vital layouts and SDNN width; add missing extended waveform before treating artwork as definitive. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-13.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-13 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-13.png')} alt="Illustration of ASCII frame fields for distance and vital-sign output" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Artwork corrections: HR uses three characters (BBB), not BBBB; extended-simple SDNN uses two (EE), not EEE. The extended waveform is not shown. Use the tables and frame-length notes above as the reference; this diagram is not an exact parser specification. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-13.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## Parser requirements
 

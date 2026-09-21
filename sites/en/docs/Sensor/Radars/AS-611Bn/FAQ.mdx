@@ -11,6 +11,9 @@ keywords:
   - Nordic UART Service troubleshooting
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
+
 # AS-611Bn FAQ and Troubleshooting
 
 ## Does the USB-C connector carry data?
@@ -81,7 +84,14 @@ The limits depend on each other: `zmin` must be at least 25 cm below `zmax`. A n
 
 The supplied manual's labels disagree with its field layout. The simple pattern sums to 11 bytes, while the waveform pattern sums to 15 bytes. See the [frame-length comparison](./Command_and_Data_Reference.mdx#frame-lengths-and-unresolved-encoding). Confirm raw firmware output before choosing strict parser lengths.
 
-{/* IMAGE TODO [AS611-IMG-14]: Missing: troubleshooting flow covering power, connector orientation, logic levels, UART baud, boot string, command terminator and sensing scene. Base decisions on verified checks; no suitable source asset exists. */}
+{/* IMAGE SOURCE [AS611-IMG-14]: User-supplied IMG-14.png. Correct Lowercase covid and arrows connecting steps 3 to 7 instead of 4. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-14.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-14 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-14.png')} alt="Illustrated checklist for troubleshooting missing radar data" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Read checks in numerical order 1–7, not by the drawn arrows. Step 6 means lowercase commands and the correct line ending; “Lowercase covid” is a typo. A boot banner confirms module-to-host reception, not the host-to-module command path. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-14.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
 
 ## Where should I report an undocumented response?
 
