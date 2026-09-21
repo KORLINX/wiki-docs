@@ -1,76 +1,170 @@
 ---
+title: AS-611Bn 60 GHz Radar Module Overview
+sidebar_label: Overview
 sidebar_position: 1
-title: AS-611Bn Overview
-description: Learn the capabilities, specifications, connectors, and pinout of the AnySensing AS-611Bn 60 GHz radar module.
-keywords: [AS-611Bn, AnySensing, 60 GHz radar, pulsed radar, vital signs, distance sensor, BLE]
+description: Documented capabilities, interfaces, sensing ranges, and integration limits of the AS-611Bn radar module.
+keywords: [AS-611Bn, 60 GHz radar, distance detection, vital-sign detection, UART, BLE]
 ---
 
-# AS-611Bn Overview
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
 
-The **AS-611Bn** is a 60 GHz pulsed radar module for single-target distance sensing or single-person vital-sign sensing. Its 32 × 30 mm board integrates the antenna, millimeter-wave integrated circuit, and digital signal processor. The module communicates through UART, and the AS-611Bn variant also provides Bluetooth Low Energy (BLE).
+# AS-611Bn 60 GHz Radar Module Overview
 
-The product is available with separate distance-sensing and vital-sign firmware. Their command sets are different: a distance unit does not accept vital-sign commands, and a vital-sign unit does not accept distance commands. Check the unit label and firmware type before configuration.
+AS-611Bn is a compact 60 GHz pulsed radar module with an integrated antenna and signal processing. The supplied manual describes distance detection and single-person vital-sign detection, with sensor data available over UART or Bluetooth Low Energy (BLE).
 
-![AS-611Bn radar module front view](/img/Sensor/Radars/AS-611Bn/AS-611Bn.png)
-
-## At a glance
-
-| Item | Specification |
-| --- | --- |
-| Radar | 60 GHz pulsed radar |
-| Antenna | 1 TX, EIRP 10 dBm; 1 RX; gain 2 dBi |
-| RF pattern at −3 dB | Horizontal 65°; vertical 55° |
-| Supply / power | 3.3–7 VDC / 0.3 W |
-| Operating / storage temperature | −40 to 85 °C / −55 to 125 °C |
-| Board size | 32.0 × 30.0 × 3.35 mm without connector; 32.0 × 30.0 × 5.1 mm with connector |
-| Interfaces | GPIO, 3.3 V TTL UART, BLE on AS-611Bn |
-| Distance modes | 1 m, 2.5 m, 5 m, 7.5 m, and 10 m |
-| Vital-sign range | Near: 0.15–0.5 m; far: 0.4–2.0 m; detection angle 70° |
-| Vital-sign accuracy | More than 90% at steady state; respiration more than 95%; more than 90% below 1 m and more than 80% above 1 m |
-| Vital-sign outputs | Breathing rate and waveform, heart rate and waveform, heart-rate variability (HRV) |
-| Target profiles | Human, small dog up to 13 kg, large dog above 13 kg, and cat |
-
-## Connectors
-
-![AS-611Bn antenna, board connector, and USB-C details](/img/Sensor/Radars/AS-611Bn/AS-611Bn_3.png)
-
-| Connector | Function |
-| --- | --- |
-| J1 | 2.54 mm pin header for power and both UART channels |
-| J2 | 12505WR-06 six-position connector for power and UART 1 |
-| J4 / J5 | USB-C power input; USB data is not available |
-
-Any one of J1, J2, J4, or J5 can power the module. USB-C supplies power only, so read radar data through UART or BLE.
-
-## Pinout
-
-Pin 1 on J1 and J2 is identified by a square pad.
-
-| Pin | Signal | J1 | J2 |
-| ---: | --- | --- | --- |
-| 1 | VCC | 3.3–7 V power | 3.3–7 V power |
-| 2 | GND | Ground | Ground |
-| 3 | GPIO | Input / output | Input / output |
-| 4 | NRST | Not connected or high: normal; low: reset | Not connected or high: normal; low: reset |
-| 5 | UART TX 1 | UART 1 transmit | UART transmit |
-| 6 | UART RX 1 | UART 1 receive | UART receive |
-| 7 | UART TX 2 | UART 2 transmit | Not used |
-| 8 | UART RX 2 | UART 2 receive | Not used |
-
-The board has four 3 mm mounting holes positioned 2.5 mm from the edges. Aim the face of the radar die at the target.
-
-![AS-611Bn J1 and J2 connector pin diagram](/img/Sensor/Radars/AS-611Bn/AS-611Bn_4.png)
+:::note
+Documentation scope
+This guide follows the supplied user manual marked **Ver.4.0 Jun.2026**. Check the installed model and firmware before applying commands. The manual lists D/V function options and a mode-selection command, but does not establish whether every commercial unit supports both functions.
+:::
 
 ## Board views
 
-The front side shown above carries the radar package, USB-C power connector, and board connectors. The reverse side carries the BLE circuitry and product marking.
+<div className={images.boardViews}>
+  <figure className={images.figure}>
+    <div className={images.boardPhoto}>
+      <img src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/AS-611Bn.png')} alt="AS-611Bn component side with USB-C, board connector, and pin-header pads" width="3600" height="2400" loading="lazy" />
+    </div>
+    <figcaption>Component side of the pictured AS-611Bn module.</figcaption>
+  </figure>
+  <figure className={images.figure}>
+    <div className={images.boardPhoto}>
+      <img src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/AS-611Bn_2.png')} alt="AS-611Bn reverse side showing the product marking and board components" width="3600" height="2400" loading="lazy" />
+    </div>
+    <figcaption>Reverse side with the product marking. Connector fitment can vary by ordered option.</figcaption>
+  </figure>
+</div>
 
-![AS-611Bn reverse side](/img/Sensor/Radars/AS-611Bn/AS-611Bn_2.png)
+## Sensing functions
 
-## Status LED
+| Function | Documented output | Configurable range | Default range |
+| --- | --- | --- | --- |
+| Distance (`D`) | Distance and reflected strength for stationary or moving objects; up to 10 objects | 0.1–20 m | 0.25–3.0 m |
+| Vital sign (`V`) | One person's heart rate, breathing rate, heart-beat pulse, respiration waveform, distance, and optional HRV | 0.15–2.5 m | 0.25–1.5 m |
 
-The indicator LED flashes when the module outputs data. A blinking LED therefore indicates that the module is operating and transmitting. The complete LED-state table is **[TBD]**.
+The manual separately states human detection up to **4 m** in distance mode. The **20 m** value is a configuration limit, not a guarantee for every target or installation. Target properties, nearby reflectors, mounting, and settings affect results.
 
-## Next step
+Vital-sign sensing is documented for **one human subject**. Front-facing chest placement and remaining steady for more than 20 seconds provide the best documented conditions. This is not a guaranteed time to a valid result. No product-specific accuracy percentage is presented here because the supplied manual does not define the test method or reference instrument.
 
-Continue to [AS-611Bn Quick Start](./Quick_Start) to power the module, connect UART or BLE, tune detection, read output frames, and troubleshoot common problems.
+## Specifications
+
+These values are stated in the supplied manual; they are not independent test results.
+
+| Item | Documented value |
+| --- | --- |
+| Radar | 60 GHz pulsed radar |
+| Antenna | 1 TX, 1 RX |
+| TX EIRP | 10 dBm |
+| Antenna gain | 2 dBi |
+| RF pattern at −3 dB | 65° horizontal, 55° vertical |
+| Supply | 3.3–7.0 VDC |
+| Power | 0.3 W; operating conditions and maximum consumption unspecified |
+| Board size without connector | 32.0 × 30.0 × 3.35 mm |
+| Size with connector | 32.0 × 30.0 × 5.1 mm; connector variant not fully specified |
+| Weight | 3.60 g |
+| Operating temperature | −40 to 85 °C |
+| Storage temperature | −55 to 125 °C |
+| Interfaces | GPIO, 3.3 V UART, BLE on AS-611Bn |
+
+Use a model-specific mechanical drawing before designing an enclosure or mounting holes. The supplied dimension illustration carries a different model marking and is not reproduced here. The dimensions above come from the specification table only.
+
+{/* IMAGE SOURCE [AS611-IMG-15]: User-supplied IMG-15.png. User-supplied preliminary illustration, not released CAD. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-15.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-15 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-15.png')} alt="Preliminary AS-611Bn board envelope and documented dimensions" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Preliminary illustration of specification-table dimensions. Obtain the released drawing for the actual hardware and connector option before enclosure tooling. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-15.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
+
+## Power and connectors
+
+| Connection | Manual description |
+| --- | --- |
+| J1 | 2.54 mm pin header |
+| J2 | Six-position 12505WR-06 connector; mating connector listed as 12505HS-06 |
+| USB-C option | Power only; no USB data interface |
+
+<figure className={images.figure}>
+  <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/AS-611Bn_3.png')} alt="Close-up views of the AS-611Bn radar package, six-position board connector, and USB-C port" width="3600" height="2400" loading="lazy" />
+  <figcaption>Left to right: radar package, board connector, and USB-C port. USB-C supplies power only.</figcaption>
+</figure>
+
+Read measurement frames through **UART or BLE**. GPIO is listed as an input/output pin, but its behavior and electrical limits are not specified. Do not assume it carries the ASCII measurement stream.
+
+{/* IMAGE SOURCE [AS611-IMG-04]: AS-611Bn_4.png approved for use by the user. Its J1 numbering and J2 NRST/TX/RX ordering differ from manual v4.0 page 2. Preserve this source distinction; do not silently rewrite the manual-derived table. */}
+
+<figure className={images.figure}>
+  <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/AS-611Bn_4.png')} alt="AS-611Bn connector illustration with J1 pin-header numbering and J2 signal tables" width="3600" height="2400" loading="lazy" />
+  <figcaption>AS-611Bn connector illustration. The numbering and J2 signal order differ from the supplied manual; confirm the pinout for your board revision before wiring.</figcaption>
+</figure>
+
+### Signals listed for J1 and J2
+
+Confirm connector orientation and pin numbering against the actual board revision before wiring.
+
+| Pin | Signal | Documented purpose |
+| ---: | --- | --- |
+| 1 | VCC | 3.3–7.0 V power input |
+| 2 | GND | Ground |
+| 3 | GPIO | Input/output; behavior unspecified |
+| 4 | NRST | Open or high: normal operation; low: reset |
+| 5 | UART TX1 | Module transmits to host RX |
+| 6 | UART RX1 | Module receives from host TX |
+
+The manual additionally labels J1 pins 7/8 as UART TX2/RX2. Their availability and function on a specific AS-611Bn revision need confirmation. They are not extra positions on the six-position J2 connector.
+
+:::warning
+UART voltage
+UART uses 3.3 V logic. The supply range does not imply that signal pins tolerate 7 V. Use a compatible UART adapter and common ground; do not connect directly to RS-232.
+:::
+
+## Ordering and device identity
+
+The manual's order-code pattern is `AS_611(Bn)_D/V_P/C/U`:
+
+| Code | Meaning in the manual |
+| --- | --- |
+| `AS_611` | Base model |
+| `AS_611Bn` | BLE-enabled model |
+| `D` / `V` | Distance / vital-sign function option |
+| `P` | Pin header installed |
+| `C` | Board connector installed |
+| `U` | USB-C power connector installed |
+
+Confirm the complete orderable SKU and supported function with the supplier. AS-611Bn is the display name used here; literal order codes, BLE names, and protocol strings retain their documented spelling. The documented BLE advertising name is `AS_611B`, and the boot string is `#AS_611B_4.0!`.
+
+{/* IMAGE SOURCE [AS611-IMG-17]: User-supplied IMG-17.png. Illustrative code structure, not a confirmed SKU availability matrix. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-17.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-17 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-17.png')} alt="AS-611Bn order-code model, function and connector options" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Order-code structure from the manual. Confirm available D/V and P/C/U combinations for the unit you intend to order. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-17.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
+
+## Operating limits
+
+- Vital-sign sensing covers one person. Additional people, obstructions, nearby metal, and moving reflectors can interfere.
+- Small movements and conversation can reduce vital-sign accuracy.
+- Distance detection can include unwanted reflections from surrounding objects.
+- The manual states that the indicator LED flashes when data is output; this alone does not confirm valid measurements.
+- The supplied manual does not establish medical-device certification or diagnostic performance.
+
+{/* IMAGE SOURCE [AS611-IMG-16]: User-supplied IMG-16.png. Correct EARP typo; replace placeholder with measured RF data if available. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-16.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-16 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-16.png')} alt="Manual RF values and a placeholder for measured antenna data" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Manual values only; no measured polar data is supplied. The dashed arcs are illustrative. The artwork label “TX EARP” should read “TX EIRP”. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-16.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
+
+## Next steps
+
+- [Quick Start](./Quick_Start.mdx)
+- [Distance Detection](./Distance_Detection.mdx)
+- [Vital-Sign Detection](./Vital_Sign_Detection.mdx)
+- [UART and BLE](./UART_and_BLE.mdx)
+- [Command and Data Reference](./Command_and_Data_Reference.mdx)
+- [FAQ and Troubleshooting](./FAQ.mdx)

@@ -1,0 +1,121 @@
+---
+title: Use UART and Bluetooth Low Energy with AS-611Bn
+sidebar_label: UART and BLE
+sidebar_position: 5
+description: Communicate with AS-611Bn through 3.3 V TTL UART or the Nordic UART Service-compatible BLE interface.
+keywords:
+  - AS-611Bn UART
+  - AS-611Bn BLE
+  - Nordic UART Service
+  - 6E400001
+  - radar ASCII protocol
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
+
+# Use UART and Bluetooth Low Energy with AS-611Bn
+
+AS-611Bn exchanges lowercase ASCII commands and fixed-format sensor frames over 3.3 V TTL UART or a BLE GATT interface documented as Nordic UART Service (NUS).
+
+:::note
+Firmware compatibility
+This page follows the supplied manual marked Ver.4.0 Jun.2026. The command terminator is unspecified; obtain the correct line ending for the installed firmware before transmitting commands.
+:::
+
+## UART settings
+
+| Parameter | Value |
+| --- | --- |
+| Signal level | 3.3 V TTL |
+| Default baud rate | 460800 bps |
+| Supported baud rates | 115200, 230400, 460800, 921600 bps |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
+| Command encoding | ASCII, lowercase commands |
+
+:::warning
+Logic level
+3.3 V TTL UART is not RS-232. Use a compatible adapter and a common ground.
+:::
+
+## Change the UART baud rate
+
+```text
+baud 115200
+```
+
+The manual says the setting is saved, then the module reboots. Reopen the host port at the new rate. If using BLE, reconnect after the reboot.
+
+{/* IMAGE SOURCE [AS611-IMG-11]: User-supplied IMG-11.png. Documented baud behavior; not a measured timing diagram. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-11.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-11 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-11.png')} alt="Baud-rate change followed by module reboot and host reconnection" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Example for baud 115200: reopen UART at 115200 bps after reboot, or reconnect BLE and enable notifications. Other settings may pause output without rebooting. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-11.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
+
+## BLE identity
+
+The supplied manual says:
+
+- Bluetooth 4.0 or later is supported.
+- The advertising name is `AS_611B`.
+- The profile uses the Nordic UART Service.
+
+## GATT UUIDs
+
+| Role | UUID |
+| --- | --- |
+| Nordic UART Service | `6E400001-B5A3-F393-E0A9-E50E24DCCA9E` |
+| TX characteristic | `6E400003-B5A3-F393-E0A9-E50E24DCCA9E` |
+| RX characteristic | `6E400002-B5A3-F393-E0A9-E50E24DCCA9E` |
+
+These UUIDs match [Nordic's NUS definition](https://github.com/nrfconnect/sdk-nrf/blob/main/include/bluetooth/services/nus.h). In NUS, TX/RX are named from the peripheral's perspective: the client writes commands to RX (`…0002`) and subscribes to notifications from TX (`…0003`). Discover the actual AS-611Bn characteristic properties and permissions before selecting write and notification operations. The manual does not specify its negotiated MTU, fragmentation rules, pairing, bonding, or encryption requirements.
+
+## Test with a mobile application
+
+1. Power the AS-611Bn.
+2. Open a BLE scanner or NUS-compatible terminal.
+3. Find the approved advertising name.
+4. Connect to the NUS service.
+5. Enable notifications on the module-to-client characteristic.
+6. Write a supported lowercase command, such as `stop` or `start`, with the firmware-confirmed terminator to RX. Choose the write procedure supported by its discovered properties.
+7. Confirm that complete ASCII frames are received.
+
+The supplied manual suggests the UART utility in nRF Toolbox. Use an NUS-compatible client that exposes the required characteristics and notification controls.
+
+{/* IMAGE SOURCE [AS611-IMG-12]: User-supplied IMG-12.png. Correct uppercase MODE 1 to lowercase mode 1 in source artwork. */}
+
+<figure className={images.figure}>
+  <a className={images.imageLink} href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-12.png')} target="_blank" rel="noopener noreferrer" aria-label="Open IMG-12 at full size">
+    <img className={images.detailPhoto} src={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-12.png')} alt="Illustrative BLE scan, Nordic UART Service and command exchange" width="3000" height="2000" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>BLE client mockup, not an application capture. Send lowercase mode 1, not the uppercase MODE 1 shown in the artwork. Write to NUS RX and subscribe to TX notifications. <a href={useBaseUrl('/img/Sensor/Radars/AS-611Bn/IMG-12.png')} target="_blank" rel="noopener noreferrer">View full-size image</a>.</figcaption>
+</figure>
+
+## Integration rules
+
+- Parse the stream by start and end markers, not by assuming one BLE packet equals one frame.
+- Buffer partial frames and handle multiple frames in one notification or UART read.
+- Accept the shorter no-target frames.
+- A `baud` change is documented to reboot the module; reconnect after that reboot. For other settings, monitor the connection rather than assuming every reconfiguration disconnects BLE.
+- Record malformed or unknown frames instead of silently treating them as measurements.
+
+## Reconfiguration behavior
+
+The manual is inconsistent: its protocol section distinguishes a temporary output pause from a baud-triggered reboot, while the Bluetooth section broadly describes a reboot after changing settings. The exact behavior of each command remains firmware-dependent. After an actual disconnect, reconnect, rediscover the service if needed, re-enable notifications, and establish the current mode before parsing measurements.
+
+## Official references
+
+- [Nordic UART Service source](https://github.com/nrfconnect/sdk-nrf/blob/main/include/bluetooth/services/nus.h)
+- [Zephyr NUS API reference](https://docs.zephyrproject.org/apidoc/latest/nus_8h.html)
+
+## Next steps
+
+- [Implement commands and parsers →](./Command_and_Data_Reference.mdx)
+- [Tune distance detection →](./Distance_Detection.mdx)
+- [Validate vital-sign output →](./Vital_Sign_Detection.mdx)
