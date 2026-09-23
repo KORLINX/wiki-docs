@@ -304,6 +304,19 @@ const sidebars = {
                       id: 'Network/Bluetooth/NX40_Dev_Kit/Hardware',
                       label: 'Hardware',
                     },
+                    {
+                      type: 'category',
+                      label: 'Platform',
+                      collapsed: true,
+                      collapsible: true,
+                      items: [
+                        {
+                          type: 'doc',
+                          id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/Arduino',
+                          label: 'Arduino',
+                        },
+                      ],
+                    },
                   ],
                 },
               ],

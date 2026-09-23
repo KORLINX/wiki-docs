@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1240" viewBox="0 0 1600 1240" role="img" aria-labelledby="title desc">
+<title id="title">NX40 Arduino CLI: detect, compile and upload</title>
+<desc id="desc">Illustrative command guide, not a captured terminal session. List boards, compile to nx40_blink/build, then upload from that directory using your native USB port.</desc>
+<rect width="1600" height="1240" fill="#f7f9fc"/>
+<g font-family="Arial, sans-serif">
+<text x="80" y="80" font-size="44" font-weight="700" fill="#0b1f3a">Use Arduino CLI with NX40</text>
+<text x="80" y="124" font-size="25" fill="#526479">After installing the KORLINX core, run these commands from your sketch's parent folder.</text>
+<rect x="80" y="157" width="1440" height="54" rx="12" fill="#d9f2f2"/>
+<text x="108" y="193" font-size="24" font-weight="700" fill="#0b5960">COMMAND GUIDE · Illustration only — no device output or measured results</text>
+</g>
+<rect x="80" y="240" width="1440" height="170" rx="18" fill="#101e2b"/>
+<text x="112" y="282" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#77d8d4">01  Find the native USB port</text>
+<text x="112" y="328" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">arduino-cli board list</text>
+<text x="112" y="384" font-family="Arial, sans-serif" font-size="23" fill="#b6c5d4">Use the NX40 native USB port. An FTDI UART port is a different interface.</text>
+<rect x="80" y="434" width="1440" height="260" rx="18" fill="#101e2b"/>
+<text x="112" y="476" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#77d8d4">02  Compile the Blink sketch</text>
+<text x="112" y="522" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">arduino-cli compile \</text>
+<text x="112" y="561" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">  --fqbn korlinx:nrf52:nx40 \</text>
+<text x="112" y="600" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">  --output-dir ./nx40_blink/build \</text>
+<text x="112" y="639" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">  nx40_blink</text>
+<rect x="80" y="718" width="1440" height="302" rx="18" fill="#101e2b"/>
+<text x="112" y="760" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#77d8d4">03  Upload the compiled files</text>
+<text x="112" y="806" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">arduino-cli upload \</text>
+<text x="112" y="845" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">  --port &quot;YOUR_PORT&quot; \</text>
+<text x="112" y="884" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">  --fqbn korlinx:nrf52:nx40 \</text>
+<text x="112" y="923" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">  --input-dir ./nx40_blink/build \</text>
+<text x="112" y="962" xml:space="preserve" font-family="DejaVu Sans Mono, Consolas, monospace" font-size="29" fill="#f1f5f9">  nx40_blink</text>
+<g font-family="Arial, sans-serif" fill="#334b63" font-size="25">
+<text x="80" y="1070">Replace YOUR_PORT with the port listed for your NX40.</text>
+<text x="80" y="1113">Both commands use the same build directory: ./nx40_blink/build</text>
+<text x="80" y="1156">Expected result after a successful upload: the red user LED blinks every 500 ms.</text>
+</g>
+</svg>
