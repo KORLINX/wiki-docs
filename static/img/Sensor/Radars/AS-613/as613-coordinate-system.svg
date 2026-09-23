@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">AS-613 wall and ceiling coordinate systems</title><desc id="desc">Coordinate signs, front direction, rotation, and wall tilt for two mounting orientations.</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#0f766e"/></marker><style>.t{font:700 30px Arial;fill:#172554}.h{font:700 23px Arial;fill:#172554}.b{font:18px Arial;fill:#334155}.axis{stroke:#0f766e;stroke-width:5;marker-end:url(#a)}.dash{stroke:#64748b;stroke-width:3;stroke-dasharray:9 9;fill:none}.panel{fill:#fff;stroke:#cbd5e1;stroke-width:2}</style></defs>
+  <rect width="1280" height="720" rx="24" fill="#f8fafc"/><text x="60" y="62" class="t">Coordinate orientation</text>
+  <rect x="50" y="95" width="565" height="560" rx="20" class="panel"/><text x="332" y="138" text-anchor="middle" class="h">Wall installation</text>
+  <line x1="120" y1="540" x2="550" y2="540" stroke="#94a3b8" stroke-width="7"/><line x1="125" y1="185" x2="125" y2="540" stroke="#94a3b8" stroke-width="7"/>
+  <g transform="translate(135 240) rotate(25)"><rect x="-24" y="-35" width="48" height="70" rx="7" fill="#111827"/><circle cx="-13" cy="-23" r="5" fill="#facc15"/></g>
+  <path d="M165 280Q330 330 500 500" class="dash"/><text x="185" y="230" class="b">walltilt</text><path d="M150 275A65 65 0 0 1 190 225" fill="none" stroke="#4338ca" stroke-width="3"/>
+  <line x1="175" y1="290" x2="420" y2="290" class="axis"/><text x="430" y="297" class="b">+Z forward</text><line x1="175" y1="290" x2="175" y2="160" class="axis"/><text x="185" y="175" class="b">+Y up</text><line x1="175" y1="290" x2="75" y2="290" class="axis"/><text x="72" y="320" class="b">−X left</text><text x="305" y="335" class="b">+X right</text>
+  <text x="332" y="600" text-anchor="middle" class="b">Pin 1 marker fixes cable orientation.</text>
+  <rect x="665" y="95" width="565" height="560" rx="20" class="panel"/><text x="947" y="138" text-anchor="middle" class="h">Ceiling installation</text>
+  <line x1="725" y1="185" x2="1170" y2="185" stroke="#94a3b8" stroke-width="7"/><rect x="923" y="185" width="48" height="70" rx="7" fill="#111827"/><circle cx="935" cy="200" r="5" fill="#facc15"/>
+  <line x1="947" y1="260" x2="947" y2="500" class="axis"/><text x="960" y="455" class="b">−Y below radar</text><line x1="947" y1="310" x2="1115" y2="310" class="axis"/><text x="1075" y="300" class="b">+X right</text><line x1="947" y1="310" x2="780" y2="310" class="axis"/><text x="735" y="300" class="b">−X left</text>
+  <path d="M885 430A95 95 0 1 0 1008 430" fill="none" stroke="#4338ca" stroke-width="4" marker-end="url(#a)"/><text x="947" y="545" text-anchor="middle" class="h">rotate: 0 / 1 / 2 / 3</text><text x="947" y="578" text-anchor="middle" class="b">Transform axes after physical mounting.</text><text x="947" y="615" text-anchor="middle" class="b">+Z forward · −Z backward</text>
+  <text x="640" y="692" text-anchor="middle" class="b">Validate every axis and sign with a known target after installation.</text>
+</svg>

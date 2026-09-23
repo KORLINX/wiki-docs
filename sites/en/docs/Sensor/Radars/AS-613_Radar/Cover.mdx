@@ -1,0 +1,54 @@
+---
+title: AS-613
+sidebar_label: AS-613
+slug: /Sensor/Radars/AS-613_Radar
+description: AS-613 60 GHz FMCW radar guides for position, closest-person vital signs, licensed application modes, and UART integration.
+hide_title: true
+hide_table_of_contents: true
+---
+
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import styles from './Cover.module.css';
+
+<div className={styles.coverPage}>
+<section className={styles.hero} aria-labelledby="as613-title">
+<div className={styles.heroContent}>
+<span className={styles.eyebrow}>60 GHz MULTI-CHANNEL FMCW RADAR</span>
+<h1 id="as613-title">AS-613</h1>
+<p className={styles.heroLead}>Indoor position, presence, and closest-person vital-sign sensing on a compact 1 TX / 3 RX radar module.</p>
+<div className={styles.heroActions}>
+<Link className={styles.primaryButton} to="/docs/Sensor/Radars/AS-613_Radar/Quick_Start">Quick Start</Link>
+<Link className={styles.secondaryButton} to="/docs/Sensor/Radars/AS-613_Radar/Overview">Explore Module</Link>
+</div></div>
+<div className={styles.heroVisual}><img src={useBaseUrl('/img/Sensor/Radars/AS-613/AS613-Front.png')} alt="AS-613 production board component side with USB-C and board connectors" width="3600" height="2400" fetchPriority="high" /></div>
+</section>
+{/* IMAGE SOURCE [AS613-IMG-01]: User-supplied AS 613.png production-board photograph. */}
+<section className={styles.section} aria-labelledby="sensing-title">
+<div className={styles.sectionHeader}><h2 id="sensing-title">Choose Your Sensing Guide</h2><p>Start with position or vital-sign sensing. Confirm the firmware and licensed options on your unit before using application-specific modes.</p></div>
+<div className={styles.productGrid}>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-613_Radar/Position_Detection"><h3>Track Position</h3><p>Configure wall and ceiling coordinates, the region of interest, sensitivity, and exclusion zones.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-613_Radar/Vital_Sign_Detection"><h3>Read Closest-Person Vital Signs</h3><p>Interpret heart rate, breathing, waveform, and optional HRV output for the closest detected person.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-613_Radar/Application_Modes"><h3>Explore Application Modes</h3><p>Review restroom, hospital-bed, and presence workflows with their installation and license requirements.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-613_Radar/UART_and_USB"><h3>Connect Your Host</h3><p>Integrate ASCII UART commands and data, and check GPIO and USB-C requirements.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+</div>
+</section>
+![AS-613 default and optional sensing modes](/img/Sensor/Radars/AS-613/as613-capability-map.svg)
+
+*Default and option-mode map. Confirm the firmware and license state of the ordered unit.*
+<section className={styles.startSection} aria-labelledby="start-title">
+<div className={styles.sectionHeader}><h2 id="start-title">From Connection to Sensor Data</h2></div>
+<div className={styles.stepGrid}>
+<Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-613_Radar/Overview"><span className={styles.stepNumber}>01</span><h3>Know Your Module</h3><p>Review the hardware, connectors, modes, and documented limits.</p><span className={styles.cardLink}>Read Guide →</span></Link>
+<Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-613_Radar/Quick_Start"><span className={styles.stepNumber}>02</span><h3>Make the First Connection</h3><p>Confirm power and UART levels, query firmware, and observe Mode 1 packets.</p><span className={styles.cardLink}>Read Guide →</span></Link>
+<Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-613_Radar/Command_and_Data_Reference"><span className={styles.stepNumber}>03</span><h3>Interpret the Output</h3><p>Use the documented commands, response types, and mode-specific frame layouts.</p><span className={styles.cardLink}>Read Guide →</span></Link>
+</div>
+</section>
+<section className={styles.section}>
+<div className={styles.sectionHeader}><h2>AS-613 Resources</h2></div>
+<div className={styles.resourceGrid}>
+<Link to="/docs/Sensor/Radars/AS-613_Radar/Command_and_Data_Reference"><strong>Command and Data Reference</strong><span>Open Reference →</span></Link>
+<Link to="/docs/Sensor/Radars/AS-613_Radar/FAQ"><strong>FAQ and Troubleshooting</strong><span>Open Reference →</span></Link>
+</div>
+</section>
+</div>

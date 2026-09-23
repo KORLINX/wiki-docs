@@ -1,0 +1,143 @@
+---
+title: AS-613 FAQ and Troubleshooting
+sidebar_label: FAQ
+sidebar_position: 8
+description: Answers to common AS-613 setup, range, UART, presence, vital-sign, and licensed-mode questions.
+keywords:
+  - AS-613 FAQ
+  - AS-613 troubleshooting
+  - radar false detection
+  - radar UART problem
+  - radar vital signs unstable
+---
+
+# AS-613 FAQ and Troubleshooting
+
+## Is AS-613 a general-purpose fall detector?
+
+No. The supplied manual defines a narrow hospital-bed fall sequence: the patient moves from the bed center to the edge and then is detected on the adjacent floor. It explicitly says falls are not detected in other situations. Mode 14 is described as presence detection, not a fall UART mode.
+
+Do not use AS-613 as the only fall alarm or emergency system.
+
+## Is AS-613 a medical device?
+
+The supplied manual provides no medical-device certification, clinical validation, diagnostic indication, or regulatory approval. Heart rate, breathing, HRV, posture, fall-related, and pressure-ulcer-related outputs are sensor/firmware data that require validation and independent safety controls in the final application.
+
+## Can AS-613 be used near a pacemaker or implantable device?
+
+The manual warns not to use the device within 20 cm of a pacemaker or other implantable medical device and says to consult the physician or implant manufacturer first.
+
+## What supply voltage should I use?
+
+Use 3.3–5.5 VDC, the range in the specification table. The feature and pin-description sections also show 3.3–7.0 V, but this guide uses the narrower specification-table range.
+
+## What is the factory UART baud rate?
+
+Start at 460800 bps, the default in the protocol section. The command table shows 921600 as its initial value. If an already-configured unit is unreadable, test the other supported rates without sending configuration commands.
+
+## Can I connect a 5 V UART directly?
+
+Use a 3.3 V TTL UART interface. The manual also says 1.8 V, 3.3 V, and 5 V signal interfaces are possible, but it does not describe direct 5 V pin tolerance or an external level-shifting circuit.
+
+## Does USB-C carry data?
+
+The manual identifies USB-C as a power input and lists USB as an interface, but it does not define enumeration, a USB class, or a host-side data procedure. Use UART for the documented command-and-data interface.
+
+## Why do I see no readable serial data?
+
+Check:
+
+1. Approved supply range and current capacity
+2. Common ground
+3. TX connected to RX and RX connected to TX
+4. NRST open/high
+5. Correct P1/P3 orientation and Pin 1
+6. 8 data bits, no parity, 1 stop bit, no flow control
+7. Approved factory baud
+8. Correct UART logic level
+
+## Why are commands ignored?
+
+- Use lowercase.
+- End each command with LF or CR.
+- Wait for the previous `!`-terminated response before sending the next command.
+- Stop continuous output if your terminal cannot distinguish data from responses.
+- Confirm that the command is supported in the active mode, mount, work profile, and license.
+
+## What do the common errors mean?
+
+| Response | Check |
+| --- | --- |
+| `=OverRange!` | Argument count, format, range, and mode-specific bounds |
+| `=UnSupport!` | Active mode, installation profile, work profile, license, and firmware |
+| `=UnKnown!` | Command spelling and firmware support; also possible internal queue failure |
+| `=Error!` | Internal/flash failure; preserve logs and stop relying on the new setting |
+| `=NoTarget!` | Requested exclusion-zone target is not currently available |
+
+## Why does wall position range appear as both 8 m and 9 m?
+
+The specification table says 8 m, while Mode 1 allows `zmax` 900 cm and the feature list says 9 m. A configurable maximum is not automatically a rated human-detection range. Confirm the working range with target and test conditions for the final installation.
+
+## Why does position jump when a person stands still?
+
+The manual says a measured target may fluctuate by 20-30 cm. Multipath, body micro-motion, sensitivity, target merging, and reflected-energy changes can all move the reported point. Validate accuracy statistically in the final environment instead of expecting an immobile coordinate.
+
+## Why are there false targets?
+
+AS-613 detects moving reflectors, not a guaranteed person class. Fans, air conditioners, air purifiers, curtains, long cables, pets, and metallic clutter can produce targets or virtual images.
+
+First correct mounting and ROI. Then tune sensitivity. Add exclusion zones only after the final mode/mount/work profile is selected.
+
+## Why does one person hide another?
+
+Targets aligned behind one another can be occluded, and nearby people may merge into one target. Increase angular separation, adjust the installation, and validate at the intended distance.
+
+## Why are vital-sign values missing or unstable?
+
+- Keep the subject's chest facing the radar.
+- Keep hands down and avoid talking, typing, phone use, or crossed arms.
+- Remove closer moving people or objects.
+- Stop fans and other moving reflectors.
+- Narrow the ROI to the intended subject.
+- Allow the documented stabilization time.
+- Do not infer apnea from one low rate; the manual says apnea has no separate state code.
+
+## Can AS-613 measure vital signs for multiple people?
+
+No. The manual describes valid vital-sign output for the closest person only. Position/presence modes can maintain several targets/slots, but other targets do not receive independent valid vital values.
+
+## When are RMSSD and SDNN available?
+
+Licensed Mode 11 begins RMSSD and SDNN output after more than 30 seconds of stable detection. The manual says SDNN stabilizes after at least 5 minutes. The fixed-width fields hold only 0-99 ms and the source does not define overflow or invalid values, so production interpretation requires firmware clarification.
+
+## Why does Mode 14 remain occupied after motion stops?
+
+Presence mode intentionally maintains state through temporary non-detection. Exit timing depends on the measured door position and width. Incorrect `doorx`, `doorz`, or `doorwd` can delay vacancy decisions.
+
+## Why does Mode 14 setup show different default coordinates?
+
+The mode-description and initial-setup sections contain different wall and ceiling defaults. Query `info` after selecting `pmount` and `pwork`, then set the measured geometry for the installation.
+
+## Can I use `wave 1` in Mode 14?
+
+No. The Mode 14 description mentions waveform output in VITAL_WORK, but the command table marks `wave` unsupported in Mode 14. This guide follows the command table and does not enable `wave` in Mode 14.
+
+## Why does the restroom mode have no packet table?
+
+The manual identifies `^` as the Mode 12 start character and describes setup commands, but it does not provide a complete field/state definition. A complete Mode 12 protocol definition is required for integration.
+
+## How should I report a reproducible issue?
+
+Include:
+
+- Model/SKU, hardware revision, and connector option
+- Firmware response from `ver` and license state
+- Supply voltage/current and UART settings
+- Complete command sequence and raw bytes
+- Active mode, mount/work profile, ROI, sensitivity, and exclusions
+- Installation height, angle, room geometry, enclosure, and nearby movement
+- Expected versus actual result with timestamps, photos/video, and reference measurements
+
+![AS-613 troubleshooting decision flow](/img/Sensor/Radars/AS-613/as613-troubleshooting-flow.svg)
+
+*Check hardware, protocol, geometry, interference, and mode availability in order before changing sensitivity.*

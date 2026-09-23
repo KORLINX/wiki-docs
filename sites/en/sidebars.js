@@ -304,6 +304,19 @@ const sidebars = {
                       id: 'Network/Bluetooth/NX40_Dev_Kit/Hardware',
                       label: 'Hardware',
                     },
+                    {
+                      type: 'category',
+                      label: 'Platform',
+                      collapsed: true,
+                      collapsible: true,
+                      items: [
+                        {
+                          type: 'doc',
+                          id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/Arduino',
+                          label: 'Arduino',
+                        },
+                      ],
+                    },
                   ],
                 },
               ],
@@ -457,9 +470,8 @@ const sidebars = {
               collapsed: true,
               collapsible: true,
               link: {
-                type: 'generated-index',
-                title: 'AS-613 Radar',
-                description: 'AS-613 radar documentation',
+                type: 'doc',
+                id: 'Sensor/Radars/AS-613_Radar/Cover',
               },
               items: [
                 {
@@ -472,6 +484,12 @@ const sidebars = {
                   id: 'Sensor/Radars/AS-613_Radar/Quick_Start',
                   label: 'Quick Start',
                 },
+                { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/Position_Detection', label: 'Position Detection' },
+                { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/Vital_Sign_Detection', label: 'Vital-Sign Detection' },
+                { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/Application_Modes', label: 'Application Modes' },
+                { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/UART_and_USB', label: 'UART and USB' },
+                { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/Command_and_Data_Reference', label: 'Command and Data Reference' },
+                { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/FAQ', label: 'FAQ and Troubleshooting' },
               ],
             },
 
