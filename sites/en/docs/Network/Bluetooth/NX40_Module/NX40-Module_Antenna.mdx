@@ -16,11 +16,7 @@ keywords: [NX40 antenna, NX40i, NX40E, chip antenna, external antenna, RF keepou
 
 ## NX40i Integrated Antenna
 
-> **Verification required:** The restored layout image contains the legacy `GND Plane ≥40 mm²` statement. The component datasheet does not establish this as a universal NX40 host-PCB rule. Use the image for engineering comparison only until KORLINX releases a dimensioned NX40 keep-out drawing and supporting RF measurements.
-
-The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic antenna. The following values describe the antenna component on Abracon's 46 × 20 mm evaluation board in free space. They do not describe the completed NX40 module or customer host product.
-
-<img src="/img/bluetooth/nx40/antenna/NX40i Chip Antenna Layout Guidance.png" alt="Draft NX40i host PCB antenna keep-out and ground-plane concept" className="blog-first-image" />
+The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic antenna. The following values come from the [Abracon AANI-CH-0133-Q datasheet](https://abracon.com/datasheets/AANI-CH-0133-Q.pdf) and describe the antenna component on Abracon's evaluation layout. They do not describe the completed NX40 module or customer host product.
 
 <div className="spec-table-wrapper">
 
@@ -43,7 +39,7 @@ The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic an
 - Maintain a continuous low-impedance ground connection beneath the module ground region.
 - Test the antenna with the final enclosure, battery, display, cables, and mounting hardware installed.
 
-{/* Technical confirmation required: release an NX40-specific host PCB keepout drawing and measured NX40i RF data. The old ≥40 mm² ground-plane rule is not published because the component source does not define it as an NX40 requirement. */}
+KORLINX does not specify a minimum host-PCB ground-plane area because a numeric requirement has not been validated on NX40 hardware.
 
 ## NX40E External Antenna / 50 Ω RF Interface
 
@@ -56,10 +52,9 @@ The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic an
 | RF connector | On-module micro-coax connector | Exact manufacturer and part number pending approval |
 | External antenna impedance | 50 Ω nominal | Use a 2.4 GHz antenna with a 50 Ω feed |
 | Operating band | 2400–2483.5 MHz | Bluetooth LE / IEEE 802.15.4 use depends on software and regional configuration |
-| Reference antenna family | TE Connectivity 2108923 Series | Exact approved suffix and certification evidence pending |
-| Reference VSWR | &lt; 1.6:1 at 2.4–2.5 GHz | Antenna-family reference |
-| Reference peak gain | 2.5 dBi at 2.4–2.5 GHz | Antenna-family reference |
-| Reference average efficiency | 85% at 2.4–2.5 GHz | Antenna-family reference |
+| Reference antenna family | TE Connectivity 2108923 Series | Manufacturer reference; exact certified suffix must be confirmed |
+| Reference VSWR | &lt; 1.6:1 at 2.4–2.5 GHz | TE Connectivity manufacturer data |
+| Reference peak gain | 2.3 dBi at 2.4 GHz | TE Connectivity manufacturer data |
 | Coaxial cable | 50 Ω | Keep the cable as short as practical |
 | Host PCB RF trace | Not required | RF terminates at the on-module connector |
 
@@ -67,7 +62,11 @@ The supplied NX40i schematic identifies an **Abracon AANI-CH-0133-Q** ceramic an
 
 ### External Antenna Selection
 
-Check frequency range, impedance, VSWR, gain, efficiency, connector, cable length, placement, enclosure effects, and certification scope. An alternative antenna may require additional testing or regulatory filing.
+Check frequency range, impedance, VSWR, gain, efficiency, connector, cable length, placement, enclosure effects, and certification scope. The 2108923-series reference values come from [TE Connectivity's antenna data](https://www.te.com/content/dam/te-com/documents/consumer-devices/global/Wi-Fi%206E-whitepaper.pdf); they are not measured NX40 performance.
+
+:::caution KC-certified antenna configuration
+Antennas cannot be added arbitrarily to the KC-certified configuration. Before using a customer-requested or alternative antenna, contact KORLINX so that we can confirm whether it can be registered under the KC certification and identify the required review, testing, registration, or certification procedure.
+:::
 
 ## Related Pages
 

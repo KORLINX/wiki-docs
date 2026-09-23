@@ -34,17 +34,11 @@ RF performance depends on the host PCB, enclosure, ground structure, antenna pla
 
 ## NX15i Chip Antenna Layout Guidance
 
-The NX15i Series uses an integrated **Abracon AANI-CH-0133-Q 2.4 GHz ceramic chip antenna**. This option is suitable for compact products where the antenna can be placed near the outer edge of the host PCB.
+The NX15i Series uses an integrated **Abracon AANI-CH-0133-Q 2.4 GHz ceramic chip antenna**. Antenna values on this page come from the [Abracon AANI-CH-0133-Q datasheet](https://abracon.com/datasheets/AANI-CH-0133-Q.pdf), not from measurements of the complete NX15 module.
 
 For best RF performance, place the module so that the antenna side faces outward and is kept clear of copper, ground, components, shields, batteries, metal enclosures, or cables.
 
 ### NX15i Antenna Design Rules
-
-<img
-  src="/img/bluetooth/nx15/antenna/NX15i-chip-antenna-keepout.png"
-  alt="NX15i chip antenna keep-out zone"
-  className="blog-first-image"
-/>
 
 <div className="spec-table-wrapper">
 
@@ -52,7 +46,7 @@ For best RF performance, place the module so that the antenna side faces outward
 | --- | --- |
 | Antenna placement | Place the antenna side near the host PCB edge or corner |
 | Keep-out area | Do not place copper, GND, signal traces, vias, or components in the antenna clearance area |
-| Ground plane | Use the largest practical continuous host PCB ground plane; ≥40 mm² is recommended |
+| Ground plane | Use a continuous ground plane where practical; no minimum area is specified because KORLINX has not validated a numeric host-PCB requirement |
 | Ground quality | Avoid slots or splits in the ground plane near the RF area |
 | Conductive objects | Keep batteries, shields, connectors, cables, and metal parts away from the antenna area |
 | Enclosure | Verify RF performance with the final enclosure material and mechanical structure |
@@ -71,11 +65,10 @@ For best RF performance, place the module so that the antenna side faces outward
 | Peak Gain | 1.1 dBi reference value |
 | Average Total Efficiency | 49% reference value |
 | Chip Antenna Size | 1.6 × 0.8 × 0.4 mm |
-| Host PCB Ground Plane | ≥40 mm² recommended; a larger uninterrupted area is preferred |
 | Recommended Placement | Host PCB edge or corner |
 
-:::note
-The host PCB ground plane recommendation is a design guideline. Final antenna performance must be verified on the completed product.
+:::note Source and scope
+The values above are Abracon antenna-component and evaluation-layout references. They are not measured NX15 module or final-product performance. Final RF performance depends on the host PCB, enclosure, and installation.
 :::
 
 ---
@@ -87,10 +80,9 @@ The host PCB ground plane recommendation is a design guideline. Final antenna pe
 | RF Connector | On-module u.FL / UMCC | Use a compatible 50 Ω mating cable / pigtail |
 | External Antenna Impedance | 50 Ω nominal | Use a 2.4 GHz antenna with 50 Ω feed impedance |
 | Operating Band | 2400–2483.5 MHz | BLE / IEEE 802.15.4 operation |
-| Reference Antenna | TE Connectivity 2108923 Series | Only the 2.4 GHz characteristics are relevant to NX15E |
-| Reference VSWR | &lt; 1.6 : 1 @ 2.4–2.5 GHz | TE 2108923 Series |
-| Reference Peak Gain | 2.5 dBi @ 2.4–2.5 GHz | TE 2108923 Series |
-| Reference Avg. Efficiency | 85% @ 2.4–2.5 GHz | TE 2108923 Series |
+| Reference Antenna | TE Connectivity 2108923 Series | Manufacturer reference; exact certified suffix must be confirmed |
+| Reference VSWR | &lt; 1.6 : 1 @ 2.4–2.5 GHz | TE Connectivity manufacturer data |
+| Reference Peak Gain | 2.3 dBi @ 2.4 GHz | TE Connectivity manufacturer data |
 | Coaxial Cable | 50 Ω | Keep the cable as short as practical |
 | Host PCB RF Trace | Not required | RF path terminates at the on-module RF connector |
 | Antenna Placement | Clear of metal / enclosure obstructions | Final enclosure and cable routing can affect RF performance |
@@ -130,15 +122,11 @@ When selecting an external antenna for NX15E, check the following:
 - Enclosure position
 - Regulatory and certification requirements
 
-:::caution
-Alternative antennas may require additional certification or registration depending on the target market and regulatory scope. Confirm the final antenna approval requirements before public release or mass production.
+:::caution KC-certified antenna configuration
+Antennas cannot be added arbitrarily to the KC-certified configuration. Before using a customer-requested or alternative antenna, contact KORLINX so that we can confirm whether it can be registered under the KC certification and identify the required review, testing, registration, or certification procedure.
 :::
 
-{/* Technical confirmation required before public release:
-- The draft says the TE Connectivity 2108923 Series was used for NX15E KC certification
-  and that alternative antennas must be registered before use. Confirm the exact approved wording.
-- Confirm the final approved external-antenna list and keep-out illustration.
-- Confirm how the ≥40 mm² host ground-plane area is measured. */}
+The 2108923-series values are sourced from [TE Connectivity's antenna data](https://www.te.com/content/dam/te-com/documents/consumer-devices/global/Wi-Fi%206E-whitepaper.pdf). Manufacturer data does not establish NX15 module performance or KC approval for every series suffix.
 
 ## Related Pages
 
