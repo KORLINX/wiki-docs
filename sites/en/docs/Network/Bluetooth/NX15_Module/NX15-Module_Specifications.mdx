@@ -20,10 +20,8 @@ This page summarizes the main specifications of the **KORLINX NX15 Series BLE mo
 
 It is intended as a quick reference for developers and hardware engineers before reviewing the detailed pin map, antenna, and handling pages.
 
-:::note
-This page summarizes information from the NX15 datasheet for Wiki use.
-
-For final production design, always refer to the official datasheet, schematic, and engineering release documents.
+:::note Specification sources
+NX15-specific RF, current, and voltage measurements are not available. Values identified as **SoC specifications** come from the [Nordic nRF54L15 Product Specification](https://docs.nordicsemi.com/r/bundle/ps_nrf54l15/); they are not measured or guaranteed NX15 module values. Use released KORLINX engineering documents for production design.
 :::
 
 ---
@@ -42,11 +40,10 @@ For final production design, always refer to the official datasheet, schematic, 
 | Wireless | Bluetooth LE 5.4 |
 | 802.15.4 Support | Thread / Zigbee capable |
 | Matter Support | Matter over Thread capable depending on software stack |
-| RF Output Power | TX up to +8 dBm |
-| RX Sensitivity | See RF characteristics section in the full datasheet |
-| Nominal Voltage | 3.3 V |
-| Operating Supply Range | 1.7 V to 3.6 V |
-| Operating Temperature | -40°C to +105°C |
+| RF Output Power | Up to +8 dBm for the nRF54L15 CSP package (SoC specification) |
+| RX Sensitivity | −96 dBm, Bluetooth LE 1 Mbps (SoC specification) |
+| Operating Supply Range | 1.7 V to 3.6 V; maximum 3.4 V under extended-temperature conditions (SoC specification) |
+| Operating Temperature | −40°C to +85°C; extended operation to +105°C under Nordic's specified conditions (SoC specification) |
 | Power Regulation | Integrated DC-DC and LDO regulators |
 | Package | LGA surface-mount module |
 | Module Size | 9.5 × 9.5 × 1.95 mm |
@@ -54,10 +51,7 @@ For final production design, always refer to the official datasheet, schematic, 
 | Pad Pitch | 0.65 mm |
 | Interfaces | UART, SPI, I2C, PWM, ADC, PDM, GPIO, SWD |
 | SDK / RTOS | nRF Connect SDK / Zephyr RTOS |
-| Security | Arm TrustZone, PSA Certified Level 2 |
-
-{/* Technical confirmation required: confirm whether PSA Certified Level 2 applies
-to the NX15 module as shipped or only to the underlying nRF54L15 platform. */}
+| Security | Arm TrustZone and nRF54L15 platform security features |
 
 ---
 
@@ -125,29 +119,31 @@ For antenna-specific integration requirements, continue to the [NX15 Module Ante
 
 ---
 
-## Absolute Maximum Ratings
+## SoC Absolute Maximum Ratings
 
 :::danger
-Absolute maximum ratings are stress limits, not normal operating conditions. Prolonged operation at or near these limits may affect module reliability.
+These are nRF54L15 CSP-package limits from the Nordic product specification. They are stress limits, not NX15 operating conditions or module qualification results.
 :::
 
-| Parameter | Symbol | Minimum | Maximum | Unit |
-| --- | --- | ---: | ---: | --- |
-| Supply Voltage | VDD_nRF | -0.3 | +3.6 | V |
-| GPIO Voltage | VGPIO | -0.3 | VDD_nRF + 0.3 | V |
-| Input Current, Any Pin | IMAX | - | ±10 | mA |
-| Storage Temperature | TSTG | -55 | +125 | °C |
-| Solder Reflow Temperature | TREFLOW | - | 260 | °C |
-| ESD Rating, Human Body Model | VESD | - | 2000 | V |
+| Parameter | Symbol | Minimum | Maximum | Unit | Source scope |
+| --- | --- | ---: | ---: | --- | --- |
+| Supply voltage | VDD | −0.3 | 3.9 | V | nRF54L15 SoC |
+| GPIO voltage, VDD ≤ 3.6 V | VIO | −0.3 | VDD + 0.3 | V | nRF54L15 SoC |
+| RF input level | — | — | 10 | dBm | nRF54L15 SoC |
+| Storage temperature | TSTG | −40 | +125 | °C | nRF54L15 CSP package |
+| Reflow temperature | TREFLOW | — | 260 | °C | nRF54L15 CSP package; 30 seconds, maximum three cycles |
+| ESD, Human Body Model | — | — | 3 | kV | nRF54L15 CSP package |
 
 ---
 
-## Recommended Operating Conditions
+## SoC Recommended Operating Conditions
 
 | Parameter | Symbol | Minimum | Typical | Maximum | Unit |
 | --- | --- | ---: | ---: | ---: | --- |
-| Supply Voltage | VDD_nRF | 1.7 | 3.3 | 3.6 | V |
-| Operating Temperature | TOPER | -40 | - | +105 | °C |
+| Supply voltage | VDD | 1.7 | — | 3.6 | V |
+| Supply voltage, extended temperature | VDD_EXT | 1.7 | — | 3.4 | V |
+| Operating temperature | TA | −40 | 25 | +85 | °C |
+| Extended operating temperature | TA_EXT | +85 | — | +105 | °C |
 | GPIO Input High Voltage | VIH | 0.7 × VDD_nRF | - | VDD_nRF | V |
 | GPIO Input Low Voltage | VIL | GND | - | 0.3 × VDD_nRF | V |
 | GPIO High-Level Output | VOH | VDD_nRF - 0.4 | - | VDD_nRF | V |
@@ -159,9 +155,11 @@ Absolute maximum ratings are stress limits, not normal operating conditions. Pro
 
 ---
 
-## Electrical and RF Summary
+## Nordic SoC Electrical, RF, and Current Reference
 
-| Item | Typical / Range | Unit | Condition |
+The following values are from the Nordic nRF54L15 Product Specification. They describe the SoC under Nordic's stated conditions and are not NX15 module measurements. Unless a row says otherwise, Nordic's current-consumption conditions use 3 V on VDD, 25°C, and the reference circuit; regulator, clock, and memory conditions depend on the selected scenario.
+
+| Item | Typical / Range | Unit | Nordic condition |
 | --- | --- | --- | --- |
 | Arm Cortex-M33 Clock | 128 | MHz | 128 MHz Arm Cortex-M33 |
 | RISC-V Coprocessor Clock | 128 | MHz | 128 MHz RISC-V coprocessor |
@@ -169,16 +167,16 @@ Absolute maximum ratings are stress limits, not normal operating conditions. Pro
 | RAM | 256 | KB | RAM |
 | External Flash | Optional | - | Depending on model |
 | Frequency Band | 2402–2480 | MHz | BLE 5.4 |
-| Maximum TX Output Power | +8 | dBm | TX up to +8 dBm |
-| Antenna Impedance | 50 | Ω | Chip antenna or external antenna |
+| Maximum TX output power | +8 | dBm | CSP package |
+| Bluetooth LE RX sensitivity | −96 | dBm | 1 Mbps PHY |
+| IEEE 802.15.4 RX sensitivity | −102 | dBm | 250 kbps PHY |
+| Radio TX current | 6.6 | mA | +4 dBm, HFXO |
+| Radio TX current | 9.8 | mA | +8 dBm, HFXO |
+| Radio RX current | 3.4 | mA | 1 Mbps, HFXO |
+| System OFF current | 0.7 | µA | Wake on pin, 0 KB RAM retained |
+| System ON idle current | 2.9 | µA | Wake on pin + GRTC/LFXO, 256 KB RAM retained |
 
-{/* Draft datasheet values withheld from the public table pending confirmation:
-- RX sensitivity: the draft refers to an RF characteristics section but provides no numeric value.
-- TX current at +3 dBm: 6.8 mA, described only as BLE advertising.
-- RX active current: 5.2 mA, described only as BLE scanning.
-- Sleep current: 0.7–2.9 µA, RAM off at 3 V.
-Confirm whether these are measured module values, SoC reference values, or design targets,
-and provide complete test conditions before publication. */}
+See Nordic's [radio current table](https://docs.nordicsemi.com/r/bundle/ps_nrf54l15/page/chapters/current_consumption/doc/current_consumption.html-unique_1797165862) and [sleep-current table](https://docs.nordicsemi.com/r/bundle/ps_nrf54l15/page/chapters/current_consumption/doc/current_consumption.html-unique_1307930676) for definitions and test conditions.
 
 ---
 

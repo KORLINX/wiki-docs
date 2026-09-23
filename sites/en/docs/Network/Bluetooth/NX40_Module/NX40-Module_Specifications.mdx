@@ -7,7 +7,7 @@ keywords: [NX40 specifications, nRF52840, Bluetooth Low Energy, LGA module, KORL
 
 # NX40 Module Specifications
 
-This page separates **nRF52840 component reference values** from NX40 module design data. Component values are useful for planning, but they are not module-level guarantees.
+This page separates **nRF52840 SoC specifications** from NX40 module design data. NX40-specific RF, current, and voltage measurements are not available. Values identified as SoC specifications come from the [Nordic nRF52840 Product Specification](https://docs.nordicsemi.com/r/bundle/ps_nrf52840/) and are not measured or guaranteed NX40 module values.
 
 > **Note:** Use the released NX40 datasheet, schematic, BOM, controlled mechanical drawing, and qualification report for production design.
 
@@ -26,16 +26,16 @@ This page separates **nRF52840 component reference values** from NX40 module des
 | Package | LGA surface-mount module | KORLINX design data |
 | Size | 9.5 × 9.5 × 1.95 mm nominal | Tolerances pending controlled drawing |
 
-## Recommended Operating Conditions
+## SoC Recommended Operating Conditions
 
 | Parameter | Min. | Nom. | Max. | Unit | Condition |
 | --- | ---: | ---: | ---: | --- | --- |
-| VDD | 1.7 | 3.3 | 3.6 | V | nRF52840 normal-voltage reference; NX40 nominal approval pending |
-| VDDH | 2.5 | 3.7 | 5.5 | V | High-voltage reference; confirm support and load behavior by model |
-| VBUS | 4.35 | 5.0 | 5.5 | V | USB supply reference; does not alone power every module rail |
-| Ambient temperature | −40 | 25 | +85 | °C | SoC range; NX40 module qualification pending |
+| VDD | 1.7 | 3.0 | 3.6 | V | nRF52840 SoC, normal-voltage mode |
+| VDDH | 2.5 | 3.7 | 5.5 | V | nRF52840 SoC, high-voltage mode |
+| VBUS | 4.35 | 5.0 | 5.5 | V | nRF52840 SoC USB supply; does not alone define NX40 power routing |
+| Ambient temperature | −40 | 25 | +85 | °C | nRF52840 SoC range; NX40 module qualification not measured |
 
-## Absolute Maximum Ratings
+## SoC Absolute Maximum Ratings
 
 | Parameter | Min. | Max. | Unit | Basis |
 | --- | ---: | ---: | --- | --- |
@@ -46,32 +46,26 @@ This page separates **nRF52840 component reference values** from NX40 module des
 | RF input | — | +10 | dBm | nRF52840 component limit |
 | Storage temperature | −40 | +125 | °C | SoC limit; module qualification pending |
 
-Absolute maximum ratings are stress limits and do not describe normal operation. Module ESD and production limits remain subject to NX40 qualification.
+These nRF52840 limits are stress limits and do not describe normal operation. Module ESD and production limits remain subject to NX40 qualification.
 
-## SoC RF and Current Reference
+## Nordic SoC RF and Current Specifications
 
-| Item | Typical / range | Condition |
+These values describe the nRF52840 SoC under Nordic's stated conditions. They do not include NX40 module losses, additional Flash current, antenna performance, or customer-board effects. Current values below are typical SoC values at 3 V and 25°C; the radio rows identify the DC/DC conditions used.
+
+| Item | Typical / range | Nordic condition |
 | --- | --- | --- |
-| BLE 1 Mbps sensitivity | −95 dBm | Short packet, ideal transmitter |
-| BLE coded 125 kbps sensitivity | −103 dBm | Typical SoC value |
-| IEEE 802.15.4 sensitivity | −100 dBm | 250 kbps, typical SoC value |
-| TX current at +8 dBm | 16.40 mA | BLE 1 Mbps, HFXO, DC/DC, 3 V |
-| RX current | 6.26 mA | BLE 1 Mbps, HFXO, DC/DC, 3 V |
+| BLE 1 Mbps sensitivity | −95 dBm | nRF52840 receiver specification |
+| BLE coded 125 kbps sensitivity | −103 dBm | nRF52840 receiver specification |
+| IEEE 802.15.4 sensitivity | −100 dBm | 250 kbps SoC receiver specification |
+| TX current at +8 dBm | 14.8 mA | DC/DC, 3 V |
+| RX current | 4.6 mA | BLE 1 Mbps, DC/DC, 3 V |
 | System OFF current | 0.40 µA | 3 V, no RAM retention |
 
-{/* Technical confirmation required: publish module measurements for all four variants with supply pin, voltage, regulator mode, firmware/SDK, PHY, TX power, Flash state, temperature, sample count, and instrument. */}
+See Nordic's [nRF52840 radio electrical specification](https://docs.nordicsemi.com/r/bundle/ps_nrf52840/page/radio.html) and [current-consumption conditions](https://docs.nordicsemi.com/r/bundle/ps_nrf52840/page/chapters/current_consumption/doc/frontpage.html).
 
 ## NX40 Module Characterization
 
-The complete review draft reserves the following table for module-level results. It is included here so that SoC reference values are not mistaken for measured NX40 performance.
-
-| Mode | Required condition | NX40i00 | NX40E00 | NX40i32 | NX40E32 |
-| --- | --- | --- | --- | --- | --- |
-| System OFF | Supply, RAM retention, wake sources, temperature | Pending | Pending | Pending | Pending |
-| System ON idle | Clock, regulator, firmware, peripherals | Pending | Pending | Pending | Pending |
-| BLE RX | 1 Mbps PHY and defined receiver state | Pending | Pending | Pending | Pending |
-| BLE TX | +8 dBm and defined packet/interval | Pending | Pending | Pending | Pending |
-| Flash read/write | Bus mode, clock, pattern, and duty cycle | N/A | N/A | Pending | Pending |
+KORLINX has not completed detailed NX40 module-level RF, voltage, or current measurements. No numeric module-level performance values are published on this page. Validate the final hardware, firmware, power topology, antenna, and enclosure for the intended application.
 
 ## Software Capability Boundary
 
