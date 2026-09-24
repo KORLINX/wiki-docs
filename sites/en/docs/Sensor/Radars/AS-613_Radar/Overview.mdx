@@ -30,21 +30,23 @@ import images from './ContentImages.module.css';
 - Integrated antenna and signal-processing software
 - 1 transmit channel and 3 receive channels
 - 32.0 × 30.0 mm board outline
-- P1 2.54 mm header option
-- P3 board-connector option
+- P3 2.54 mm header option
+- P1 board-connector option
 - J1 USB-C option
 - GPIO, TTL UART, USB listed in the manual, and status LED
 
 <div className={images.boardViews}>
-<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-613/AS613-Front.png')} alt="AS-613 production board component side" width="3600" height="2400" loading="lazy" /></div><figcaption>Component side with USB-C, processing components, header pads, and board connector.</figcaption></figure>
-<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-613/AS613-Back.png')} alt="AS-613 production board antenna side" width="3600" height="2400" loading="lazy" /></div><figcaption>Antenna and product-label side of the AS-613 production board.</figcaption></figure>
+<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-613/AS613-Front.png')} alt="AS-613 production board component side" width="3000" height="1524" loading="lazy" /></div><figcaption>Component side with USB-C, processing components, header pads, and board connector.</figcaption></figure>
+<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-613/AS613-Back.png')} alt="AS-613 production board antenna side" width="3000" height="1524" loading="lazy" /></div><figcaption>Antenna and product-label side of the AS-613 production board.</figcaption></figure>
 </div>
+
+Flat illustrations: [component side](/img/Sensor/Radars/AS-613/as-613-front-flat.png) · [antenna side](/img/Sensor/Radars/AS-613/as-613-back-flat.png).
 
 The photographs identify the physical board faces. Printed certification marks alone do not establish certification status.
 
 :::caution
 Connector-name difference
-The component-side silkscreen shows `P3` beside the 2.54 mm header and `P1` beside the board connector. The manual v1.3.1 describes `P1` as the 2.54 mm header and `P3` as the six-pin board connector. Confirm the connector designation for the production revision before preparing a keyed cable or manufacturing fixture.
+The component-side silkscreen shows `P3` beside the 2.54 mm header and `P1` beside the board connector. The manual v1.3.1 describes `P1` as the 2.54 mm header and `P3` as the six-pin board connector. The pin map below follows the confirmed production-board reference: P3 is the header, with Pin 1 at the top in the illustrated orientation. The manual also places header Pin 1 at the opposite end; do not mix its orientation with this production pin map.
 :::
 
 ## Specifications
@@ -71,9 +73,13 @@ The specification table defines a 3.3–5.5 VDC supply. The feature list and con
 
 ## Pin map
 
-The connector names and signals below follow the pin-description section of manual v1.3.1. Use this table for wiring; the board illustrations on this page are visual references only.
+The connector names and orientation below follow the confirmed production pin map. With USB-C at the top, P3 is numbered 1–8 from top to bottom.
 
-| Pin | Signal | P1 | P3 |
+![AS-613 confirmed P3 header and P1 connector pin map](/img/Sensor/Radars/AS-613/as-613-pin-list.png)
+
+*P3 is the eight-pin header; P1 is the six-pin connector. The P1 Pin 6 label in the image has a typo: its input direction and receive description identify UART RX.*
+
+| Pin | Signal | P3 header | P1 connector |
 | --- | --- | --- | --- |
 | 1 | VCC | Power input | Power input |
 | 2 | GND | Ground | Ground |
@@ -84,8 +90,8 @@ The connector names and signals below follow the pin-description section of manu
 | 7 | GPIO | Output by default / configurable input | Not used |
 | 8 | GPIO | Output by default / configurable input | Not used |
 
-- `P1`: 2.54 mm pin header
-- `P3`: six-pin board connector option
+- `P3`: 2.54 mm pin header
+- `P1`: six-pin board connector option
 - `J1`: USB-C connector
 
 The manual states that GPIO is an output by default: High when a target is detected and Low when no target is detected. When configured as input, the last character of the output data is described as being used for output, but the exact behavior is not defined clearly enough for implementation.
@@ -95,7 +101,7 @@ Electrical details not specified
 The manual does not define GPIO current limits, pull states, NRST timing, UART absolute maximum ratings, ESD limits, connector current ratings, or USB-C wiring.
 :::
 
-The manual names P3 connector options `12507WS-H06G` and `12507WR-H06G`. Its connector illustration contains `12507WS-H60G`; use the part number from the written pin-description text when selecting the connector.
+The manual names connector options `12507WS-H06G` and `12507WR-H06G`. These refer to the six-pin connector labeled P1 on the production board. Its connector illustration contains `12507WS-H60G`; use the part number from the written pin-description text when selecting the connector.
 
 ## Sensing modes
 
@@ -128,7 +134,7 @@ For ceiling installation:
 
 The manual states that X-axis performance is relatively better than Y- or Z-axis performance. Coordinates are relative to the radar orientation and can be transformed with `rotate`; wall-mounted modes can compensate a downward tilt with `walltilt` where supported.
 
-![AS-613 wall and ceiling coordinate systems](/img/Sensor/Radars/AS-613/as613-coordinate-system.svg)
+![AS-613 wall and ceiling coordinate systems](/img/Sensor/Radars/AS-613/as613-coordinate-system-1.png)
 
 *Wall and ceiling coordinate orientation. Validate the signs using a target at a known location after mounting.*
 

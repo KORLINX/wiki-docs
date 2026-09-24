@@ -47,7 +47,7 @@ Coordinate quality
 The manual says X-axis detection performance is relatively better than Y- or Z-axis performance. Validate every coordinate axis and sign after installing the final enclosure.
 :::
 
-![AS-613 wall and ceiling installation coordinates](/img/Sensor/Radars/AS-613/as613-coordinate-system.svg)
+![AS-613 wall and ceiling installation coordinates](/img/Sensor/Radars/AS-613/as613-coordinate-system-1.png)
 
 *Set `rotate` and, where supported, `walltilt` before measuring the final region of interest.*
 
@@ -197,6 +197,14 @@ Source strategy: Real production-unit test; record height, angle, room, firmware
 
 The manual warns that angle limits are approximate and less sensitive than distance limits.
 
+![AS-613 wall and ceiling detection distance limits](/img/Sensor/Radars/AS-613/as613-coordinate-system-2.png)
+
+*Distance limits define the region along the X, Y, and Z axes for each mounting orientation.*
+
+![AS-613 wall and ceiling detection angle limits](/img/Sensor/Radars/AS-613/as613-coordinate-system-3.png)
+
+*Angle limits use `alrmin`/`alrmax` and `adumin`/`adumax`; validate their boundaries after installation.*
+
 ## Configure exclusion zones
 
 An exclusion zone is a rectangle on the XZ plane described by center (`cx`, `cz`) and half-widths (`hx`, `hz`). Up to five zones can be stored per active mode/install/work profile.
@@ -214,7 +222,7 @@ Exclusion-zone command forms
 The exclusion-zone overview documents `exzset <cx> <cz> [hx] [hz]` and `exzpick <target_num> [hx] [hz]`. The command table also presents slot-oriented forms. Query stored zones with `exzinfo` after each change and avoid scripting slot allocation from an undocumented assumption.
 :::
 
-![AS-613 exclusion-zone center and half-width geometry](/img/Sensor/Radars/AS-613/as613-exclusion-zone.svg)
+![AS-613 exclusion-zone center and half-width geometry](/img/Sensor/Radars/AS-613/as613-exclusion-zone.png)
 
 *The rectangle uses center coordinates `cx`/`cz` and half-widths `hx`/`hz`. Query the stored result with `exzinfo`.*
 

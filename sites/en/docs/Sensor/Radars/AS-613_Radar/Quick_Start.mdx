@@ -33,27 +33,27 @@ The specification table defines 3.3–5.5 VDC and up to 800 mW. The feature and 
 
 ## Step 1: Identify the connector and Pin 1
 
-Use the manual pin-description diagram to identify Pin 1. P1 is the 2.54 mm header and P3 is the six-pin board connector. The required signals are VCC, GND, UART TX, and UART RX. Keep NRST open or high for normal operation.
+Use the confirmed production pin map below. P3 is the eight-pin 2.54 mm header; P1 is the six-pin board connector. With USB-C at the top, P3 Pin 1 is the top header pad. The required signals are VCC, GND, UART TX, and UART RX. Keep NRST open or high for normal operation.
 
-![AS-613 production board component side](/img/Sensor/Radars/AS-613/AS613-Front.png)
+![AS-613 confirmed production connector pin map](/img/Sensor/Radars/AS-613/as-613-pin-list.png)
 
-*Component-side production photograph. The board silkscreen and manual use opposite P1/P3 connector names; identify Pin 1 and the required signals from the confirmed production pinout before applying power.*
+*Use the production pin map shown here: manual v1.3.1 reverses the P1/P3 names and the header Pin 1 orientation. P1 Pin 6 is UART RX; its image label contains a typo.*
 
 ## Step 2: Wire power and UART
 
-| AS-613 signal | Host connection |
+| AS-613 P3 pin / signal | Host connection |
 | --- | --- |
-| VCC | Regulated 3.3–5.5 VDC supply |
-| GND | Supply ground and UART-adapter ground |
-| UART TX | Host/adapter RX |
-| UART RX | Host/adapter TX |
-| NRST | Leave open or high for normal operation |
+| 1 — VCC | Regulated 3.3–5.5 VDC supply |
+| 2 — GND | Supply ground and UART-adapter ground |
+| 5 — UART TX | Host/adapter RX |
+| 6 — UART RX | Host/adapter TX |
+| 4 — NRST | Leave open or high for normal operation |
 
 Do not connect TTL UART directly to an RS-232 port.
 
-![AS-613 regulated power and 3.3 V TTL UART wiring](/img/Sensor/Radars/AS-613/as613-uart-wiring.svg)
+![AS-613 regulated power and 3.3 V TTL UART wiring](/img/Sensor/Radars/AS-613/as613-uart-wiring.png)
 
-*Cross TX and RX, connect a common ground, and leave NRST open or High. USB-C is shown as a separate power path.*
+*Cross TX and RX, connect a common ground, and leave NRST open or high. Use one power input at a time; USB-C is an alternative power input.*
 
 ## Step 3: Open the serial terminal
 

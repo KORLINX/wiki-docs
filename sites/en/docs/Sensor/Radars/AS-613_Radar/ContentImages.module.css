@@ -2,5 +2,5 @@
 .figure { margin: 24px 0; }
 .figure figcaption { margin-top: 10px; color: var(--ifm-color-emphasis-700); font-size: .9rem; }
 .boardPhoto { position: relative; overflow: hidden; aspect-ratio: 1; border-radius: 12px; background: white; }
-.boardPhoto img { position: absolute; width: 240%; max-width: none; height: auto; left: 50%; top: 50%; transform: translate(-53%, -50%); }
+.boardPhoto img { position: absolute; width: 400%; max-width: none; height: auto; left: 50%; top: 50%; transform: translate(-50.5%, -49%); }
 @media(max-width: 600px) { .boardViews { grid-template-columns: 1fr; } }

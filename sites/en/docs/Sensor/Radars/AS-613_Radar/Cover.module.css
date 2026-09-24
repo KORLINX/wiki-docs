@@ -51,10 +51,10 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 240%;
+  width: 400%;
   max-width: none;
   height: auto;
-  transform: translate(-53%, -50%);
+  transform: translate(-50.5%, -49%);
 }
 .section { margin: 64px 0; }
 .sectionHeader { max-width: 760px; margin-bottom: 28px; }

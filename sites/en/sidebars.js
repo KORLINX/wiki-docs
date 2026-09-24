@@ -466,7 +466,7 @@ const sidebars = {
             // -------------------------------------------------
             {
               type: 'category',
-              label: 'AS-613 Radar',
+              label: 'AS-613',
               collapsed: true,
               collapsible: true,
               link: {
