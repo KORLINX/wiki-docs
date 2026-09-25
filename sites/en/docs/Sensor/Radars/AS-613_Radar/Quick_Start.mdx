@@ -1,69 +1,179 @@
 ---
+title: Get Started with AS-613
+sidebar_label: Quick Start
 sidebar_position: 2
-title: AS-613 Radar Quick Start
-description: Power, bench-test, install, connect, and troubleshoot the AnySensing AS-613 multi-target radar module.
-keywords: [AS-613, quick start, AS-BW, UART, radar installation, power supply, troubleshooting]
+description: Connect AS-613 safely, establish UART communication, select a position mode, and verify the first data packet.
+keywords:
+  - AS-613 quick start
+  - AS-613 UART
+  - 60 GHz radar setup
+  - FMCW radar command
+  - position sensor setup
 ---
 
-# AS-613 Radar Quick Start
+# Get Started with AS-613
 
-Use this guide to power and test an AS-613 before mounting it, then connect it through AS-BW for an InCare24 deployment.
+This tutorial connects AS-613 to a host through TTL UART, checks the firmware, selects wall position mode, and verifies the first position packet. It deliberately starts with Mode 1 because the licensed care modes require additional installation and validation steps.
 
-> **Power warning:** USB bus power is not sufficient for the current AS-613 revision. Supply at least 5 V / 300 mA through the power port. Size the supply for startup inrush, not average consumption.
+## Before you begin
 
-## Bench check
+You need:
 
-1. **Connect a dedicated supply.** Provide at least 5 V / 300 mA at the power port. AS-613 can draw up to 1,000 mW.
-2. **Add communication-module headroom.** If the supply also powers AS-BW, size it for both modules.
-3. **Connect UART.** Cross TX/RX and share ground.
-4. **Confirm the baud rate.** The documented default changed from 921,600 to 460,800. Some customer shipments use 115,200, so confirm the value for each batch. **[VERIFY]**
-5. **Verify operation before mounting.** Resolve power, enumeration, UART, and firmware issues on the bench.
+- One AS-613 module with its ordered connector option
+- A regulated 3.3–5.5 VDC supply sized for up to 800 mW
+- A 3.3 V TTL UART adapter
+- A serial-terminal application that supports high baud rates
+- The firmware version and licensed-mode list for the unit under test
+- An open indoor test area with a clear line of sight
 
-A dedicated USB connection cable is available from Ingenious as a paid accessory.
+:::caution
+Use the specification-table supply range
+The specification table defines 3.3–5.5 VDC and up to 800 mW. The feature and pin-description sections also show 3.3–7.0 V. This guide uses the narrower 3.3–5.5 VDC range. The UART protocol is documented as 3.3 V TTL.
+:::
 
-## Install and tune
+## Step 1: Identify the connector and Pin 1
 
-1. Mount the unit on the supplied ceiling bracket, one unit per bed.
-2. Connect the radar to AS-BW and record the AS-BW MAC address against the bed number.
-3. Tune curtain filtering independently for each direction.
-4. Account for window walls, floor mattresses, and later bed movement.
+Use the confirmed production pin map below. P3 is the eight-pin 2.54 mm header; P1 is the six-pin board connector. With USB-C at the top, P3 Pin 1 is the top header pad. The required signals are VCC, GND, UART TX, and UART RX. Keep NRST open or high for normal operation.
 
-> **Installation gap:** Mounting height, tilt angle, offset from the bed, and coverage footprint are **[TBD]**. Obtain them from field engineering before installation.
+![AS-613 confirmed production connector pin map](/img/Sensor/Radars/AS-613/as-613-pin-list.png)
 
-## Connect through AS-BW
+*Use the production pin map shown here: manual v1.3.1 reverses the P1/P3 names and the header Pin 1 orientation. P1 Pin 6 is UART RX; its image label contains a typo.*
 
-AS-613 provides GPIO, UART, and USB but no onboard network interface. AS-BW carries its UART output over 2.4 GHz Wi-Fi and MQTT. Bluetooth 4.2 is used to configure AS-BW, not to transport radar data.
+## Step 2: Wire power and UART
+
+| AS-613 P3 pin / signal | Host connection |
+| --- | --- |
+| 1 — VCC | Regulated 3.3–5.5 VDC supply |
+| 2 — GND | Supply ground and UART-adapter ground |
+| 5 — UART TX | Host/adapter RX |
+| 6 — UART RX | Host/adapter TX |
+| 4 — NRST | Leave open or high for normal operation |
+
+Do not connect TTL UART directly to an RS-232 port.
+
+![AS-613 regulated power and 3.3 V TTL UART wiring](/img/Sensor/Radars/AS-613/as613-uart-wiring.png)
+
+*Cross TX and RX, connect a common ground, and leave NRST open or high. Use one power input at a time; USB-C is an alternative power input.*
+
+## Step 3: Open the serial terminal
+
+The manual agrees on the following format:
 
 ```text
-AS-613 UART → AS-BW → 2.4 GHz Wi-Fi → MQTT
+Data bits: 8
+Parity: None
+Stop bits: 1
+Flow control: None
+Encoding: ASCII
+Command case: lowercase
+Command terminator: LF or CR
 ```
 
-Devices are identified by MAC address. Downlink commands to an individual radar and per-unit serial numbers are being developed and are not confirmed as shipping features. **[VERIFY]**
+Use `460800 bps`, the default defined in the protocol section. The command table shows `921600` as its initial value; if an already-configured unit is unreadable at 460800, check the other supported rates without sending configuration commands.
 
-See [AS-BW Quick Start](../AS-BW/Quick_Start) for network preparation and configuration gaps.
+## Step 4: Power the module and identify the firmware
 
-## Data availability
+After readable UART communication is established, stop continuous output and query the firmware:
 
-AS-613 sends ASCII data over UART. Option modes 11, 12, 13, and 14 select the frame layout.
+```text
+stop
+ver
+```
 
-The packet formats, status codes, and `outtime` / `wave` commands are **[TBD]** because `260508_summary_radar_payloads.md` was unavailable. Do not derive and publish a packet specification from observed frames alone.
+The manual gives this response only as an example:
 
-The monitoring system receives patient state, heart rate, respiration rate, and fall alerts. AI classification runs on the radar before transmission. Some deployments use patient-state information without vital signs.
+```text
+=61326May12.17.V.1.2!
+```
 
-Data storage and retention are under review and remain **[TBD]**.
+Do not treat that example as the required production string. Record the real response, hardware revision, supply voltage, baud rate, and licensed modes.
+
+{/* IMAGE TODO [AS613-IMG-07]:
+Type: Real terminal capture
+Content: Approved production unit responding to `stop` and `ver`, with baud setting and firmware response visible
+Purpose: Define the first communication pass condition
+Source strategy: Capture from a production-representative unit; hide host paths and serial numbers
+*/}
+
+## Step 5: Reset Mode 1 and inspect settings
+
+All commands must be lowercase and end with LF or CR. Send each command only after receiving the preceding response.
+
+```text
+mode 1
+mreset
+info
+```
+
+`mreset` resets only the active mode. The manual recommends `freset` when previous test settings may cause unexpected behavior, but `freset` resets all configuration and should be used only in a controlled validation workflow.
+
+:::warning
+Reset behavior
+Some configuration commands can trigger an automatic reset or fast reset. Allow several hundred milliseconds or more after such a command before sending the next command.
+:::
+
+## Step 6: Start wall-position output
+
+For an initial open-area test, keep the documented Mode 1 defaults and start output:
+
+```text
+start
+```
+
+A normal Mode 1 target packet has this structure:
+
+```text
+#ABBBBCCCDDD!
+```
+
+Where:
+
+- `A`: target index
+- `BBBB`: signed X coordinate in centimeters
+- `CCC`: positive Z coordinate in centimeters
+- `DDD`: reflected-energy value
+
+When no target is detected, the documented vacancy packet is:
+
+```text
+#0!
+```
+
+Walk slowly inside the configured region and confirm that target packets change with position. Do not use a hand-wave-only test as proof of human tracking performance.
+
+{/* IMAGE TODO [AS613-IMG-08]:
+Type: Test-area and terminal image pair
+Content: Open wall-mount setup with one marked target position and matching real `#...!` UART packets
+Purpose: Link physical motion to the first valid data output
+Source strategy: New KORLINX test capture with hardware/firmware/date recorded
+*/}
+
+## Pass criteria
+
+- The board powers without supply collapse, abnormal heating, or unexpected current.
+- Readable UART data is obtained at 460800 bps or another configured supported rate.
+- `ver` returns the module and firmware identity.
+- `mode 1`, `mreset`, and `info` return documented response types.
+- `start` produces valid `#...!` target packets or `#0!` vacancy packets.
+- Coordinates respond consistently when one person moves in the test area.
+- The status LED turns on when an object is detected, as described by the manual.
 
 ## Troubleshooting
 
-| Symptom or question | Action or answer |
+| Symptom | Check |
 | --- | --- |
-| Module does not start from an ESP32 or host board | Use a dedicated supply of at least 5 V / 300 mA and retest before treating the module as faulty. |
-| USB-UART adapter does not appear | Check the CP2102 bridge version and measure actual current draw; report both to engineering. |
-| Can USB bus power run the module? | No, not on the current revision; use the power port. |
-| Why is power higher than AS-614? | AS-613 reaches 1,000 mW maximum and typically uses 650 mW; include AS-BW when sizing the supply. |
-| How many people can it track? | Up to five. |
-| Does it support long-range AI tracking? | No. That feature used a discontinued TI component and is no longer in the product line. |
-| Is heart rate clinical-grade? | No. Treat radar heart rate as reference information; position the product around contactless respiration, presence, posture, and fall detection. |
-| Why is there no MMIC shield can? | The antenna-in-package device uses an equivalent 3D Faraday structure. Request the existing technical justification document. |
-| Curtains, windows, floor mattresses, or moved beds affect results | Treat these as installation-environment issues and apply the same per-room tuning process used for AS-614. |
+| No UART data | Supply range, current capacity, common ground, TX/RX crossing, NRST, connector orientation, and supported baud rate |
+| Garbled data | Test only the two documented baud claims, confirm 8-N-1/no flow control, and verify logic levels |
+| Command ignored | Use lowercase, terminate with LF or CR, wait for the previous response, and stop output if the terminal cannot separate commands from data |
+| `=OverRange!` | Check argument count, numeric format, mode-specific range, and whether the current mount/work profile supports the command |
+| `=UnSupport!` | Confirm active mode, mounting profile, work profile, license, and firmware |
+| False targets | Move to an open area, narrow the ROI, identify fans/curtains/metal, then add verified exclusion zones only after the final profile is selected |
+| Target disappears when stationary | Position mode needs micro-motion; shorten distance and verify with deliberate movement before tuning sensitivity |
 
-Return to the [AS-613 Radar Overview](./Overview) for capabilities and specifications.
+## What's Next?
+
+- [Configure wall and ceiling position detection](./Position_Detection)
+- [Set up closest-person vital-sign sensing](./Vital_Sign_Detection)
+- [Review licensed application modes](./Application_Modes)
+- [Integrate UART and verify USB behavior](./UART_and_USB)
+- [Use the complete command and packet reference](./Command_and_Data_Reference)

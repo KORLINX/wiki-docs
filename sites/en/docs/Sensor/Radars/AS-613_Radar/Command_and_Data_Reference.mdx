@@ -1,0 +1,297 @@
+---
+title: AS-613 Command and Data Reference
+sidebar_label: Command and Data Reference
+sidebar_position: 7
+description: Draft reference for AS-613 UART commands, response types, mode identifiers, and fixed-width ASCII packets.
+keywords:
+  - AS-613 commands
+  - AS-613 data format
+  - AS-613 UART packets
+  - radar CLI
+  - radar parser
+---
+
+# AS-613 Command and Data Reference
+
+This page presents the commands and packet layouts documented in the official AS-613 User Manual, Ver.1.3.1 Jul.2026.
+
+:::note
+Manual scope
+The manual does not define the Mode 1/2 zone-packet fields, the complete Mode 12 packet, several timing details, or every invalid-value behavior. A host parser must reject frames that do not match a documented layout.
+:::
+
+## Transport rules
+
+- ASCII commands and data
+- Commands in lowercase
+- Command terminator: LF or CR
+- 8 data bits, no parity, 1 stop bit, no flow control
+- Supported baud values: 115200, 230400, 460800, 921600
+- Default baud: **460800 bps** in the protocol section
+- Command-table initial value: **921600 bps**
+- Command responses begin with `=` and end with `!`
+- Send the next command after the previous response
+- Allow several hundred milliseconds or more after commands that reset or fast-reset the module
+
+## Response types
+
+| Response | Meaning |
+| --- | --- |
+| `=<value>!` | Query or setting completed |
+| `=OverRange!` | Invalid argument count, range, or format |
+| `=UnSupport!` | Command unsupported in active mode/mount/work profile |
+| `=UnKnown!` | Unknown command or internal queue-registration failure |
+| `=Error!` | Internal failure such as flash-write failure |
+| `=Missing!` | Missing target parameter, documented for exclusion-zone selection |
+| `=NoTarget!` | Requested target does not exist, documented for exclusion-zone selection |
+| `=PresenceClr!` | Live presence slots/counter initialized |
+
+## Packet identifiers
+
+| Mode | Normal/basic | Waveform/alternate | Vacancy or short state |
+| --- | --- | --- | --- |
+| 1 Wall position | `#` distance | `*` zone | `#0!` |
+| 2 Ceiling position | `$` distance | `~` zone | `$0!` |
+| 5 Vital | `%` no waveform | `@` waveform | `%0!`, `@0!` |
+| 6 Vital + position | `&` no waveform | `?` waveform | `&0!`, `?0!` |
+| 11 Advanced vital | `}` no waveform | `{` waveform | `}0!`, `{0!` |
+| 12 Restroom | `^` | Not fully documented | `^0!` mentioned in setup only |
+| 13 Hospital bed | `/` no waveform | `\` waveform | `/A!` or `\A!` short states |
+| 14 Presence | `<` distance work | `>` vital work | `<ZZZ!`, `>ZZZ!` |
+| Command response | `=` | - | Ends with `!` |
+
+`*`, `~`, and the complete `^` packet are not defined in the supplied manual.
+
+## Command reference
+
+### Flow and reset
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `start` | Runtime | Start data output; also reactivates from idle. Initial frames may contain buffered state. |
+| `stop` | Runtime | Stop data output while internal detection continues. |
+| `pwr` | `0..3`; source discusses defaults 2/3 inconsistently | 0 idle; 1 minimum output; 2 initial/factory output; 3 configured output. Values 1-3 apply immediately. |
+| `reset` | - | Software restart, retain settings. |
+| `freset` | - | Restore factory settings; changed baud is documented as retained. |
+| `mreset` | - | Restore active mode only; other mode settings retained. |
+
+### Identification and mode control
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `ver` | Query | Return model/date/time/version string. The manual example is not a production requirement. |
+| `info` | Query or `1..100` s | No argument: settings blocks. Timed value: real-time coordinates; not supported in Mode 14. |
+| `test` | `0`, `1` | Test output; `1` reduces wait to 11 s and stops data output, `0` restores default wait. |
+| `wink` | Runtime | Blink LED about 10 times at 150 ms intervals. |
+| `mode` | `1,2,5,6,11,12,13,14` | Select operating mode. License restrictions apply. |
+| `exten` | `0`, `1` | Basic/extended packet; Mode 14 adds signed Y. No effect in Mode 12 per summary. |
+| `interval` | `1..255` × 100 ms | Output interval; waveform output can force 100 ms. |
+| `wait` | `3..43200` s; default 15 | Vacancy/no-target packet interval. |
+| `baud` | 115200/230400/460800/921600 | Set UART baud; changed value survives `freset` and `mreset`. Use 460800 for the initial connection described by the protocol section. |
+
+### Detection sensitivity and persistence
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `sena` | `1..1000`; default missing | Primary target sensitivity; higher is more sensitive/noise-prone. |
+| `senb` | `1..100`; default missing | Secondary sensitivity; detailed semantics missing. |
+| `senc` | `1..100`; default 30 | Minimum reflected-energy percentage accepted as target. |
+| `senin` | `1..9`; default 6 | Entry confidence; higher can reject false targets but increases acquisition time. |
+| `senout` | `2..50` s; default 10 | Target-maintenance time. |
+
+### Geometry and orientation
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `xmin` | Wall -450..450; ceiling -300..300 cm | Minimum X boundary. Mode/profile-specific limits may differ. |
+| `xmax` | Wall -500..500; ceiling -400..400 cm | Maximum X boundary. |
+| `ymin` | Wall -450..450; ceiling -300..0 cm | Minimum Y; ceiling uses negative values. |
+| `ymax` | Wall -450..450; ceiling -300..0 cm | Maximum Y; ceiling positive values ignored/unsupported. |
+| `zmin` | Wall 0..900; ceiling -300..300 cm | Minimum Z; wall uses positive values. |
+| `zmax` | Wall 0..900; ceiling -300..300 cm | Maximum Z; wall uses positive values. |
+| `alrmin` | -90..0° | Left boundary. |
+| `alrmax` | 0..90° | Right boundary. |
+| `adumin` | Negative angle; exact table range missing | Down boundary. |
+| `adumax` | 0..90° | Up boundary. |
+| `rotate` | 0/90/180/270° | Clockwise board rotation correction. |
+| `walltilt` | 0..45°; default 0 | Downward wall tilt correction in supported wall modes. |
+| `geometry` | Referenced in mode summaries; command row absent | Query/set geometry behavior requires firmware documentation. |
+
+### Waveform and vital limits
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `wave` | `0`, `1`; default 0 | Respiration waveform. Documented for Modes 5, 6, 13 and inconsistently for Mode 14. |
+| `pulse` | `0`, `1`; runtime | Pulse aligned to breathing-detection timing; not retained. |
+| `hmax` | Row incomplete | Heart-rate detection distance; syntax/default/range absent. |
+| `bmax` | Source says default 300 cm, max 600 cm and ≤ `zmax` | Breathing detection distance. Command examples/ranges are incomplete. |
+
+### Mode 12 restroom
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `rstc` | 1..30 min; default 5 | Stay-time-over reference. |
+| `rrsh` | 100..300 cm; default 220 | Sensor height. |
+| `rrdoorx` | -50..50 cm; source default 0 | Entrance X. |
+| `rrdoorz` | -40..100 cm; source default 100 | Entrance Z. |
+| `rrdoorwd` | 60..120 cm; source default 80 | Entrance detection diameter. |
+
+### Mode 13 hospital bed
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `hbinstall` | 0 ceiling; 1 wall | Select installation. Wall assumes 170 cm; the angle reference requires confirmation. |
+| `hbsh` | 100..300 cm; default 220 | Ceiling sensor height only. |
+| `hbh` | 10..69 cm; default 55 | Mattress-top height. At ≤30 cm, floor mattress behavior disables fall detection according to source. |
+| `hbw` | 90..160 cm in the Mode 13 description; command table shows 80..1700 | Bed width. Use the Mode 13 installation range unless working with firmware documentation that defines another range. |
+| `hoffset` | 1..9 in setup; 5 center | Correct left/right bed shift. The command text uses `hoffset`; one diagram labels it `hboffset`. |
+| `wallside` | 0 head, 1 left, 2 right | Bed direction; unsupported in wall install where head direction is fixed. |
+| `hbds` | Four HRDL bits; default `0000` | Direction disable flags; relationship to `wallside` requires clarification. |
+| `fallsh` | 10..300 cm; 0 restore; default 90 | Fall-detection sensor height; automatic restart. |
+| `falleh` | 10..`fallsh`; 0 restore; default 50 | Exclude positions above this height from fall decision; automatic restart. |
+| `hbfalla` | 0/1; default 1 | Fall-risk warning output. |
+| `hbfalls` | 0/1; default 1 | Fall-occurrence warning output. |
+| `bedsorea` | 0/1; default 1 | Pressure-ulcer-risk warning output. |
+| `bedsores` | 0/1; default 1 | High pressure-ulcer-risk warning output. |
+| `hrv` | 0/1; default 1 | HRV output. |
+
+### Mode 14 presence
+
+| Command | Documented values | Purpose / notes |
+| --- | --- | --- |
+| `pmount` | 0 wall, 1 ceiling, 2 corner | Select installation profile. |
+| `pwork` | 0 distance, 1 vital | Select presence work profile. |
+| `cornerleft` | 1..1000 cm; default 300 | Measured left-wall length in corner installation. |
+| `cornerright` | 1..1000 cm; default 300 | Measured right-wall length in corner installation. |
+| `doorx` | Source general range -300..300 cm; profile-specific | Entrance X or negative left-wall door distance in corner mode. |
+| `doorz` | Source general range 0..600 cm; profile-specific | Entrance Z or positive right-wall door distance in corner mode. |
+| `doorwd` | 80..150 cm; default 90 | Entrance detection diameter/width; source terminology must be normalized. |
+| `presenceclr` | Runtime | Clear live presence slots and vacancy counter. |
+
+### Exclusion zones
+
+| Command | Documented purpose | Conflict requiring validation |
+| --- | --- | --- |
+| `exzon` | Query/disable/enable active profile | Confirm persistence and profile key. |
+| `exzinfo` | Query count or slot coordinates | Empty-slot output and slot numbering. |
+| `exzset` | Store center/half-width rectangle | Overview uses coordinates without slot; command table appears to use slot first. |
+| `exzpick` | Store rectangle around current target | Overview says target 1-5; command table refers to target 0. |
+| `exzdel` | Delete slot 1-5 or all with 0 | Confirm sorting and whether 0 also disables function. |
+
+## Packet layouts
+
+Lengths below are counts of the displayed fixed-width ASCII templates, including the start marker and `!`, excluding any trailing CR/LF. They are not measured firmware output lengths. Confirm padding and actual emitted frames before implementing a parser.
+
+### Mode 1 - wall position
+
+```text
+#ABBBBCCCDDD!          13 bytes
+#ABBBBCCCCDDDEEE!      17 bytes, extended
+```
+
+`A` target; signed X; optional signed Y; positive Z; energy.
+
+### Mode 2 - ceiling position
+
+```text
+$ABBBBCCCCDDD!         14 bytes
+$ABBBBCCCCDDDDEEE!     18 bytes, extended
+```
+
+`A` target; signed X; optional negative Y; signed Z; energy.
+
+### Mode 5 - vital
+
+```text
+%ABBBCCDDD!                    11 bytes
+%ABBBCCDDDDEEEEFFFGGG!         22 bytes, extended
+@ABBBCCDEEEFFF!                15 bytes, waveform
+@ABBBCCDEEEFFFFGGGGHHHIII!     26 bytes, waveform + extended
+```
+
+Vital state; heart rate; breathing rate; optional pulse/waveform; position and distance/power by variant.
+
+### Mode 6 - vital + position
+
+```text
+&ABBBBCCCDDDEFFFGG!            19 bytes
+?ABBBBCCCDDDEFFFGGHIII!        23 bytes, waveform
+```
+
+Target; signed X; positive Z; energy; vital state; heart rate; breathing rate; optional pulse/waveform.
+
+### Mode 11 - advanced vital
+
+```text
+}ABBBCCDDEEFFF!                         15 bytes
+}ABBBCCDDEEFFFFGGGGHHHIII!              26 bytes, extended
+{ABBBCCDDEEFGGGHHH!                     19 bytes, waveform
+{ABBBCCDDEEFGGGHHHHIIIIJJJKKK!          30 bytes, waveform + extended
+```
+
+Vital state; heart rate; breathing rate; RMSSD; SDNN; optional pulse/waveform; position/power by variant.
+
+### Mode 13 - hospital bed
+
+```text
+/A!                                      short state
+/ABBBCCDDEEFFGGHIIJJJ!                  22 bytes
+\A!                                     short waveform-state
+\ABBBCCDDEEFFGGHIIJJJKKK!              25 bytes
+```
+
+State; heart rate; breathing rate; optional external SpO2 and temperature; RMSSD; SDNN; external-device fields; temporary data; optional respiration waveform.
+
+### Mode 14 - presence
+
+```text
+<ZZZ!                                   vacant duration, hexadecimal minutes
+<ABBBBCCCDEEEFFFGGG!                    20 bytes
+<ABBBBCCCDEEEFFFGGGHHHH!                24 bytes, extended Y
+
+>ZZZ!                                   vacant duration, hexadecimal minutes
+>ABBBBCCCDEEEFFFGGGHHHIIJJJ!            28 bytes
+>ABBBBCCCDEEEFFFGGGHHHIIJJJKKKK!        32 bytes, extended Y
+```
+
+Presence slot; signed X; Z; status; hexadecimal presence/non-detection time; temporary data; optional closest-person heart/breath/waveform; optional signed Y.
+
+## State values
+
+### Vital state in Modes 5 and 6
+
+| Value | Meaning in source |
+| ---: | --- |
+| 0 | No target |
+| 1 | Target moving |
+| 2 | Target, no valid vital signal |
+| 3 | Target, valid vital signal |
+| 4 | Fall detection |
+
+Mode 11 packet tables list only 0-3. The meaning, availability, and algorithm behind state 4 in Modes 5/6 are not described.
+
+### Hospital-bed state
+
+| Value | Meaning in source |
+| ---: | --- |
+| 0 | Bed empty |
+| 1 | Standing beside/outside bed |
+| 2 | Sitting or lying beside/outside bed |
+| 3 | On bed, awake |
+| 4 | On bed, tossing/turning |
+| 5 | On bed, sleeping |
+| 6 | Bed fall-risk warning |
+| 7 | Bed fall occurrence |
+| 8 | Pressure-ulcer-risk warning |
+| 9 | High pressure-ulcer-risk warning |
+
+## Parser implementation notes
+
+- Match the active mode, start character, `exten` setting, and waveform setting before decoding a frame.
+- Validate fixed widths, signs, and decimal or hexadecimal fields exactly as shown.
+- Treat undocumented packet variants and malformed frames as unsupported input.
+- The manual does not define overflow, saturation, unavailable-value codes, object-index lifetime, or maximum response time.
+
+![AS-613 UART packet anatomy and parser checks](/img/Sensor/Radars/AS-613/as613-packet-anatomy.png)
+
+*Use the active mode, start character, frame length, and settings to select the correct parser schema.*

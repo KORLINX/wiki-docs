@@ -907,3 +907,31 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
     min-height: calc(100vh - var(--korlinx-navbar-height)) !important;
   }
 }
+
+/* Shared image captions: semantic figures and Markdown image + italic caption. */
+.theme-doc-markdown figure figcaption,
+.theme-doc-markdown p:has(> img:only-child) + p:has(> em:only-child),
+.theme-doc-markdown p:has(> a:only-child > img:only-child) + p:has(> em:only-child) {
+  margin-top: 6px;
+  text-align: center;
+  color: var(--ifm-color-emphasis-700);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
+.theme-doc-markdown p:has(> img:only-child):has(+ p > em:only-child),
+.theme-doc-markdown p:has(> a:only-child > img:only-child):has(+ p > em:only-child) {
+  margin-bottom: 0;
+}
+
+.theme-doc-markdown figure > img,
+.theme-doc-markdown figure > a > img,
+.theme-doc-markdown p:has(+ p > em:only-child) > img:only-child,
+.theme-doc-markdown p:has(+ p > em:only-child) > a:only-child > img:only-child {
+  display: block;
+  margin-bottom: 0;
+}
+
+.theme-doc-markdown figure figcaption > p {
+  margin: 0;
+}

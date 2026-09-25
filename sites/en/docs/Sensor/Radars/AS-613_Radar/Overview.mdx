@@ -1,59 +1,199 @@
 ---
+title: AS-613 60 GHz Radar Module Overview
+sidebar_label: Overview
 sidebar_position: 1
-title: AS-613 Radar Overview
-description: Learn the capabilities, specifications, and design notes of the AnySensing AS-613 60 GHz multi-target AI radar module.
-keywords: [AS-613, AnySensing, 60 GHz radar, FMCW radar, fall detection, vital signs, multi-target radar]
+description: Hardware, interfaces, sensing modes, operating limits, and ordering structure of the AS-613 multi-channel FMCW radar module.
+keywords:
+  - AS-613
+  - 60 GHz FMCW radar
+  - position detection
+  - vital-sign sensing
+  - presence detection
+  - AI fall detection
 ---
 
-# AS-613 Radar Overview
+# AS-613 60 GHz Radar Module Overview
 
-The **AS-613** is a 60 GHz multi-channel frequency-modulated continuous-wave (FMCW) AI radar with one transmit and three receive antennas. It performs analysis on the module and supports multiple targets, contactless vital signs, fall detection, posture, presence, and position sensing.
+AS-613 is a compact 60 GHz multi-channel FMCW radar module for indoor position, presence, and closest-person vital-sign sensing. It integrates a 1 TX/3 RX antenna system and signal-processing software on a 32 × 30 mm board and provides GPIO, TTL UART, optional USB-C hardware, and an indicator LED.
 
-AS-613 is the current flagship model, is in volume production, and is used for new hospital installations and conversions from AS-614.
+:::note
+Official reference
+This page follows the AS-613 User Manual, Ver.1.3.1 Jul.2026. Where a command table differs from a product specification or protocol section, this documentation identifies the section used for setup.
+:::
 
-![AS-613 radar module front view](/img/Sensor/Radars/AS-613/AS%20613.png)
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
 
-## What it can sense
+## Hardware overview
 
-- Heart rate, breathing rate, and heart-rate variability using RMSSD and SDNN
-- Respiration waveform and breathing anomalies
-- AI fall detection and posture classification: lying, sitting, and standing
-- Presence, occupancy, and vacancy for up to five people
-- Distance and X/Y/Z position up to 8 m
+- 60 GHz multi-channel FMCW radar
+- Integrated antenna and signal-processing software
+- 1 transmit channel and 3 receive channels
+- 32.0 × 30.0 mm board outline
+- P3 2.54 mm header option
+- P1 board-connector option
+- J1 USB-C option
+- GPIO, TTL UART, USB listed in the manual, and status LED
+
+<div className={images.boardViews}>
+<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-613/AS613-Front.png')} alt="AS-613 production board component side" width="3000" height="1524" loading="lazy" /></div><figcaption>Component side with USB-C, processing components, header pads, and board connector.</figcaption></figure>
+<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-613/AS613-Back.png')} alt="AS-613 production board antenna side" width="3000" height="1524" loading="lazy" /></div><figcaption>Antenna and product-label side of the AS-613 production board.</figcaption></figure>
+</div>
+
+Flat illustrations: [component side](/img/Sensor/Radars/AS-613/as-613-front-flat.png) · [antenna side](/img/Sensor/Radars/AS-613/as-613-back-flat.png).
+
+The photographs identify the physical board faces. Printed certification marks alone do not establish certification status.
+
+:::caution
+Connector-name difference
+The component-side silkscreen shows `P3` beside the 2.54 mm header and `P1` beside the board connector. The manual v1.3.1 describes `P1` as the 2.54 mm header and `P3` as the six-pin board connector. The pin map below follows the confirmed production-board reference: P3 is the header, with Pin 1 at the top in the illustrated orientation. The manual also places header Pin 1 at the opposite end; do not mix its orientation with this production pin map.
+:::
 
 ## Specifications
 
-| Item | Specification |
+| Item | Value documented in the supplied manual |
 | --- | --- |
-| Class | 60 GHz multi-channel FMCW radar with onboard AI analysis |
-| TX / RX | 1 / 3 |
-| Antenna gain / EIRP | 3 dBi / 11 dBm |
-| Beamwidth | 120° horizontal / 120° vertical |
-| Distance range | Maximum 8 m; 9 m wall-mounted; 12 cm resolution |
-| Vital-sign range | Maximum 5 m; 3 m when combined with other functions; approximately 85% accuracy |
-| People tracked | Up to 5 |
-| Size / weight | 32 × 30 × 3.35 mm / 3.15 g |
-| Supply / power | 3.3–7 V / maximum 1,000 mW; typically 650 mW |
-| Operating temperature | −20 to 85 °C |
-| Interfaces | GPIO, UART, USB |
-| Radar IC | Infineon BGT60CUTR13, XENSIV 60 GHz |
-| MCU | CY8C6148LQI, PSoC 6 |
-| Option modes | 11, 12, 13, and 14 |
-| Certifications | KC and FCC; TELEC certification in progress for Japan |
-| Reference manual | User Manual v1.00, May 2026 **[TBD]** |
+| Model | `AS_613_AI` in the specification table; `AS_613` elsewhere |
+| Size | 32.0 × 30.0 × 3.35 mm without connector |
+| Size with connector | 32.0 × 30.0 × 5.1 mm |
+| Weight | 3.15 g |
+| Transmit frequency | 60 GHz |
+| Antenna | 1 TX, 3 RX |
+| TX EIRP | 11 dBm |
+| Antenna gain | 3 dBi |
+| RF pattern (-3 dB width) | 120° horizontal, 120° vertical |
+| Supply voltage | 3.3–5.5 VDC |
+| Typical / maximum power | 350 mW typical / 800 mW maximum |
+| Operating temperature | -20 to 85 °C |
+| Storage temperature | -40 to 150 °C |
+| Interfaces | 1 GPIO, 1 TTL UART, USB |
+| Distance resolution | 12 cm |
 
-## Board views and connectors
+The specification table defines a 3.3–5.5 VDC supply. The feature list and connector table show 3.3–7.0 V. This guide uses the narrower specification-table range for setup.
 
-The component side is shown above. The following image shows the radar side, and the connector diagram identifies the P3 2.54 mm header and the P1 power-and-data connector.
+## Pin map
 
-![AS-613 radar side](/img/Sensor/Radars/AS-613/AS%20613%20%282%29.png)
+The connector names and orientation below follow the confirmed production pin map. With USB-C at the top, P3 is numbered 1–8 from top to bottom.
 
-![AS-613 connector and pin diagram](/img/Sensor/Radars/AS-613/AS-613_Pin_List.png)
+![AS-613 confirmed P3 header and P1 connector pin map](/img/Sensor/Radars/AS-613/as-613-pin-list.png)
 
-## Antenna-in-package design
+*P3 is the eight-pin header; P1 is the six-pin connector. The P1 Pin 6 label in the image has a typo: its input direction and receive description identify UART RX.*
 
-The BGT60CUTR13 uses an antenna-in-package design and cannot use a conventional shield can. Its package provides an equivalent three-dimensional Faraday structure. Ingenious holds a technical justification document, including an English appendix for overseas certification submissions. Request that document when a customer or test house asks about shielding.
+| Pin | Signal | P3 header | P1 connector |
+| --- | --- | --- | --- |
+| 1 | VCC | Power input | Power input |
+| 2 | GND | Ground | Ground |
+| 3 | GPIO | Output by default / configurable input | Output by default / configurable input |
+| 4 | NRST | Open or High: normal; Low: reset | Open or High: normal; Low: reset |
+| 5 | UART TX | Module transmit | Module transmit |
+| 6 | UART RX | Module receive | Module receive |
+| 7 | GPIO | Output by default / configurable input | Not used |
+| 8 | GPIO | Output by default / configurable input | Not used |
 
-## Next step
+- `P3`: 2.54 mm pin header
+- `P1`: six-pin board connector option
+- `J1`: USB-C connector
 
-Continue to [AS-613 Radar Quick Start](./Quick_Start) for power requirements, commissioning, AS-BW connectivity, data limitations, and troubleshooting.
+The manual states that GPIO is an output by default: High when a target is detected and Low when no target is detected. When configured as input, the last character of the output data is described as being used for output, but the exact behavior is not defined clearly enough for implementation.
+
+:::note
+Electrical details not specified
+The manual does not define GPIO current limits, pull states, NRST timing, UART absolute maximum ratings, ESD limits, connector current ratings, or USB-C wiring.
+:::
+
+The manual names connector options `12507WS-H06G` and `12507WR-H06G`. These refer to the six-pin connector labeled P1 on the production board. Its connector illustration contains `12507WS-H60G`; use the part number from the written pin-description text when selecting the connector.
+
+## Sensing modes
+
+| Mode | Installation | Main output | Availability |
+| --- | --- | --- | --- |
+| 1 | Wall/side | Position and reflected energy | Default |
+| 2 | Ceiling | Floor-plane position and reflected energy | Default |
+| 5 | Wall/side | Closest-person heart rate, breathing rate, waveform, and position | Default |
+| 6 | Wall | Position slots plus closest-person vital signs | Default |
+| 11 | Wall | Advanced vital signs with RMSSD and SDNN | Additional license |
+| 12 | Ceiling | Restroom occupancy/posture-related state and breathing | License status to confirm |
+| 13 | Ceiling or wall | Hospital-bed state, vital signs, fall-risk/event, and pressure-ulcer-risk states | Additional license |
+| 14 | Wall, ceiling, or corner | Presence tracking; optional closest-person vital output | Additional license |
+
+The manual says evaluation samples include option modes, while mass-production units depend on license status.
+
+## Coordinate system
+
+For wall installation:
+
+- X: left (-), right (+)
+- Y: down (-), up (+)
+- Z: forward (+)
+
+For ceiling installation:
+
+- X: left (-), right (+)
+- Y: height below the radar (-)
+- Z: backward (-), forward (+)
+
+The manual states that X-axis performance is relatively better than Y- or Z-axis performance. Coordinates are relative to the radar orientation and can be transformed with `rotate`; wall-mounted modes can compensate a downward tilt with `walltilt` where supported.
+
+<figure className={images.coordinateFigure}>
+  <img src={useBaseUrl('/img/Sensor/Radars/AS-613/as613-coordinate-system-1.png')} alt="AS-613 wall and ceiling coordinate systems" loading="lazy" />
+  <figcaption>Wall and ceiling coordinate orientation. Validate the signs using a target at a known location after mounting.</figcaption>
+</figure>
+
+For distance and angle configuration, see [Tune the region of interest](./Position_Detection#tune-the-region-of-interest).
+
+## Detection-area controls
+
+AS-613 exposes distance, angle, sensitivity, and target-maintenance settings. The manual documents a configurable angle range of -75° to +75° and a more stable detection range of approximately -50° to +50°. Angle limits provide an approximate filter and must not be treated as a precise physical beam boundary.
+
+Up to five rectangular exclusion zones can be stored for each active mode/install/work profile. Exclusion zones operate on the XZ plane and are intended to suppress fixed or moving reflectors such as furniture, fans, or air conditioners. Configure the final mode and mounting profile before storing exclusion zones.
+
+## Ordering structure
+
+```text
+AS_613_P/C/U
+```
+
+| Code | Meaning in the manual |
+| --- | --- |
+| `P` | 2.54 mm pin header installed |
+| `C` | Board connector installed |
+| `U` | USB-C connector installed |
+
+Documented examples: `AS_613_U`, `AS_613_PU`, and `AS_613_CU`.
+
+The order-information section defines the suffixes above. Availability and licensed modes depend on the ordered configuration.
+
+## Operating limitations
+
+- Position modes detect motion and reflected energy; they cannot inherently distinguish a person from an animal, fan, curtain, cable, or other moving object.
+- Stationary-person detection requires enough micro-motion and becomes harder at longer distances.
+- Multiple nearby people may merge into one target; a person directly behind another target may not be detected.
+- Metallic or densely furnished environments can create multipath, virtual targets, or missed targets.
+- Vital-sign output is associated with the closest detected person and can be disrupted by closer motion or objects between the radar and the subject.
+- Hand, arm, phone, keyboard, conversation, or other chest-area motion can reduce vital-sign quality.
+- The final detection range must be tested in the actual enclosure and installation environment.
+
+:::danger
+Not a medical or life-safety claim
+The supplied manual does not provide medical-device certification, clinical validation, or regulatory conformity evidence. Do not use AS-613 output alone for diagnosis, treatment, emergency response, fall protection, or other safety-critical decisions.
+:::
+
+:::warning
+Pacemakers and implantable devices
+The manual warns not to use the device within 20 cm of a pacemaker or other implantable medical device and instructs users to consult the physician or device manufacturer first.
+:::
+
+## Next steps
+
+- [Quick Start](./Quick_Start)
+- [Position Detection](./Position_Detection)
+- [Vital-Sign Detection](./Vital_Sign_Detection)
+- [Application Modes](./Application_Modes)
+- [UART and USB](./UART_and_USB)
+- [Command and Data Reference](./Command_and_Data_Reference)
+
+{/* IMAGE TODO [AS613-IMG-21]: Approved mechanical drawing with connector variants, dimensions and keep-outs. */}
+
+{/* IMAGE TODO [AS613-IMG-22]: Measured RF polar plots; do not invent curves from a beam-width figure. */}
+
+{/* IMAGE TODO [AS613-IMG-23]: Confirmed connector SKU and license matrix. */}

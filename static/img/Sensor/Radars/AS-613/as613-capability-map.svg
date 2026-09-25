@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="650" viewBox="0 0 1280 650" role="img" aria-labelledby="title desc">
+  <title id="title">AS-613 sensing modes</title><desc id="desc">Default and licensed sensing modes grouped by capability.</desc>
+  <defs><style>.t{font:700 30px Arial;fill:#172554}.h{font:700 23px Arial;fill:#172554}.b{font:18px Arial;fill:#334155}.n{font:16px Arial;fill:#475569}.card{fill:#fff;stroke:#cbd5e1;stroke-width:2}.default{fill:#e6f7f5;stroke:#0f766e;stroke-width:2}.licensed{fill:#eef2ff;stroke:#4338ca;stroke-width:2}.line{stroke:#94a3b8;stroke-width:3;fill:none}</style></defs>
+  <rect width="1280" height="650" rx="24" fill="#f8fafc"/><text x="60" y="62" class="t">AS-613 sensing guide</text>
+  <rect x="60" y="105" width="1160" height="92" rx="18" class="card"/><text x="640" y="145" text-anchor="middle" class="h">60 GHz FMCW radar · 1 TX / 3 RX</text><text x="640" y="176" text-anchor="middle" class="b">Position, presence, and closest-person vital-sign sensing</text>
+  <path d="M640 197V235M330 235H950M330 235V270M950 235V270" class="line"/>
+  <rect x="80" y="270" width="500" height="310" rx="20" class="default"/><text x="330" y="315" text-anchor="middle" class="h">Default modes</text>
+  <rect x="110" y="345" width="210" height="86" rx="14" class="card"/><text x="215" y="380" text-anchor="middle" class="h">Mode 1</text><text x="215" y="408" text-anchor="middle" class="n">Wall position</text>
+  <rect x="340" y="345" width="210" height="86" rx="14" class="card"/><text x="445" y="380" text-anchor="middle" class="h">Mode 2</text><text x="445" y="408" text-anchor="middle" class="n">Ceiling position</text>
+  <rect x="110" y="455" width="210" height="86" rx="14" class="card"/><text x="215" y="490" text-anchor="middle" class="h">Mode 5</text><text x="215" y="518" text-anchor="middle" class="n">Vital signs</text>
+  <rect x="340" y="455" width="210" height="86" rx="14" class="card"/><text x="445" y="490" text-anchor="middle" class="h">Mode 6</text><text x="445" y="518" text-anchor="middle" class="n">Position + vital signs</text>
+  <rect x="700" y="270" width="500" height="310" rx="20" class="licensed"/><text x="950" y="315" text-anchor="middle" class="h">Option / licensed modes</text>
+  <rect x="730" y="345" width="210" height="86" rx="14" class="card"/><text x="835" y="380" text-anchor="middle" class="h">Mode 11</text><text x="835" y="408" text-anchor="middle" class="n">Advanced vital signs</text>
+  <rect x="960" y="345" width="210" height="86" rx="14" class="card"/><text x="1065" y="380" text-anchor="middle" class="h">Mode 12</text><text x="1065" y="408" text-anchor="middle" class="n">Restroom sensing</text>
+  <rect x="730" y="455" width="210" height="86" rx="14" class="card"/><text x="835" y="490" text-anchor="middle" class="h">Mode 13</text><text x="835" y="518" text-anchor="middle" class="n">Hospital bed</text>
+  <rect x="960" y="455" width="210" height="86" rx="14" class="card"/><text x="1065" y="490" text-anchor="middle" class="h">Mode 14</text><text x="1065" y="518" text-anchor="middle" class="n">Presence sensing</text>
+  <text x="640" y="622" text-anchor="middle" class="n">Confirm firmware and licensed modes on the ordered unit.</text>
+</svg>

@@ -1,0 +1,10 @@
+.boardViews { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.figure { margin: 24px 0; }
+.figure figcaption { margin-top: 10px; color: var(--ifm-color-emphasis-700); font-size: .9rem; }
+.boardPhoto { position: relative; overflow: hidden; aspect-ratio: 1; border-radius: 12px; background: white; }
+.boardPhoto img { position: absolute; width: 400%; max-width: none; height: auto; left: 50%; top: 50%; transform: translate(-50.5%, -49%); }
+@media(max-width: 600px) { .boardViews { grid-template-columns: 1fr; } }
+
+.coordinateFigure { margin: 24px 0; }
+.coordinateFigure img { display: block; width: 100%; height: auto; margin: 0; }
+.coordinateFigure figcaption { margin-top: 6px; text-align: center; color: var(--ifm-color-emphasis-700); font-size: .9rem; font-style: italic; line-height: 1.5; }
