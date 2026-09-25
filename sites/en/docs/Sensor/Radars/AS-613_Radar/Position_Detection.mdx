@@ -195,11 +195,19 @@ Source strategy: Real production-unit test; record height, angle, room, firmware
 6. Validate every boundary with a moving target.
 7. Tune `sena`, `senb`, `senc`, `senin`, and `senout` only after the geometry is correct.
 
-The manual warns that angle limits are approximate and less sensitive than distance limits.
+### Distance limits
+
+Use `xmin`/`xmax`, `ymin`/`ymax`, and `zmin`/`zmax` to define the coordinate bounds in centimeters. Apply the axis directions for the selected wall or ceiling installation.
 
 ![AS-613 wall and ceiling detection distance limits](/img/Sensor/Radars/AS-613/as613-coordinate-system-2.png)
 
 *Distance limits define the region along the X, Y, and Z axes for each mounting orientation.*
+
+### Angle limits
+
+Use `alrmin`/`alrmax` for left/right angle limits and `adumin`/`adumax` for up/down angle limits in degrees. The diagram shows how these limits relate to each mounting orientation.
+
+The manual warns that angle limits are approximate and less sensitive than distance limits. Validate the boundaries with a moving target after installation.
 
 ![AS-613 wall and ceiling detection angle limits](/img/Sensor/Radars/AS-613/as613-coordinate-system-3.png)
 
