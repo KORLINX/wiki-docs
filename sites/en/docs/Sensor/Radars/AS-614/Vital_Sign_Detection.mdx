@@ -1,0 +1,241 @@
+---
+title: Configure AS-614 Vital-Sign Detection
+sidebar_label: Vital-Sign Detection
+sidebar_position: 5
+description: Configure AS-614 Modes 5, 6, and 11 for closest-person heart rate, breathing rate, waveform, position, and HRV output.
+keywords:
+  - AS-614 vital signs
+  - breathing radar
+  - heart rate radar
+  - radar HRV
+  - contactless respiration
+---
+
+# Configure AS-614 Vital-Sign Detection
+
+AS-614 provides two default vital-sign modes and one licensed advanced mode. All three associate valid vital-sign output with the closest detected person. Closer motion, another person, a pet, a fan, or an intervening object can invalidate the intended subject's output.
+
+:::danger
+Evaluation data, not diagnosis
+The supplied manual does not provide medical-device certification or clinical validation. Do not use AS-614 output alone for diagnosis, treatment, emergency response, apnea alarms, or life-safety decisions.
+:::
+
+Send setup commands more than 500 ms apart. After changing settings, reset and wait for readable output before continuing.
+
+## Select a mode
+
+| Mode | Main purpose | Vital subject | Availability |
+| --- | --- | --- | --- |
+| 5 | Dedicated wall/side vital-sign sensing | Closest person only | Default |
+| 6 | Wall position plus vital signs | Closest person only | Default |
+| 11 | Mode 5 plus RMSSD and SDNN | Closest person only | Additional license |
+
+## Prepare the sensing area
+
+1. Mount the radar rigidly with the subject's chest facing it.
+2. Keep the intended subject inside a narrowed ROI.
+3. Remove or stop fans, air purifiers, moving curtains, and robot vacuums.
+4. Ensure no person or moving object is closer to the radar than the subject.
+5. Ask the subject to lower their hands, avoid talking, and remain still.
+6. Avoid crossed arms, phone use, typing, or other movement in front of the chest.
+7. Allow the output state and rates to stabilize before evaluation.
+
+![AS-614 clear chest view and sources of interference](/img/Sensor/Radars/AS-614/as614-vital-placement.png)
+
+*Keep the closest intended subject stable, with a clear chest view and no closer moving reflectors.*
+
+## Mode 5: Dedicated vital-sign mode
+
+Documented defaults:
+
+| Setting | Default |
+| --- | ---: |
+| X | -1250 to +1250 mm |
+| Y | -1500 to +1000 mm |
+| Z | +400 to +2500 mm |
+| Left/right angle | 30° to 150° |
+| Down/up angle | 30° to 150° |
+
+Mode 5 is documented for a maximum 2.5 m setup region. The specification table lists a broader 3 m vital-sign maximum; use 2.5 m for this mode unless the installed firmware has separate validated limits.
+
+### Initial setup
+
+```text
+stop
+mode 5
+reset
+wave 0
+exten 0
+vitalhl 0
+reset
+info
+start
+```
+
+The narrative uses `onwave`/`onave` spellings, but the command table defines `wave 0|1`; this guide follows that table. Use `wave 1` to add heart pulse and respiration waveform at 10 outputs per second. Use `exten 1` to add X, Y, Z, and power.
+
+`vitalhl 1` is intended for small movement while seated; `vitalhl 2` is intended for fine vital signals with little movement, such as sleep. Validate false-positive behavior before changing the default.
+
+### Mode 5 packet layouts
+
+No waveform, normal:
+
+```text
+%ABBBCCDDD!
+```
+
+- `A`: state (`0` no target, `1` moving, `2` no valid vital signal, `3` valid vital signal, `4` fall detection label)
+- `BBB`: heart rate per minute
+- `CC`: breathing rate per minute
+- `DDD`: option data selected by `opt`; distance is default
+
+No waveform, extended:
+
+```text
+%ABBBCCDDDDEEEEFFFGGG!
+```
+
+Adds signed X (`DDDD`), signed Y (`EEEE`), Z (`FFF`), and power (`GGG`).
+
+Waveform, normal:
+
+```text
+@ABBBCCDEEEFFF!
+```
+
+Adds heart pulse (`D`) and respiration waveform (`EEE`).
+
+Waveform, extended:
+
+```text
+@ABBBCCDEEEFFFFGGGGHHHIII!
+```
+
+Adds signed X (`FFFF`), signed Y (`GGGG`), Z (`HHH`), and power (`III`). Vacancy packets: `%0!` or `@0!`.
+
+The Mode 5 narrative mentions HRV, but its documented packet layouts contain no RMSSD or SDNN fields. Use licensed Mode 11 when HRV fields are required.
+
+## Mode 6: Vital signs plus position
+
+Documented defaults:
+
+| Setting | Default |
+| --- | ---: |
+| X | -4000 to +4000 mm |
+| Y | -2000 to +1500 mm |
+| Z | +400 to +8000 mm |
+| Left/right angle | 0° to 180° |
+| Down/up angle | 20° to 160° |
+
+The manual divides the working region into approximately:
+
+- Area A: heart rate, breathing, and position within about 2 m lateral / 3 m forward
+- Area B: breathing and position to about 3 m forward
+- Area C: position only to the broader 8 m region
+
+These are diagrammed application regions, not guaranteed boundaries.
+
+### Initial setup
+
+```text
+stop
+mode 6
+reset
+wave 0
+vitalhl 0
+reset
+info
+start
+```
+
+Only the closest detected person provides meaningful vital-sign information. Other detected objects provide position/power fields.
+
+### Mode 6 packet layouts
+
+No waveform:
+
+```text
+&ABBBBCCCDDDEFFFGG!
+```
+
+- `A`: target index
+- `BBBB`: signed X, cm
+- `CCC`: positive Z, cm
+- `DDD`: reflected power
+- `E`: vital-sign state
+- `FFF`: heart rate
+- `GG`: breathing rate
+
+Waveform enabled:
+
+```text
+?ABBBBCCCDDDEFFFGGHIII!
+```
+
+Adds heart pulse (`H`) and respiration waveform (`III`). Vacancy packets: `&0!` or `?0!`.
+
+The manual labels `?` output as "zone output" in one place, but its packet contains the same coordinates plus vital waveform fields. Treat `?` as the waveform variant defined by `wave 1`.
+
+## Mode 11: Advanced vital-sign mode
+
+Mode 11 is a separately licensed extension of Mode 5. It adds:
+
+- RMSSD after more than 30 seconds of continuously detected stable vital signs
+- SDNN after more than 30 seconds, described as stabilizing after at least 5 minutes
+
+These timing statements are initialization guidance, not evidence of medical accuracy.
+
+### Initial setup
+
+```text
+stop
+mode 11
+reset
+wave 0
+exten 0
+vitalhl 0
+reset
+info
+start
+```
+
+### Mode 11 packet layouts
+
+No waveform, normal:
+
+```text
+}ABBBCCDDEEFFF!
+```
+
+Waveform, normal:
+
+```text
+{ABBBCCDDEEFGGHHH!
+```
+
+Fields include state, heart rate, breathing rate, two-digit RMSSD, two-digit SDNN, and option data. The waveform packet adds heart pulse (`F`) and a two-digit respiration waveform (`GG`). Extended variants add X, Y, Z, and power.
+
+:::caution
+Fixed-width advanced fields
+RMSSD and SDNN are limited to two decimal characters, and the Mode 11 waveform is also documented as two characters. The manual does not define overflow, saturation, unavailable, or invalid encodings. Reject values outside the documented grammar and request firmware clarification for production interpretation.
+:::
+
+## Evaluate output quality
+
+Record:
+
+- State transitions and time to valid output
+- Raw packet stream and malformed/dropped frames
+- Reference heart and breathing measurements
+- Distance, angle, posture, clothing, motion, and duration
+- Room dimensions, clutter, moving devices, and enclosure
+- Hardware revision, firmware, license, supply, and UART settings
+- Sample count, acceptance thresholds, reviewer, and test date
+
+{/* IMAGE TODO [AS614-IMG-14]: Real synchronized validation timeline with raw packets, sensor state, heart/breathing reference, subject condition, and stabilization period. Do not fabricate medical readings. */}
+
+## Documented accuracy
+
+The manual describes Mode 5 breathing accuracy as over 85% in a stable state and heart-rate accuracy as approximately 85%. For Mode 6, it describes breathing accuracy as over 80% within 3 m in a stable state and heart-rate accuracy as approximately 80%. It does not define the reference instrument, sample size, error metric, or test setup, so use these values only with their documented conditions and not as a clinical claim.
+
+{/* VERIFY WITH R&D [AS614-V04]: Define state 4 availability/algorithm and overflow or unavailable encodings for RMSSD, SDNN, and waveform fields. */}

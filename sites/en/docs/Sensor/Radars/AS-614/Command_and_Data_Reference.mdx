@@ -1,0 +1,282 @@
+---
+title: AS-614 Command and Data Reference
+sidebar_label: Command and Data Reference
+sidebar_position: 8
+description: Reference for AS-614 UART commands, response framing, mode identifiers, and fixed-width ASCII packets.
+keywords:
+  - AS-614 commands
+  - AS-614 data format
+  - AS-614 UART packets
+  - radar CLI
+  - radar parser
+---
+
+# AS-614 Command and Data Reference
+
+This page presents the commands and packet layouts documented in the AS_614 with AI User Manual, Ver.5.00 Jan.2025.
+
+:::note
+Model-specific reference
+Do not transfer AS-613 commands such as `mreset`, `rotate`, `walltilt`, presence-mode controls, or exclusion-zone commands to AS-614. They are not documented in the supplied AS-614 manual.
+:::
+
+## Transport rules
+
+- ASCII commands and data
+- Lowercase commands
+- Command terminator: LF or CR
+- 230400 bps, 8 data bits, no parity, 1 stop bit, no flow control
+- Send commands more than 500 ms apart
+- Normal command responses begin with `=` and end with `!`
+- Settings persist after power cycling
+- Reset after changing the mode or applying a new configuration
+- Initial output after changing mode or restarting with `start` can contain previous buffered state
+
+## Command responses
+
+The manual provides query examples such as:
+
+```text
+=15!
+```
+
+It does not define standard error strings or a response-time maximum. A host must retain unknown `=...!` frames, apply an application timeout, and avoid copying AS-613 error names into an AS-614 parser.
+
+## Packet identifiers
+
+| Mode | Normal/basic | Alternate | Vacancy/short state |
+| --- | --- | --- | --- |
+| 1 Wall position | `#` coordinate | `*` zone | `#0!`, `*0!` |
+| 2 Ceiling position | `$` coordinate | `~` zone | `$0!`, `~0!` |
+| 3/4 Occupancy | `<` total | `>` nine zones | `<0!`, `>0!` |
+| 5 Vital | `%` no waveform | `@` waveform | `%0!`, `@0!` |
+| 6 Vital + position | `&` no waveform | `?` waveform in packet table | `&0!`, `?0!` |
+| 10 Raw data | Manual conflict: `<...>` example or `[...]` summary | - | Not defined |
+| 11 Advanced vital | `}` no waveform | `{` waveform | `}0!`, `{0!` |
+| 12 Restroom | `^` | Short and breathing forms | `^0!` |
+| 13 Hospital bed | `/` no waveform | `\` waveform | `/A!`, `\A!` |
+| Command response | `=` | - | Normally ends with `!` |
+
+## Command reference
+
+### Flow and reset
+
+| Command | Values | Purpose / notes |
+| --- | --- | --- |
+| `start` | Runtime | Start data output. Buffered state can appear first after `stop`. |
+| `stop` | Runtime | Stop output while internal detection continues. |
+| `reset` | - | Software restart while retaining settings. |
+| `hreset` | - | Restart equivalent to reconnecting power while retaining settings. |
+| `freset` | - | Restore all settings to factory defaults. Use only in a controlled workflow. |
+
+### Mode and configuration
+
+| Command | Values | Purpose / notes |
+| --- | --- | --- |
+| `mode` | `1,2,3,4,5,6,10,11,12,13` | Select operating mode. Modes 10-13 require the applicable license. Changing mode resets coordinate limits to that mode's defaults. |
+| `exten` | `0`, `1`; default 0 | Basic or extended data. Additional fields depend on the mode. |
+| `holdtime` | `1..10`; default 1 | Maintain object state during temporary non-detection. |
+| `led` | `0`, `1`; default 0 | `0` enables detection LED; `1` disables it. |
+| `opt` | `0..3`; default 1 | `0` none, `1` distance, `2` reflection magnitude, `3` movement magnitude. |
+| `outtime` | `0..3`; default 0 | `0` mode default, `1` real-time, `2` once per second, `3` on data change for occupancy mode. |
+| `range` | `20..150`; default 40 | Distance threshold for merging nearby detections as one object. |
+| `response` | `0..4`; default 1 | Initial response: `0` fastest/noise-prone; `4` more noise-resistant and less responsive to small/fast motion. |
+| `setnum` | Table says `1..5`; default 3 | Set detected-object count. Not fixed in vital modes. Occupancy section conflicts with this range. |
+| `static` | `0..5`; default 0 | Enable fixed-object detection to 1-5 m; `0` disables. Z-only result, used in Modes 1-4. |
+| `pthold` | Use `4..500`; default 4 | Lower values increase sensitivity/noise. The table also prints a lower limit of 3; verify firmware before using 3. |
+| `trace` | `0`, `1`; default 0 | `0` renumbers targets from closest; `1` maintains target numbers. |
+| `user` | `0..65535` | Store one user-defined value such as a serial number. |
+| `ver` | Query | Return firmware identification. |
+| `vitalhl` | `0..2`; default 0 | Fine-vital level: default, small seated movement, or very low movement/sleep. |
+| `wait` | `3..43200` s; default 15 | Interval for no-target status output. |
+| `wave` | `0`, `1`; default 0 | No waveform / waveform. `wave 1` outputs 10 times per second. |
+| `zone` | `0`, `1`; default 0 | Coordinate/general output / zone output. |
+
+### Detection-area configuration
+
+All coordinate command values are in millimeters.
+
+| Command | Wall range | Ceiling range | Meaning |
+| --- | ---: | ---: | --- |
+| `xmin` | -5000..5000 | -4000..4000 | Minimum X coordinate |
+| `xmax` | -5000..5000 | -4000..4000 | Maximum X coordinate |
+| `ymin` | -5000..5000 | -4000..0 | Minimum Y coordinate |
+| `ymax` | -5000..5000 | -4000..0 | Maximum Y; one note says ceiling value is ignored/processed as 0 |
+| `zmin` | 0..10000 | -4000..4000 | Minimum Z; wall Z is positive |
+| `zmax` | 0..10000 | -4000..4000 | Maximum Z; wall Z is positive |
+| `alrmin` | 0..180° | 0..180° | Left/right start angle |
+| `alrmax` | 0..180° | 0..180° | Left/right end angle |
+| `adumin` | 0..180° | 0..180° | Down/up start angle |
+| `adumax` | 0..180° | 0..180° | Down/up end angle |
+
+The default tables contain the typo `adwmzx`; the command table and diagrams identify the intended maximum command as `adumax`.
+
+### Debug and inspection
+
+| Command | Purpose |
+| --- | --- |
+| `help` | Output available command types. |
+| `info` | Output configured detection-area status. |
+
+### Optional and application-specific commands
+
+| Command | Values | Mode / purpose |
+| --- | --- | --- |
+| `hbh` | `300..700` mm; default 550 | Mode 13 mattress-top height. |
+| `hbw` | `900..1600` mm; default 900 | Mode 13 mattress width. |
+| `hboffset` | `1..9`; default 5 | Mode 13 bed shift from 20 cm left (1) to 20 cm right (9); 5 centered. |
+| `wallside` | `0,1,2`; default 0 | Mode 13 bed-to-wall direction: head, left side, right side. |
+| `oht` | `0`, `1`; default 0 | Modes 3/4 occupancy response: normal room dwell or fast corridor passage. |
+| `raw` | `1..8`; default 1 | Mode 10 selected antenna set. |
+
+The manual example misspells `wallsiee`; the command name is `wallside`.
+
+## Packet layouts
+
+Byte counts include the displayed start and end markers but exclude any trailing CR/LF.
+
+### Mode 1 - wall position
+
+```text
+#ABBBBCCCDDD!          13 bytes
+#ABBBBCCCCDDDEEE!      17 bytes, extended
+*ABC!                   5 bytes, zone
+```
+
+- Distance packet: target, signed X, optional signed Y, positive Z, reflected power
+- Zone packet: target, coarse X zone, coarse forward-Z zone
+
+### Mode 2 - ceiling position
+
+```text
+$ABBBBCCCCDDD!         14 bytes
+$ABBBBCCCCDDDDEEE!     18 bytes, extended
+~ABC!                   5 bytes, zone
+```
+
+- Distance packet: target, signed X, optional negative Y, signed Z, reflected power
+- Zone packet: target, coarse X zone, coarse signed-Z zone
+
+### Modes 3 and 4 - occupancy
+
+```text
+<A!                     3 bytes, approximate total
+>ABCDEFGHI!            11 bytes, nine-zone distribution
+```
+
+`A-I` correspond to the three-by-three zone grid. The manual does not define per-zone values above 9.
+
+### Mode 5 - vital signs
+
+```text
+%ABBBCCDDD!                    11 bytes
+%ABBBCCDDDDEEEEFFFGGG!         22 bytes, extended
+@ABBBCCDEEEFFF!                15 bytes, waveform
+@ABBBCCDEEEFFFFGGGGHHHIII!     26 bytes, waveform + extended
+```
+
+State; heart rate; breathing rate; optional pulse/waveform; option data or position/power according to variant.
+
+### Mode 6 - vital signs plus position
+
+```text
+&ABBBBCCCDDDEFFFGG!            19 bytes
+?ABBBBCCCDDDEFFFGGHIII!        23 bytes, waveform
+```
+
+Target; signed X; positive Z; power; vital state; heart rate; breathing rate; optional pulse/waveform.
+
+### Mode 10 - raw data
+
+Each selected antenna contributes 128 signed real/imaginary pairs separated by spaces and commas. The manual conflicts on delimiters:
+
+```text
+<real imag,real imag,...>      example in Mode 10 section
+[real imag,real imag,...]      implied by start/end summary
+```
+
+Do not select one form by assumption. Capture and verify production firmware before implementing the parser.
+
+### Mode 11 - advanced vital signs
+
+```text
+}ABBBCCDDEEFFF!                         15 bytes
+}ABBBCCDDEEFFFFGGGGHHHIII!              26 bytes, extended
+{ABBBCCDDEEFGGHHH!                      18 bytes, waveform
+{ABBBCCDDEEFGGHHHHIIIIJJJKKK!           29 bytes, waveform + extended
+```
+
+State; heart rate; breathing rate; RMSSD; SDNN; optional pulse/two-digit waveform; position/power according to variant.
+
+### Mode 12 - restroom
+
+```text
+^A!                     3 bytes, states 0, 1, or 4
+^ABB!                   5 bytes, state plus breathing rate
+```
+
+State `1` is not defined in the source.
+
+### Mode 13 - hospital bed
+
+```text
+/A!                     3 bytes, short no-waveform state
+/ABBBCCDDEEFFF!         15 bytes
+\A!                     3 bytes, short waveform state
+\ABBBCCDDEEFFFGGG!      18 bytes
+```
+
+State; heart rate; breathing rate; RMSSD; SDNN; temporary data; optional respiration waveform.
+
+## State values
+
+### Vital state in Modes 5 and 6
+
+| Value | Meaning in source |
+| ---: | --- |
+| 0 | No target |
+| 1 | Target moving |
+| 2 | Target, no valid vital signal |
+| 3 | Target, valid vital signal |
+| 4 | Fall detection label |
+
+Mode 11 lists only states 0-3. The source does not define the availability or algorithm behind state 4.
+
+### Restroom state
+
+| Value | Meaning in source |
+| ---: | --- |
+| 0 | Empty |
+| 1 | Undefined (`-` in the manual) |
+| 2 | Person present |
+| 3 | Person lying down |
+| 4 | Warning: person approaches near ceiling |
+
+### Hospital-bed state
+
+| Value | Meaning in source |
+| ---: | --- |
+| 0 | Bed empty |
+| 1 | Standing beside/outside bed |
+| 2 | Sitting or lying beside/outside bed |
+| 3 | On bed, awake |
+| 4 | On bed, tossing/turning |
+| 5 | On bed, sleeping |
+| 6 | Bed fall-risk warning |
+| 7 | Bed fall occurrence |
+| 8 | Pressure-ulcer-risk warning |
+| 9 | High pressure-ulcer-risk warning |
+
+## Parser implementation notes
+
+- Match active mode, start character, `zone`, `exten`, and `wave` before decoding.
+- Validate fixed widths, signs, decimal fields, and expected terminator.
+- Do not globally assign `<` and `>` without checking the active mode.
+- Treat initial buffered frames after mode changes or `start` as non-acceptance data.
+- Treat undocumented variants and malformed frames as unsupported input.
+- The manual does not define overflow, saturation, unavailable-value codes, target-index lifetime, error-response strings, or maximum response time.
+- Keep Mode 10 parsing disabled until real frame delimiters and maximum length are verified.
+
+{/* IMAGE TODO [AS614-IMG-20]: Flat packet-anatomy diagram showing mode selection, marker, fixed width, terminator, and validation checks. */}
+
+{/* VERIFY WITH R&D [AS614-V07]: Resolve raw delimiters, command errors/timeouts, occupancy/setnum conflict, ceiling ymax behavior, pthold lower bound, and unavailable-value encodings. */}
