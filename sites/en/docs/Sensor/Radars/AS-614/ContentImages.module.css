@@ -1,0 +1,9 @@
+.boardViews { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.figure { margin: 24px 0; }
+.figure figcaption { margin-top: 10px; color: var(--ifm-color-emphasis-700); font-size: .9rem; }
+.boardPhoto { position: relative; overflow: hidden; aspect-ratio: 1; border-radius: 12px; background: #fff; }
+.boardPhoto img { position: absolute; width: 340%; max-width: none; height: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+@media(max-width: 600px) { .boardViews { grid-template-columns: 1fr; } }
+.contentFigure { margin: 24px 0; }
+.contentFigure img { display: block; width: 100%; height: auto; margin: 0; }
+.contentFigure figcaption { margin-top: 6px; text-align: center; color: var(--ifm-color-emphasis-700); font-size: .9rem; font-style: italic; line-height: 1.5; }

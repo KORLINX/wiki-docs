@@ -502,9 +502,8 @@ const sidebars = {
               collapsed: true,
               collapsible: true,
               link: {
-                type: 'generated-index',
-                title: 'AS-614',
-                description: 'AS-614 radar documentation',
+                type: 'doc',
+                id: 'Sensor/Radars/AS-614/Cover',
               },
               items: [
                 {
@@ -517,6 +516,13 @@ const sidebars = {
                   id: 'Sensor/Radars/AS-614/Quick_Start',
                   label: 'Quick Start',
                 },
+                { type: 'doc', id: 'Sensor/Radars/AS-614/Position_Detection', label: 'Position Detection' },
+                { type: 'doc', id: 'Sensor/Radars/AS-614/Occupancy_Detection', label: 'Occupancy Detection' },
+                { type: 'doc', id: 'Sensor/Radars/AS-614/Vital_Sign_Detection', label: 'Vital-Sign Detection' },
+                { type: 'doc', id: 'Sensor/Radars/AS-614/Application_Modes', label: 'Licensed Application Modes' },
+                { type: 'doc', id: 'Sensor/Radars/AS-614/UART_and_USB', label: 'UART and USB-C' },
+                { type: 'doc', id: 'Sensor/Radars/AS-614/Command_and_Data_Reference', label: 'Command and Data Reference' },
+                { type: 'doc', id: 'Sensor/Radars/AS-614/FAQ', label: 'FAQ and Troubleshooting' },
               ],
             },
 

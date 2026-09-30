@@ -14,7 +14,7 @@ The AnySensing product family includes three 60 GHz radar modules for distance, 
 | Model | Class | Role |
 | --- | --- | --- |
 | [AS-611Bn](./AS-611Bn/Cover.mdx) | 60 GHz pulsed radar module, 1 TX / 1 RX | Object-distance sensing or single-person vital-sign sensing, with UART and onboard Bluetooth Low Energy (BLE). |
-| [AS-614](./AS-614/Overview) | 60 GHz frequency-modulated continuous-wave (FMCW) AI radar module, 1 TX / 4 RX | The incumbent bed sensor in deployed InCare24 hospital systems. It remains in production while AS-613 progressively replaces it in new installations. |
+| [AS-614](./AS-614/Cover.mdx) | 60 GHz frequency-modulated continuous-wave (FMCW) AI radar module, 1 TX / 4 RX | Position and approximate occupancy sensing, closest-person vital signs, and licensed raw-data, restroom, and hospital-bed modes. |
 | [AS-613](./AS-613_Radar/Cover.mdx) | 60 GHz FMCW AI radar module, 1 TX / 3 RX | Indoor position and presence sensing with up to five targets in documented modes; vital signs for the closest person. Application modes depend on licensing and installation. |
 | [AS-BW](./AS-BW/Overview) | Bluetooth / Wi-Fi communication module | Not a radar. Carries a radar module's UART stream over 2.4 GHz Wi-Fi as the communication-module half of an InCare24 ceiling unit. |
 
@@ -44,7 +44,7 @@ AS-BW does not follow this naming rule because it is a communication module rath
 
 ## Compare specifications
 
-The comparison below comes from product datasheets and manuals. The AS-613 column follows the official AS-613 User Manual v1.3.1 (July 2026).
+The comparison below comes from product datasheets and manuals. The AS-613 column follows User Manual v1.3.1 (July 2026); the AS-614 column follows User Manual v5.00 (January 2025).
 
 | Item | AS-611Bn | AS-614 | AS-613 | AS-BW |
 | --- | --- | --- | --- | --- |
@@ -56,16 +56,16 @@ The comparison below comes from product datasheets and manuals. The AS-613 colum
 | Distance range | 1 / 2.5 / 5 / 7.5 / 10 m modes | Maximum 8 m | Maximum 8 m; Mode 1 Z limit up to 9 m | — |
 | Vital-sign range | Near: 0.15–0.5 m<br />Far: 0.4–2.0 m | Maximum 3 m | Maximum 5 m; Mode 5 region 2.5 m; Mode 6 breathing 3 m | — |
 | Range resolution | 10–120 mm, depending on mode | 12 cm | 12 cm | — |
-| Vital-sign accuracy | More than 90% at steady state; respiration more than 95% | Approximately 85% | Mode 5 approximately 85%; Mode 6 approximately 80% under documented stable-state conditions | — |
-| People tracked | 1 | 1 | Up to 5 | — |
+| Vital-sign accuracy | More than 90% at steady state; respiration more than 95% | Mode 5 approximately 85% under documented stable-state conditions; test method unspecified | Mode 5 approximately 85%; Mode 6 approximately 80% under documented stable-state conditions | — |
+| People tracked | 1 | Position: up to 5; vital signs: closest person only; occupancy is approximate | Up to 5 | — |
 | Size | 32 × 30 × 3.35 mm | 32 × 30 × 3.35 mm | 32 × 30 × 3.35 mm | 32 × 40 × 4.25 mm |
 | Weight | **[TBD]** | 3.07 g | 3.15 g | **[TBD]** |
 | Supply voltage | 3.3–7 V | 3.3–7 V | 3.3–5.5 VDC specification range | 3.3–7 V |
 | Power | 0.3 W | Maximum 700 mW | 350 mW typical / 800 mW maximum (manual; conditions unspecified) | Maximum 700 mW |
 | Operating temperature | −40 to 85 °C | −40 to 85 °C | −20 to 85 °C | −40 to 85 °C |
-| Interfaces | GPIO, UART, BLE | GPIO, UART | GPIO, TTL UART, USB listed; UART is the documented data protocol | GPIO, UART, Bluetooth 4.2, 2.4 GHz Wi-Fi |
-| Radar IC / MCU | Acconeer A121 / Nordic nRF52840 | Socionext SC1240 / Geehy AP32F411CE **[VERIFY]** | Not specified in User Manual v1.3.1 | **[TBD]** |
-| Certification | KC, FCC | KC, FCC | Not specified in User Manual v1.3.1 | **[TBD]** |
+| Interfaces | GPIO, UART, BLE | GPIO, 3.3 V TTL UART; optional USB-C power only | GPIO, TTL UART, USB listed; UART is the documented data protocol | GPIO, UART, Bluetooth 4.2, 2.4 GHz Wi-Fi |
+| Radar IC / MCU | Acconeer A121 / Nordic nRF52840 | Not specified in User Manual v5.00 | Not specified in User Manual v1.3.1 | **[TBD]** |
+| Certification | KC, FCC | Not established by User Manual v5.00 | Not specified in User Manual v1.3.1 | **[TBD]** |
 
 ## Continue with a product
 

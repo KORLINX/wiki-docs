@@ -1,0 +1,143 @@
+---
+title: AS-614 FAQ and Troubleshooting
+sidebar_label: FAQ
+sidebar_position: 9
+description: Answers to common AS-614 setup, UART, position, occupancy, vital-sign, raw-data, and licensed-mode questions.
+keywords:
+  - AS-614 FAQ
+  - AS-614 troubleshooting
+  - radar false detection
+  - radar UART problem
+  - radar vital signs unstable
+---
+
+# AS-614 FAQ and Troubleshooting
+
+## What supply voltage should I use?
+
+Use 3.3-7.0 VDC. The manual documents a maximum power value of 700 mW but does not specify a maximum input current or startup-current profile. Use a regulated supply with suitable margin and measure production hardware.
+
+## What is the UART configuration?
+
+Use 230400 bps, 8 data bits, no parity, 1 stop bit, and no flow control. Commands are lowercase and end with LF or CR. Leave more than 500 ms between commands.
+
+## Can I connect a 5 V UART directly?
+
+Use a 3.3 V TTL UART by default. The manual says 1.8 V, 3.3 V, and 5 V signal interfaces are possible, but it does not describe direct pin tolerance, level shifting, or hardware variants.
+
+## Does USB-C carry data?
+
+No USB data function is documented. The pin-description section says the USB-C connector is used solely for power supply. Use UART for commands and sensor data.
+
+## Why do I see no readable UART data?
+
+Check:
+
+1. Regulated 3.3-7.0 V supply and adequate power margin
+2. Common ground
+3. Module TX connected to host RX and module RX connected to host TX
+4. NRST open or High
+5. Correct P1/P2 orientation and Pin 1
+6. 230400 bps, 8-N-1, no flow control
+7. 3.3 V TTL logic
+
+## Why are commands ignored?
+
+- Use lowercase.
+- End each command with LF or CR.
+- Leave more than 500 ms between commands.
+- Stop continuous output if the terminal cannot distinguish data from responses.
+- Confirm that the command belongs to AS-614 and is supported in the active mode.
+- Confirm the license before using Modes 10-13.
+
+## What do AS-614 command errors look like?
+
+The manual defines the normal `=<value>!` response framing but does not document standard invalid-range, unsupported, unknown-command, or internal-error strings. Preserve the exact raw response and report it with firmware and command sequence instead of mapping AS-613 error strings to AS-614.
+
+## Why does the first packet after changing mode look wrong?
+
+The manual says the first output can be based on data from the previous mode. It also says `start` resumes from retained buffer state after `stop`. Discard initial transitional frames and define a stabilization rule for the application.
+
+## Why does position jump when a person stands still?
+
+The manual says a measured target can fluctuate by 20-30 cm. Multipath, body micro-motion, sensitivity, target merging, and reflected-power changes can all move the reported point. Validate statistically in the final environment.
+
+## Why are there false targets?
+
+AS-614 detects moving reflectors, not a guaranteed person class. Fans, air conditioners, air purifiers, curtains, long cables, pets, and metallic clutter can create targets or virtual images.
+
+First correct mounting and ROI. Then adjust `pthold`, `response`, and merging `range`. AS-614 does not document exclusion-zone commands.
+
+## Can AS-614 detect a stationary person?
+
+Position and occupancy modes normally depend on movement or micro-motion. `static 1..5` enables limited fixed-object detection to the selected distance, but it reports only Z distance and can continuously report unwanted environmental objects. Use it sparingly.
+
+## Why does one person hide another?
+
+Targets aligned behind one another can be occluded, and nearby people can merge into one target. Increase angular separation, adjust mounting, and validate at the intended distance.
+
+## Can Modes 3 and 4 be used for exact people counting?
+
+No. The manual says the occupancy estimate can differ by 1-3 people and explicitly states that it is not intended to determine exact count or exact location.
+
+## Why is the occupancy output slow?
+
+The manual describes occupancy output as approximately once every 15 seconds. When an empty room first becomes occupied, it can emit `<1!` immediately for lighting control and provide the estimated value in the next output. Design automation around this documented behavior.
+
+## Why is `setnum` unclear in occupancy mode?
+
+The occupancy packet section says up to 15 objects with a default of 10, while the command table lists `setnum 1..5`, default 3, and shows the contradictory example `setnum 10`. Confirm the installed firmware before using this command for occupancy behavior.
+
+## Why are vital-sign values missing or unstable?
+
+- Keep the subject's chest facing the radar.
+- Keep hands down and avoid talking, typing, phone use, or crossed arms.
+- Remove closer moving people or objects.
+- Stop fans and other moving reflectors.
+- Narrow the ROI to the intended subject.
+- Use `vitalhl` only after validating its effect on noise and false positives.
+- Allow the documented stabilization period.
+
+## Can AS-614 measure vital signs for multiple people?
+
+No. Valid vital-sign output is associated with the closest detected person. Position modes can report multiple targets, but the manual does not define independent vital data for each person.
+
+## When are RMSSD and SDNN available?
+
+Licensed Mode 11 begins RMSSD and SDNN after more than 30 seconds of stable detection. The manual says SDNN stabilizes after at least five minutes. Fields are limited to two digits and no overflow or unavailable encoding is documented.
+
+## Is AS-614 a medical device?
+
+The manual provides no medical-device certification, clinical validation, diagnostic indication, or regulatory approval. Vital, posture, fall-related, and pressure-ulcer-related outputs require application validation and independent safety controls.
+
+## Is Mode 13 a general-purpose fall detector?
+
+No. It defines a narrow bed sequence: the patient moves from the bed center to the edge and is then detected sitting or lying on the adjacent floor. The manual explicitly says falls are not detected in other situations.
+
+## What does Mode 12 state 1 mean?
+
+The manual shows `-` for state 1 and provides no definition. Log it as an undocumented state and do not assign an application meaning without firmware confirmation.
+
+## Which delimiters does Mode 10 raw data use?
+
+The source is inconsistent. The raw example shows `<...>`, while the mode summary specifies `[` and `]`. Confirm a real licensed-firmware capture before building the parser.
+
+## Can AS-614 be used near a pacemaker or implantable device?
+
+The manual warns not to use the device within 20 cm of a pacemaker or other implantable medical device and says to consult the physician or device manufacturer first.
+
+## How should I report a reproducible issue?
+
+Include:
+
+- Model/SKU, hardware revision, and connector option
+- Firmware response from `ver` and license state
+- Supply voltage/current and UART settings
+- Complete command sequence with timing and raw bytes
+- Active mode, ROI, output settings, sensitivity, and static setting
+- Installation height, angle, room geometry, enclosure, and nearby movement
+- Expected versus actual result with timestamps, photos/video, and reference observations
+
+![AS-614 troubleshooting sequence](/img/Sensor/Radars/AS-614/as614-troubleshooting-flow.png)
+
+*Check power and pin orientation first, then UART, command timing, mode, geometry, environment, and parser behavior.*

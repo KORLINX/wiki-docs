@@ -1,0 +1,56 @@
+---
+title: AS-614
+sidebar_label: AS-614
+slug: /Sensor/Radars/AS-614
+description: AS-614 60 GHz FMCW radar guides for position, occupancy, closest-person vital signs, licensed application modes, and UART integration.
+hide_title: true
+hide_table_of_contents: true
+---
+
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import styles from './Cover.module.css';
+
+<div className={styles.coverPage}>
+<section className={styles.hero} aria-labelledby="as614-title">
+<div className={styles.heroContent}>
+<span className={styles.eyebrow}>60 GHz MULTI-CHANNEL FMCW RADAR</span>
+<h1 id="as614-title">AS-614</h1>
+<p className={styles.heroLead}>Indoor position, occupancy, and closest-person vital-sign sensing on a compact 1 TX / 4 RX radar module.</p>
+<div className={styles.heroActions}>
+<Link className={styles.primaryButton} to="/docs/Sensor/Radars/AS-614/Quick_Start">Quick Start</Link>
+<Link className={styles.secondaryButton} to="/docs/Sensor/Radars/AS-614/Overview">Explore Module</Link>
+</div></div>
+<div className={styles.heroVisual}><img src={useBaseUrl('/img/Sensor/Radars/AS-614/AS-614.png')} alt="AS-614 production board component side with USB-C and board connectors" width="3600" height="2400" fetchPriority="high" /></div>
+</section>
+{/* IMAGE SOURCE [AS614-IMG-01]: User-supplied AS-614 production-board photograph. */}
+<section className={styles.section} aria-labelledby="sensing-title">
+<div className={styles.sectionHeader}><h2 id="sensing-title">Choose Your Sensing Guide</h2><p>Start with the required measurement task. Confirm firmware and licensed options before using Modes 10-13.</p></div>
+<div className={styles.productGrid}>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-614/Position_Detection"><h3>Track Position</h3><p>Configure wall and ceiling coordinates, distance or zone output, sensitivity, and static-object detection.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-614/Occupancy_Detection"><h3>Estimate Occupancy</h3><p>Use wall or ceiling installation to report an approximate total or a nine-zone distribution.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-614/Vital_Sign_Detection"><h3>Read Closest-Person Vital Signs</h3><p>Interpret heart rate, breathing, waveform, position, and optional HRV output for the closest detected person.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-614/Application_Modes"><h3>Explore Licensed Modes</h3><p>Review raw antenna data, advanced vital signs, restroom sensing, and hospital-bed workflows.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+<Link className={styles.productCard} to="/docs/Sensor/Radars/AS-614/UART_and_USB"><h3>Connect Your Host</h3><p>Integrate the ASCII UART protocol and check GPIO, reset, timing, and USB-C power requirements.</p><span className={styles.cardLink}>Open Guide →</span></Link>
+</div>
+</section>
+<figure className={styles.modeFigure}>
+<img src={useBaseUrl('/img/Sensor/Radars/AS-614/as614-capability-map.png')} alt="AS-614 default and licensed sensing modes" width="3600" height="2400" loading="lazy" />
+<figcaption>Modes 1–6 are standard; Modes 10–13 require the applicable license.</figcaption>
+</figure>
+<section className={styles.startSection} aria-labelledby="start-title">
+<div className={styles.sectionHeader}><h2 id="start-title">From Connection to Sensor Data</h2></div>
+<div className={styles.stepGrid}>
+<Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-614/Overview"><span className={styles.stepNumber}>01</span><h3>Know Your Module</h3><p>Review hardware, connectors, modes, and documented limits.</p><span className={styles.cardLink}>Read Guide →</span></Link>
+<Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-614/Quick_Start"><span className={styles.stepNumber}>02</span><h3>Make the First Connection</h3><p>Connect power and UART, query firmware, and observe Mode 1 packets.</p><span className={styles.cardLink}>Read Guide →</span></Link>
+<Link className={styles.stepCard} to="/docs/Sensor/Radars/AS-614/Command_and_Data_Reference"><span className={styles.stepNumber}>03</span><h3>Interpret the Output</h3><p>Use the documented commands, response framing, and mode-specific packet layouts.</p><span className={styles.cardLink}>Read Guide →</span></Link>
+</div>
+</section>
+<section className={styles.section}>
+<div className={styles.sectionHeader}><h2>AS-614 Resources</h2></div>
+<div className={styles.resourceGrid}>
+<Link to="/docs/Sensor/Radars/AS-614/Command_and_Data_Reference"><strong>Command and Data Reference</strong><span>Open Reference →</span></Link>
+<Link to="/docs/Sensor/Radars/AS-614/FAQ"><strong>FAQ and Troubleshooting</strong><span>Open Reference →</span></Link>
+</div>
+</section>
+</div>

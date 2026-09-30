@@ -1,54 +1,205 @@
 ---
+title: AS-614 60 GHz Radar Module Overview
+sidebar_label: Overview
 sidebar_position: 1
-title: AS-614 Overview
-description: Learn the capabilities, specifications, and documented limitations of the AnySensing AS-614 60 GHz FMCW AI radar module.
-keywords: [AS-614, AnySensing, 60 GHz radar, FMCW radar, vital signs, presence sensor, InCare24]
+description: Hardware, interfaces, sensing modes, operating limits, and ordering structure of the AS-614 multi-channel FMCW radar module.
+keywords:
+  - AS-614
+  - 60 GHz FMCW radar
+  - position detection
+  - occupancy detection
+  - vital-sign sensing
 ---
 
-# AS-614 Overview
+# AS-614 60 GHz Radar Module Overview
 
-The **AS-614** is a 60 GHz frequency-modulated continuous-wave (FMCW) AI radar module with one transmit and four receive antennas. The board designation is **RB-614**. It performs AI analysis on the module for position, vital signs, presence, occupancy count, and hospital-bed monitoring.
+AS-614 is a compact 60 GHz multi-channel FMCW radar module for indoor position, occupancy, and closest-person vital-sign sensing. It integrates a 1 TX / 4 RX antenna system and on-board processing on a 32 × 30 mm board and provides GPIO, TTL UART, optional connector hardware, USB-C power input, and an indicator LED.
 
-AS-614 remains in production and is installed in existing InCare24 systems. New installations are moving to AS-613, while AS-614 development focuses on stability in hospital environments.
+:::note
+Official reference
+This page follows the AS_614 with AI User Manual, Ver.5.00 Jan.2025. The manual writes the model as `AS_614`; this Wiki uses the customer-facing name `AS-614`.
+:::
 
-![AS-614 radar module front view](/img/Sensor/Radars/AS-614/AS-614.png)
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import images from './ContentImages.module.css';
+
+## Hardware overview
+
+- 60 GHz multi-channel FMCW radar
+- Integrated antenna, DSP, and on-device processing
+- 1 transmit channel and 4 receive channels
+- 32.0 × 30.0 mm board outline
+- P1 eight-pin 2.54 mm header
+- P2 six-pin board connector
+- J1 USB-C power connector
+- GPIO, 3.3 V TTL UART, reset input, and detection LED
+
+<div className={images.boardViews}>
+<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-614/AS-614.png')} alt="AS-614 production board component side" width="3600" height="2400" loading="lazy" /></div><figcaption>Component side with USB-C, processing components, P1 header pads, and the P2 board connector.</figcaption></figure>
+<figure className={images.figure}><div className={images.boardPhoto}><img src={useBaseUrl('/img/Sensor/Radars/AS-614/AS-614%20%282%29.png')} alt="AS-614 production board antenna side" width="3600" height="2400" loading="lazy" /></div><figcaption>Antenna and product-label side of the AS-614 production board.</figcaption></figure>
+</div>
+
+Flat board illustrations: [component side](/img/Sensor/Radars/AS-614/AS-614_Front.png) · [antenna side](/img/Sensor/Radars/AS-614/AS-614_Bottom.png).
+
+The photographs identify the physical board faces. Printed certification marks alone do not establish product or end-system certification status.
 
 ## Specifications
 
-| Item | Specification |
+| Item | Value documented in the supplied manual |
 | --- | --- |
-| Class | 60 GHz multi-channel FMCW radar with onboard AI analysis |
-| TX / RX | 1 / 4 |
-| Antenna gain / EIRP | 3 dBi / 10 dBm |
-| Beamwidth | 100° horizontal / 100° vertical |
-| Distance range | Maximum 8 m; 12 cm resolution |
-| Vital-sign range | Maximum 3 m; approximately 85% accuracy |
-| People tracked | 1 |
-| Size / weight | 32 × 30 × 3.35 mm / 3.07 g |
-| Supply / power | 3.3–7 V / maximum 700 mW |
-| Operating temperature | −40 to 85 °C |
-| Interfaces | GPIO and UART; no USB |
-| Radar IC / MCU | Socionext SC1240 / Geehy AP32F411CE **[VERIFY]** |
-| Certifications | KC and FCC |
-| Functions | Position, vital signs, presence, occupancy count, and hospital-bed monitoring |
-| Reference manual | User Manual v5.00, January 2025; latest identified version v5.5 **[TBD]** |
+| Model | `AS_614` |
+| Size without connector | 32.0 × 30.0 × 3.35 mm |
+| Size with connector | 32.0 × 30.0 × 5.1 mm |
+| Weight | 3.07 g |
+| Transmit frequency | 60 GHz |
+| Antenna | 1 TX, 4 RX |
+| TX EIRP | 10 dBm |
+| Antenna gain | 3 dBi |
+| RF pattern (-3 dB width) | 100° horizontal, 100° vertical |
+| Supply voltage | 3.3-7.0 VDC |
+| Maximum documented power | 700 mW |
+| Operating temperature | -40 to 85 °C |
+| Storage temperature | -55 to 125 °C |
+| Interfaces | 1 GPIO, 1 TTL UART |
+| Functions | Motion, distance, breathing rate, heart rate, HRV, indicator LED |
+| Maximum distance listed in specification table | 8 m |
+| Maximum vital-sign distance listed in specification table | 3 m |
+| Distance resolution | 12 cm |
 
-## Board views and connectors
+The specification table places `85%` in a row labeled vital-sign resolution. Elsewhere, the manual describes mode-specific stable-state accuracy values. Because `85%` is not a resolution unit and the table gives no test method, do not treat it as a separate validated accuracy specification. See the mode-specific statements in [Vital-Sign Detection](./Vital_Sign_Detection#documented-accuracy).
 
-The component side is shown above. The following image shows the radar side, and the connector diagram identifies the P1 2.54 mm header and the P2 power-and-data connector.
+## Pin map
 
-![AS-614 radar side](/img/Sensor/Radars/AS-614/AS-614%20%282%29.png)
+With USB-C at the top and P2 at the bottom, P1 is the eight-pin header on the left. P2 is the six-pin board connector.
 
-![AS-614 connector and pin diagram](/img/Sensor/Radars/AS-614/AS-614_Pin_List.png)
+:::caution
+Pin 1 orientation requires confirmation
+Manual v5.00 page 2 places P1 Pin 1 at the bottom of the header, near the square pad. The supplied Pin List artwork numbers it from the top. Confirm the production revision before applying power; do not combine the two orientations. The signal table follows the manual.
+:::
 
-## Operating modes
+![AS-614 P1 header and P2 connector pin list](/img/Sensor/Radars/AS-614/AS-614_Pin_List.png)
 
-AS-614 uses numbered operating modes. Mode 10 outputs raw data. The complete mapping of mode numbers to behavior is **[TBD]** because the packet reference `260508_summary_radar_payloads.md` was not available with the source document.
+*P1 and P2 signal assignments. See the orientation note above before wiring.*
 
-## MCU identification
+| Pin | Signal | P1 header | P2 connector |
+| --- | --- | --- | --- |
+| 1 | VCC | 3.3-7.0 V power input | 3.3-7.0 V power input |
+| 2 | GND | Power ground | Power ground |
+| 3 | GPIO | Input/output; output by default | Input/output; output by default |
+| 4 | NRST | Open or High: normal; Low: reset | Open or High: normal; Low: reset |
+| 5 | UART TX | Module transmit | Module transmit |
+| 6 | UART RX | Module receive | Module receive |
+| 7 | N.C. | Not used | Not available on six-pin P2 |
+| 8 | N.C. | Not used | Not available on six-pin P2 |
 
-The 2023 RB-614 v1.0 hardware folder identifies a GigaDevice GD32F303CBT6, while the current internal record identifies a Geehy AP32F411CE. The part may have changed between revisions, but that has not been confirmed. Do not quote the MCU to customers until engineering resolves the discrepancy. **[VERIFY]**
+- `P1`: eight-pin 2.54 mm header
+- `P2`: `12505WR-06`; mating connector `12505HS-06`
+- `J1`: USB-C connector used solely for power supply
 
-## Next step
+The manual states that GPIO is an output by default: High when a target is detected and Low when no target is detected. It also says GPIO can be set as an input, but it does not provide the configuration command or a complete packet definition for that input mode.
 
-Continue to [AS-614 Quick Start](./Quick_Start) for bench checks, site commissioning, AS-BW network attachment, data limitations, and field troubleshooting.
+:::note
+Electrical details not specified
+The manual does not define GPIO current limits, pull states, NRST timing, UART absolute maximum ratings, ESD limits, connector current ratings, or USB-C CC/power-path implementation.
+:::
+
+## Sensing modes
+
+| Mode | Installation | Main output | Availability |
+| --- | --- | --- | --- |
+| 1 | Wall/side | Position, movement energy, or coarse position zone | Default |
+| 2 | Ceiling | Floor-plane position, movement energy, or coarse position zone | Default |
+| 3 | Wall | Approximate occupancy total or nine-zone distribution | Default |
+| 4 | Ceiling | Approximate occupancy total or nine-zone distribution | Default |
+| 5 | Wall/side | Closest-person heart rate, breathing rate, waveform, and optional position | Default |
+| 6 | Wall | Position slots plus closest-person vital signs | Default |
+| 10 | Application-specific | Raw real/imaginary antenna data | Additional license |
+| 11 | Wall/side | Advanced vital signs with RMSSD and SDNN | Additional license |
+| 12 | Ceiling | Restroom occupancy, lying state, warning state, and breathing | Additional license |
+| 13 | Ceiling | Hospital-bed state, vital signs, fall-related, and pressure-ulcer-related states | Additional license |
+
+The manual says option modes require a separate license. Confirm the enabled mode list for the ordered unit before system integration.
+
+## Coordinate system
+
+For wall installation:
+
+- X: left (-), right (+)
+- Y: down (-), up (+)
+- Z: forward (+)
+
+For ceiling installation:
+
+- X: left (-), right (+)
+- Y: height below the radar (-)
+- Z: backward (-), forward (+)
+
+The manual states that X-axis performance is relatively better than Y- or Z-axis performance. Coordinate signs are relative to the radar orientation.
+
+![AS-614 wall and ceiling coordinate orientation](/img/Sensor/Radars/AS-614/as614-coordinate-system-1.png)
+
+*Wall and ceiling coordinate views. Forward wall detection uses +Z; axis signs depend on the installed radar orientation and viewing direction. See [Position Detection](./Position_Detection#tune-the-region-of-interest) for distance and angle limits.*
+
+## Detection-area controls
+
+AS-614 uses `xmin`, `xmax`, `ymin`, `ymax`, `zmin`, and `zmax` in millimeters. Angle limits use positive values from 0° to 180°:
+
+- `alrmin` / `alrmax`: left-to-right limits
+- `adumin` / `adumax`: down-to-up limits
+
+The manual says angle filtering is less precise than distance filtering. Use coordinate bounds for primary region control and validate the final boundary with real targets.
+
+AS-614 does not document the `rotate`, `walltilt`, or exclusion-zone commands used by some other radar models. Do not transfer those commands into an AS-614 integration.
+
+## Ordering structure
+
+```text
+AS_614_P/C/U
+```
+
+| Code | Meaning in the manual |
+| --- | --- |
+| `P` | 2.54 mm pin header installed |
+| `C` | Board connector installed |
+| `U` | USB-C connector installed |
+
+Documented examples: `AS_614_U`, `AS_614_PU`, and `AS_614_CU`.
+
+The order-information table contains a stray `AS_611` label. The heading, format, and examples identify the intended product as AS-614; confirm the final purchasable SKU list with KORLINX before publication.
+
+## Operating limitations
+
+- Position and occupancy modes respond to moving reflectors and cannot inherently distinguish a person from a pet, fan, curtain, cable, or other moving object.
+- Stationary-person detection requires enough micro-motion and becomes harder at longer distances.
+- Static-object detection provides Z distance only and may continuously report unwanted environmental reflectors.
+- Multiple nearby people can merge into one target; a person directly behind another target can be hidden.
+- Metallic or densely furnished environments can create multipath, virtual targets, or missed targets.
+- Occupancy output is an approximation and can differ from the real count by 1-3 people. It is not intended for exact people counting.
+- Vital-sign output is associated with the closest detected person and can be disrupted by closer motion or objects between the radar and the subject.
+- The final detection range must be verified in the actual enclosure and installation environment.
+
+:::danger
+Not a medical or life-safety claim
+The supplied manual does not provide medical-device certification, clinical validation, or regulatory conformity evidence. Do not use AS-614 output alone for diagnosis, treatment, emergency response, fall protection, pressure-ulcer prevention, or other safety-critical decisions.
+:::
+
+:::warning
+Pacemakers and implantable devices
+The manual warns not to use the device within 20 cm of a pacemaker or other implantable medical device and instructs users to consult the physician or device manufacturer first.
+:::
+
+## Next steps
+
+- [Quick Start](./Quick_Start)
+- [Position Detection](./Position_Detection)
+- [Occupancy Detection](./Occupancy_Detection)
+- [Vital-Sign Detection](./Vital_Sign_Detection)
+- [Licensed Application Modes](./Application_Modes)
+- [UART and USB](./UART_and_USB)
+- [Command and Data Reference](./Command_and_Data_Reference)
+
+{/* IMAGE TODO [AS614-IMG-05]: Approved mechanical drawing with connector variants, dimensions, mounting holes, and keep-outs. */}
+
+{/* IMAGE TODO [AS614-IMG-06]: Measured RF polar plots; do not invent curves from the documented beam width. */}
+
+{/* VERIFY WITH R&D [AS614-V01]: Confirm production SKU/license matrix and correct the AS_611 typo in the order-information table. */}
