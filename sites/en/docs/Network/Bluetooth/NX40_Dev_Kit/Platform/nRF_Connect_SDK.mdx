@@ -150,29 +150,6 @@ Nordic's [first build exercise](https://academy.nordicsemi.com/courses/nrf-conne
 
 *Illustrative build configuration. Select the SDK, toolchain, and verified NX40 target supplied by the board package.*
 
-### Build the UF2 firmware
-
-Enable UF2 output in the application's `prj.conf` if the NX40 board package does not already enable it:
-
-```ini
-CONFIG_BUILD_OUTPUT_UF2=y
-```
-
-Use the board package's UF2 family ID and application flash layout. Do not guess the application start address or reuse another board's bootloader settings. Zephyr's [UF2 build implementation](https://github.com/zephyrproject-rtos/zephyr/blob/main/CMakeLists.txt) generates the UF2 artifact from the configured firmware image.
-
-1. Build the selected configuration.
-2. Resolve any missing-board, devicetree, or toolchain errors before uploading.
-3. Locate the generated application `.uf2` file. A single-image build normally produces `build/zephyr/zephyr.uf2`; sysbuild can place it inside an application image subdirectory.
-4. Confirm that the artifact comes from the intended NX40 target and uses the bootloader-compatible layout.
-
-For command-line use, run the following in the SDK environment from the copied application directory. **Replace `NX40_BOARD_TARGET` with the verified target**; it is a placeholder, not a registered board name.
-
-```bash
-west build -p always -b NX40_BOARD_TARGET -d build .
-```
-
-This command assumes board support is already discoverable. Apply any board-root settings required by its installation guide. See the [west build documentation](https://docs.zephyrproject.org/latest/develop/west/build-flash-debug.html) for build-directory selection.
-
 ### Upload over USB
 
 1. Enter UF2 bootloader mode again if the removable drive is no longer visible.
