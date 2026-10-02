@@ -67,12 +67,6 @@ A bare NX40 module additionally needs a carrier with power, SWD access, and the 
 - NX40 board support compatible with that release.
 - Drivers and programming tools required by the selected debug probe.
 
-### Applying the reference examples to NX40
-
-The [Seeed XIAO tutorial](https://wiki.seeedstudio.com/XIAO-nRF52840-Zephyr-RTOS/) is useful for the progression from a first application to peripherals. Its `xiao_ble` target, UF2 upload, pin assignments, and sensor configuration belong to XIAO.
-
-NX40 uses the same MCU family, but that does not make either XIAO or Nordic DK board definitions interchangeable with NX40. The KORLINX Arduino board package is also separate from a Zephyr board package.
-
 ## Install nRF Connect for VS Code
 
 1. Install [Visual Studio Code](https://code.visualstudio.com/download) for your operating system.
@@ -186,7 +180,7 @@ See [west build and flash documentation](https://docs.zephyrproject.org/latest/d
 
 ## Onboard LED
 
-The [Onboard LED example in the Seeed reference](https://wiki.seeedstudio.com/XIAO-nRF52840-Zephyr-RTOS/#onboard-led) uses Zephyr's Blinky sample and explains how `led0` resolves to a physical LED. Apply that approach to the verified NX40 board definition.
+Zephyr's Blinky sample uses the `led0` alias to select a physical LED. Use the verified NX40 board definition to configure that alias.
 
 ### Build and run Blinky
 
@@ -195,8 +189,6 @@ The [Onboard LED example in the Seeed reference](https://wiki.seeedstudio.com/XI
 3. Build and program through the NX40-supported runner described above.
 4. Observe the user LED assigned to `led0`; it should alternate between on and off.
 5. Change `SLEEP_TIME_MS` in the sample, rebuild, and flash again. Confirm that the interval changes.
-
-The XIAO target, P0.26 LED assignment, and UF2 reset/upload procedure in the reference are specific to XIAO. They do not establish the NX40 LED pin or programming method.
 
 ### How the LED is selected
 
@@ -371,7 +363,6 @@ A semaphore has a count and no owner; giving it can signal another thread. An IS
 ## References
 
 - [Nordic Developer Academy: nRF Connect SDK Fundamentals](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/)
-- [Seeed Studio: XIAO nRF52840 with Zephyr RTOS](https://wiki.seeedstudio.com/XIAO-nRF52840-Zephyr-RTOS/)
 - [Zephyr Application Development](https://docs.zephyrproject.org/latest/develop/application/index.html)
 - [Zephyr Blinky sample](https://docs.zephyrproject.org/latest/samples/basic/blinky/README.html)
 - [Zephyr west build, flash, and debug](https://docs.zephyrproject.org/latest/develop/west/build-flash-debug.html)
