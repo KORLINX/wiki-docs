@@ -2,22 +2,22 @@
 title: How to Use NX40 with nRF Connect SDK and Zephyr
 sidebar_label: nRF Connect SDK / Zephyr
 sidebar_position: 4
-description: "Learn the nRF Connect SDK workflow for NX40 through Nordic Fundamentals topics: build and flash, devicetree, Kconfig, GPIO, logging, UART, I2C, and RTOS synchronization."
-keywords: [NX40, DEV-NX40, nRF52840, nRF Connect SDK, Zephyr RTOS, SWD]
+description: "Learn the nRF Connect SDK workflow for NX40 through Nordic Fundamentals topics: build and upload UF2 firmware over USB, devicetree, Kconfig, GPIO, and logging."
+keywords: [NX40, DEV-NX40, nRF52840, nRF Connect SDK, Zephyr RTOS, UF2, USB bootloader]
 ---
 
 # How to Use NX40 with nRF Connect SDK and Zephyr
 
-This guide introduces **nRF Connect SDK and Zephyr RTOS for DEV-NX40**, following the technical progression of Nordic Developer Academy: understand the SDK, build an application, describe hardware, configure software, and add peripherals and concurrent tasks.
+This guide introduces **nRF Connect SDK and Zephyr RTOS for DEV-NX40**, using **UF2 firmware upload over USB**. It follows the technical progression of Nordic Developer Academy: understand the SDK, build an application, describe hardware, configure software, and add peripherals and concurrent tasks.
 
 :::info
 Board support prerequisite
-The NX40 documentation does not yet identify a verified Zephyr board package, board target, or tested SDK version. Obtain these for your DEV-NX40 revision before building or flashing. The procedure below describes the workflow once that board support is available; it is not a hardware-tested NX40 release recipe.
+The NX40 documentation does not yet identify a verified Zephyr board package, board target, or tested SDK version. Obtain these for your DEV-NX40 revision, including a UF2-compatible application flash layout, before building or uploading firmware. The procedure below describes the workflow once that board support is available; it is not a hardware-tested NX40 release recipe.
 :::
 
 ![NX40 nRF Connect SDK and Zephyr platform illustration](/img/bluetooth/nx40/assets/nx40-ncs-overview.png)
 
-*NX40 development platform illustration. See the SWD section for programming connections.*
+*NX40 development platform illustration. Firmware is uploaded over USB through the UF2 bootloader.*
 
 ## Understand the platform
 
@@ -38,13 +38,13 @@ This separation lets application logic use board-defined devices without embeddi
 
 ![NX40 firmware build workflow](/img/bluetooth/nx40/assets/nx40-ncs-workflow.png)
 
-*Conceptual build workflow. Application code, Kconfig, and board devicetree contribute to the firmware build.*
+*Application code, Kconfig, and board devicetree contribute to the firmware build, followed by UF2 programming over USB.*
 
 ## Supported host platforms
 
 Nordic provides its VS Code development workflow for Windows, macOS, and Linux. Check the host requirements for the SDK release selected by the NX40 board package.
 
-Record the operating system, SDK version, toolchain version, board-package revision, and probe model with each validated setup.
+Record the operating system, SDK version, toolchain version, board-package revision, and UF2 bootloader version with each validated setup.
 
 ## Before you begin
 
@@ -53,19 +53,18 @@ Record the operating system, SDK version, toolchain version, board-package revis
 | Item | Requirement |
 | --- | --- |
 | Development board | DEV-NX40 with a matching Zephyr board definition |
-| Debug probe | nRF52840-compatible SWD probe supported by the board's flash runner |
-| USB cable | Data-capable cable for the probe and the required board connection |
-| Power and wiring | Approved DEV-NX40 power arrangement and SWD pinout |
-| Optional console connection | Board-supported UART bridge or debug-probe RTT connection |
+| Bootloader | KORLINX UF2 bootloader installed on the board |
+| USB cable | Data-capable cable connected to the board's native USB interface for UF2 upload |
+| Optional console connection | Board-supported UART bridge or firmware-enabled USB CDC connection |
 
-A bare NX40 module additionally needs a carrier with power, SWD access, and the required application circuitry. See [Dev Kit Hardware](../Hardware.mdx) and the [module pin map](../../NX40_Module/NX40-Module_Pin_Map.mdx).
+A bare NX40 module additionally needs a carrier with power, native USB access, the UF2 bootloader, and the required application circuitry. See [Dev Kit Hardware](../Hardware.mdx) and the [module pin map](../../NX40_Module/NX40-Module_Pin_Map.mdx).
 
 ### Required software
 
 - Visual Studio Code and Nordic's **nRF Connect for VS Code Extension Pack**.
 - An nRF Connect SDK release and its matching toolchain.
 - NX40 board support compatible with that release.
-- Drivers and programming tools required by the selected debug probe.
+- Host USB support for the bootloader's mass-storage drive; serial drivers if using a UART console.
 
 ## Install nRF Connect for VS Code
 
@@ -84,7 +83,7 @@ The pack provides these tools:
 | nRF Kconfig | Software-configuration editing |
 | nRF Terminal | Serial and RTT terminal access |
 
-Follow Nordic's [installation exercise](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-1-nrf-connect-sdk-introduction/topic/exercise-1-1/) for release-specific prerequisites, including J-Link software and Linux device permissions where applicable.
+Follow Nordic's [installation exercise](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-1-nrf-connect-sdk-introduction/topic/exercise-1-1/) for release-specific SDK prerequisites. The NX40 UF2 upload procedure uses the bootloader's USB drive.
 
 ![Install the Nordic VS Code extension and select nRF Connect SDK](/img/bluetooth/nx40/assets/nx40-ncs-vscode-extension-install.png)
 
@@ -114,32 +113,28 @@ Before continuing, confirm:
 | Target | Exact board name and any SoC/revision qualifiers |
 | LED | An enabled GPIO LED referenced by the `led0` alias |
 | Clock sources | Oscillator configuration matching the assembled module |
-| Console | UART or RTT configuration supported by the board |
-| Flash layout | Application, bootloader, and storage regions appropriate for this workflow |
-| Programmer | Supported flash runner and probe configuration |
+| Console | UART or USB CDC configuration supported by the board |
+| Flash layout | Application start address and size compatible with the installed UF2 bootloader, preserving its reserved regions |
+| UF2 output | UF2 generation and family ID matching the NX40 bootloader |
 | Module variant | External flash enabled only where present and configured |
 
 Do not substitute `nrf52840dk/nrf52840` just to make compilation succeed. A build can succeed while using incompatible pins or flash settings.
 
 {/* REVIEW: Replace this prerequisite with a versioned KORLINX board-package URL, exact target, and tested SDK/toolchain pair when available. Do not infer a target from the Arduino FQBN. */}
 
-### Prepare the programming connection
+### Prepare the UF2 USB connection
 
-1. Disconnect power while making connections.
-2. Connect SWDIO, SWCLK, GND, and the target-voltage reference according to the probe guide and released DEV-NX40 schematic.
-3. Establish the approved power arrangement, then connect the probe to the computer.
-4. Confirm that the programming tools detect the intended probe and target.
+1. Connect DEV-NX40 to the computer through its native USB interface using a data-capable cable.
+2. Enter UF2 bootloader mode using the reset-button sequence documented for the installed KORLINX bootloader.
+3. Confirm that a removable USB drive appears in the host file manager.
+4. Keep the board connected while preparing the UF2 application image.
 
-The FTDI USB-to-UART bridge listed in the hardware guide provides a serial connection; it is not an SWD programmer. Native USB programming requires a separately verified bootloader and image layout.
+Use the drive name reported by your board; it depends on the installed bootloader. The FTDI USB-to-UART bridge provides a serial console, while UF2 upload uses the native USB bootloader's mass-storage interface.
 
 :::caution
-Existing firmware
-SWD flashing can overwrite the Arduino application or bootloader, depending on the image layout and erase operation. Preserve required firmware and data before changing platforms. Use the [Arduino recovery procedure](./Arduino.mdx#step-0-install-or-recover-the-bootloader-if-needed) if you later need to restore that workflow.
+Bootloader-compatible firmware
+Use the NX40 board package's application flash layout and UF2 settings. Generating a `.uf2` file alone does not make an arbitrary Zephyr image compatible with the installed bootloader. Preserve the bootloader and its reserved flash regions.
 :::
-
-![Conceptual NX40 SWD programming connection](/img/bluetooth/nx40/assets/nx40-ncs-swd-connection.png)
-
-*Conceptual SWD and power connections. Dashed lines do not specify physical connector pins; verify the schematic and power arrangement.*
 
 ## Build your first application
 
@@ -155,28 +150,38 @@ Nordic's [first build exercise](https://academy.nordicsemi.com/courses/nrf-conne
 
 *Illustrative build configuration. Select the SDK, toolchain, and verified NX40 target supplied by the board package.*
 
-### Compile and program
+### Build the UF2 firmware
+
+Enable UF2 output in the application's `prj.conf` if the NX40 board package does not already enable it:
+
+```ini
+CONFIG_BUILD_OUTPUT_UF2=y
+```
+
+Use the board package's UF2 family ID and application flash layout. Do not guess the application start address or reuse another board's bootloader settings. Zephyr's [UF2 build implementation](https://github.com/zephyrproject-rtos/zephyr/blob/main/CMakeLists.txt) generates the UF2 artifact from the configured firmware image.
 
 1. Build the selected configuration.
-2. Resolve any missing-board, devicetree, or toolchain errors before programming.
-3. Confirm the connected target and selected build directory.
-4. Flash using the runner supported by the board package.
-5. Wait for a successful programming result and reset the target if needed.
+2. Resolve any missing-board, devicetree, or toolchain errors before uploading.
+3. Locate the generated application `.uf2` file. A single-image build normally produces `build/zephyr/zephyr.uf2`; sysbuild can place it inside an application image subdirectory.
+4. Confirm that the artifact comes from the intended NX40 target and uses the bootloader-compatible layout.
 
 For command-line use, run the following in the SDK environment from the copied application directory. **Replace `NX40_BOARD_TARGET` with the verified target**; it is a placeholder, not a registered board name.
 
 ```bash
 west build -p always -b NX40_BOARD_TARGET -d build .
-west flash -d build
 ```
 
-These commands assume board support is already discoverable. Apply any board-root settings required by its installation guide. Do not add an erase/recover option as routine troubleshooting.
+This command assumes board support is already discoverable. Apply any board-root settings required by its installation guide. See the [west build documentation](https://docs.zephyrproject.org/latest/develop/west/build-flash-debug.html) for build-directory selection.
 
-See [west build and flash documentation](https://docs.zephyrproject.org/latest/develop/west/build-flash-debug.html) for build-directory selection and runner options.
+### Upload over USB
 
-![NX40 build and flash command illustration](/img/bluetooth/nx40/assets/nx40-ncs-build-flash.png)
+1. Enter UF2 bootloader mode again if the removable drive is no longer visible.
+2. Copy the generated application `.uf2` file to that drive using the host file manager.
+3. Wait for the copy to finish. The bootloader programs the application and normally restarts the board; its USB drive may disappear.
+4. If the board remains in bootloader mode, follow its documented reset procedure to start the application.
+5. Check the expected application behavior, such as the Blinky LED.
 
-*Illustrated build and flash workflow, not a captured test session. NX40_BOARD_TARGET is a placeholder.*
+Repeat the build and copy steps after changing the application. Copy the generated UF2 artifact; renaming a `.hex` or `.bin` file to `.uf2` does not convert it.
 
 ## Onboard LED
 
@@ -186,9 +191,9 @@ Zephyr's Blinky sample uses the `led0` alias to select a physical LED. Use the v
 
 1. Create the application from `zephyr/samples/basic/blinky` as described in [Build your first application](#build-your-first-application).
 2. Select the verified NX40 board target and confirm that it defines `led0`.
-3. Build and program through the NX40-supported runner described above.
+3. Build the UF2 application and upload it through the USB bootloader as described above.
 4. Observe the user LED assigned to `led0`; it should alternate between on and off.
-5. Change `SLEEP_TIME_MS` in the sample, rebuild, and flash again. Confirm that the interval changes.
+5. Change `SLEEP_TIME_MS` in the sample, rebuild, and upload the new UF2 file. Confirm that the interval changes.
 
 ### How the LED is selected
 
@@ -269,12 +274,12 @@ See Nordic's [overlays and build systems lesson](https://academy.nordicsemi.com/
 
 ## Console output and logging
 
-Copy `zephyr/samples/hello_world` into a separate application. Build and flash it with the same board target and its documented console configuration.
+Copy `zephyr/samples/hello_world` into a separate application. Build and upload its UF2 firmware with the same board target and its documented console configuration.
 
 | Console path | How to observe it |
 | --- | --- |
 | Hardware UART | Open the connected bridge's serial port at the configured baud rate |
-| RTT | Use the probe's RTT viewer with firmware configured for RTT output |
+| RTT (optional debugging) | Requires a separate debug probe and firmware configured for RTT; UF2 upload itself does not provide RTT |
 | Native USB CDC | Use only when USB CDC and its initialization are explicitly enabled in the application |
 
 Reset the board after opening the viewer to capture startup output. Hello World should print a greeting identifying the configured board. Do not assume that an FTDI port receives native USB CDC output or that Arduino's serial settings carry over.
@@ -289,64 +294,6 @@ Use `printk()` for a simple console check. For ongoing diagnostics, Nordic teach
 
 A log message being compiled into firmware does not guarantee that it reaches a connected serial port. UART and RTT have different transport requirements. See the [Logger module lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-3-printing-messages-to-console-and-logging/topic/logger-module/).
 
-## Add UART and I2C peripherals
-
-### UART
-
-Zephyr provides polling, interrupt-driven, and asynchronous UART APIs. Nordic's lesson develops the asynchronous approach, using EasyDMA on supported Nordic hardware. Its configuration includes `CONFIG_SERIAL=y` and `CONFIG_UART_ASYNC_API=y`.
-
-For NX40, verify the enabled UART instance, TX/RX pinctrl, baud rate, and physical route to the FTDI bridge or external connector. Also check whether logging already owns that UART before assigning it to an application protocol. See Nordic's [UART Driver lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-4-serial-communication-uart/topic/uart-driver/).
-
-### I2C
-
-The I2C lesson enables `CONFIG_I2C=y` and describes each peripheral as a child of its controller. `I2C_DT_SPEC_GET()` combines the selected bus and target address for application access. Check readiness before transfers.
-
-Apply this to NX40 only after checking its sensor wiring, addresses, power, and driver bindings. The course's sensor overlays are examples for its hardware. See Nordic's [I2C Driver lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-6-serial-com-i2c/topic/i2c-driver/).
-
-### NX40 hardware to validate
-
-Once programming and logging work, validate one peripheral at a time against the schematic and board package.
-
-| Feature | Next task |
-| --- | --- |
-| User button | Define its GPIO and active level, then test input events |
-| RGB LED | Verify each channel and polarity |
-| LSM6DS3TR-C IMU | Verify bus, address, compatible driver, and interrupt routing |
-| SHTC3 sensor | Verify bus, address, and driver configuration |
-| External flash | Check the installed NX40 variant before enabling its node |
-| Bluetooth LE | Use a sample supported by the selected SDK and verify radio behavior separately |
-
-![Conceptual NX40 UART and I2C peripheral routes](/img/bluetooth/nx40/assets/nx40-ncs-peripheral-paths.png)
-
-*Conceptual UART and I2C routes. Confirm sensor connections, addresses, and drivers against the board schematic.*
-
-## Organize work with the RTOS
-
-### Threads and scheduling
-
-A thread has its own execution context, stack, and priority. Nordic's [thread creation exercise](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-7-multithreaded-applications/topic/exercise-1-7/) demonstrates how continuously runnable threads can starve others.
-
-`k_yield()` offers execution to eligible threads of equal or higher priority; it does not guarantee CPU time for lower-priority work. Sleeping with `k_sleep()` or waiting for an event makes a thread temporarily non-runnable.
-
-For an NX40 sensor application, a useful starting design is periodic acquisition plus event-driven communication. This is an application design suggestion, not a shipped NX40 firmware architecture. Choose stack sizes and priorities through measurement.
-
-### Workqueues
-
-A workqueue executes submitted work in thread context. It can move longer processing out of an interrupt handler. Keep each work handler bounded so it does not delay other queued work. Nordic demonstrates dedicated workqueues in [Lesson 7, Exercise 3](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-7-multithreaded-applications/topic/exercise-3-7/).
-
-### Synchronization
-
-| Mechanism | Use in an NX40 application |
-| --- | --- |
-| Semaphore | Signal that acquisition or input processing is needed |
-| Mutex | Protect shared state accessed by cooperating threads |
-
-A semaphore has a count and no owner; giving it can signal another thread. An ISR must never wait while taking one. A mutex has ownership: the locking thread releases it, and mutex operations belong in thread context. See Nordic's [Semaphores](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-8-thread-synchronization/topic/semaphores/) and [Mutexes](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-8-thread-synchronization/topic/mutexes/) lessons.
-
-![Example NX40 event processing and thread synchronization](/img/bluetooth/nx40/assets/nx40-ncs-rtos-flow.png)
-
-*Example application design using events, queued work, and shared-state protection; not measured NX40 firmware behavior.*
-
 ## Troubleshooting
 
 | Symptom | What to check |
@@ -354,11 +301,12 @@ A semaphore has a count and no owner; giving it can signal another thread. An IS
 | NX40 target is unavailable | Install the matching board package and check its board-root/module discovery instructions |
 | `led0` or GPIO build error | Confirm the alias, referenced LED node, and driver configuration |
 | Build uses unexpected pins | Inspect the generated devicetree and selected overlays; use a pristine build after changing targets |
-| Probe is detected but target is not | Check target power, voltage reference, common ground, and SWD wiring |
+| UF2 USB drive does not appear | Check the data cable, native USB connection, installed bootloader, and its documented entry sequence |
+| No `.uf2` file after building | Check `CONFIG_BUILD_OUTPUT_UF2`, the selected build directory, and any sysbuild image subdirectories |
+| UF2 copy completes but application does not start | Check the board target, UF2 family ID, application start address, reserved flash regions, and bootloader compatibility |
 | Flash succeeds but no LED toggles | Confirm LED assignment, polarity, image layout, and reset behavior |
 | No console output | Check the selected backend, physical routing, port, and UART baud rate |
-| Arduino USB upload no longer works | Check whether SWD flashing replaced its bootloader; follow the Arduino recovery guide if required |
-| Sensor initialization fails | Verify power, bus routing, address, and driver support for the exact part |
+| Bootloader is missing or damaged | Follow the [KORLINX bootloader recovery procedure](./Arduino.mdx#step-0-install-or-recover-the-bootloader-if-needed) before resuming UF2 uploads |
 
 ## References
 
