@@ -10,9 +10,8 @@ keywords: [NX40, DEV-NX40, nRF52840, nRF Connect SDK, Zephyr RTOS, UF2, USB boot
 
 This guide introduces **nRF Connect SDK and Zephyr RTOS for DEV-NX40**, using **UF2 firmware upload over USB**. It follows the technical progression of Nordic Developer Academy: understand the SDK, build an application, describe hardware, configure software, and add peripherals and concurrent tasks.
 
-:::info
-Board support prerequisite
-The NX40 documentation does not yet identify a verified Zephyr board package, board target, or tested SDK version. Obtain these for your DEV-NX40 revision, including a UF2-compatible application flash layout, before building or uploading firmware. The procedure below describes the workflow once that board support is available; it is not a hardware-tested NX40 release recipe.
+:::info[Board support]
+NX40 board support is provided by [NX-Zephyr-Samples](https://github.com/KORLINX/NX-Zephyr-Samples). Use board target `nx40/nrf52840` with nRF Connect SDK v3.3.1, the tested release.
 :::
 
 ![NX40 nRF Connect SDK and Zephyr platform illustration](/img/bluetooth/nx40/assets/nx40-ncs-overview.png)
@@ -100,27 +99,23 @@ Installing the extension alone does not install the SDK. **Install Toolchain** i
 
 ![SDK toolchain and NX40 board package compatibility](/img/bluetooth/nx40/assets/nx40-ncs-sdk-install.png)
 
-*Match the SDK and toolchain to the board package; this diagram does not specify a tested release.*
+*Match the SDK and toolchain to the board package. The tested release is nRF Connect SDK v3.3.1.*
 
 ## Select the NX40 hardware definition
 
-Follow the board package's installation instructions. It may be delivered through a west workspace, a Zephyr module, or an external board root.
+The NX40 board definition is provided as a Zephyr module by the [NX-Zephyr-Samples](https://github.com/KORLINX/NX-Zephyr-Samples) repository. See [Get the samples](#get-the-samples) to install it. It defines:
 
-Before continuing, confirm:
-
-| Board setting | Required NX40 definition |
+| Board setting | NX40 board definition |
 | --- | --- |
-| Target | Exact board name and any SoC/revision qualifiers |
-| LED | An enabled GPIO LED referenced by the `led0` alias |
-| Clock sources | Oscillator configuration matching the assembled module |
-| Console | UART or USB CDC configuration supported by the board |
-| Flash layout | Application start address and size compatible with the installed UF2 bootloader, preserving its reserved regions |
-| UF2 output | UF2 generation and family ID matching the NX40 bootloader |
-| Module variant | External flash enabled only where present and configured |
+| Target | `nx40/nrf52840`, tested with nRF Connect SDK v3.3.1 |
+| LED | `led0` is the red user LED on P0.11, active low |
+| Clock sources | 32.768 kHz crystal for the low-frequency clock |
+| Console | Native USB CDC ACM, started by the board at boot |
+| Flash layout | Application at `0x26000` (792 KB), after the SoftDevice region used by the KORLINX UF2 bootloader |
+| UF2 output | Enabled by the board, family ID `0xADA52840` |
+| Module variant | External flash (32 Mbit) enabled; disable its node with an overlay on a no-flash module |
 
 Do not substitute `nrf52840dk/nrf52840` just to make compilation succeed. A build can succeed while using incompatible pins or flash settings.
-
-{/* REVIEW: Replace this prerequisite with a versioned KORLINX board-package URL, exact target, and tested SDK/toolchain pair when available. Do not infer a target from the Arduino FQBN. */}
 
 ### Prepare the UF2 USB connection
 
@@ -131,8 +126,7 @@ Do not substitute `nrf52840dk/nrf52840` just to make compilation succeed. A buil
 
 Use the drive name reported by your board; it depends on the installed bootloader. The FTDI USB-to-UART bridge provides a serial console, while UF2 upload uses the native USB bootloader's mass-storage interface.
 
-:::caution
-Bootloader-compatible firmware
+:::caution[Bootloader-compatible firmware]
 Use the NX40 board package's application flash layout and UF2 settings. Generating a `.uf2` file alone does not make an arbitrary Zephyr image compatible with the installed bootloader. Preserve the bootloader and its reserved flash regions.
 :::
 
@@ -160,17 +154,75 @@ Nordic's [first build exercise](https://academy.nordicsemi.com/courses/nrf-conne
 
 Repeat the build and copy steps after changing the application. Copy the generated UF2 artifact; renaming a `.hex` or `.bin` file to `.uf2` does not convert it.
 
+## NX40 sample applications
+
+The [NX-Zephyr-Samples](https://github.com/KORLINX/NX-Zephyr-Samples) repository contains the [NX40 board definition](#select-the-nx40-hardware-definition) and ready-to-build samples for the on-board peripherals and Bluetooth LE. The repository is a Zephyr module, so you can keep it outside your nRF Connect SDK workspace.
+
+### Get the samples
+
+Clone the repository next to your nRF Connect SDK workspace:
+
+```bash
+git clone https://github.com/KORLINX/NX-Zephyr-Samples
+```
+
+The commands below refer to the path of this clone as `<repo>`.
+
+### Build and upload a sample
+
+1. Open a terminal in the nRF Connect SDK environment and change to the SDK workspace directory.
+2. Build the sample. Pass the repository as an extra Zephyr module so the build can find the NX40 board:
+
+   ```bash
+   west build -p always -b nx40/nrf52840 -d build/hello <repo>/samples/hello -- -DZEPHYR_EXTRA_MODULES=<repo>
+   ```
+
+3. Upload `build/hello/hello/zephyr/zephyr.uf2` as described in [Upload over USB](#upload-over-usb), or let west copy it to the bootloader drive:
+
+   ```bash
+   west flash -d build/hello -r uf2
+   ```
+
+4. Open the DEV-NX40 USB serial port to see the output.
+
+:::note
+`west flash -r uf2` can report a `FileNotFoundError` after the copy, because the bootloader resets as soon as it receives the image. The image is programmed when DEV-NX40 restarts and its USB serial port reappears.
+:::
+
+:::tip
+Samples built from this repository reboot into the bootloader when the USB serial port is opened at 1200 baud and closed, so you do not need to press reset for the next upload. On Linux: `stty -F /dev/ttyACM0 1200`.
+:::
+
+### Available samples
+
+| Sample | What it shows | Status on DEV-NX40 |
+| --- | --- | --- |
+| [hello](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/hello) | Console output with `printk` and the logging subsystem | Verified |
+| [uart](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/uart) | Interrupt-driven UART receive and echo on the console port | Verified |
+| [dmic](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/dmic) | PDM microphone capture with the DMIC API | Verified |
+| [qspi_flash](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/qspi_flash) | Erase, write and verify of the 32 Mbit external flash with the flash API | Verified |
+| [direct_test_mode](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/direct_test_mode) | Bluetooth LE Direct Test Mode for RF testing over USB serial | Verified |
+| [dht_polling](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/dht_polling) | Temperature and humidity from the SHTC3 with the sensor API | Validation in progress |
+| [lsm6dso](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/lsm6dso) | Accelerometer and gyroscope data from the 6-axis IMU | Validation in progress |
+| [gatt](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/gatt) | Bluetooth LE peripheral with a custom GATT service and notifications | Validation in progress |
+| [rssi_power_control](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/rssi_power_control) | Connection RSSI and LE Power Control between two boards (central and peripheral) | Validation in progress |
+| [nrf_dm](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/nrf_dm) | Distance measurement between two boards | Validation in progress |
+
+Each sample folder contains a `README.rst` with its requirements, build command, and expected behavior.
+
+:::caution
+The `qspi_flash` sample erases the entire external flash. Do not run it on a board whose external flash contents you need to keep.
+:::
+
 ## Onboard LED
 
 Zephyr's Blinky sample uses the `led0` alias to select a physical LED. Use the verified NX40 board definition to configure that alias.
 
 ### Build and run Blinky
 
-1. Create the application from `zephyr/samples/basic/blinky` as described in [Build your first application](#build-your-first-application).
-2. Select the verified NX40 board target and confirm that it defines `led0`.
-3. Build the UF2 application and upload it through the USB bootloader as described above.
-4. Observe the user LED assigned to `led0`; it should alternate between on and off.
-5. Change `SLEEP_TIME_MS` in the sample, rebuild, and upload the new UF2 file. Confirm that the interval changes.
+1. Build and upload Blinky as described in [Build your first application](#build-your-first-application).
+2. Observe the user LED assigned to `led0`; it should alternate between on and off.
+3. Change `SLEEP_TIME_MS` in the sample, rebuild, and upload the new UF2 file. Confirm that the interval changes.
 
 ### How the LED is selected
 
@@ -183,23 +235,17 @@ static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
 Trace `led0` to the board's LED node. Its `gpios` property supplies the controller, pin number, and polarity. For an active-low LED, the devicetree flag makes the GPIO API interpret the active state correctly.
 
-For NX40, confirm those properties against the board package and hardware revision before changing any pin assignment. Use the sample from your installed SDK for the complete application and its matching configuration.
-
 ### Expected result
 
-The selected user LED blinks at the configured interval. Power and charging indicators do not verify Blinky. Record the actual LED color, GPIO, active level, and board revision after testing; these have not yet been validated for the NX40 Zephyr target in this guide.
-
-If programming succeeds but the LED stays unchanged, inspect `led0`, the generated devicetree, GPIO configuration, and the selected firmware build.
+The red user LED (`led0`, P0.11, active low) blinks at the configured interval. Power and charging indicators do not verify Blinky.
 
 ![Expected on and off behavior of the LED mapped to led0](/img/bluetooth/nx40/assets/nx40-ncs-blinky-result.png)
 
-*Expected Blinky behavior, not a hardware test capture. The LED pin, color, and position require validation for your board.*
+*Expected Blinky behavior, not a hardware test capture. On DEV-NX40 the LED mapped to `led0` is the red user LED.*
 
 ## Describe hardware with devicetree
 
 A devicetree is a hierarchy of hardware nodes and properties. A node label identifies a node in source; an alias provides a name that portable application code can look up. Board files describe assembled hardware, while SoC include files describe the chip's peripherals. Read Nordic's [Devicetree lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-2-reading-buttons-and-controlling-leds/topic/devicetree/).
-
-For NX40, first trace `led0` from the alias to its LED node and `gpios` property. This establishes the controller, pin, and active level used by Blinky. A software alias alone does not establish the physical connector position.
 
 ### Use the GPIO API
 
@@ -229,7 +275,7 @@ Logical active/inactive operations honor the devicetree polarity. An active-low 
 
 Zephyr separates application behavior from hardware description. See [Application Development](https://docs.zephyrproject.org/latest/develop/application/index.html) for configuration-file and overlay handling.
 
-Blinky requires a usable `led0` alias. The GPIO controller, pin, and active level come from that alias's node. Arduino's `LED_BUILTIN` does not automatically define it. See the [Blinky sample requirements](https://docs.zephyrproject.org/latest/samples/basic/blinky/README.html).
+Arduino's `LED_BUILTIN` does not define Zephyr's `led0` alias. See the [Blinky sample requirements](https://docs.zephyrproject.org/latest/samples/basic/blinky/README.html).
 
 ### Kconfig and prj.conf
 
@@ -257,7 +303,7 @@ Copy `zephyr/samples/hello_world` into a separate application. Build and upload 
 | --- | --- |
 | Hardware UART | Open the connected bridge's serial port at the configured baud rate |
 | RTT (optional debugging) | Requires a separate debug probe and firmware configured for RTT; UF2 upload itself does not provide RTT |
-| Native USB CDC | Use only when USB CDC and its initialization are explicitly enabled in the application |
+| Native USB CDC | Default console of `nx40/nrf52840`; open the DEV-NX40 USB serial port |
 
 Reset the board after opening the viewer to capture startup output. Hello World should print a greeting identifying the configured board. Do not assume that an FTDI port receives native USB CDC output or that Arduino's serial settings carry over.
 
