@@ -315,6 +315,11 @@ const sidebars = {
                           id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/Arduino',
                           label: 'Arduino',
                         },
+                        {
+                          type: 'doc',
+                          id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/nRF_Connect_SDK',
+                          label: 'nRF Connect SDK / Zephyr',
+                        },
                       ],
                     },
                   ],

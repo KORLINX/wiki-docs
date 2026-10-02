@@ -1,0 +1,368 @@
+---
+title: How to Use NX40 with nRF Connect SDK and Zephyr
+sidebar_label: nRF Connect SDK / Zephyr
+sidebar_position: 4
+description: "Learn the nRF Connect SDK workflow for NX40 through Nordic Fundamentals topics: build and flash, devicetree, Kconfig, GPIO, logging, UART, I2C, and RTOS synchronization."
+keywords: [NX40, DEV-NX40, nRF52840, nRF Connect SDK, Zephyr RTOS, SWD]
+---
+
+# How to Use NX40 with nRF Connect SDK and Zephyr
+
+This guide introduces **nRF Connect SDK and Zephyr RTOS for DEV-NX40**, following the technical progression of Nordic Developer Academy: understand the SDK, build an application, describe hardware, configure software, and add peripherals and concurrent tasks.
+
+:::info
+Board support prerequisite
+The NX40 documentation does not yet identify a verified Zephyr board package, board target, or tested SDK version. Obtain these for your DEV-NX40 revision before building or flashing. The procedure below describes the workflow once that board support is available; it is not a hardware-tested NX40 release recipe.
+:::
+
+![NX40 nRF Connect SDK and Zephyr platform illustration](/img/bluetooth/nx40/assets/nx40-ncs-overview.png)
+
+*NX40 development platform illustration. See the SWD section for programming connections.*
+
+## Understand the platform
+
+nRF Connect SDK combines Nordic software with Zephyr's kernel, drivers, and hardware descriptions. Its workspace contains several repositories, including `nrf`, `zephyr`, `nrfxlib`, and MCUboot. Available features depend on the selected device and application configuration; the SDK-wide protocol list is not a feature list for NX40.
+
+The build uses separate inputs:
+
+| Input or tool | Responsibility |
+| --- | --- |
+| C application | Runtime behavior |
+| Devicetree | Hardware instances, connections, and properties |
+| Kconfig | Software features and their settings |
+| CMake | Build configuration |
+| Ninja and compiler toolchain | Compilation and linking |
+| west | Workspace and build/programming commands |
+
+This separation lets application logic use board-defined devices without embedding connector pin numbers. See Nordic's [SDK structure and content](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-1-nrf-connect-sdk-introduction/topic/nrf-connect-sdk-structure-and-content/).
+
+![NX40 firmware build workflow](/img/bluetooth/nx40/assets/nx40-ncs-workflow.png)
+
+*Conceptual build workflow. Application code, Kconfig, and board devicetree contribute to the firmware build.*
+
+## Supported host platforms
+
+Nordic provides its VS Code development workflow for Windows, macOS, and Linux. Check the host requirements for the SDK release selected by the NX40 board package.
+
+Record the operating system, SDK version, toolchain version, board-package revision, and probe model with each validated setup.
+
+## Before you begin
+
+### Required hardware
+
+| Item | Requirement |
+| --- | --- |
+| Development board | DEV-NX40 with a matching Zephyr board definition |
+| Debug probe | nRF52840-compatible SWD probe supported by the board's flash runner |
+| USB cable | Data-capable cable for the probe and the required board connection |
+| Power and wiring | Approved DEV-NX40 power arrangement and SWD pinout |
+| Optional console connection | Board-supported UART bridge or debug-probe RTT connection |
+
+A bare NX40 module additionally needs a carrier with power, SWD access, and the required application circuitry. See [Dev Kit Hardware](../Hardware.mdx) and the [module pin map](../../NX40_Module/NX40-Module_Pin_Map.mdx).
+
+### Required software
+
+- Visual Studio Code and Nordic's **nRF Connect for VS Code Extension Pack**.
+- An nRF Connect SDK release and its matching toolchain.
+- NX40 board support compatible with that release.
+- Drivers and programming tools required by the selected debug probe.
+
+## Install nRF Connect for VS Code
+
+1. Install [Visual Studio Code](https://code.visualstudio.com/download) for your operating system.
+2. Open **Extensions** from the Activity Bar.
+3. Search for **nRF Connect for VS Code** and select the extension pack published by **Nordic Semiconductor**.
+4. Select **Install**, then reload VS Code if prompted.
+5. Open **nRF Connect** from the Activity Bar.
+
+The pack provides these tools:
+
+| Extension | Purpose |
+| --- | --- |
+| nRF Connect | SDK management, building, flashing, and debugging |
+| nRF DeviceTree | Hardware-description editing and visualization |
+| nRF Kconfig | Software-configuration editing |
+| nRF Terminal | Serial and RTT terminal access |
+
+Follow Nordic's [installation exercise](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-1-nrf-connect-sdk-introduction/topic/exercise-1-1/) for release-specific prerequisites, including J-Link software and Linux device permissions where applicable.
+
+![Install the Nordic VS Code extension and select nRF Connect SDK](/img/bluetooth/nx40/assets/nx40-ncs-vscode-extension-install.png)
+
+*Install the Nordic extension, then select Install SDK and the Zephyr-based nRF Connect SDK option.*
+
+### Install the SDK and toolchain
+
+1. In the nRF Connect welcome view, select **Install SDK**.
+2. If prompted for SDK type, select **nRF Connect SDK** for the Zephyr-based workflow.
+3. Select the release supported by the NX40 board package and install its matching toolchain.
+4. Confirm installation in **Manage SDKs** and open a terminal associated with that SDK environment.
+
+Installing the extension alone does not install the SDK. **Install Toolchain** is for toolchain-only setups, such as an existing west workspace. UI labels can vary by version.
+
+![SDK toolchain and NX40 board package compatibility](/img/bluetooth/nx40/assets/nx40-ncs-sdk-install.png)
+
+*Match the SDK and toolchain to the board package; this diagram does not specify a tested release.*
+
+## Select the NX40 hardware definition
+
+Follow the board package's installation instructions. It may be delivered through a west workspace, a Zephyr module, or an external board root.
+
+Before continuing, confirm:
+
+| Board setting | Required NX40 definition |
+| --- | --- |
+| Target | Exact board name and any SoC/revision qualifiers |
+| LED | An enabled GPIO LED referenced by the `led0` alias |
+| Clock sources | Oscillator configuration matching the assembled module |
+| Console | UART or RTT configuration supported by the board |
+| Flash layout | Application, bootloader, and storage regions appropriate for this workflow |
+| Programmer | Supported flash runner and probe configuration |
+| Module variant | External flash enabled only where present and configured |
+
+Do not substitute `nrf52840dk/nrf52840` just to make compilation succeed. A build can succeed while using incompatible pins or flash settings.
+
+{/* REVIEW: Replace this prerequisite with a versioned KORLINX board-package URL, exact target, and tested SDK/toolchain pair when available. Do not infer a target from the Arduino FQBN. */}
+
+### Prepare the programming connection
+
+1. Disconnect power while making connections.
+2. Connect SWDIO, SWCLK, GND, and the target-voltage reference according to the probe guide and released DEV-NX40 schematic.
+3. Establish the approved power arrangement, then connect the probe to the computer.
+4. Confirm that the programming tools detect the intended probe and target.
+
+The FTDI USB-to-UART bridge listed in the hardware guide provides a serial connection; it is not an SWD programmer. Native USB programming requires a separately verified bootloader and image layout.
+
+:::caution
+Existing firmware
+SWD flashing can overwrite the Arduino application or bootloader, depending on the image layout and erase operation. Preserve required firmware and data before changing platforms. Use the [Arduino recovery procedure](./Arduino.mdx#step-0-install-or-recover-the-bootloader-if-needed) if you later need to restore that workflow.
+:::
+
+![Conceptual NX40 SWD programming connection](/img/bluetooth/nx40/assets/nx40-ncs-swd-connection.png)
+
+*Conceptual SWD and power connections. Dashed lines do not specify physical connector pins; verify the schematic and power arrangement.*
+
+## Build your first application
+
+1. In nRF Connect for VS Code, create an application by copying a sample.
+2. Select `zephyr/samples/basic/blinky` from the installed SDK.
+3. Save the copy as `nx40_blinky` outside the SDK's sample directory.
+4. Add a build configuration and select the installed SDK, matching toolchain, and exact NX40 board target.
+5. Apply only the overlays and configuration files required by the NX40 board package.
+
+Nordic's [first build exercise](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-1-nrf-connect-sdk-introduction/topic/exercise-2-1/) demonstrates the sample-copy and build-configuration workflow.
+
+![Blinky application and build configuration for NX40](/img/bluetooth/nx40/assets/nx40-ncs-build-configuration.png)
+
+*Illustrative build configuration. Select the SDK, toolchain, and verified NX40 target supplied by the board package.*
+
+### Compile and program
+
+1. Build the selected configuration.
+2. Resolve any missing-board, devicetree, or toolchain errors before programming.
+3. Confirm the connected target and selected build directory.
+4. Flash using the runner supported by the board package.
+5. Wait for a successful programming result and reset the target if needed.
+
+For command-line use, run the following in the SDK environment from the copied application directory. **Replace `NX40_BOARD_TARGET` with the verified target**; it is a placeholder, not a registered board name.
+
+```bash
+west build -p always -b NX40_BOARD_TARGET -d build .
+west flash -d build
+```
+
+These commands assume board support is already discoverable. Apply any board-root settings required by its installation guide. Do not add an erase/recover option as routine troubleshooting.
+
+See [west build and flash documentation](https://docs.zephyrproject.org/latest/develop/west/build-flash-debug.html) for build-directory selection and runner options.
+
+![NX40 build and flash command illustration](/img/bluetooth/nx40/assets/nx40-ncs-build-flash.png)
+
+*Illustrated build and flash workflow, not a captured test session. NX40_BOARD_TARGET is a placeholder.*
+
+## Onboard LED
+
+Zephyr's Blinky sample uses the `led0` alias to select a physical LED. Use the verified NX40 board definition to configure that alias.
+
+### Build and run Blinky
+
+1. Create the application from `zephyr/samples/basic/blinky` as described in [Build your first application](#build-your-first-application).
+2. Select the verified NX40 board target and confirm that it defines `led0`.
+3. Build and program through the NX40-supported runner described above.
+4. Observe the user LED assigned to `led0`; it should alternate between on and off.
+5. Change `SLEEP_TIME_MS` in the sample, rebuild, and flash again. Confirm that the interval changes.
+
+### How the LED is selected
+
+The sample resolves an alias into a GPIO specification:
+
+```c
+#define LED0_NODE DT_ALIAS(led0)
+static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+```
+
+Trace `led0` to the board's LED node. Its `gpios` property supplies the controller, pin number, and polarity. For an active-low LED, the devicetree flag makes the GPIO API interpret the active state correctly.
+
+For NX40, confirm those properties against the board package and hardware revision before changing any pin assignment. Use the sample from your installed SDK for the complete application and its matching configuration.
+
+### Expected result
+
+The selected user LED blinks at the configured interval. Power and charging indicators do not verify Blinky. Record the actual LED color, GPIO, active level, and board revision after testing; these have not yet been validated for the NX40 Zephyr target in this guide.
+
+If programming succeeds but the LED stays unchanged, inspect `led0`, the generated devicetree, GPIO configuration, and the selected firmware build.
+
+![Expected on and off behavior of the LED mapped to led0](/img/bluetooth/nx40/assets/nx40-ncs-blinky-result.png)
+
+*Expected Blinky behavior, not a hardware test capture. The LED pin, color, and position require validation for your board.*
+
+## Describe hardware with devicetree
+
+A devicetree is a hierarchy of hardware nodes and properties. A node label identifies a node in source; an alias provides a name that portable application code can look up. Board files describe assembled hardware, while SoC include files describe the chip's peripherals. Read Nordic's [Devicetree lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-2-reading-buttons-and-controlling-leds/topic/devicetree/).
+
+For NX40, first trace `led0` from the alias to its LED node and `gpios` property. This establishes the controller, pin, and active level used by Blinky. A software alias alone does not establish the physical connector position.
+
+### Use the GPIO API
+
+Nordic's [GPIO Generic API lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-2-reading-buttons-and-controlling-leds/topic/gpio-generic-api/) introduces this sequence:
+
+1. Retrieve a `gpio_dt_spec` with `GPIO_DT_SPEC_GET()`.
+2. Check the controller using `gpio_is_ready_dt()`.
+3. Configure the pin with `gpio_pin_configure_dt()` and check its return value.
+4. Read or drive the pin using the GPIO API.
+
+Logical active/inactive operations honor the devicetree polarity. An active-low LED therefore needs the correct flag in its hardware definition. After Blinky, apply the same approach to the NX40 user button with its verified input and pull configuration.
+
+![Resolve led0 through devicetree into a GPIO specification](/img/bluetooth/nx40/assets/nx40-ncs-devicetree.png)
+
+*The led0 alias resolves to an LED node whose GPIO properties define the controller, pin, and polarity.*
+
+## Configure application features
+
+### Understand the application files
+
+| File | Purpose |
+| --- | --- |
+| `src/main.c` | Application logic |
+| `CMakeLists.txt` | Build definition and source list |
+| `prj.conf` | Application Kconfig options |
+| Board devicetree and overlays | Hardware nodes, pin routing, and aliases |
+
+Zephyr separates application behavior from hardware description. See [Application Development](https://docs.zephyrproject.org/latest/develop/application/index.html) for configuration-file and overlay handling.
+
+Blinky requires a usable `led0` alias. The GPIO controller, pin, and active level come from that alias's node. Arduino's `LED_BUILTIN` does not automatically define it. See the [Blinky sample requirements](https://docs.zephyrproject.org/latest/samples/basic/blinky/README.html).
+
+### Kconfig and prj.conf
+
+Application configuration contains `CONFIG_` assignments. For example, `CONFIG_GPIO=y` enables GPIO support. Board defaults and application settings contribute to the final configuration; dependencies determine which options can actually be enabled.
+
+Inspect the generated `.config` for the application image when an option behaves unexpectedly. Change the source configuration and rebuild, rather than editing generated output. Nordic explains this in [Configuration files](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-3-elements-of-an-nrf-connect-sdk-application/topic/configuration/).
+
+### Devicetree overlays
+
+Use application overlays for hardware changes specific to an example. An overlay changes selected nodes or properties without rewriting the shared board files. Enabling a node and enabling its driver are separate tasks: review both devicetree and Kconfig.
+
+When rerouting a Nordic peripheral, check its pinctrl configuration, including applicable default and sleep states. Confirm the selected overlay in the build log and inspect the generated `zephyr.dts`. The output is inside the application's image build directory, which can be nested when using sysbuild.
+
+See Nordic's [overlays and build systems lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-3-elements-of-an-nrf-connect-sdk-application/topic/configuration-files/).
+
+![Kconfig and devicetree configuration inputs and outputs](/img/bluetooth/nx40/assets/nx40-ncs-configuration.png)
+
+*Software configuration produces .config; board devicetree and overlays produce the resolved zephyr.dts.*
+
+## Console output and logging
+
+Copy `zephyr/samples/hello_world` into a separate application. Build and flash it with the same board target and its documented console configuration.
+
+| Console path | How to observe it |
+| --- | --- |
+| Hardware UART | Open the connected bridge's serial port at the configured baud rate |
+| RTT | Use the probe's RTT viewer with firmware configured for RTT output |
+| Native USB CDC | Use only when USB CDC and its initialization are explicitly enabled in the application |
+
+Reset the board after opening the viewer to capture startup output. Hello World should print a greeting identifying the configured board. Do not assume that an FTDI port receives native USB CDC output or that Arduino's serial settings carry over.
+
+![UART RTT and USB CDC console paths](/img/bluetooth/nx40/assets/nx40-ncs-console.png)
+
+*Alternative console paths; select the backend enabled in your firmware. The displayed output is illustrative.*
+
+### Choose a logging backend
+
+Use `printk()` for a simple console check. For ongoing diagnostics, Nordic teaches the logger module with severity levels, filtering, deferred processing, and multiple backends. Enable logging with `CONFIG_LOG=y`, register an application module, and select a backend supported by the board configuration.
+
+A log message being compiled into firmware does not guarantee that it reaches a connected serial port. UART and RTT have different transport requirements. See the [Logger module lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-3-printing-messages-to-console-and-logging/topic/logger-module/).
+
+## Add UART and I2C peripherals
+
+### UART
+
+Zephyr provides polling, interrupt-driven, and asynchronous UART APIs. Nordic's lesson develops the asynchronous approach, using EasyDMA on supported Nordic hardware. Its configuration includes `CONFIG_SERIAL=y` and `CONFIG_UART_ASYNC_API=y`.
+
+For NX40, verify the enabled UART instance, TX/RX pinctrl, baud rate, and physical route to the FTDI bridge or external connector. Also check whether logging already owns that UART before assigning it to an application protocol. See Nordic's [UART Driver lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-4-serial-communication-uart/topic/uart-driver/).
+
+### I2C
+
+The I2C lesson enables `CONFIG_I2C=y` and describes each peripheral as a child of its controller. `I2C_DT_SPEC_GET()` combines the selected bus and target address for application access. Check readiness before transfers.
+
+Apply this to NX40 only after checking its sensor wiring, addresses, power, and driver bindings. The course's sensor overlays are examples for its hardware. See Nordic's [I2C Driver lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-6-serial-com-i2c/topic/i2c-driver/).
+
+### NX40 hardware to validate
+
+Once programming and logging work, validate one peripheral at a time against the schematic and board package.
+
+| Feature | Next task |
+| --- | --- |
+| User button | Define its GPIO and active level, then test input events |
+| RGB LED | Verify each channel and polarity |
+| LSM6DS3TR-C IMU | Verify bus, address, compatible driver, and interrupt routing |
+| SHTC3 sensor | Verify bus, address, and driver configuration |
+| External flash | Check the installed NX40 variant before enabling its node |
+| Bluetooth LE | Use a sample supported by the selected SDK and verify radio behavior separately |
+
+![Conceptual NX40 UART and I2C peripheral routes](/img/bluetooth/nx40/assets/nx40-ncs-peripheral-paths.png)
+
+*Conceptual UART and I2C routes. Confirm sensor connections, addresses, and drivers against the board schematic.*
+
+## Organize work with the RTOS
+
+### Threads and scheduling
+
+A thread has its own execution context, stack, and priority. Nordic's [thread creation exercise](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-7-multithreaded-applications/topic/exercise-1-7/) demonstrates how continuously runnable threads can starve others.
+
+`k_yield()` offers execution to eligible threads of equal or higher priority; it does not guarantee CPU time for lower-priority work. Sleeping with `k_sleep()` or waiting for an event makes a thread temporarily non-runnable.
+
+For an NX40 sensor application, a useful starting design is periodic acquisition plus event-driven communication. This is an application design suggestion, not a shipped NX40 firmware architecture. Choose stack sizes and priorities through measurement.
+
+### Workqueues
+
+A workqueue executes submitted work in thread context. It can move longer processing out of an interrupt handler. Keep each work handler bounded so it does not delay other queued work. Nordic demonstrates dedicated workqueues in [Lesson 7, Exercise 3](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-7-multithreaded-applications/topic/exercise-3-7/).
+
+### Synchronization
+
+| Mechanism | Use in an NX40 application |
+| --- | --- |
+| Semaphore | Signal that acquisition or input processing is needed |
+| Mutex | Protect shared state accessed by cooperating threads |
+
+A semaphore has a count and no owner; giving it can signal another thread. An ISR must never wait while taking one. A mutex has ownership: the locking thread releases it, and mutex operations belong in thread context. See Nordic's [Semaphores](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-8-thread-synchronization/topic/semaphores/) and [Mutexes](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-8-thread-synchronization/topic/mutexes/) lessons.
+
+![Example NX40 event processing and thread synchronization](/img/bluetooth/nx40/assets/nx40-ncs-rtos-flow.png)
+
+*Example application design using events, queued work, and shared-state protection; not measured NX40 firmware behavior.*
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| NX40 target is unavailable | Install the matching board package and check its board-root/module discovery instructions |
+| `led0` or GPIO build error | Confirm the alias, referenced LED node, and driver configuration |
+| Build uses unexpected pins | Inspect the generated devicetree and selected overlays; use a pristine build after changing targets |
+| Probe is detected but target is not | Check target power, voltage reference, common ground, and SWD wiring |
+| Flash succeeds but no LED toggles | Confirm LED assignment, polarity, image layout, and reset behavior |
+| No console output | Check the selected backend, physical routing, port, and UART baud rate |
+| Arduino USB upload no longer works | Check whether SWD flashing replaced its bootloader; follow the Arduino recovery guide if required |
+| Sensor initialization fails | Verify power, bus routing, address, and driver support for the exact part |
+
+## References
+
+- [Nordic Developer Academy: nRF Connect SDK Fundamentals](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/)
+- [Zephyr Application Development](https://docs.zephyrproject.org/latest/develop/application/index.html)
+- [Zephyr Blinky sample](https://docs.zephyrproject.org/latest/samples/basic/blinky/README.html)
+- [Zephyr west build, flash, and debug](https://docs.zephyrproject.org/latest/develop/west/build-flash-debug.html)
