@@ -1,0 +1,346 @@
+---
+title: How to Use NX40 with PlatformIO
+sidebar_label: PlatformIO
+sidebar_position: 5
+description: Set up PlatformIO IDE for DEV-NX40, configure NX40 board support, and prepare Arduino Blink and USB Serial examples.
+keywords: [NX40, DEV-NX40, KORLINX, PlatformIO, nRF52840, Arduino, Visual Studio Code]
+---
+
+# How to Use NX40 with PlatformIO
+
+![NX40 with PlatformIO: Build, Upload, and Monitor](/img/bluetooth/nx40/platformio/nx40-platformio-hero.png)
+
+Use **PlatformIO IDE in Visual Studio Code** to organize an Arduino-framework project for the **KORLINX DEV-NX40** development board. Install the KORLINX board package, create an NX40 project, and upload a Blink application. Then use the optional USB Serial example to verify communication.
+
+:::info
+Package baseline
+This guide uses [KORLINX-PlatformIO release 1.0.0](https://github.com/KORLINX/KORLINX-PlatformIO/tree/1.0.0), board ID `nx40`, and the Arduino framework. That release selects KORLINX Arduino core `1.0.2` and SoftDevice S140 `6.1.1`.
+
+The repository reports tested USB upload. The supplied NX40-Bringup screenshots also show a successful USB Serial build, programming, and output. They do not show a physical Blink LED test; the documentation checks here do not constitute a separate hardware test.
+:::
+
+<img
+  src="/img/bluetooth/nx40/assets/nx40-dev-kit-flat.png"
+  alt="Integrated-antenna and external-antenna versions of the NX40 Dev Kit"
+  style={{ width: '50%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center' }}>
+  <em>Use the NX40 configuration for your board revision and fitted module.</em>
+</p>
+
+## What you will build
+
+Prepare a PlatformIO project containing an Arduino application that blinks the NX40 red user LED every 500 ms. An optional second application checks native USB Serial output.
+
+{/* IMAGE NOTE [NX40-PIO-01]: Create a flat workflow illustration: VS Code + PlatformIO installation → NX40 package/configuration → main.cpp → build/upload → red LED verification. Use the accurate NX40 Dev Kit artwork. */}
+
+## Before you begin
+
+### Required hardware
+
+| Item | Requirement |
+| --- | --- |
+| Development board | DEV-NX40 with the NX40-compatible bootloader required by the selected USB upload integration |
+| USB cable | Data-capable USB Type-C cable |
+| Host computer | Windows, macOS, or Linux computer supported by the selected PlatformIO tools |
+| Optional debug probe | Required for bootloader installation/recovery, or an explicitly configured SWD workflow |
+
+A bare NX40 module needs a carrier board providing power, programming access, and the required circuitry. Review the [DEV-NX40 hardware guide](../Hardware.mdx) before connecting external devices.
+
+### Required software
+
+- [Visual Studio Code](https://code.visualstudio.com/).
+- [PlatformIO IDE for VS Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html).
+- [KORLINX-PlatformIO](https://github.com/KORLINX/KORLINX-PlatformIO), installed in Step 2.
+- Git, required to install the platform from its repository.
+- USB drivers, serial-port permissions, and uploader dependencies specified by that integration.
+
+PlatformIO Core is included with the VS Code extension; a separate Core installation is unnecessary for this IDE workflow. Follow PlatformIO's installation documentation for host-specific requirements.
+
+## Step 1: Install PlatformIO IDE
+
+1. Install Visual Studio Code.
+2. Open **Extensions** in the Activity Bar.
+3. Search for the official **PlatformIO IDE** extension and install it.
+4. Wait for initialization to finish; reload VS Code if requested.
+5. Open **PlatformIO Home**.
+6. Open a PlatformIO terminal and check the included Core:
+
+```bash
+pio --version
+```
+
+Follow the [official installation guide](https://docs.platformio.org/en/latest/integration/ide/vscode.html) if initialization fails.
+
+![Official PlatformIO IDE extension installed in VS Code](/img/bluetooth/nx40/platformio/installation-PIO-VSCode.png)
+
+*The Disable and Uninstall controls indicate that PlatformIO IDE is already installed.*
+
+## Step 2: Install the KORLINX PlatformIO package
+
+Open the **PlatformIO terminal** in VS Code and install the tagged platform:
+
+```bash
+pio pkg install -g -p https://github.com/KORLINX/KORLINX-PlatformIO.git#1.0.0
+```
+
+Wait for installation to complete. This installs the KORLINX development platform globally, including the NX40 board definition. Framework and tool dependencies are resolved as needed for the selected project.
+
+The repository's examples use `platform = korlinx` after this global installation. The project configuration below instead pins the repository tag so the platform version is explicit.
+
+| Setting | Release 1.0.0 value |
+| --- | --- |
+| Platform package | `korlinx` |
+| Board ID | `nx40` |
+| Display name | KORLINX NX40 nRF52840 |
+| Framework | `arduino` |
+| Arduino core | KORLINX nRF52 core `1.0.2` |
+| Default upload protocol | `nrfutil` (USB serial DFU) |
+
+These settings come from the release's [platform manifest](https://github.com/KORLINX/KORLINX-PlatformIO/blob/1.0.0/platform.json) and [NX40 board manifest](https://github.com/KORLINX/KORLINX-PlatformIO/blob/1.0.0/boards/nx40.json). The Arduino FQBN `korlinx:nrf52:nx40` is not the PlatformIO board ID.
+
+{/* IMAGE NOTE [NX40-PIO-09]: Capture successful installation of KORLINX-PlatformIO 1.0.0 in the PlatformIO terminal. Show the package command and result; redact personal paths. Caption: "Install the KORLINX platform package before creating the NX40 project." */}
+
+## Step 3: Prepare an NX40 project
+
+1. Open **PlatformIO Home > New Project**.
+2. Name the project `nx40_blink`.
+3. Select **KORLINX NX40 nRF52840** and the **Arduino** framework.
+4. Select a project location and finish creation.
+5. Replace the generated configuration with the pinned configuration in Step 4.
+
+If the newly installed board does not appear, reload VS Code. You can also create a project folder manually with `platformio.ini` and `src/main.cpp`, then open that folder in VS Code. The configuration in Step 4 resolves the platform without selecting a different manufacturer's board in the wizard.
+
+To use the repository's examples instead, clone the matching release and open its Blink project:
+
+```bash
+git clone --branch 1.0.0 --depth 1 https://github.com/KORLINX/KORLINX-PlatformIO.git
+```
+
+Open `KORLINX-PlatformIO/examples/arduino-blink` in VS Code. Its `platform = korlinx` configuration uses the package installed in Step 2.
+
+| Project item | Purpose |
+| --- | --- |
+| `platformio.ini` | Platform, board, framework, build, upload, and monitor settings |
+| `src/main.cpp` | Application source |
+| `include/` | Project headers |
+| `lib/` | Project-local libraries |
+| `boards/` | Optional project-local overrides; not needed for the supplied NX40 board |
+| `.pio/` | Generated build files and project dependencies |
+
+![New Project action in PlatformIO Home](/img/bluetooth/nx40/platformio/PIO-create-project-1.png)
+
+*Open PlatformIO Home and select New Project.*
+
+![NX40 Arduino project settings in the PlatformIO wizard](/img/bluetooth/nx40/platformio/PIO-create-project-2.png)
+
+*Select KORLINX NX40 nRF52840 and Arduino. The screenshot uses the project name NX40; nx40_blink is the name used in this guide.*
+
+## Step 4: Configure platformio.ini
+
+Use this configuration for the NX40 Arduino project:
+
+```ini
+[platformio]
+default_envs = nx40
+
+[env:nx40]
+platform = https://github.com/KORLINX/KORLINX-PlatformIO.git#1.0.0
+board = nx40
+framework = arduino
+monitor_speed = 115200
+monitor_dtr = 1
+```
+
+The platform supplies the framework package, NX40 variant, linker settings, and default USB uploader. No custom board JSON or `platform_packages` override is required for this baseline.
+
+Keep the release tag pinned for repeatable builds. Updating the platform or framework should be an explicit project change followed by build and hardware verification.
+
+The `monitor_dtr = 1` setting asserts DTR when opening the project serial monitor, matching the USB Serial example below. See [monitor_dtr](https://docs.platformio.org/en/latest/projectconf/sections/env/options/monitor/monitor_dtr.html).
+
+Save the file and allow PlatformIO to resolve its dependencies. Confirm that the build configuration uses board `nx40` before uploading.
+
+![PlatformIO configuration using platform korlinx and board nx40](/img/bluetooth/nx40/platformio/platformio-ini.png)
+
+*The screenshot uses the globally installed korlinx platform. The configuration above pins release 1.0.0 and adds explicit monitor settings.*
+
+## Step 5: Create the Blink application
+
+Open `src/main.cpp` and replace its contents with:
+
+```cpp
+#include <Arduino.h>
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, LED_STATE_ON);
+  delay(500);
+
+  digitalWrite(LED_BUILTIN, 1 - LED_STATE_ON);
+  delay(500);
+}
+```
+
+PlatformIO compiles this as a C++ source file, so include `Arduino.h` explicitly. The code uses the NX40 BSP's LED alias and active-level definition. The [KORLINX NX40 variant definitions](https://github.com/KORLINX/KORLINX-nRF52-Arduino/blob/v1.0.2/variants/nx40_nrf52840/variant.h) map `LED_BUILTIN` through `PIN_LED1` to pin 11 and define `LED_STATE_ON` as `0`. Confirm the same variant is included in the selected PlatformIO framework package.
+
+## Step 6: Build the application
+
+1. Select the `nx40` environment.
+2. Run **PlatformIO: Build**, or use the PlatformIO terminal:
+
+```bash
+pio run -e nx40
+```
+
+3. Wait for the build to complete successfully.
+4. Check that the log identifies KORLINX NX40 nRF52840 and the KORLINX Arduino framework.
+
+Compilation confirms that the selected software configuration builds. LED behavior, USB enumeration, and bootloader compatibility require a hardware test.
+
+![Successful PlatformIO build of the NX40 USB Serial application](/img/bluetooth/nx40/platformio/PlatformIO-Build.png)
+
+*The supplied NX40-Bringup screenshot shows a successful USB Serial example build. Use the same Build task for the Blink application.*
+
+## Step 7: Connect and upload
+
+The NX40 board manifest selects `upload_protocol = nrfutil`, enables a 1200-bps touch, and waits for the bootloader port. The repository documents automatic reset and USB serial DFU upload with the KORLINX bootloader.
+
+1. Connect DEV-NX40's native nRF52840 USB interface with a data-capable cable.
+2. List available serial devices:
+
+```bash
+pio device list
+```
+
+3. Identify the NX40 native USB port. The FTDI bridge is a separate hardware UART interface.
+4. Close serial monitors that may hold the upload port open.
+5. In **Project Tasks > nx40 > General**, select **Upload**, or run:
+
+```bash
+pio run -e nx40 -t upload
+```
+
+`-e nx40` selects `[env:nx40]` in `platformio.ini`; `-t upload` runs the upload target. PlatformIO builds the firmware as needed before uploading.
+
+If automatic port selection is unsuitable, specify the actual port:
+
+```bash
+pio run -e nx40 -t upload --upload-port YOUR_NX40_PORT
+```
+
+Replace `YOUR_NX40_PORT` with the port reported by your computer. For normal automatic upload, use the application USB port. The uploader requests bootloader entry and waits for the upload port to reappear.
+
+The [KORLINX bootloader documentation](https://github.com/KORLINX/KORLINX-nRF52-Bootloader#entering-the-bootloader) documents double-pressing Reset within 500 ms, or holding SW2 while pressing Reset, to enter the bootloader. These are fallback bootloader-entry methods; a normal upload through this platform performs the reset automatically.
+
+If the bootloader is missing, follow [bootloader installation or recovery](./Arduino.mdx#step-0-install-or-recover-the-bootloader-if-needed) before USB upload. That procedure can erase existing firmware and stored data.
+
+![PlatformIO Upload task successfully programming NX40 over USB DFU](/img/bluetooth/nx40/platformio/PlatformIO-Upload.png)
+
+<p style={{ textAlign: 'center' }}>
+  <em>Select Upload to program NX40. The terminal shows the DFU transfer, Device programmed, and SUCCESS.</em>
+</p>
+
+:::note
+Alternative upload methods
+The repository also lists `jlink`, `nrfjprog`, and `cmsis-dap` upload paths, plus the `bootloader` target. It explicitly marks these paths as untested on NX40. This guide uses the documented USB workflow.
+:::
+
+## Step 8: Confirm the LED result
+
+After successful upload and reset, the expected application behavior is:
+
+- The red user LED turns on for approximately 500 ms.
+- It turns off for approximately 500 ms.
+- The cycle repeats continuously.
+
+Check the user LED controlled by the application. Power or charging indicators alone do not verify Blink. If upload succeeds but the LED does not blink, review the NX40 variant, polarity, application flash layout, and board revision.
+
+{/* IMAGE NOTE [NX40-PIO-07]: Use an accurate NX40 Dev Kit image showing the red user LED in its confirmed physical location. */}
+
+## Optional: Verify USB Serial
+
+The KORLINX Arduino core requires `Adafruit_TinyUSB.h` for sketches that use native USB `Serial`. This header is included in the example below.
+
+Replace `src/main.cpp` with:
+
+```cpp
+#include <Arduino.h>
+#include <Adafruit_TinyUSB.h>
+
+void setup() {
+  Serial.begin(115200);
+  const uint32_t started = millis();
+  while (!Serial && millis() - started < 3000) {
+    delay(10);
+  }
+}
+
+void loop() {
+  if (Serial) {
+    Serial.println("KORLINX NX40 Arduino is running");
+  }
+  delay(1000);
+}
+```
+
+![NX40 USB Serial example in src main.cpp](/img/bluetooth/nx40/platformio/example-code.png)
+
+*USB Serial example in src/main.cpp. The listing above includes Arduino.h explicitly for a standalone C++ source file.*
+
+Build and upload again. After USB re-enumeration, select the application port and open **PlatformIO: Serial Monitor** with the `nx40` environment and `monitor_dtr = 1`, or run:
+
+```bash
+pio device monitor --port YOUR_NX40_PORT --baud 115200 --dtr 1
+```
+
+The DTR option supports the sketch's `Serial` connection check. For the IDE workflow, set `monitor_port` to the application port if automatic selection chooses the FTDI bridge; this can differ from `upload_port` after bootloader re-enumeration. Expected output is approximately one line per second:
+
+```text
+KORLINX NX40 Arduino is running
+```
+
+`Serial` uses native USB CDC in the documented NX40 Arduino workflow. `Serial1` uses the hardware UART. Select the native USB application port for this example; its output will not appear on the FTDI UART port.
+
+![NX40 Upload and Monitor showing Device programmed and repeated USB Serial messages](/img/bluetooth/nx40/platformio/PlatformIO-Upload-Monitor.png)
+
+*The supplied capture shows successful programming and repeated USB Serial output using Upload and Monitor.*
+
+The capture shows the monitor at `9600` while the sketch requests `115200`. This example uses native USB CDC rather than a physical UART; keep the explicit `115200` monitor setting in this guide. For hardware UART, the terminal baud rate must match the firmware. The port `/dev/ttyACM0` shown is specific to that test computer.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| NX40 is absent from the project wizard | Install the KORLINX platform in Step 2 and reload VS Code, or create the project manually with the pinned configuration |
+| Unknown board or package error | Use board ID nx40 and the tagged KORLINX platform URL; check Git and package-download errors |
+| `LED_STATE_ON` is undefined | Confirm that the NX40 Arduino variant is selected |
+| TinyUSB header is missing | Confirm that the integration includes the BSP's required libraries and submodules |
+| Linker or SoftDevice-related errors | Check framework, compiler, linker script, and reserved memory compatibility |
+| No upload port | Check the data cable, native USB routing, bootloader, drivers, and serial permissions |
+| Upload fails after entering the bootloader | Check the new port and the uploader's reset/port-discovery behavior |
+| Uploader is missing | Install the dependency required by the approved integration; Arduino IDE tools may not be available to PlatformIO |
+| Upload succeeds but no Blink | Check the LED mapping, polarity, board revision, and image layout |
+| Serial Monitor is blank | Select the application USB port, assert DTR, reopen after enumeration, and confirm USB CDC support |
+
+## Related documentation
+
+- [NX40 with Arduino](./Arduino.mdx)
+- [NX40 with nRF Connect SDK / Zephyr](./nRF_Connect_SDK.mdx)
+- [NX40 Dev Kit overview](../NX40_Dev_Kit_Overview.mdx)
+- [NX40 Dev Kit hardware](../Hardware.mdx)
+
+## References
+
+- [KORLINX-PlatformIO](https://github.com/KORLINX/KORLINX-PlatformIO) — package installation, NX40 configuration, examples, and upload status.
+- [Seeed Studio: XIAO nRF52840 with PlatformIO](https://wiki.seeedstudio.com/xiao_nrf52840_with_platform_io/) — reference for the setup sequence.
+- [PlatformIO IDE for VS Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html) — installation and project workflow.
+- [PlatformIO custom embedded boards](https://docs.platformio.org/en/latest/platforms/creating_board.html) — board-manifest integration.
+- [PlatformIO platform_packages](https://docs.platformio.org/en/latest/projectconf/sections/env/options/platform/platform_packages.html) — framework/package overrides.
+- [PlatformIO serial monitor](https://docs.platformio.org/en/latest/core/userguide/device/cmd_monitor.html) — port, baud, and DTR settings.
+- [KORLINX nRF52 Arduino BSP](https://github.com/KORLINX/KORLINX-nRF52-Arduino) — repository linked by the supplied NX40 Arduino guide.
+
+{/* RELEASE CHECK: Package and board settings were checked against KORLINX-PlatformIO 1.0.0. User-supplied screenshots show USB Serial build, programming, and output. Physical LED verification and a complete host/package test matrix remain undocumented; firmware compilation and hardware execution were not independently performed during this documentation update. */}
