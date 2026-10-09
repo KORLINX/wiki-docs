@@ -257,6 +257,29 @@ const sidebars = {
               items: [
                 {
                   type: 'category',
+                  label: 'Platform',
+                  collapsed: true,
+                  collapsible: true,
+                  items: [
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/Arduino',
+                      label: 'Arduino',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/nRF_Connect_SDK',
+                      label: 'nRF Connect SDK / Zephyr',
+                    },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/platformIO',
+                      label: 'PlatformIO',
+                    },
+                  ],
+                },
+                {
+                  type: 'category',
                   label: 'NX40 Module',
                   collapsed: true,
                   collapsible: true,
@@ -304,29 +327,6 @@ const sidebars = {
                       id: 'Network/Bluetooth/NX40_Dev_Kit/Hardware',
                       label: 'Hardware',
                     },
-                    {
-                      type: 'category',
-                      label: 'Platform',
-                      collapsed: true,
-                      collapsible: true,
-                      items: [
-                        {
-                          type: 'doc',
-                          id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/Arduino',
-                          label: 'Arduino',
-                        },
-                        {
-                          type: 'doc',
-                          id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/nRF_Connect_SDK',
-                          label: 'nRF Connect SDK / Zephyr',
-                        },
-                        {
-                          type: 'doc',
-                          id: 'Network/Bluetooth/NX40_Dev_Kit/Platform/platformIO',
-                          label: 'PlatformIO',
-                        },
-                      ],
-                    },
                   ],
                 },
               ],
@@ -337,62 +337,62 @@ const sidebars = {
         // =====================================================
         // LPWAN
         // =====================================================
-        {
-          type: 'category',
-          label: 'LPWAN',
-          collapsed: true,
-          collapsible: true,
-          link: {
-            type: 'doc',
-            id: 'Network/LPWAN/LPWAN_Intro',
-          },
-          items: [],
-        },
+        // {
+        //   type: 'category',
+        //   label: 'LPWAN',
+        //   collapsed: true,
+        //   collapsible: true,
+        //   link: {
+        //     type: 'doc',
+        //     id: 'Network/LPWAN/LPWAN_Intro',
+        //   },
+        //   items: [],
+        // },
 
         // =====================================================
         // WiFi
         // =====================================================
-        {
-          type: 'category',
-          label: 'WiFi',
-          collapsed: true,
-          collapsible: true,
-          link: {
-            type: 'doc',
-            id: 'Network/WiFi/WiFi_Intro',
-          },
-          items: [],
-        },
+        // {
+        //   type: 'category',
+        //   label: 'WiFi',
+        //   collapsed: true,
+        //   collapsible: true,
+        //   link: {
+        //     type: 'doc',
+        //     id: 'Network/WiFi/WiFi_Intro',
+        //   },
+        //   items: [],
+        // },
 
         // =====================================================
         // Ethernet
         // =====================================================
-        {
-          type: 'category',
-          label: 'Ethernet',
-          collapsed: true,
-          collapsible: true,
-          link: {
-            type: 'doc',
-            id: 'Network/Ethernet/Ethernet_Intro',
-          },
-          items: [],
-        },
+        // {
+        //   type: 'category',
+        //   label: 'Ethernet',
+        //   collapsed: true,
+        //   collapsible: true,
+        //   link: {
+        //     type: 'doc',
+        //     id: 'Network/Ethernet/Ethernet_Intro',
+        //   },
+        //   items: [],
+        // },
 
         // =====================================================
         // Satellite
         // =====================================================
-        {
-          type: 'category',
-          label: 'Satellite',
-          collapsed: true,
-          collapsible: true,
-          link: {
-            type: 'doc',
-            id: 'Network/Satellite/Satellite_Intro',
-          },
-          items: [],
-        },
+        // {
+        //   type: 'category',
+        //   label: 'Satellite',
+        //   collapsed: true,
+        //   collapsible: true,
+        //   link: {
+        //     type: 'doc',
+        //     id: 'Network/Satellite/Satellite_Intro',
+        //   },
+        //   items: [],
+        // },
       ],
     },
 
