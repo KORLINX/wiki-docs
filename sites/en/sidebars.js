@@ -179,6 +179,19 @@ const sidebars = {
                 id: 'Network/Bluetooth/NX15_Series',
               },
               items: [
+                {
+                  type: 'category',
+                  label: 'Platform',
+                  collapsed: true,
+                  collapsible: true,
+                  items: [
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Dev_Kit/Platform/nRF_Connect_SDK',
+                      label: 'nRF Connect SDK / Zephyr',
+                    },
+                  ],
+                },
                 // ---------------------------------------------
                 // NX15 Module
                 // No generated-index

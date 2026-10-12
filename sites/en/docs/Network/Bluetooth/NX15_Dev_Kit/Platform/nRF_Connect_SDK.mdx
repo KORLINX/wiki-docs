@@ -1,0 +1,179 @@
+---
+title: How to Use NX15 with nRF Connect SDK and Zephyr over SWD
+sidebar_label: nRF Connect SDK / Zephyr
+sidebar_position: 4
+description: Prepare the NX15 development environment and connect an external SEGGER J-Link probe through SWD.
+keywords: [NX15, NX15 Dev Kit, nRF54L15, nRF Connect SDK, Zephyr RTOS, SWD, SEGGER J-Link]
+---
+
+# How to Use NX15 with nRF Connect SDK and Zephyr over SWD
+
+This guide explains how to prepare **nRF Connect SDK and Zephyr RTOS** for the **NX15 Dev Kit** and connect an external **SEGGER J-Link** debug probe through **Serial Wire Debug (SWD)**.
+
+This part ends with the physical J-Link connection. Application creation, building, programming, and debugging will be added in a later update.
+
+![NX15 Dev Kit connected to an external J-Link through SWD](/img/bluetooth/nx15/platform/nx15-ncs-swd-overview.png)
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Connection overview. The dashed SWD path is conceptual. The separate USB connection from the computer to J-Link is omitted.</em>
+</p>
+
+## Understand the development platform
+
+The NX15 Series is based on the Nordic **nRF54L15**. The NX15 Dev Kit provides an SWD interface for programming and debugging, plus an **FTDI FT234XD USB-to-UART** interface for serial communication.
+
+**nRF Connect SDK** is Nordic's software development kit. Its Zephyr-based workflow combines the **Zephyr RTOS**, drivers, Nordic libraries, and development tools. Zephyr provides the operating system and hardware/software configuration framework used by the application.
+
+| Component | Role |
+| --- | --- |
+| Visual Studio Code | Editor and development environment |
+| nRF Connect for VS Code | SDK setup and application development tools |
+| nRF Connect SDK | Nordic software and the Zephyr-based development workspace |
+| Matching toolchain | Compiler and tools associated with the selected SDK release |
+| NX15 board support | Hardware definition matching the NX15 board revision |
+| External J-Link probe | Host-to-target debug connection through SWD |
+
+The board's USB Type-C connection supports power and the FT234XD serial interface. For this guide, the programming and debugging path is the **external J-Link connected to SWD**.
+
+## Before you begin
+
+### Required hardware
+
+| Item | Requirement |
+| --- | --- |
+| NX15 Dev Kit | Board with accessible, identified SWD connections |
+| SEGGER J-Link | Probe supporting nRF54L15 and the target's I/O voltage |
+| SWD cable or adapter | Compatible with the probe connector and NX15 SWD interface |
+| Board USB cable | Data-capable USB Type-C cable for board power and the serial interface |
+| Probe USB cable | Cable matching the J-Link's host USB connector |
+| Computer | Host supported by the selected SDK release |
+
+A bare NX15 module needs a suitable carrier providing power, ground, and access to SWD signals. This guide uses the Dev Kit.
+
+### Required software and board information
+
+- [Visual Studio Code](https://code.visualstudio.com/download).
+- Nordic's **nRF Connect for VS Code** extension and its companion extensions.
+- An **nRF Connect SDK** release and its matching toolchain.
+- [SEGGER J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/), using the version recommended for the selected Nordic environment.
+- NX15 board-support instructions and the pinout for the actual board revision.
+
+:::note
+NX15 board support
+Obtain the exact NX15 board definition and supported SDK/toolchain combination from KORLINX. The hardware documentation does not specify a verified Zephyr board target or tested SDK release. Keep these details with your setup; an nRF54L15 DK target is not automatically equivalent to NX15.
+:::
+
+![Tools to prepare for NX15 development with nRF Connect SDK and Zephyr](/img/bluetooth/nx15/platform/nx15-ncs-environment.png)
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Software preparation overview: VS Code, Nordic extension, SDK/toolchain, J-Link software, and NX15 board support.</em>
+</p>
+
+## Step 1 — Install the Nordic VS Code extension
+
+1. Install Visual Studio Code for your operating system.
+2. Open **Extensions** from the Activity Bar.
+3. Search for **nRF Connect for VS Code**, as shown in the upper panel of the installation screenshot in Step 2.
+4. Select **nRF Connect for VS Code** published by **Nordic Semiconductor**, then select **Install**.
+5. Reload VS Code if prompted and open **nRF Connect** from the Activity Bar.
+
+The extension provides the development interface. Install the SDK and toolchain separately through its setup workflow.
+
+See Nordic's [nRF Connect for VS Code installation guide](https://docs.nordicsemi.com/r/bundle/nrf-connect-vscode/page/get_started/install.html) for host prerequisites.
+
+## Step 2 — Install nRF Connect SDK and the matching toolchain
+
+1. Open **nRF Connect** from the Activity Bar. Under **WELCOME**, select **Install SDK**.
+2. Select a download region if prompted.
+3. In **Select SDK Type**, choose **nRF Connect SDK**, described as RTOS-based applications using Zephyr.
+4. Choose the SDK release specified by the NX15 board-support instructions.
+5. Choose an installation location and wait for the SDK and toolchain installation to complete.
+6. Confirm that the selected SDK and matching toolchain are available in the extension's SDK management view.
+
+![Install nRF Connect for VS Code, open Install SDK, and select the Zephyr-based nRF Connect SDK](/img/bluetooth/nx15/platform/nx15-ncs-sdk-installation.png)
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Top: install the Nordic extension (Step 1). Bottom: open Install SDK and choose the Zephyr-based nRF Connect SDK (Step 2).</em>
+</p>
+
+For this article, use the Zephyr-based **nRF Connect SDK** option. The **nRF Connect SDK Bare Metal** option is a different development workflow.
+
+Nordic's **Install SDK** workflow installs both the SDK and toolchain. **Install Toolchain** installs only the toolchain, which requires a matching SDK workspace. Labels may vary with the extension version.
+
+Follow the official [first-time SDK and toolchain installation steps](https://docs.nordicsemi.com/r/bundle/nrf-connect-vscode/page/get_started/quick_setup.html/installing-sdk-and-toolchain-for-the-first-time).
+
+## Step 3 — Install the J-Link software
+
+1. Check Nordic's [extension prerequisites](https://docs.nordicsemi.com/r/bundle/nrf-connect-vscode/page/get_started/install.html/extension-prerequisites) for the selected environment.
+2. Download the recommended J-Link Software and Documentation Pack for your operating system.
+3. Run the installer and complete the applicable USB driver or host-permission setup.
+4. Restart VS Code if required by the installer.
+
+Use a probe and J-Link software combination that supports **nRF54L15**. Host setup differs between Windows, macOS, and Linux; follow the installer and Nordic release instructions.
+
+## Step 4 — Identify the NX15 SWD connections
+
+Before attaching the probe, locate the board's **SWD interface** and check the connector orientation against the schematic or pinout for your NX15 revision.
+
+![NX15 SWD header labels and an external J-Link cable illustration](/img/bluetooth/nx15/platform/nx15-ncs-jlink-connection.png)
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Supplied NX15 connection illustration. Confirm the labeled header order against your board schematic; the ribbon cable represents an adapter with matching signal connections.</em>
+</p>
+
+The illustration labels NRESET, SWDCLK, GND, SWDIO, and 3V3. The available Hardware page does not independently confirm their physical order on this header. A standard J-Link connector must use a compatible adapter; the illustrated cable does not establish pin-to-pin compatibility.
+
+The table below describes **logical signal connections**, not physical connector pin numbers.
+
+| J-Link signal | NX15 connection | Purpose |
+| --- | --- | --- |
+| VTref | Confirmed target I/O supply reference (3V3 in the supplied illustration) | Lets the probe sense the target's logic voltage |
+| GND | GND | Shared ground reference |
+| SWDIO | SWDIO | Bidirectional debug data |
+| SWCLK | SWDCLK | Debug clock |
+| nRESET, if used | NRESET | Target reset; connect when required by the board/adapter instructions |
+
+Basic SWD communication uses SWDIO and SWCLK. No SWO connection is required for this setup.
+
+:::caution
+Check the actual connector
+J-Link connector layouts and adapters differ. Match signals using the documentation for your probe, adapter, and NX15 board revision. Do not infer SWD pin order from the J3/J5 expansion-header tables or from an illustration.
+:::
+
+:::note
+VTref is a voltage reference
+VTref is an input to J-Link; it does not power the target. Connect it to the confirmed target I/O supply reference. Do not connect the probe's optional 5 V power output to the NX15 3.3 V rail.
+:::
+
+See SEGGER's [SWD interface description](https://www.segger.com/products/debug-probes/j-link/technology/interface-description/) and [VTref explanation](https://kb.segger.com/VTref).
+
+## Step 5 — Connect J-Link to NX15
+
+1. Disconnect USB power from the NX15 Dev Kit and unplug J-Link from the computer. Disconnect any other target power source before wiring.
+2. Check the SWD connector orientation and the signal labels for the actual board revision.
+3. Attach the compatible SWD cable or adapter. For individual wires, connect **GND**, **SWDIO**, **SWCLK**, and **VTref** according to the signal table above. Add **nRESET** if required by your board/adapter instructions.
+4. Check that the connections are secure, correctly aligned, and free of shorts. Keep individual debug wires short.
+5. Connect the NX15 Dev Kit's USB Type-C port to the computer to power the board.
+6. Connect J-Link's host USB port to the computer.
+
+The setup now has two separate host connections: USB to the NX15 Dev Kit for board power and its serial interface, and USB to J-Link for the SWD debug path.
+
+### Connection checklist
+
+- The SDK and matching toolchain are installed.
+- The required J-Link software is installed.
+- The probe and NX15 share ground.
+- SWDIO and SWCLK connect to the correct target signals.
+- VTref connects to the target I/O supply reference.
+- The cable orientation matches the confirmed board pinout.
+- The NX15 Dev Kit is powered and J-Link is connected to the computer.
+
+**Stop here for this part.** The physical connection is complete; target detection, application configuration, and firmware operations will be covered in the next update.
+
+## References
+
+- [NX15 Dev Kit Overview](../NX15_Dev_Kit_Overview.mdx)
+- [NX15 Dev Kit Hardware](../Hardware.mdx)
+- [Nordic Developer Academy — Installing nRF Connect SDK and VS Code](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-1-nrf-connect-sdk-introduction/topic/exercise-1-1/)
+- [Nordic Developer Academy — nRF Connect SDK Fundamentals](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/)
+- [Nordic nRF Connect for VS Code](https://docs.nordicsemi.com/r/bundle/nrf-connect-vscode/)
