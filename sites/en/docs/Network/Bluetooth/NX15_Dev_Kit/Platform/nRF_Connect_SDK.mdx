@@ -30,7 +30,7 @@ The NX15 Series is based on the Nordic **nRF54L15**. The NX15 Dev Kit provides a
 | nRF Connect for VS Code | SDK setup and application development tools |
 | nRF Connect SDK | Nordic software and the Zephyr-based development workspace |
 | Matching toolchain | Compiler and tools associated with the selected SDK release |
-| NX15 board support | Hardware definition matching the NX15 board revision |
+| NX15 board support | `nx15/nrf54l15/cpuapp` from KORLINX NX-Zephyr-Samples |
 | External J-Link probe | Host-to-target debug connection through SWD |
 
 The board's USB Type-C connection supports power and the FT234XD serial interface. For this guide, the programming and debugging path is the **external J-Link connected to SWD**.
@@ -54,13 +54,13 @@ A bare NX15 module needs a suitable carrier providing power, ground, and access 
 
 - [Visual Studio Code](https://code.visualstudio.com/download).
 - Nordic's **nRF Connect for VS Code** extension and its companion extensions.
-- An **nRF Connect SDK** release and its matching toolchain.
+- **nRF Connect SDK v3.3.1** and its matching toolchain.
 - [SEGGER J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/), using the version recommended for the selected Nordic environment.
-- NX15 board-support instructions and the pinout for the actual board revision.
+- [KORLINX NX-Zephyr-Samples](https://github.com/KORLINX/NX-Zephyr-Samples) and the pinout for the actual board revision.
 
 :::note
 NX15 board support
-Obtain the exact NX15 board definition and supported SDK/toolchain combination from KORLINX. The hardware documentation does not specify a verified Zephyr board target or tested SDK release. Keep these details with your setup; an nRF54L15 DK target is not automatically equivalent to NX15.
+KORLINX provides the NX15 board definition in [NX-Zephyr-Samples](https://github.com/KORLINX/NX-Zephyr-Samples). Use target `nx15/nrf54l15/cpuapp`. The repository states that its samples are tested with **nRF Connect SDK v3.3.1**. Confirm that the board revision in use matches the repository's NX15 definition and released pinout.
 :::
 
 ![Tools to prepare for NX15 development with nRF Connect SDK and Zephyr](/img/bluetooth/nx15/platform/nx15-ncs-environment.png)
@@ -86,7 +86,7 @@ See Nordic's [nRF Connect for VS Code installation guide](https://docs.nordicsem
 1. Open **nRF Connect** from the Activity Bar. Under **WELCOME**, select **Install SDK**.
 2. Select a download region if prompted.
 3. In **Select SDK Type**, choose **nRF Connect SDK**, described as RTOS-based applications using Zephyr.
-4. Choose the SDK release specified by the NX15 board-support instructions.
+4. Select **nRF Connect SDK v3.3.1**, the version used to test the KORLINX samples.
 5. Choose an installation location and wait for the SDK and toolchain installation to complete.
 6. Confirm that the selected SDK and matching toolchain are available in the extension's SDK management view.
 
@@ -174,6 +174,7 @@ The setup now has two separate host connections: USB to the NX15 Dev Kit for boa
 
 - [NX15 Dev Kit Overview](../NX15_Dev_Kit_Overview.mdx)
 - [NX15 Dev Kit Hardware](../Hardware.mdx)
+- [KORLINX NX-Zephyr-Samples](https://github.com/KORLINX/NX-Zephyr-Samples) — NX15 board definition, sample applications, target name, and tested SDK version
 - [Nordic Developer Academy — Installing nRF Connect SDK and VS Code](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-1-nrf-connect-sdk-introduction/topic/exercise-1-1/)
 - [Nordic Developer Academy — nRF Connect SDK Fundamentals](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/)
 - [Nordic nRF Connect for VS Code](https://docs.nordicsemi.com/r/bundle/nrf-connect-vscode/)

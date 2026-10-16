@@ -1,0 +1,327 @@
+---
+title: How to Use NX15 with the Arduino Platform
+sidebar_label: Arduino Platform
+sidebar_position: 3
+description: Install KORLINX Zephyr Boards for the NX15 Dev Kit, connect the SWD and UART interfaces, and run Blink and serial tests.
+keywords: [KORLINX NX15 Arduino, DEV-NX15, NX15 nRF54L15, Arduino IDE, NX15 SWD, NX15 UART]
+---
+
+# How to Use NX15 with the Arduino Platform
+
+This guide targets the **KORLINX NX15 Dev Kit**, an evaluation board built around the **nRF54L15-based NX15 module**. KORLINX provides the NX15 board definition through **KORLINX Zephyr Boards**.
+
+:::info
+Arduino core release
+This guide uses [KORLINX core 0.2.0](https://github.com/KORLINX/ArduinoCore-zephyr/releases/tag/korlinx-0.2.0), which adds the **KORLINX NX15 (nRF54L15)** board to Arduino IDE. The core is based on Arduino Core for Zephyr and is not affiliated with or endorsed by Arduino.
+:::
+
+<img
+  src="/img/bluetooth/nx15/arduino/nx15-arduino-platform-hero.png"
+  alt="NX15 Dev Kit with the Arduino Platform"
+  className="blog-first-image"
+/>
+
+## What you will build
+
+Install the NX15 core, compile a sketch that switches the red user LED on and off every 500 ms, then verify a periodic message through the board's USB-to-UART interface.
+
+The NX15 workflow uses two host connections:
+
+- **J-Link over SWD** programs the Arduino loader and sketch.
+- **USB Type-C through FTDI** powers the Dev Kit and provides the `Serial` connection.
+
+## Supported host platforms
+
+Arduino IDE 2.x is available for Windows, macOS, and Linux. KORLINX core 0.2.0 does not publish a validated host OS compatibility matrix, so confirm Arduino IDE and J-Link operation on the host used for development.
+
+## Before you begin
+
+### Required hardware
+
+| Item | Requirement |
+| --- | --- |
+| Development board | NX15 Dev Kit; record its revision and fitted module model |
+| USB cable | Data-capable cable matching the board's USB Type-C connector |
+| Programming interface | SEGGER J-Link debug probe compatible with the nRF54L15 |
+| Debug wiring | SWD cable or adapter for NRESET, SWDCLK, GND, SWDIO, and VTref (3V3) |
+| Host computer | Operating system supported by both Arduino IDE and the selected core/uploader |
+
+A bare NX15 module additionally needs a carrier, suitable power design, and accessible debug signals.
+
+:::tip
+Use data-capable USB cables
+The NX15 Dev Kit and J-Link each connect to the host through USB. Use data-capable cables for both devices. A charge-only cable can power a device without exposing the FTDI port or debug probe to the host.
+:::
+
+### Required software
+
+- [Arduino IDE](https://www.arduino.cc/en/software).
+- **KORLINX Zephyr Boards** version **0.2.0**.
+- SEGGER J-Link software when using a J-Link probe.
+- FTDI serial drivers if required by the host operating system.
+
+A complete host OS compatibility matrix is not stated in the release notes.
+
+### Before connecting external hardware
+
+The Arduino pin names below are software mappings from core 0.2.0. Check the [NX15 Dev Kit Hardware guide](../Hardware.mdx) before connecting external circuits, and confirm connector positions and electrical limits for the board revision in use.
+
+## Step 1: Install Arduino IDE
+
+1. Download Arduino IDE from the [official software page](https://www.arduino.cc/en/software).
+2. Install Arduino IDE 2.x using the normal procedure for the host operating system.
+3. Start Arduino IDE.
+
+## Step 2: Add the KORLINX board-package index
+
+Use the package index published with the KORLINX ArduinoCore-zephyr release.
+
+### Add the Boards Manager URL
+
+1. Open Arduino IDE preferences:
+   - Windows or Linux: **File > Preferences**
+   - macOS: **Arduino IDE > Settings**
+2. Find **Additional Boards Manager URLs**.
+3. Add this URL. If other URLs are already configured, keep them and add this as a separate entry:
+
+```text
+https://github.com/KORLINX/ArduinoCore-zephyr/releases/latest/download/package_korlinx_index.json
+```
+
+4. Select **OK** to save the settings.
+
+<img
+  src="/img/bluetooth/nx15/arduino/add-korlinx-board-package-index.png"
+  alt="Arduino IDE Preferences with the KORLINX board-package index URL"
+  style={{ width: '70%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Add the complete KORLINX package-index URL under Additional Boards Manager URLs.</em>
+</p>
+
+### Install KORLINX Zephyr Boards
+
+1. Open **Tools > Board > Boards Manager**.
+2. Search for **KORLINX Zephyr Boards**.
+3. Select version **latest version**, then select **Install**.
+4. Wait for the core and its tool dependencies to finish installing.
+5. Confirm that **KORLINX NX15 (nRF54L15)** appears under the KORLINX Zephyr Boards platform.
+
+<img
+  src="/img/bluetooth/nx15/arduino/install-korlinx-zephyr-boards.png"
+  alt="KORLINX Zephyr Boards package ready to install in Arduino IDE Boards Manager"
+  style={{ width: '70%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Confirm that KORLINX Zephyr Boards is installed and that the NX15 board is available.</em>
+</p>
+
+When using a J-Link probe, also install the [SEGGER J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/).
+
+## Step 3: Connect NX15 to J-Link through SWD
+
+Uploading to NX15 requires a programming connection in addition to the board's USB connection. This guide uses a **SEGGER J-Link probe connected through SWD**. The USB Type-C connection provides board power and access to the onboard **FTDI FT234XD USB-to-UART** interface.
+
+![NX15 Dev Kit connected to a SEGGER J-Link probe through SWD](/img/bluetooth/nx15/arduino/Connect-NX15-to-J-Link-through-SWD.png)
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>NX15 SWD connection points and the connection to a SEGGER J-Link probe through a compatible flat cable or adapter.</em>
+</p>
+
+Connect the J-Link probe to the labeled NX15 SWD pads as follows:
+
+<img
+  src="/img/bluetooth/nx15/hardware/NX15-SWD-pin.png"
+  alt="NX15 Dev Kit SWD pads labeled NRESET, SWDCLK, GND, SWDIO, and 3V3"
+  className="blog-first-image"
+/>
+
+<div className="spec-table-wrapper">
+
+| J-Link signal | NX15 pad | Function |
+| --- | --- | --- |
+| `nRESET` | `NRESET` | Target reset |
+| `SWCLK` | `SWDCLK` | SWD clock |
+| `GND` | `GND` | Common ground |
+| `SWDIO` | `SWDIO` | Bidirectional SWD data |
+| `VTref` | `3V3` | Target-voltage reference |
+
+</div>
+
+1. Disconnect the NX15 Dev Kit and J-Link probe from USB before making the SWD connections.
+2. Connect each J-Link signal to the corresponding NX15 pad shown in the table. Check the pinout of the specific J-Link cable or adapter before wiring it.
+3. Connect the NX15 Dev Kit to the host through USB Type-C to power the board and enable the FTDI serial interface.
+4. Connect the J-Link probe to the host through USB.
+5. Check that both USB connections are secure before uploading a sketch.
+
+The J-Link `VTref` connection senses the board's 3.3 V I/O level. Power the board through its intended power input; do not configure the probe to supply target power unless the hardware documentation for the exact probe and board setup explicitly permits it. See the [NX15 SWD preparation guide](./nRF_Connect_SDK.mdx#step-4--identify-the-nx15-swd-connections) for additional connection precautions.
+
+:::note
+Programming and serial communication
+A visible FTDI port confirms USB-to-UART enumeration. It does not by itself establish a serial firmware-upload path. Use the programming method specified by the validated NX15 core. The NX40 UF2/DFU bootloader procedure is not an NX15 procedure.
+:::
+
+## Step 4: Select the board and uploader
+
+1. Select **Tools > Board > KORLINX Zephyr Boards > KORLINX NX15 (nRF54L15)**.
+2. Keep these board options for the first test:
+   - **Debug:** `Standard`
+   - **Link mode:** `Dynamic`
+3. Confirm that the J-Link connected in Step 3 remains connected to the host and NX15 SWD interface.
+4. Select the FTDI port when using Serial Monitor. The FTDI port is not the J-Link programming connection.
+
+<img
+  src="/img/bluetooth/nx15/arduino/select-nx15-board-and-port.png"
+  alt="Arduino IDE dialog with KORLINX NX15 and the FTDI USB serial port selected"
+  style={{ width: '70%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Select KORLINX NX15 and the FTDI USB serial port used by Serial Monitor.</em>
+</p>
+
+Use **Debug** mode when loader diagnostics are needed. Use **Static** link mode only when the application specifically requires it; it produces a different upload artifact from the default Dynamic mode.
+
+The core uses pyOCD to discover and program supported debug probes. If several probes are connected, disconnect the probes that are not used before uploading.
+
+## Step 5: Prepare the Blink sketch
+
+Open **File > Examples > 01.Basics > Blink**, then save the sketch as `nx15_blink`.
+
+![Arduino IDE menu path for opening the built-in Blink example](/img/bluetooth/nx15/arduino/prepare-blink-sketch.png)
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Open the built-in Blink example before replacing it with the NX15-specific sketch.</em>
+</p>
+
+Core 0.2.0 defines the red LED as `LED_RED` and its active level as `LED_STATE_ON`:
+
+```cpp
+constexpr uint8_t LED_OFF =
+    (LED_STATE_ON == HIGH) ? LOW : HIGH;
+
+void setup() {
+  pinMode(LED_RED, OUTPUT);
+  digitalWrite(LED_RED, LED_OFF);
+}
+
+void loop() {
+  digitalWrite(LED_RED, LED_STATE_ON);
+  delay(500);
+  digitalWrite(LED_RED, LED_OFF);
+  delay(500);
+}
+```
+
+The release also defines `LED_BLUE`, `LED_GREEN`, and `LED_RUN`. Start with `LED_RED` to verify the core and upload path.
+
+## Step 6: Compile and program
+
+After installing the core and connecting J-Link:
+
+1. Select **Verify** and wait for compilation to complete without errors.
+2. Confirm that **KORLINX NX15 (nRF54L15)**, **Standard**, and **Dynamic** remain selected.
+3. Confirm that J-Link is connected and detected, then select **Upload**.
+4. Wait until the upload output reports `Upload finished.`
+
+NX15 has no USB bootloader in this workflow. Core 0.2.0 uses its included uploader with J-Link to write the Arduino Zephyr loader from `0x00000000` and the user sketch from `0x00060000`. During later uploads, the uploader checks the installed loader and writes it again only when it differs from the packaged loader.
+
+The first upload can therefore take longer than a sketch-only update. The upload output reports either `Uploading the Arduino firmware and the sketch.` or `The Arduino firmware on the board is up to date; uploading the sketch only.`
+
+![Conceptual illustration of compiling and programming a Blink sketch for NX15](/img/bluetooth/nx15/arduino/nx15-blink-upload.png)
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Conceptual illustration of compiling and uploading an NX15 sketch. Core 0.2.0 uploads through the connected J-Link debug probe.</em>
+</p>
+
+## Step 7: Confirm the result
+
+The LED selected by the confirmed mapping should be on for approximately 500 ms and off for approximately 500 ms, repeatedly. Observe the user LED rather than the power or charging indicator.
+
+If it stays unchanged, check the programmed image, selected board, GPIO mapping, polarity, and reset behavior.
+
+## Optional: Verify UART output
+
+Create a separate sketch named `nx15_uart`. Core 0.2.0 routes `Serial` through the onboard FT234XD USB-to-UART interface:
+
+```cpp
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  Serial.println("KORLINX NX15 Arduino is running");
+  delay(1000);
+}
+```
+
+Program the sketch using the confirmed workflow. Open **Tools > Serial Monitor** on the FTDI port and select **115200 baud**. Expected application text:
+
+```text
+KORLINX NX15 Arduino is running
+```
+
+The screenshot below shows the expected message repeated in Arduino IDE Serial Monitor.
+
+<img
+  src="/img/bluetooth/nx15/arduino/verify-uart-output.png"
+  alt="Arduino IDE Serial Monitor displaying periodic output from an NX15 sketch"
+  style={{ width: '85%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>The FTDI Serial Monitor displays the NX15 test message approximately once per second.</em>
+</p>
+
+## Arduino pin aliases in core 0.2.0
+
+Use symbolic names in sketches where the core provides them. These mappings come from the NX15 variant included in KORLINX core 0.2.0.
+
+<div className="spec-table-wrapper">
+
+| Arduino symbol or object | Dev Kit function | Core mapping |
+| --- | --- | --- |
+| `LED_RED` | Red user LED | Arduino pin 11 / P1.09, active-high |
+| `LED_BLUE` | Blue user LED | Arduino pin 8 / P0.04, active-high |
+| `LED_GREEN` | Green user LED | Arduino pin 19 / P2.03, active-high |
+| `LED_RUN` | Run LED | Arduino pin 14 / P2.01, active-high |
+| `PIN_BUTTON1` | User button | Arduino pin 7 / P1.10, active-low |
+| `Serial` | Onboard FT234XD USB-to-UART | RX pin 21 / P1.12; TX pin 22 / P1.13 |
+| `Wire` | I²C | SDA pin 6 / P2.02; SCL pin 23 / P1.15 |
+| `A0`–`A4` | J3 analog inputs | P1.04, P1.05, P1.06, P1.07, P1.11 |
+| `A5` / `PIN_VBAT` | Battery-divider input | P1.14; not a general external analog input |
+| `PIN_6D_INT1` | IMU interrupt | Arduino pin 12 / P2.04 |
+| `PIN_6D_CS` | IMU chip select | Arduino pin 17 / P2.05; held high for I²C mode |
+
+</div>
+
+The core also defines charger-control and status aliases. Review the board schematic and core source before changing charger pins or using pins connected to onboard devices. Hardware presence alone does not confirm that a compatible Arduino library is available.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| NX15 board entry is missing | Confirm the package index URL and install KORLINX Zephyr Boards 0.2.0 |
+| Arduino IDE cannot access J-Link | Check both USB data cables, SEGGER software, host permissions, and the J-Link USB connection |
+| Probe cannot detect the target | Check target power, 3V3/VTref, common ground, SWDIO, SWDCLK, NRESET, and nRF54L15 support |
+| Upload fails when several probes are connected | Disconnect unused debug probes and retry with only the intended J-Link attached |
+| FTDI port appears but upload fails | Confirm the programming interface and core upload recipe |
+| Programming succeeds but no LED blinks | Check target, image, pin mapping, polarity, and reset |
+| Serial Monitor is blank | Check FTDI port, baud rate, UART object, pin routing, and flow control |
+| Sensor example fails | Check exact sensor, library compatibility, bus routing, and power |
+
+{/* BEFORE PUBLIC RELEASE:
+- Validate KORLINX Zephyr Boards 0.2.0 on each supported host operating system.
+- Confirm the supported probe list and document probe-specific setup.
+- Test Blink and UART on actual hardware and record the configuration.
+- Confirm article placement under NX15_Dev_Kit/Platform/ and sidebar position.
+- Add verified screenshots; do not present illustrations as captured sessions.
+*/}
+
+## References
+
+- [NX15 Dev Kit Overview](https://wiki.korlinx.com/docs/Network/Bluetooth/NX15_Dev_Kit/NX15_Dev_Kit_Overview/)
+- [NX15 Dev Kit Hardware](https://wiki.korlinx.com/docs/Network/Bluetooth/NX15_Dev_Kit/Hardware/)
+- [NX15 Module Specifications](https://wiki.korlinx.com/docs/Network/Bluetooth/NX15_Module/NX15-Module_Specifications/)
