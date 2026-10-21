@@ -47,9 +47,9 @@ Documented mode responses:
 | Command | Example | Default | Range | Function |
 | --- | --- | ---: | --- | --- |
 | `zmin` | `zmin 25` | 25 cm | 10 to `zmax - 25` cm | Minimum range |
-| `zmax` | `zmax 300` | 300 cm | 50–2000 cm | Maximum range |
+| `zmax` | `zmax 300` | 300 cm | 50 – 2000 cm | Maximum range |
 | `pmode` | `pmode 0` | 0 | 0, 1, 2 | Balanced, fast, accurate |
-| `sena` | `sena 50` | 50% | 0–100% | CFAR sensitivity |
+| `sena` | `sena 50` | 50% | 0 – 100% | CFAR sensitivity |
 | `sort` | `sort 0` | 0 | 0, 1 | Distance-first or strength-first |
 | `outtime` | `outtime 1` | 1 | 0, 1 | 0: documented 15 Hz; 1: once per second |
 
@@ -58,7 +58,7 @@ Documented mode responses:
 | Command | Example | Default | Range | Function |
 | --- | --- | ---: | --- | --- |
 | `zmin` | `zmin 25` | 25 cm | 15 to `zmax - 25` cm | Minimum vital-sign range |
-| `zmax` | `zmax 150` | 150 cm | 40–250 cm | Maximum vital-sign range |
+| `zmax` | `zmax 150` | 150 cm | 40 – 250 cm | Maximum vital-sign range |
 | `wave` | `wave 1` | 0 | 0, 1 | 0: simple, 1: waveform |
 | `exten` | `exten 1` | 0 | 0, 1 | 0: no HRV extension, 1: add RMSSD and SDNN |
 
@@ -127,7 +127,7 @@ Extended simple frame:
 | `BBB` | 3 | Heart rate per minute |
 | `CC` | 2 | Breathing rate per minute |
 | `D` | 1 | Heart-beat pulse: 1 at each beat, otherwise 0 |
-| `EEE` | 3 | Respiration waveform, 0–999 |
+| `EEE` | 3 | Respiration waveform, 0 – 999 |
 | `FFF` | 3 | Distance, cm |
 | `!` | 1 | End |
 

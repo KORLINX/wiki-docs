@@ -26,7 +26,7 @@ The supplied manual does not establish medical-device certification or diagnosti
 ## Detection conditions
 
 - One person only
-- Configurable 0.15–2.5 m range; default 0.25–1.5 m
+- Configurable 0.15 – 2.5 m range; default 0.25 – 1.5 m
 - Front-facing chest placement gives the best documented result
 - The subject should remain steady for more than 20 seconds
 - Small movements or conversation may be tolerated but reduce accuracy
@@ -60,7 +60,7 @@ zmax 150
 zmin 25
 ```
 
-This sequence is derived from the manual's range constraints, not a hardware test. The temporary minimum of 15 cm is compatible with every documented vital-mode maximum (40–250 cm). Send each command separately and allow reconfiguration to finish. If any command fails, establish the actual state before proceeding.
+This sequence is derived from the manual's range constraints, not a hardware test. The temporary minimum of 15 cm is compatible with every documented vital-mode maximum (40 – 250 cm). Send each command separately and allow reconfiguration to finish. If any command fails, establish the actual state before proceeding.
 
 The documented mode response is:
 
@@ -112,7 +112,7 @@ The waveform frame is documented at 10 Hz:
 @ABBBCCDEEEFFF!
 ```
 
-It adds a one-digit heart-beat pulse (1 at a beat, otherwise 0) and a three-digit respiration waveform value (0–999). This pulse is not a continuous cardiac waveform or ECG. The 10 Hz figure describes output cadence, not a validated update rate for independently calculated HR/BR/HRV results.
+It adds a one-digit heart-beat pulse (1 at a beat, otherwise 0) and a three-digit respiration waveform value (0 – 999). This pulse is not a continuous cardiac waveform or ECG. The 10 Hz figure describes output cadence, not a validated update rate for independently calculated HR/BR/HRV results.
 
 ### Add HRV fields
 

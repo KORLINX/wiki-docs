@@ -1,0 +1,408 @@
+---
+title: How to Use NX15 with PlatformIO
+sidebar_label: PlatformIO
+sidebar_position: 5
+description: Install KORLINX PlatformIO support for NX15, build an Arduino Blink application, and upload it through J-Link over SWD.
+keywords: [KORLINX NX15, NX15 PlatformIO, DEV-NX15, nRF54L15, ArduinoCore Zephyr, J-Link, SWD, FTDI]
+---
+
+# How to Use NX15 with PlatformIO
+
+<img
+  src="/img/bluetooth/nx15/platformio/NX15-PlatformIO-hero-img.png"
+  alt="NX15 with PlatformIO for building, uploading, and monitoring applications"
+  className="blog-first-image"
+/>
+
+Use **PlatformIO IDE in Visual Studio Code** to build an Arduino application for the **KORLINX NX15 Dev Kit** and upload it through a SEGGER J-Link probe.
+
+:::info[Package baseline]
+This guide uses [KORLINX-PlatformIO 1.1.0](https://github.com/KORLINX/KORLINX-PlatformIO/tree/1.1.0), board ID `nx15`, and [KORLINX ArduinoCore-zephyr 0.2.3](https://github.com/KORLINX/ArduinoCore-zephyr/releases/tag/korlinx-0.2.3).
+
+The repository provides an NX15 Blink environment and supports J-Link upload. PlatformIO debugging with `pio debug` is not supported for NX15 in this release.
+:::
+
+## What you will build
+
+Create a PlatformIO project that switches the NX15 user LED on and off every 500 ms. PlatformIO compiles the sketch with the KORLINX Zephyr-based Arduino core and programs the board through J-Link over SWD.
+
+The development setup uses two host connections:
+
+- **J-Link over SWD** for firmware upload.
+- **USB Type-C through FTDI** for board power and `Serial` communication.
+
+## Before you begin
+
+### Required hardware
+
+<div className="spec-table-wrapper">
+
+| Item | Requirement |
+| --- | --- |
+| Development board | KORLINX NX15 Dev Kit |
+| Debug probe | SEGGER J-Link compatible with nRF54L15 |
+| Debug wiring | SWD cable or adapter for NRESET, SWDCLK, GND, SWDIO, and VTref |
+| USB cables | Data-capable cables for the NX15 Dev Kit and J-Link |
+| Host computer | A system supported by Visual Studio Code, PlatformIO Core 6, and J-Link |
+
+</div>
+
+### Required software
+
+- [Visual Studio Code](https://code.visualstudio.com/).
+- [PlatformIO IDE](https://docs.platformio.org/en/latest/integration/ide/vscode.html).
+- Git, used to install the KORLINX platform from GitHub.
+- SEGGER J-Link software if required by the host setup.
+- FTDI drivers or serial-port permissions where required.
+
+## Step 1: Install PlatformIO IDE
+
+1. Install Visual Studio Code.
+2. Open **Extensions** in the Activity Bar.
+3. Search for **PlatformIO IDE** and install the extension published by PlatformIO.
+4. Wait for PlatformIO Core to initialize, then reload Visual Studio Code if requested.
+5. Open a PlatformIO terminal and verify the included Core:
+
+```bash
+pio --version
+```
+
+KORLINX-PlatformIO 1.1.0 declares PlatformIO Core 6 or later.
+
+<img
+  src="/img/bluetooth/nx15/platformio/installation-PIO-VSCode.png"
+  alt="PlatformIO IDE extension installed in Visual Studio Code"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Install the official PlatformIO IDE extension in Visual Studio Code.</em>
+</p>
+
+## Step 2: Install KORLINX-PlatformIO
+
+Open a PlatformIO terminal and install the tagged platform globally:
+
+```bash
+pio pkg install -g -p https://github.com/KORLINX/KORLINX-PlatformIO.git#1.1.0
+```
+
+Pinning `#1.1.0` keeps the platform, framework, and tools consistent with this guide. A URL without a tag follows the repository state cached by PlatformIO until the package is updated.
+
+The NX15 configuration supplied by this release is:
+
+<div className="spec-table-wrapper">
+
+| Setting | NX15 value |
+| --- | --- |
+| Platform package | `korlinx` 1.1.0 |
+| Board ID | `nx15` |
+| Display name | KORLINX NX15 nRF54L15 |
+| MCU | nRF54L15, 128 MHz Cortex-M33 |
+| Framework | Arduino |
+| Arduino core | KORLINX ArduinoCore-zephyr 0.2.3 |
+| Variant | `nx15_nrf54l15_cpuapp` |
+| Upload protocol | J-Link |
+| Sketch offset | `0x60000` |
+
+</div>
+
+## Step 3: Create an NX15 project
+
+1. Open **PlatformIO Home > New Project**.
+2. Name the project `nx15_blink`.
+3. Select **KORLINX NX15 nRF54L15**.
+4. Select the **Arduino** framework.
+5. Choose a project location and finish project creation.
+
+<img
+  src="/img/bluetooth/nx15/platformio/NX15-PIO-create-project-1.png"
+  alt="New Project action in PlatformIO Home"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Open PlatformIO Home and select New Project.</em>
+</p>
+
+<img
+  src="/img/bluetooth/nx15/platformio/NX15-PIO-create-project-2.png"
+  alt="PlatformIO Project Wizard configured for KORLINX NX15 nRF54L15 and Arduino"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Name the project, then select KORLINX NX15 nRF54L15 and the Arduino framework.</em>
+</p>
+
+If NX15 does not appear after package installation, reload Visual Studio Code. You can also create a project folder manually with `platformio.ini` and `src/main.cpp`.
+
+<div className="spec-table-wrapper">
+
+| Project item | Purpose |
+| --- | --- |
+| `platformio.ini` | Selects the platform release, NX15 board, framework, and serial settings |
+| `src/main.cpp` | Contains the application source |
+| `include/` | Stores project headers |
+| `lib/` | Stores project-local libraries |
+| `.pio/` | Contains generated build files and downloaded packages |
+
+</div>
+
+## Step 4: Configure platformio.ini
+
+Replace the generated configuration with:
+
+```ini
+[platformio]
+default_envs = nx15
+
+[env:nx15]
+platform = https://github.com/KORLINX/KORLINX-PlatformIO.git#1.1.0
+board = nx15
+framework = arduino
+monitor_speed = 115200
+```
+
+<img
+  src="/img/bluetooth/nx15/platformio/Configure-platformio-ini.png"
+  alt="NX15 PlatformIO project with board, framework, and monitor speed configured"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Configure the NX15 environment and set the Serial Monitor speed to 115200 baud.</em>
+</p>
+
+The full repository URL lets the project resolve the pinned release directly. If the platform was installed globally in Step 2, the repository examples use the shorter `platform = korlinx`.
+
+When several J-Link probes are connected, specify the selected probe serial number:
+
+```ini
+upload_port = 12345678
+```
+
+Replace `12345678` with the serial number printed on or reported by the required J-Link.
+
+## Step 5: Create the Blink application
+
+Replace `src/main.cpp` with the NX15-compatible Blink example:
+
+```cpp
+#include <Arduino.h>
+
+bool on;
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+  on = !on;
+  digitalWrite(LED_BUILTIN, on);
+  delay(500);
+}
+```
+
+This follows the Blink example supplied by KORLINX-PlatformIO 1.1.0. PlatformIO compiles `main.cpp` as C++, so include `Arduino.h` explicitly.
+
+## Step 6: Connect NX15 to J-Link
+
+<img
+  src="/img/bluetooth/nx15/arduino/Connect-NX15-to-J-Link-through-SWD.png"
+  alt="NX15 Dev Kit connected to a SEGGER J-Link probe through SWD"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>J-Link programs NX15 through the board's SWD interface.</em>
+</p>
+
+<img
+  src="/img/bluetooth/nx15/hardware/NX15-SWD-pin.png"
+  alt="NX15 Dev Kit SWD pads labeled NRESET, SWDCLK, GND, SWDIO, and 3V3"
+  style={{ width: '65%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<div className="spec-table-wrapper">
+
+| J-Link signal | NX15 pad | Function |
+| --- | --- | --- |
+| `nRESET` | `NRESET` | Target reset |
+| `SWCLK` | `SWDCLK` | SWD clock |
+| `GND` | `GND` | Common ground |
+| `SWDIO` | `SWDIO` | Bidirectional SWD data |
+| `VTref` | `3V3` | Target-voltage reference |
+
+</div>
+
+1. Disconnect the NX15 Dev Kit and J-Link from USB before wiring the SWD signals.
+2. Connect the probe signals to the corresponding NX15 pads.
+3. Connect the NX15 Dev Kit to the host through USB Type-C for power and FTDI serial communication.
+4. Connect J-Link to the host through USB.
+
+`VTref` senses the board's 3.3 V I/O level. Power the board through its intended input unless the documentation for the exact probe and board setup explicitly permits probe-supplied target power.
+
+## Step 7: Build and upload
+
+Run **PlatformIO: Build**, or use:
+
+```bash
+pio run -e nx15
+```
+
+<img
+  src="/img/bluetooth/nx15/platformio/Build-the-application.png"
+  alt="Successful PlatformIO build of the NX15 Blink application"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>The Build task compiles the NX15 application and reports memory usage and SUCCESS.</em>
+</p>
+
+After the build succeeds, select **Project Tasks > nx15 > General > Upload**, or run:
+
+```bash
+pio run -e nx15 -t upload
+```
+
+<img
+  src="/img/bluetooth/nx15/platformio/Upload-the-application.png"
+  alt="Successful PlatformIO upload to NX15 through J-Link"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>The Upload task programs NX15 through J-Link and reports SUCCESS.</em>
+</p>
+
+The NX15 sketch runs inside loader firmware supplied by ArduinoCore-zephyr. On the first upload, the J-Link workflow writes both the loader and the sketch. On later uploads, J-Link skips flash regions that already match, so only changed content needs to be written.
+
+The board manifest places the sketch at `0x60000`. Use the packaged uploader instead of manually programming an arbitrary binary at a guessed address.
+
+:::note
+Debugging support
+KORLINX-PlatformIO 1.1.0 supports NX15 upload through J-Link. Interactive debugging with `pio debug` is not supported yet.
+:::
+
+## Step 8: Confirm the result
+
+After upload and reset, the user LED should change state every 500 ms. If the LED does not blink:
+
+- Confirm that the selected environment and board are both `nx15`.
+- Check that J-Link detected `nRF54L15_M33`.
+- Confirm that the upload completed without an error.
+- Check the NX15 variant and LED mapping supplied by core 0.2.3.
+- Reset or power-cycle the board, then test again.
+
+## Optional: Verify Serial output
+
+For NX15, `Serial` uses the board's USB-to-UART interface at 115200 baud. Replace `src/main.cpp` with:
+
+```cpp
+#include <Arduino.h>
+
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  Serial.println("KORLINX NX15 PlatformIO is running");
+  delay(1000);
+}
+```
+
+Build and upload the sketch again, then list the available ports:
+
+```bash
+pio device list
+```
+
+Open **PlatformIO: Serial Monitor**, or run:
+
+```bash
+pio device monitor --port YOUR_FTDI_PORT --baud 115200
+```
+
+<img
+  src="/img/bluetooth/nx15/platformio/Upload-and-Monitor.png"
+  alt="PlatformIO Upload and Monitor task showing repeated NX15 Serial output"
+  style={{ width: '90%', height: 'auto', display: 'block', marginInline: 'auto' }}
+/>
+
+<p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+  <em>Upload and Monitor programs NX15 through J-Link and displays the FTDI Serial output.</em>
+</p>
+
+Replace `YOUR_FTDI_PORT` with the FTDI port reported by the host. The FTDI connection carries serial data; firmware upload continues to use J-Link over SWD.
+
+## NX15 examples code
+
+The [`examples`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples) directory on the repository's `main` branch provides the following NX15 projects. These examples use `platform = korlinx`, `board = nx15`, and `framework = arduino`.
+
+:::note[Main branch and release baseline]
+The examples below reflect the repository's `main` branch. The installation and upload procedure earlier in this guide remains pinned to release 1.1.0. Content on `main` may change before the next tagged release.
+:::
+
+<div className="spec-table-wrapper">
+
+| Example | What it demonstrates |
+| --- | --- |
+| [`arduino-blink`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-blink) | Blinks `LED_BUILTIN` every 500 ms |
+| [`arduino-leds`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-leds) | Cycles through the four Dev Kit LEDs |
+| [`arduino-fade`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-fade) | Fades the red LED with PWM |
+| [`arduino-button`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-button) | Counts button presses and controls the blue LED |
+| [`arduino-analog`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-analog) | Reads NX15 analog inputs A0–A4 |
+| [`arduino-serial-echo`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-serial-echo) | Echoes complete lines received through the USB-to-UART interface |
+| [`arduino-imu`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-imu) | Reads acceleration and angular rate from the onboard LSM6DSL |
+| [`arduino-shtc3`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-shtc3) | Reads temperature and relative humidity from the onboard SHTC3 |
+
+</div>
+
+The repository also contains `arduino-ble-uart` and `arduino-usb-serial`. Their current `platformio.ini` files do not define an NX15 environment, so they are not included as NX15 examples.
+
+### Download and run an example
+
+Clone the repository, then build the required project with its `nx15` environment:
+
+```bash
+git clone https://github.com/KORLINX/KORLINX-PlatformIO.git
+cd KORLINX-PlatformIO
+pio run -d examples/arduino-blink -e nx15
+pio run -d examples/arduino-blink -e nx15 -t upload
+```
+
+Replace `arduino-blink` with another project name from the table. For an example that prints output, open the NX15 FTDI port at 115200 baud:
+
+```bash
+pio device monitor --port YOUR_FTDI_PORT --baud 115200
+```
+
+## Troubleshooting
+
+<div className="spec-table-wrapper">
+
+| Symptom | What to check |
+| --- | --- |
+| NX15 is absent from the project wizard | Install KORLINX-PlatformIO 1.1.0 globally and reload Visual Studio Code |
+| Unknown board or package error | Use `board = nx15` and the tagged platform URL |
+| `UnknownBoard: Unknown board ID 'nx15'` with `platform = korlinx` | The globally installed KORLINX platform may predate 1.1.0; update it or use the pinned repository URL in `platformio.ini` |
+| Build uses nRF52840 | Check that the environment did not select `nx40`; NX15 must report nRF54L15 |
+| J-Link cannot detect NX15 | Check power, VTref, GND, SWDIO, SWDCLK, NRESET, cable orientation, and probe support |
+| The wrong probe is selected | Add the required J-Link serial number as `upload_port` |
+| First upload takes longer | The first upload writes the loader and sketch; later uploads can skip matching flash |
+| `pio debug` fails | Interactive PlatformIO debugging is not supported for NX15 in release 1.1.0 |
+| Serial Monitor is blank | Select the FTDI port, use 115200 baud, and confirm host serial permissions |
+
+</div>
+
+## Related documentation
+
+- [KORLINX-PlatformIO 1.1.0](https://github.com/KORLINX/KORLINX-PlatformIO/tree/1.1.0)
+- [NX15 board manifest](https://github.com/KORLINX/KORLINX-PlatformIO/blob/1.1.0/boards/nx15.json)
+- [NX15-compatible examples on `main`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples)
+- [KORLINX PlatformIO Blink example](https://github.com/KORLINX/KORLINX-PlatformIO/tree/1.1.0/examples/arduino-blink)
+- [ArduinoCore-zephyr 0.2.3](https://github.com/KORLINX/ArduinoCore-zephyr/releases/tag/korlinx-0.2.3)
+- [NX15 with the Arduino Platform](./Arduino_Platform)
+- [NX15 Dev Kit hardware](../Hardware)
