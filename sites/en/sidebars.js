@@ -195,6 +195,11 @@ const sidebars = {
                       id: 'Network/Bluetooth/NX15_Dev_Kit/Platform/nRF_Connect_SDK',
                       label: 'nRF Connect SDK / Zephyr',
                     },
+                    {
+                      type: 'doc',
+                      id: 'Network/Bluetooth/NX15_Dev_Kit/Platform/PlatformIO',
+                      label: 'PlatformIO',
+                    },
                   ],
                 },
                 // ---------------------------------------------

@@ -20,7 +20,7 @@ This tutorial connects AS-614 to a host through TTL UART, checks the firmware, s
 You need:
 
 - One AS-614 module with its ordered connector option
-- A regulated 3.3-7.0 VDC supply with adequate margin above the documented 700 mW maximum
+- A regulated 3.3 - 7.0 VDC supply with adequate margin above the documented 700 mW maximum
 - A 3.3 V TTL UART adapter
 - A serial-terminal application that supports 230400 bps
 - An open indoor test area with a clear line of sight
@@ -28,7 +28,7 @@ You need:
 
 :::caution
 Use the documented electrical interface
-AS-614 uses 3.3-7.0 VDC for module power and the protocol section specifies 3.3 V UART. Do not treat the supply voltage as the UART logic voltage.
+AS-614 uses 3.3 - 7.0 VDC for module power and the protocol section specifies 3.3 V UART. Do not treat the supply voltage as the UART logic voltage.
 :::
 
 ## Step 1: Identify the connector and Pin 1
@@ -44,7 +44,7 @@ Manual v5.00 page 2 places P1 Pin 1 at the bottom of the header, near the square
 
 | AS-614 signal | Host connection |
 | --- | --- |
-| VCC | Regulated 3.3-7.0 VDC supply |
+| VCC | Regulated 3.3 - 7.0 VDC supply |
 | GND | Supply ground and UART-adapter ground |
 | UART TX | Host/adapter RX |
 | UART RX | Host/adapter TX |
@@ -53,8 +53,6 @@ Manual v5.00 page 2 places P1 Pin 1 at the bottom of the header, near the square
 Do not connect TTL UART directly to an RS-232 port.
 
 Use one power input at a time. The manual defines power and UART on P1/P2; it does not provide a P3 pinout for host wiring.
-
-{/* IMAGE REVIEW [AS614-IMG-07]: Revised Downloads/as614-uart-writing.png still points supply and ground toward undocumented P3; UART arrows do not identify TX/RX pads. Await corrected signal routing before publishing. */}
 
 ## Step 3: Open the serial terminal
 

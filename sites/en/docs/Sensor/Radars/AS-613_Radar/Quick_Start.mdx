@@ -20,7 +20,7 @@ This tutorial connects AS-613 to a host through TTL UART, checks the firmware, s
 You need:
 
 - One AS-613 module with its ordered connector option
-- A regulated 3.3–5.5 VDC supply sized for up to 800 mW
+- A regulated 3.3 – 5.5 VDC supply sized for up to 800 mW
 - A 3.3 V TTL UART adapter
 - A serial-terminal application that supports high baud rates
 - The firmware version and licensed-mode list for the unit under test
@@ -28,7 +28,7 @@ You need:
 
 :::caution
 Use the specification-table supply range
-The specification table defines 3.3–5.5 VDC and up to 800 mW. The feature and pin-description sections also show 3.3–7.0 V. This guide uses the narrower 3.3–5.5 VDC range. The UART protocol is documented as 3.3 V TTL.
+The specification table defines 3.3 – 5.5 VDC and up to 800 mW. The feature and pin-description sections also show 3.3 – 7.0 V. This guide uses the narrower 3.3 – 5.5 VDC range. The UART protocol is documented as 3.3 V TTL.
 :::
 
 ## Step 1: Identify the connector and Pin 1
@@ -43,7 +43,7 @@ Use the confirmed production pin map below. P3 is the eight-pin 2.54 mm header; 
 
 | AS-613 P3 pin / signal | Host connection |
 | --- | --- |
-| 1 — VCC | Regulated 3.3–5.5 VDC supply |
+| 1 — VCC | Regulated 3.3 – 5.5 VDC supply |
 | 2 — GND | Supply ground and UART-adapter ground |
 | 5 — UART TX | Host/adapter RX |
 | 6 — UART RX | Host/adapter TX |
