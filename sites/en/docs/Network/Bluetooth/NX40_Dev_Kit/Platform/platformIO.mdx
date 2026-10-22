@@ -311,6 +311,38 @@ KORLINX NX40 Arduino is running
 
 The capture shows the monitor at `9600` while the sketch requests `115200`. This example uses native USB CDC rather than a physical UART; keep the explicit `115200` monitor setting in this guide. For hardware UART, the terminal baud rate must match the firmware. The port `/dev/ttyACM0` shown is specific to that test computer.
 
+## NX40 code examples
+
+The [`examples`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples) directory provides the following projects with an `nx40` environment using `platform = korlinx`, `board = nx40`, and `framework = arduino`.
+
+<div className="spec-table-wrapper">
+
+| Example | What it demonstrates |
+| --- | --- |
+| [`arduino-blink`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-blink) | Blinks the built-in user LED |
+| [`arduino-leds`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-leds) | Cycles through the Dev Kit LEDs |
+| [`arduino-fade`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-fade) | Fades an LED with PWM |
+| [`arduino-button`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-button) | Reads the user button and controls an LED |
+| [`arduino-analog`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-analog) | Reads the NX40 analog input aliases |
+| [`arduino-serial-echo`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-serial-echo) | Echoes data received through the serial interface |
+| [`arduino-imu`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-imu) | Reads acceleration and angular rate from the onboard IMU |
+| [`arduino-shtc3`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-shtc3) | Reads temperature and relative humidity from the onboard SHTC3 |
+| [`arduino-ble-uart`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-ble-uart) | Provides a Bluetooth LE UART-style service |
+| [`arduino-usb-serial`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples/arduino-usb-serial) | Demonstrates NX40 native USB serial communication |
+
+</div>
+
+Clone the repository, then build and upload the required project with its `nx40` environment:
+
+```bash
+git clone https://github.com/KORLINX/KORLINX-PlatformIO.git
+cd KORLINX-PlatformIO
+pio run -d examples/arduino-blink -e nx40
+pio run -d examples/arduino-blink -e nx40 -t upload
+```
+
+Replace `arduino-blink` with another project name from the table.
+
 ## Troubleshooting
 
 | Symptom | What to check |
