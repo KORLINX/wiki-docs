@@ -299,6 +299,29 @@ Use symbolic names in sketches where the core provides them. These mappings come
 
 The core also defines charger-control and status aliases. Review the board schematic and core source before changing charger pins or using pins connected to onboard devices. Hardware presence alone does not confirm that a compatible Arduino library is available.
 
+## NX15 code examples
+
+The [`samples`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples) directory in the KORLINX Arduino core provides the following examples for learning the APIs available on NX15.
+
+<div className="spec-table-wrapper">
+
+| Example | What it demonstrates |
+| --- | --- |
+| [`analog_input`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/analog_input) | Reads an analog input and reports the converted value |
+| [`attach_interrupt`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/attach_interrupt) | Handles a GPIO interrupt with `attachInterrupt()` |
+| [`blinky_arduino`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/blinky_arduino) | Blinks an LED with the Arduino API |
+| [`button_press_led`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/button_press_led) | Reads the user button and controls an LED |
+| [`fade`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/fade) | Changes LED brightness with PWM |
+| [`hello_arduino`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/hello_arduino) | Prints a basic Arduino application message |
+| [`i2cdemo`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/i2cdemo) | Demonstrates I²C communication through `Wire` |
+| [`serial_event`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/serial_event) | Processes incoming serial data with a serial event handler |
+| [`spi_controller`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/spi_controller) | Uses NX15 as an SPI controller |
+| [`threads_arduino`](https://github.com/KORLINX/ArduinoCore-zephyr/tree/korlinx/samples/threads_arduino) | Runs Arduino work in multiple Zephyr threads |
+
+</div>
+
+Open an example directory to review its source and project files. Confirm the required wiring and pin aliases against the NX15 Dev Kit hardware page before connecting an external circuit.
+
 ## Troubleshooting
 
 | Symptom | What to check |

@@ -170,6 +170,37 @@ The setup now has two separate host connections: USB to the NX15 Dev Kit for boa
 
 **Stop here for this part.** The physical connection is complete; target detection, application configuration, and firmware operations will be covered in the next update.
 
+## NX15 code examples
+
+The [KORLINX NX-Zephyr-Samples repository](https://github.com/KORLINX/NX-Zephyr-Samples) supplies the NX15 board definition and sample applications tested with nRF Connect SDK v3.3.1. Use the `nx15/nrf54l15/cpuapp` target.
+
+<div className="spec-table-wrapper">
+
+| Example | What it demonstrates |
+| --- | --- |
+| [`hello`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/hello) | Console output with `printk()` and Zephyr logging |
+| [`uart`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/uart) | UART heartbeat messages and received-data echo |
+| [`dht_polling`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/dht_polling) | Periodic SHTC3 temperature and humidity measurements |
+| [`shtc3`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/shtc3) | SHTC3 measurements through Zephyr's blocking sensor API |
+| [`lsm6dso`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/lsm6dso) | Accelerometer and gyroscope data from the onboard IMU |
+| [`qspi_flash`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/qspi_flash) | External NOR flash access and verification |
+| [`gatt`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/gatt) | A custom Bluetooth LE GATT service with notifications |
+| [`rssi_power_control`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/rssi_power_control) | Central and peripheral RSSI reporting with LE Power Control |
+| [`direct_test_mode`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/direct_test_mode) | Bluetooth LE Direct Test Mode |
+
+</div>
+
+Clone the repository and build an example from the nRF Connect SDK workspace:
+
+```bash
+git clone https://github.com/KORLINX/NX-Zephyr-Samples.git
+west build -b nx15/nrf54l15/cpuapp NX-Zephyr-Samples/samples/hello -- \
+  -DZEPHYR_EXTRA_MODULES="$PWD/NX-Zephyr-Samples"
+west flash
+```
+
+Replace `hello` with another sample from the table and review that sample's README for prerequisites and expected output.
+
 ## References
 
 - [NX15 Dev Kit Overview](../NX15_Dev_Kit_Overview.mdx)

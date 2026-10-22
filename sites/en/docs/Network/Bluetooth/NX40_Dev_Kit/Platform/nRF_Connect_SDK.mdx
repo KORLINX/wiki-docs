@@ -317,6 +317,39 @@ Use `printk()` for a simple console check. For ongoing diagnostics, Nordic teach
 
 A log message being compiled into firmware does not guarantee that it reaches a connected serial port. UART and RTT have different transport requirements. See the [Logger module lesson](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/lessons/lesson-3-printing-messages-to-console-and-logging/topic/logger-module/).
 
+## NX40 code examples
+
+The [KORLINX NX-Zephyr-Samples repository](https://github.com/KORLINX/NX-Zephyr-Samples) supplies the NX40 board definition and sample applications tested with nRF Connect SDK v3.3.1. Use the `nx40/nrf52840` target.
+
+<div className="spec-table-wrapper">
+
+| Example | What it demonstrates |
+| --- | --- |
+| [`hello`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/hello) | Console output with `printk()` and Zephyr logging |
+| [`uart`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/uart) | UART heartbeat messages and received-data echo |
+| [`dht_polling`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/dht_polling) | Periodic SHTC3 temperature and humidity measurements |
+| [`shtc3`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/shtc3) | SHTC3 measurements through Zephyr's blocking sensor API |
+| [`lsm6dso`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/lsm6dso) | Accelerometer and gyroscope data from the onboard IMU |
+| [`dmic`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/dmic) | Audio capture from the NX40 PDM microphone |
+| [`qspi_flash`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/qspi_flash) | External NOR flash access and verification |
+| [`gatt`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/gatt) | A custom Bluetooth LE GATT service with notifications |
+| [`rssi_power_control`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/rssi_power_control) | Central and peripheral RSSI reporting with LE Power Control |
+| [`nrf_dm`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/nrf_dm) | Nordic distance measurement on NX40 |
+| [`direct_test_mode`](https://github.com/KORLINX/NX-Zephyr-Samples/tree/main/samples/direct_test_mode) | Bluetooth LE Direct Test Mode |
+
+</div>
+
+Clone the repository and build an example from the nRF Connect SDK workspace:
+
+```bash
+git clone https://github.com/KORLINX/NX-Zephyr-Samples.git
+west build -b nx40/nrf52840 NX-Zephyr-Samples/samples/hello -- \
+  -DZEPHYR_EXTRA_MODULES="$PWD/NX-Zephyr-Samples"
+west flash
+```
+
+Replace `hello` with another sample from the table and review that sample's README for prerequisites and expected output.
+
 ## Troubleshooting
 
 | Symptom | What to check |

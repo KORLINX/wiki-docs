@@ -14,7 +14,7 @@ keywords: [KORLINX NX15, NX15 PlatformIO, DEV-NX15, nRF54L15, ArduinoCore Zephyr
   className="blog-first-image"
 />
 
-Use **PlatformIO IDE in Visual Studio Code** to build an Arduino application for the **KORLINX NX15 Dev Kit** and upload it through a SEGGER J-Link probe.
+Use the **PlatformIO IDE extension for Visual Studio Code** to build an Arduino application for the **KORLINX NX15 Dev Kit** and upload it through a SEGGER J-Link probe.
 
 :::info[Package baseline]
 This guide uses [KORLINX-PlatformIO 1.1.0](https://github.com/KORLINX/KORLINX-PlatformIO/tree/1.1.0), board ID `nx15`, and [KORLINX ArduinoCore-zephyr 0.2.3](https://github.com/KORLINX/ArduinoCore-zephyr/releases/tag/korlinx-0.2.3).
@@ -29,7 +29,7 @@ Create a PlatformIO project that switches the NX15 user LED on and off every 500
 The development setup uses two host connections:
 
 - **J-Link over SWD** for firmware upload.
-- **USB Type-C through FTDI** for board power and `Serial` communication.
+- **USB Type-C through the onboard FTDI USB-to-UART bridge** for board power and `Serial` communication.
 
 ## Before you begin
 
@@ -40,7 +40,7 @@ The development setup uses two host connections:
 | Item | Requirement |
 | --- | --- |
 | Development board | KORLINX NX15 Dev Kit |
-| Debug probe | SEGGER J-Link compatible with nRF54L15 |
+| Debug probe | SEGGER J-Link compatible with the nRF54L15 |
 | Debug wiring | SWD cable or adapter for NRESET, SWDCLK, GND, SWDIO, and VTref |
 | USB cables | Data-capable cables for the NX15 Dev Kit and J-Link |
 | Host computer | A system supported by Visual Studio Code, PlatformIO Core 6, and J-Link |
@@ -51,7 +51,7 @@ The development setup uses two host connections:
 
 - [Visual Studio Code](https://code.visualstudio.com/).
 - [PlatformIO IDE](https://docs.platformio.org/en/latest/integration/ide/vscode.html).
-- Git, used to install the KORLINX platform from GitHub.
+- Git for installing the KORLINX platform from GitHub.
 - SEGGER J-Link software if required by the host setup.
 - FTDI drivers or serial-port permissions where required.
 
@@ -61,7 +61,7 @@ The development setup uses two host connections:
 2. Open **Extensions** in the Activity Bar.
 3. Search for **PlatformIO IDE** and install the extension published by PlatformIO.
 4. Wait for PlatformIO Core to initialize, then reload Visual Studio Code if requested.
-5. Open a PlatformIO terminal and verify the included Core:
+5. Open a PlatformIO terminal and verify the included PlatformIO Core version:
 
 ```bash
 pio --version
@@ -87,7 +87,7 @@ Open a PlatformIO terminal and install the tagged platform globally:
 pio pkg install -g -p https://github.com/KORLINX/KORLINX-PlatformIO.git#1.1.0
 ```
 
-Pinning `#1.1.0` keeps the platform, framework, and tools consistent with this guide. A URL without a tag follows the repository state cached by PlatformIO until the package is updated.
+Pinning `#1.1.0` keeps the platform, framework, and tools consistent with this guide. When the URL has no tag, PlatformIO uses its cached repository revision until the package is updated.
 
 The NX15 configuration supplied by this release is:
 
@@ -182,7 +182,7 @@ When several J-Link probes are connected, specify the selected probe serial numb
 upload_port = 12345678
 ```
 
-Replace `12345678` with the serial number printed on or reported by the required J-Link.
+Replace `12345678` with the serial number printed on or reported by the selected J-Link probe.
 
 ## Step 5: Create the Blink application
 
@@ -215,7 +215,7 @@ This follows the Blink example supplied by KORLINX-PlatformIO 1.1.0. PlatformIO 
 />
 
 <p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-  <em>J-Link programs NX15 through the board's SWD interface.</em>
+  <em>J-Link programs the NX15 through the board's SWD interface.</em>
 </p>
 
 <img
@@ -239,7 +239,7 @@ This follows the Blink example supplied by KORLINX-PlatformIO 1.1.0. PlatformIO 
 1. Disconnect the NX15 Dev Kit and J-Link from USB before wiring the SWD signals.
 2. Connect the probe signals to the corresponding NX15 pads.
 3. Connect the NX15 Dev Kit to the host through USB Type-C for power and FTDI serial communication.
-4. Connect J-Link to the host through USB.
+4. Connect the J-Link probe to the host through USB.
 
 `VTref` senses the board's 3.3 V I/O level. Power the board through its intended input unless the documentation for the exact probe and board setup explicitly permits probe-supplied target power.
 
@@ -277,18 +277,17 @@ pio run -e nx15 -t upload
   <em>The Upload task programs NX15 through J-Link and reports SUCCESS.</em>
 </p>
 
-The NX15 sketch runs inside loader firmware supplied by ArduinoCore-zephyr. On the first upload, the J-Link workflow writes both the loader and the sketch. On later uploads, J-Link skips flash regions that already match, so only changed content needs to be written.
+The NX15 sketch runs inside the loader firmware supplied by ArduinoCore-zephyr. During the first upload, the J-Link workflow writes both the loader and the sketch. During later uploads, J-Link skips matching flash regions, so it writes only the changed content.
 
 The board manifest places the sketch at `0x60000`. Use the packaged uploader instead of manually programming an arbitrary binary at a guessed address.
 
-:::note
-Debugging support
+:::note[Debugging support]
 KORLINX-PlatformIO 1.1.0 supports NX15 upload through J-Link. Interactive debugging with `pio debug` is not supported yet.
 :::
 
 ## Step 8: Confirm the result
 
-After upload and reset, the user LED should change state every 500 ms. If the LED does not blink:
+After uploading and resetting the board, the user LED should change state every 500 ms. If the LED does not blink:
 
 - Confirm that the selected environment and board are both `nx15`.
 - Check that J-Link detected `nRF54L15_M33`.
@@ -335,9 +334,9 @@ pio device monitor --port YOUR_FTDI_PORT --baud 115200
   <em>Upload and Monitor programs NX15 through J-Link and displays the FTDI Serial output.</em>
 </p>
 
-Replace `YOUR_FTDI_PORT` with the FTDI port reported by the host. The FTDI connection carries serial data; firmware upload continues to use J-Link over SWD.
+Replace `YOUR_FTDI_PORT` with the FTDI port reported by the operating system. The FTDI connection carries serial data; firmware upload continues to use J-Link over SWD.
 
-## NX15 examples code
+## NX15 code examples
 
 The [`examples`](https://github.com/KORLINX/KORLINX-PlatformIO/tree/main/examples) directory on the repository's `main` branch provides the following NX15 projects. These examples use `platform = korlinx`, `board = nx15`, and `framework = arduino`.
 
