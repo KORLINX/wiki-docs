@@ -14,7 +14,7 @@ keywords:
     SHTC3,
     BQ25100,
     J3 header,
-    J5 header,
+    J4 header,
     KORLINX,
   ]
 ---
@@ -29,7 +29,7 @@ keywords:
 
 The **NX15 Dev Kit** provides the board-level hardware required to evaluate and develop applications with the **KORLINX NX15 Series BLE module**.
 
-This page focuses on the Dev Kit hardware: USB connection, debugging interface, onboard sensors, buttons, LEDs, expansion headers, battery support, and the J3/J5 header pin map.
+This page focuses on the Dev Kit hardware: USB connection, debugging interface, onboard sensors, buttons, LEDs, expansion headers, battery support, and the J3/J4 header pin map.
 
 :::note
 This page describes the **NX15 Dev Kit board**.
@@ -49,7 +49,7 @@ The NX15 Dev Kit combines the NX15 Series BLE module with development-friendly h
 | USB & Debugging | USB Type-C, FTDI FT234XD, SWD header, ESD/TVS protection | PC connection, serial communication, firmware programming, and debugging |
 | LED & Switch | RGB LED, charge/power LEDs, reset button, user button | Firmware status indication and user input testing |
 | Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor | Motion, orientation, temperature, and humidity example development |
-| Headers | J3 and J5 headers | Selected signal access for prototyping and external connection |
+| Headers | J3 and J4 headers | Selected signal access for prototyping and external connection |
 | Battery Support | Li-Po connector, BQ25100 charger IC | Battery-oriented BLE prototype testing |
 
 ---
@@ -75,7 +75,7 @@ The NX15 Dev Kit combines the NX15 Series BLE module with development-friendly h
 | On-board Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor |
 | Buttons | Reset button, user button |
 | LEDs | RGB LED, charge LED, power LED |
-| Expansion Headers | J3 and J5 headers |
+| Expansion Headers | J3 and J4 headers |
 | Battery Hardware | Li-Po connector, BQ25100 charger IC |
 | Development Platform | nRF Connect SDK / Zephyr RTOS compatible |
 
@@ -93,7 +93,7 @@ The module-level values in this table describe the NX15 module used on the Dev K
 - **SWD debugging:** Provides SWD access for programming, debugging, and firmware validation.
 - **Onboard sensors:** Includes LSM6DS3TR-C 6-axis IMU and SHTC3 temperature/humidity sensor for example applications.
 - **User input and status output:** Provides reset/user buttons, RGB LED, charge LED, and power LED.
-- **Expansion headers:** Exposes selected module signals through J3 and J5 headers for prototyping.
+- **Expansion headers:** Exposes selected module signals through J3 and J4 headers for prototyping.
 - **Battery-oriented prototyping:** Includes Li-Po connector and BQ25100 charger IC for battery-related test workflows.
 
 ---
@@ -146,7 +146,7 @@ The NX15 Dev Kit provides expansion headers and battery-related hardware for pro
 | Hardware | Purpose |
 | --- | --- |
 | J3 header | Selected signal access for external connection and testing |
-| J5 header | Selected signal access for external connection and testing |
+| J4 header | Selected signal access for external connection and testing |
 | Li-Po connector | Battery-powered prototype testing |
 | BQ25100 charger IC | Li-Po battery charging support |
 
@@ -158,45 +158,53 @@ This allows the board to be used for both USB-powered development and battery-or
 
 <img
   src="/img/bluetooth/nx15/hardware/NX15_Pin_List.png"
-  alt="NX15 Dev Kit J3 and J5 header pin list"
+  alt="NX15 Dev Kit J3 and J4 header pin map"
   className="blog-first-image"
 />
 
-The NX15 Dev Kit exposes selected NX15 module signals through the J3 and J5 header areas. These headers can be used for prototyping, external sensor connection, GPIO testing, and firmware validation.
+The NX15 Dev Kit exposes selected NX15 module signals through the J3 and J4 header areas. These headers can be used for prototyping, external sensor connection, GPIO testing, and firmware validation.
 
 :::note
-This pin map shows the **NX15 Dev Kit J3/J5 header signals**.
+This pin map shows the **NX15 Dev Kit J3/J4 header signals**. Pin 1 is the square pad at the USB Type-C end of each header.
 
 It is not the full NX15 module LGA pad map. For the full module pad map, refer to the NX15 Module Pin Map page.
 :::
 
 ---
 
-### J5 Header
+### J4 Header
+
+<div className="spec-table-wrapper">
 
 | Pin Order | Pin Label | Type | Description |
 | --- | --- | --- | --- |
-| 1 | GND | Ground | Common ground reference |
-| 2 | P2.08 | GPIO / Trace | General-purpose I/O or trace-related alternate function |
-| 3 | P1.03 / NFC2 | GPIO / NFC | GPIO or NFC2 antenna interface |
-| 4 | P1.02 / NFC1 | GPIO / NFC | GPIO or NFC1 antenna interface |
-| 5 | 3.3V | Power | 3.3 V board power rail reference |
-| 6 | GND | Ground | Common ground reference |
-| 7 | VBUS | Power | USB bus voltage input |
+| 1 | VBUS | Power | USB bus voltage |
+| 2 | GND | Ground | Common ground reference |
+| 3 | 3.3V | Power | 3.3 V board power rail |
+| 4 | P2.07 / SWO | GPIO / Trace | General-purpose I/O or Serial Wire Output |
+| 5 | P2.08 | GPIO | General-purpose I/O |
+| 6 | P2.10 | GPIO | General-purpose I/O |
+| 7 | GND | Ground | Common ground reference |
+
+</div>
 
 ---
 
 ### J3 Header
 
+<div className="spec-table-wrapper">
+
 | Pin Order | Pin Label | Type | Description |
 | --- | --- | --- | --- |
-| 1 | GND | Ground | Common ground reference |
-| 2 | P2.04 | GPIO / SPI / QSPI | General-purpose I/O, SPI/QSPI-capable alternate function |
-| 3 | P1.11 / AIN4 | GPIO / ADC | GPIO or analog input channel AIN4 |
-| 4 | P1.07 / AIN3 | GPIO / ADC | GPIO or analog input channel AIN3 |
-| 5 | P1.06 / AIN2 | GPIO / ADC | GPIO or analog input channel AIN2 |
-| 6 | P1.05 / AIN1 | GPIO / ADC | GPIO or analog input channel AIN1 |
-| 7 | P1.04 / AIN0 | GPIO / ADC | GPIO or analog input channel AIN0 |
+| 1 | P0.01 | GPIO | General-purpose I/O |
+| 2 | P0.00 | GPIO | General-purpose I/O |
+| 3 | P1.05 / AIN1 | GPIO / ADC | GPIO or analog input channel AIN1 |
+| 4 | P1.04 / AIN0 / CK | GPIO / ADC / Clock | GPIO, analog input channel AIN0, or clock function |
+| 5 | P1.03 / NFC2 / CK | GPIO / NFC / Clock | GPIO, NFC2 antenna interface, or clock function |
+| 6 | P1.02 / NFC1 | GPIO / NFC | GPIO or NFC1 antenna interface |
+| 7 | GND | Ground | Common ground reference |
+
+</div>
 
 ---
 
@@ -204,7 +212,7 @@ It is not the full NX15 module LGA pad map. For the full module pad map, refer t
 
 | Item | Note |
 | --- | --- |
-| Header pin map | The J3/J5 tables describe selected Dev Kit header signals only |
+| Header pin map | The J3/J4 tables describe selected Dev Kit header signals only |
 | Module LGA pad map | The full NX15 module LGA pad map is documented separately in the NX15 Module Pin Map page |
 | GPIO function | GPIO and peripheral functions depend on firmware configuration |
 | NFC pins | NFC-related pins may require firmware configuration before use as GPIO |
@@ -221,7 +229,7 @@ It is not the full NX15 module LGA pad map. For the full module pad map, refer t
 | Button and LED test | Validate user input and firmware status indication |
 | Serial communication test | Use USB-to-UART for logs, commands, or serial data exchange |
 | Debugging and firmware validation | Use SWD access for programming and debugging |
-| External sensor prototype | Connect external signals through J3/J5 headers |
+| External sensor prototype | Connect external signals through J3/J4 headers |
 | Battery-oriented prototype | Test BLE application behavior with Li-Po battery-related hardware |
 
 ---
