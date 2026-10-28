@@ -258,6 +258,16 @@
   margin: 30px 0;
 }
 
+/* Cellular Overview pages: six cards in a centered 3 × 2 desktop grid. */
+@media (min-width: 997px) {
+  .cellular-feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    max-width: 1050px;
+    margin: 30px auto;
+  }
+}
+
 .feature-card {
   background: var(--ifm-card-background-color);
   border: 1px solid var(--ifm-color-emphasis-200);
