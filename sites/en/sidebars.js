@@ -375,17 +375,17 @@ const sidebars = {
         // =====================================================
         // WiFi
         // =====================================================
-        // {
-        //   type: 'category',
-        //   label: 'WiFi',
-        //   collapsed: true,
-        //   collapsible: true,
-        //   link: {
-        //     type: 'doc',
-        //     id: 'Network/WiFi/WiFi_Intro',
-        //   },
-        //   items: [],
-        // },
+        {
+          type: 'category',
+          label: 'WiFi',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'Network/WiFi/WiFi_Intro',
+          },
+          items: [],
+        },
 
         // =====================================================
         // Ethernet
