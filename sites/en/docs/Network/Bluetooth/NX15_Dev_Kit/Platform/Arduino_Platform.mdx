@@ -12,7 +12,7 @@ This guide targets the **KORLINX NX15 Dev Kit**, an evaluation board built aroun
 
 :::info
 Arduino core release
-This guide uses [KORLINX core 0.2.0](https://github.com/KORLINX/ArduinoCore-zephyr/releases/tag/korlinx-0.2.0), which adds the **KORLINX NX15 (nRF54L15)** board to Arduino IDE. The core is based on Arduino Core for Zephyr and is not affiliated with or endorsed by Arduino.
+This guide was tested with [KORLINX core 0.2.0](https://github.com/KORLINX/ArduinoCore-zephyr/releases/tag/korlinx-0.2.0), which adds the **KORLINX NX15 (nRF54L15)** board to Arduino IDE. Select version **0.2.0** when following this guide. The core is based on Arduino Core for Zephyr and is not affiliated with or endorsed by Arduino.
 :::
 
 <img
@@ -56,7 +56,7 @@ The NX15 Dev Kit and J-Link each connect to the host through USB. Use data-capab
 ### Required software
 
 - [Arduino IDE](https://www.arduino.cc/en/software).
-- **KORLINX Zephyr Boards** version **0.2.0**.
+- **KORLINX Zephyr Boards** version **0.2.0**, the version tested with this guide.
 - SEGGER J-Link software when using a J-Link probe.
 - FTDI serial drivers if required by the host operating system.
 
@@ -104,7 +104,7 @@ https://github.com/KORLINX/ArduinoCore-zephyr/releases/latest/download/package_k
 
 1. Open **Tools > Board > Boards Manager**.
 2. Search for **KORLINX Zephyr Boards**.
-3. Select version **latest version**, then select **Install**.
+3. Select version **0.2.0**, then select **Install**.
 4. Wait for the core and its tool dependencies to finish installing.
 5. Confirm that **KORLINX NX15 (nRF54L15)** appears under the KORLINX Zephyr Boards platform.
 
