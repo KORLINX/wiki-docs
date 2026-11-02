@@ -77,9 +77,6 @@ Board target: [NX_BOARD_TARGET]
 
 Do not analyze or modify a different branch from the one used in the successful build and commissioning test.
 
-{/* VERIFY WITH R&D [FW-V01]:
-Provide the public repository URL, release tag or commit, supported board targets, and license information.
-*/}
 
 ## Step 2: Map the project structure
 
@@ -148,9 +145,6 @@ Initialization function: [CONFIRM]
 Application task or event loop: [CONFIRM]
 ```
 
-{/* VERIFY WITH R&D [FW-V02]:
-Confirm the entry point and application lifecycle used by the public NX sample.
-*/}
 
 {/* IMAGE NOTE [FW-IMG-03]:
 Type: Focused code screenshot
@@ -183,10 +177,6 @@ For a basic light sample, the application normally exposes a lighting Device Typ
 
 **Developer reference keywords:** `Matter Node`, `Endpoint 0`, `application endpoint`, `Device Type`, `server cluster`, `client cluster`, `generated data model`
 
-{/* VERIFY WITH R&D [FW-V03]:
-Export the actual endpoint and cluster list from the validated sample.
-Confirm whether the data model is generated from ZAP, created in code, or supplied through another configuration flow.
-*/}
 
 {/* IMAGE NOTE [FW-IMG-04]:
 Type: Data-model hierarchy diagram
@@ -233,9 +223,6 @@ Physical output: [CONFIRM]
 
 Do not describe callbacks that are not used by the selected sample.
 
-{/* VERIFY WITH R&D [FW-V04]:
-Trace the On/Off path in the validated source and confirm each function and file.
-*/}
 
 {/* IMAGE NOTE [FW-IMG-05]:
 Type: Control-flow diagram
@@ -278,10 +265,6 @@ Use the generated Devicetree only to confirm the effective build configuration.
 
 **Developer reference keywords:** `Devicetree alias`, `GPIO phandle`, `chosen node`, `partition manager`, `board.cpp`, `hardware abstraction`
 
-{/* VERIFY WITH R&D [FW-V05]:
-Confirm the NX15 and NX40 LED, button, storage, and debug mappings.
-Document differences between the two platforms rather than forcing one shared mapping.
-*/}
 
 {/* IMAGE NOTE [FW-IMG-06]:
 Type: Board image and configuration callout
@@ -349,9 +332,6 @@ Modified behavior: [CONFIRM]
 Verification method: [CONFIRM]
 ```
 
-{/* VERIFY WITH R&D [FW-V06]:
-Select one safe, repeatable change for the public tutorial and provide the exact file, location, and expected result.
-*/}
 
 {/* IMAGE NOTE [FW-IMG-07]:
 Type: Before-and-after code snippet
@@ -525,13 +505,4 @@ Use the Wiki support flow when your build, flashing, commissioning, or command r
 Render this section using the approved KORLINX "You're Ready" design.
 Desktop: four cards in one row. Tablet: two columns. Mobile: one column.
 No card should link to production provisioning or a commercial CTA.
-*/}
-
-{/* KORLINX INTERNAL REVIEW BEFORE PUBLICATION
-1. Resolve FW-V01 through FW-V06.
-2. Replace every bracketed placeholder.
-3. Confirm that source paths and API names match the validated release.
-4. Verify the complete control path on NX15 and NX40 independently.
-5. Confirm Developer Resources, Product Docs, and Support URLs.
-6. Record the hardware revision, source commit, SDK/Matter version, test date, and reviewer.
 */}

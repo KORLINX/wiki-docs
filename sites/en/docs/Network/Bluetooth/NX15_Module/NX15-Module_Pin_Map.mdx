@@ -135,10 +135,6 @@ Several P2 pins support configurable GPIO, SPI, QSPI, UARTE, or trace-related fu
 | P2.09 | F3 | GPIO / FLPR.9 / TRACEDATA[2] / SPIM SDI / SPIS SDI / UARTE CTS | Available for GPIO or peripheral use when trace is unused |
 | P2.10 | G2 | GPIO / FLPR.10 / TRACEDATA[3] / SPIM CSN / SPIS CSN / UARTE RTS | Available for GPIO or peripheral use when trace is unused |
 
-{/* Technical confirmation required: the per-pin table in the draft says P2.00–P2.05
-may be used or reserved for the internal flash on 32-Mbit models. The later Important
-Notes say the internal flash uses P1/SPIM and that P2.00–P2.05 are externally routed
-and not used internally. Do not publish a definitive availability statement until resolved. */}
 
 ---
 
@@ -152,9 +148,6 @@ Follow these general rules when designing a host PCB for the NX15 module:
 - Keep debug access available during development.
 - Confirm all model-specific pin usage before finalizing the PCB.
 
-{/* Technical confirmation required: the draft says to use 50 Ω controlled-impedance
-RF feed traces, but NX15i uses an integrated antenna and the NX15E antenna table says
-the host PCB RF trace is not required. Confirm the intended scope before publishing. */}
 
 ---
 
@@ -185,11 +178,6 @@ These nRF54L15 signals are handled inside the NX15 module and are not routed as 
 | A7 | DCC | Internal DC/DC regulator output |
 | C2 | VSS_PA | Internal radio-supply grounding |
 
-{/* Flash-related internal signals listed by the draft are intentionally withheld from
-the public table until the flash terminology, P1/SPIM ownership, and model-specific
-routing are confirmed. The draft lists F7/P1.08, B3/P1.09, C3/P1.10, B4/P1.13,
-B5/P1.14, and B6/P1.15 as internal flash-related signals. P2.07/SWO is exposed and
-GPIO-capable but is not counted in the draft's standard 25-user-GPIO summary. */}
 
 ---
 

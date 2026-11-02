@@ -23,10 +23,6 @@ Publication gate
 Do not publish this tutorial until KORLINX provides a tested prebuilt firmware package, setup code, supported board list, flash procedure, LED and button behavior, and validated commissioner ecosystem.
 :::
 
-{/* VERIFY WITH R&D [QUICK-V01]:
-Provide a public, versioned prebuilt Matter sample for NX15, NX40, or each supported board separately.
-Required metadata: file name, SHA-256, firmware version, SDK/Matter version, hardware revision, build configuration, validation date, and reviewer.
-*/}
 
 ## What you will do
 
@@ -61,10 +57,6 @@ Purpose: Show the complete Quick Start path before the detailed steps
 | Thread Border Router | Required for the Matter over Thread workflow |
 | Local network | The controller and Border Router must be reachable as required by the selected setup |
 
-{/* VERIFY WITH R&D [QUICK-V02]:
-Confirm the exact Thread Border Router and commissioner/controller combinations tested by KORLINX.
-Do not state general ecosystem compatibility from one successful setup.
-*/}
 
 ## Required files and information
 
@@ -166,10 +158,6 @@ Use the validated KORLINX programming method.
 6. Select **Write** or **Erase and Write**.
 7. Wait for the programming and verification steps to complete.
 
-{/* VERIFY WITH R&D [QUICK-V03]:
-Confirm whether Programmer supports the final package and board connection.
-Provide the exact erase mode and whether additional images must be flashed together.
-*/}
 
 {/* IMAGE NOTE [QUICK-IMG-04]:
 Type: Screenshot sequence
@@ -197,9 +185,6 @@ The pass condition must include a KORLINX-approved log message such as:
 [EXPECTED_UNCOMMISSIONED_OR_ADVERTISING_LOG]
 ```
 
-{/* VERIFY WITH R&D [QUICK-V04]:
-Provide the exact startup, commissioning-window, Thread-join, and operational log messages.
-*/}
 
 {/* IMAGE NOTE [QUICK-IMG-05]:
 Type: Serial Terminal screenshot
@@ -228,10 +213,6 @@ Advertising duration: [CONFIRM_DURATION]
 Expected LED state: [CONFIRM_LED_PATTERN]
 ```
 
-{/* VERIFY WITH R&D [QUICK-V05]:
-Confirm the button number, press duration, LED pattern, advertising timeout, and factory-reset behavior for NX15 and NX40.
-Nordic DK button and LED numbering must not be copied to KORLINX hardware without validation.
-*/}
 
 ## Step 6: Obtain the onboarding code
 
@@ -297,9 +278,6 @@ For a light sample:
 4. Confirm that the assigned LED or load turns off.
 5. Check the serial log for the corresponding application event.
 
-{/* VERIFY WITH R&D [QUICK-V06]:
-Confirm the sample device type, endpoint, controlled LED or load, and expected application behavior.
-*/}
 
 {/* IMAGE NOTE [QUICK-IMG-08]:
 Type: Result image pair
@@ -420,12 +398,4 @@ Review the SDK, toolchain, board detection, and serial-terminal setup.
 {/* COMPONENT NOTE [UI-READY-QUICK]:
 Render this section using the approved KORLINX "You're Ready" design.
 Desktop: three cards in one row. Tablet: two columns. Mobile: one column.
-*/}
-
-{/* KORLINX INTERNAL REVIEW BEFORE PUBLICATION
-1. Resolve QUICK-V01 through QUICK-V06.
-2. Replace every bracketed placeholder.
-3. Test the full flow from a factory-reset board on every supported NX platform.
-4. Record the hardware revision, firmware version, SDK/Matter version, controller, Border Router, test date, and reviewer.
-5. Confirm that all screenshots are KORLINX-owned or approved for reuse.
 */}

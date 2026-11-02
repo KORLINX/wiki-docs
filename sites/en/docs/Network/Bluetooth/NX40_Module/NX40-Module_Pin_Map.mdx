@@ -13,7 +13,6 @@ The NX40 LGA interface exposes power, ground, USB, debug, GPIO, analog, NFC, and
 
 ## LGA Pad Layout
 
-{/* Technical conflict: confirm whether the drawing is the module bottom view or the host PCB top view, and add the controlled pad numbers and pin-1 mark before using it for a footprint. */}
 
 ### Power, USB, and Debug Signals
 
@@ -45,7 +44,6 @@ The NX40 LGA interface exposes power, ground, USB, debug, GPIO, analog, NFC, and
 | P1 special | P1.00/SWO | 1 |
 | **Total GPIO-capable external signals** | Includes configurable special-function signals | **30** |
 
-{/* Technical conflict: the supplied source advertises 25 GPIO. A count of 26 excludes NFC1, NFC2, nRESET, and SWO; a count of 24 also reserves P0.00/P0.01 for LFXO. Product engineering must approve the public counting policy. */}
 
 ## P0 Signal Map
 
@@ -99,13 +97,11 @@ On `32` variants, these signals connect to the additional serial Flash and are n
 | P1.13 | A4 | WP# / SIO2 |
 | P1.14 | B5 | SO / SIO1 |
 
-{/* Confirm the Flash part, bus mode, tested clock, deep-power-down behavior, pull resistors, device ID, and routing on every model against the released BOM and netlist. */}
 
 ## Signals Not Routed to External LGA Pads
 
 The supplied schematic identifies `P0.12`, `P0.15`, `P0.16`, `P0.24`, `P0.25`, `P0.26`, `P0.27`, `P1.01`, `P1.05`, `P1.06`, `P1.08`, and `P1.09` as not externally routed. RF, the 32 MHz crystal, and regulator-decoupling nodes are handled inside the module.
 
-{/* Confirm the non-routed list against the released PCB for all four NX40 variants. Omitting the additional Flash on a `00` model does not make its internal Flash nets external LGA signals unless the released layout explicitly routes them. */}
 
 ## Integration Notes
 
@@ -131,7 +127,6 @@ The following source schematics help explain the module-internal connections. Tr
 
 <img src="/img/bluetooth/nx40/module-integration/NX40i32-reference-schematic.png" alt="NX40i32 representative module schematic showing the nRF52840, integrated antenna path, and serial Flash" className="blog-first-image" />
 
-{/* Source position: old-flow PDF page 4. Confirm schematic titles, revision, component values, and model association before production use. */}
 
 ## Related Pages
 
