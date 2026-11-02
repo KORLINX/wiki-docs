@@ -83,10 +83,6 @@ Complete this table before publishing the tutorial.
 | Tested Border Router | `[CONFIRM]` | `[CONFIRM]` |
 | Tested controller | `[CONFIRM]` | `[CONFIRM]` |
 
-{/* VERIFY WITH R&D [DEV-V01]:
-Complete the validated configuration table from actual test records.
-If NX15 and NX40 require different source branches or configurations, split the affected steps into explicit tabs or separate sections.
-*/}
 
 ## Step 1: Open the approved SDK workspace
 
@@ -140,10 +136,6 @@ boards/ or board-specific overlays, when required
 sysbuild/, when required by the selected release
 ```
 
-{/* VERIFY WITH R&D [DEV-V02]:
-Confirm whether the public tutorial uses the Nordic Matter light_bulb sample, Matter template sample, or a KORLINX-maintained derivative.
-Provide the versioned public source URL and commit.
-*/}
 
 {/* IMAGE NOTE [DEV-IMG-03]:
 Type: File-tree screenshot
@@ -177,9 +169,6 @@ Those targets confirm Nordic SoC and DK sample support, but the KORLINX board de
 
 **Developer reference keywords:** `Zephyr custom board`, `board.yaml`, `Devicetree`, `Kconfig.defconfig`, `board target qualifiers`
 
-{/* VERIFY WITH R&D [DEV-V03]:
-Confirm whether KORLINX will publish the NX board definitions in the Wiki repository, an SDK repository, or a separate board-support package.
-*/}
 
 ## Step 4: Review the application configuration
 
@@ -198,10 +187,6 @@ Do not change settings that are not required for this tutorial.
 
 **Developer reference keywords:** `CONFIG_CHIP`, `Matter over Thread Kconfig`, `OpenThread`, `sysbuild`, `partition manager`, `Devicetree overlay`
 
-{/* VERIFY WITH R&D [DEV-V04]:
-Provide the exact configuration changes required for NX15 and NX40.
-Confirm flash layout, external-memory use, bootloader configuration, and Matter factory-data behavior for the tutorial build.
-*/}
 
 {/* IMAGE NOTE [DEV-IMG-04]:
 Type: Code screenshot or configuration diff
@@ -238,9 +223,6 @@ Expected output file: [CONFIRM]
 Expected build completion text: [CONFIRM]
 ```
 
-{/* VERIFY WITH R&D [DEV-V05]:
-Run clean builds for NX15 and NX40 and provide the exact commands, output file paths, build duration range, flash usage, RAM usage, and pass text.
-*/}
 
 {/* IMAGE NOTE [DEV-IMG-05]:
 Type: Terminal screenshot
@@ -269,10 +251,6 @@ west flash
 
 If an erase is required before the first Matter test, use only the approved erase procedure for the board and debugger.
 
-{/* VERIFY WITH R&D [DEV-V06]:
-Confirm the west flash runner, debugger requirement, reset behavior, and erase procedure for both NX platforms.
-Provide the expected log sequence after a clean flash.
-*/}
 
 {/* IMAGE NOTE [DEV-IMG-06]:
 Type: Terminal and hardware image pair
@@ -305,10 +283,6 @@ Treat the dataset as test-environment information. Do not publish credentials fo
 
 **Developer reference keywords:** `OpenThread Border Router`, `OTBR`, `active operational dataset`, `IPv6`, `mDNS`, `Matter CHIP Tool`
 
-{/* VERIFY WITH R&D [DEV-V07]:
-Document one reproducible Border Router setup and the approved command for retrieving its active dataset.
-Confirm the compatible CHIP Tool build or package.
-*/}
 
 {/* IMAGE NOTE [DEV-IMG-07]:
 Type: Network topology and terminal screenshot
@@ -359,10 +333,6 @@ The command passes when CHIP Tool reports successful commissioning and the NX se
 Never copy setup codes, discriminators, datasets, or certificates from a screenshot. Use values generated or assigned for the exact development image being tested.
 :::
 
-{/* VERIFY WITH R&D [DEV-V08]:
-Validate the command against the exact CHIP Tool version and NX firmware build.
-Provide sanitized example output and the accepted node-ID format.
-*/}
 
 {/* IMAGE NOTE [DEV-IMG-08]:
 Type: Split terminal screenshot
@@ -404,9 +374,6 @@ Controlled LED or load: [CONFIRM]
 
 **Developer reference keywords:** `OnOff cluster 0x0006`, `Matter endpoint`, `chip-tool onoff`, `attribute update callback`
 
-{/* VERIFY WITH R&D [DEV-V09]:
-Confirm the sample endpoint, device type, cluster, LED mapping, and expected log message.
-*/}
 
 {/* IMAGE NOTE [DEV-IMG-09]:
 Type: Result sequence
@@ -552,12 +519,4 @@ Continue with the validated KORLINX examples, board support, and SDK references.
 {/* COMPONENT NOTE [UI-READY-DEV]:
 Render this section using the approved KORLINX "You're Ready" design.
 Desktop: three cards in one row. Tablet: two columns. Mobile: one column.
-*/}
-
-{/* KORLINX INTERNAL REVIEW BEFORE PUBLICATION
-1. Resolve DEV-V01 through DEV-V09.
-2. Replace every bracketed placeholder.
-3. Run the complete tutorial from a clean host and factory-reset device for each supported platform.
-4. Store the command log, build output, test date, hardware revision, SDK/Matter version, Border Router, CHIP Tool version, and reviewer.
-5. Confirm that no private Thread dataset or active device credential appears in text or screenshots.
 */}
