@@ -123,18 +123,17 @@ Several P2 pins support configurable GPIO, SPI, QSPI, UARTE, or trace-related fu
 
 | Signal | Nordic CSP47 Ball | Alternate Signals | Design Note |
 | --- | --- | --- | --- |
-| P2.00 | G6 | GPIO / SPIM DCX / UARTE RXD / FLPR.4 / QSPI D3 | Confirm availability before use; see the source comment below |
+| P2.00 | G6 | GPIO / SPIM DCX / UARTE RXD / FLPR.4 / QSPI D3 | Confirm model-specific availability against the released schematic before use |
 | P2.01 | G7 | GPIO / SPIM SCK / SPIS SCK / FLPR.0 / QSPI SCK | Clock-capable; use short, direct routing for high-speed SPI/QSPI |
-| P2.02 | F6 | GPIO / SPIM SDO / SPIS SDO / UARTE TXD / FLPR.1 / QSPI D0 | Confirm availability before use; see the source comment below |
-| P2.03 | E5 | GPIO / FLPR.3 / QSPI D2 | Confirm availability before use; see the source comment below |
-| P2.04 | F5 | GPIO / SPIM SDI / SPIS SDI / UARTE CTS / FLPR.2 / QSPI D1 | Confirm availability before use; see the source comment below |
-| P2.05 | G5 | GPIO / SPIM CSN / SPIS CSN / UARTE RTS / FLPR.5 / QSPI CSN | Confirm availability before use; see the source comment below |
+| P2.02 | F6 | GPIO / SPIM SDO / SPIS SDO / UARTE TXD / FLPR.1 / QSPI D0 | Confirm model-specific availability against the released schematic before use |
+| P2.03 | E5 | GPIO / FLPR.3 / QSPI D2 | Confirm model-specific availability against the released schematic before use |
+| P2.04 | F5 | GPIO / SPIM SDI / SPIS SDI / UARTE CTS / FLPR.2 / QSPI D1 | Confirm model-specific availability against the released schematic before use |
+| P2.05 | G5 | GPIO / SPIM CSN / SPIS CSN / UARTE RTS / FLPR.5 / QSPI CSN | Confirm model-specific availability against the released schematic before use |
 | P2.06 | F4 | GPIO / FLPR.6 / SPIM SCK / SPIS SCK / TRACECLK | Use short routing for high-speed SPI or trace clock |
 | P2.07 / SWO | E4 | GPIO / FLPR.7 / TRACEDATA[0] / SWO / SPIM DCX / UARTE RXD | Primarily a debug trace/SWO pad; GPIO-capable when SWO is unused |
 | P2.08 | D4 | GPIO / FLPR.8 / TRACEDATA[1] / SPIM SDO / SPIS SDO / UARTE TXD | Available for GPIO or peripheral use when trace is unused |
 | P2.09 | F3 | GPIO / FLPR.9 / TRACEDATA[2] / SPIM SDI / SPIS SDI / UARTE CTS | Available for GPIO or peripheral use when trace is unused |
 | P2.10 | G2 | GPIO / FLPR.10 / TRACEDATA[3] / SPIM CSN / SPIS CSN / UARTE RTS | Available for GPIO or peripheral use when trace is unused |
-
 
 ---
 
@@ -147,7 +146,6 @@ Follow these general rules when designing a host PCB for the NX15 module:
 - Maintain the required RF keep-out area around the antenna edge.
 - Keep debug access available during development.
 - Confirm all model-specific pin usage before finalizing the PCB.
-
 
 ---
 
@@ -177,7 +175,6 @@ These nRF54L15 signals are handled inside the NX15 module and are not routed as 
 | A5 | DECD | Internal regulator-supply decoupling |
 | A7 | DCC | Internal DC/DC regulator output |
 | C2 | VSS_PA | Internal radio-supply grounding |
-
 
 ---
 
