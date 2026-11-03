@@ -32,7 +32,17 @@ npm run serve    # Serve production build locally
 
 ## Deployment (GitHub Pages)
 
-GitHub Pages deployment will be configured after project review and approval.
+The documentation site is deployed automatically to GitHub Pages through
+[`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml).
+
+A push to the `main` branch triggers the deployment workflow, which:
+
+1. Installs dependencies with `npm ci`.
+2. Builds the static site with `npm run build`.
+3. Uploads the `build` directory as a GitHub Pages artifact.
+4. Deploys the artifact to the `github-pages` environment.
+
+The production site is available at [wiki.korlinx.com](https://wiki.korlinx.com).
 
 ## Documentation Structure
 
