@@ -1,0 +1,39 @@
+---
+title: NEO-Edge40 Product Documents
+description: Browse NEO-Edge40 product documentation, integration guides, and available downloads.
+slug: /Product_Documents/NEO-Edge40-Product-Documents
+hide_title: true
+hide_table_of_contents: true
+---
+
+import DocumentGrid, {DocumentIntro} from '@site/src/components/DocumentGrid';
+
+<DocumentIntro
+  productName="NEO-Edge40"
+  technology="Industrial edge gateway"
+  image="/img/Neo_Edge40/NEO-Edge40_Overview.png"
+  imageAlt="NEO-Edge40 product hardware"
+  description="An industrial edge gateway for wireless sensors, industrial equipment, and field I/O."
+/>
+
+<DocumentGrid
+  id="neo-edge40-files"
+  label="NEO-Edge40 product files"
+  documents={[
+    {
+      title: '3D Model',
+      description: 'NEO-Edge40 STEP model for mechanical integration and enclosure planning.',
+      downloadUrl: '/downloads/neo-edge40/Neo-Edge40_260319.step',
+    },
+    {
+      title: 'Gerber Files — Altium',
+      description: 'NEO-Edge40 Gerber layers and NC drill files for PCB manufacturing.',
+      downloadUrl: '/downloads/neo-edge40/Neo-Edge40_gerber_260319.zip',
+    },
+    {
+      title: 'BOM',
+      description: 'NEO-Edge40 bill of materials in XLSX format.',
+      downloadUrl: '/downloads/neo-edge40/BOM_Neo-Edge40_260406.xlsx',
+    },
+  ]}
+/>

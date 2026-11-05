@@ -63,6 +63,11 @@ const sidebars = {
                   id: 'Network/Cellular/KSE-91A/KSE-91A_FAQ',
                   label: 'FAQ',
                 },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/KSE-91A_Product_Documents',
+                  label: 'KSE-91A Product Documents',
+                },
               ],
             },
 
@@ -105,6 +110,11 @@ const sidebars = {
                   id: 'Network/Cellular/KSP-N51U/KSP-N51U_FAQ',
                   label: 'FAQ',
                 },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/KSP-N51U_Product_Documents',
+                  label: 'KSP-N51U Product Documents',
+                },
               ],
             },
 
@@ -146,6 +156,11 @@ const sidebars = {
                   type: 'doc',
                   id: 'Network/Cellular/KSP-N51U-M.2/KSP-N51U-M.2_FAQ',
                   label: 'FAQ',
+                },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/KSP-N51U-M.2_Product_Documents',
+                  label: 'KSP-N51U-M.2 Product Documents',
                 },
               ],
             },
@@ -262,6 +277,11 @@ const sidebars = {
                     },
                   ],
                 },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/NX15_Product_Documents',
+                  label: 'NX15 Product Documents',
+                },
               ],
             },
 
@@ -351,6 +371,11 @@ const sidebars = {
                       label: 'Hardware',
                     },
                   ],
+                },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/NX40_Product_Documents',
+                  label: 'NX40 Product Documents',
                 },
               ],
             },
@@ -628,6 +653,11 @@ const sidebars = {
               type: 'doc',
               id: 'IoT_Industrial/Neo_Edge40/Neo_Edge40_Hardware',
               label: 'Hardware',
+            },
+            {
+              type: 'doc',
+              id: 'Product_Documents/NEO-Edge40_Product_Documents',
+              label: 'NEO-Edge40 Product Documents',
             },
           ],
         },

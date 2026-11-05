@@ -1,0 +1,78 @@
+---
+title: NX40 Product Documents
+description: Download approved NX40i and NX40E symbols, footprints, mechanical models, and reference schematics.
+slug: /Product_Documents/NX40-Product-Documents
+hide_title: true
+hide_table_of_contents: true
+---
+
+import DocumentGrid, {DocumentIntro} from '@site/src/components/DocumentGrid';
+
+<DocumentIntro
+  productName="NX40"
+  technology="Bluetooth LE / IEEE 802.15.4"
+  image="/img/bluetooth/nx40/module-integration/NX40-module-options-transparent.png"
+  imageAlt="NX40 integrated and external antenna module variants"
+  description="Product documents for the NX40i integrated-antenna and NX40E external-antenna modules."
+/>
+
+
+## NX40i
+
+<DocumentGrid id="nx40i32-files" label="NX40i32 product documents" documents={[
+  {
+    title: 'Schematic Symbol & PCB Footprint — KiCad',
+    description: 'KiCad symbol and footprint library containing only the NX40i32 footprint.',
+    downloadUrl: '/downloads/nx40i/NX40i32_kicad_library.zip',
+  },
+  {
+    title: '3D Model',
+    description: 'NX40i32 STEP model for mechanical integration and enclosure planning.',
+    downloadUrl: '/downloads/nx40i/NX40i32_3D_260602.step',
+  },
+  {
+    title: 'PCB Footprint Drawing',
+    description: 'NX40i mechanical footprint drawing in DXF format.',
+    downloadUrl: '/downloads/nx40i/NX40Ixx.dxf',
+  },
+  {
+    title: 'Reference Schematic Source — Altium',
+    description: 'NX40i32 Altium schematic source. View the supplied PDF schematic or download the editable SchDoc file.',
+    viewUrl: '/downloads/nx40i/NX40i32_Schematic.pdf',
+    downloadUrl: '/downloads/nx40i/NX40i32_schematic_altium.zip',
+  },
+]} />
+
+<hr className="product-document-model-separator" />
+
+## NX40E
+
+<DocumentGrid id="nx40e32-files" label="NX40E32 product documents" documents={[
+  {
+    title: 'Schematic Symbol & PCB Footprint — KiCad',
+    description: 'KiCad symbol and footprint library containing only the NX40E32 footprint.',
+    downloadUrl: '/downloads/nx40e/NX40E32_kicad_library.zip',
+  },
+  {
+    title: '3D Model',
+    description: 'NX40E32 STEP model for mechanical integration and enclosure planning.',
+    downloadUrl: '/downloads/nx40e/NX40E32_260808.step',
+  },
+  {
+    title: 'Reference Schematic Source — Altium',
+    description: 'Editable NX40E32 reference schematic in Altium SchDoc format.',
+    downloadUrl: '/downloads/nx40e/NX40E32_schematic_altium.zip',
+  },
+  {
+    title: 'Gerber Files — Altium',
+    description: 'NX40E32 Gerber layers and NC drill files for PCB manufacturing.',
+    downloadUrl: '/downloads/nx40e/NX40E32_gerber_260608.zip',
+  },
+]} />
+
+## Related documentation
+
+- [NX40 Series](/docs/Network/Bluetooth/NX40_Series)
+- [Module Specifications](/docs/Network/Bluetooth/NX40_Module/NX40-Module_Specifications)
+- [Module Pin Map](/docs/Network/Bluetooth/NX40_Module/NX40-Module_Pin_Map)
+- [Antenna Integration](/docs/Network/Bluetooth/NX40_Module/NX40-Module_Antenna)
