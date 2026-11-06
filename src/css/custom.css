@@ -946,7 +946,7 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
   margin: 0;
 }
 
-.theme-doc-markdown :is(#nx15i, #nx15e, #nx40i, #nx40e) {
+.theme-doc-markdown :is(#certificates, #nx15i, #nx15e, #nx40i, #nx40e) {
   margin-top: 20px;
 }
 
