@@ -196,26 +196,22 @@ Open **File > Examples > 01.Basics > Blink**, then save the sketch as `nx15_blin
   <em>Open the built-in Blink example before replacing it with the NX15-specific sketch.</em>
 </p>
 
-Core 0.2.0 defines the red LED as `LED_RED` and its active level as `LED_STATE_ON`:
+Core 0.2.0 defines the built-in LED as `LED_BUILTIN` and its active level as `LED_STATE_ON`:
 
 ```cpp
-constexpr uint8_t LED_OFF =
-    (LED_STATE_ON == HIGH) ? LOW : HIGH;
-
 void setup() {
-  pinMode(LED_RED, OUTPUT);
-  digitalWrite(LED_RED, LED_OFF);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(LED_RED, LED_STATE_ON);
+  digitalWrite(LED_BUILTIN, LED_STATE_ON);
   delay(500);
-  digitalWrite(LED_RED, LED_OFF);
+  digitalWrite(LED_BUILTIN, 1 - LED_STATE_ON);
   delay(500);
 }
 ```
 
-The release also defines `LED_BLUE`, `LED_GREEN`, and `LED_RUN`. Start with `LED_RED` to verify the core and upload path.
+The release also defines `LED_RED`, `LED_BLUE`, `LED_GREEN`, and `LED_RUN`. Start with `LED_BUILTIN` to verify the core and upload path.
 
 ## Step 6: Compile and program
 
@@ -230,10 +226,10 @@ NX15 has no USB bootloader in this workflow. Core 0.2.0 uses its included upload
 
 The first upload can therefore take longer than a sketch-only update. The upload output reports either `Uploading the Arduino firmware and the sketch.` or `The Arduino firmware on the board is up to date; uploading the sketch only.`
 
-![Conceptual illustration of compiling and programming a Blink sketch for NX15](/img/bluetooth/nx15/arduino/nx15-blink-upload.png)
+![Arduino IDE showing the NX15 Blink sketch and successful J-Link upload output](/img/bluetooth/nx15/arduino/nx15-blink-upload.png)
 
 <p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-  <em>Conceptual illustration of compiling and uploading an NX15 sketch. Core 0.2.0 uploads through the connected J-Link debug probe.</em>
+  <em>The NX15 Blink sketch after a successful upload through the connected J-Link debug probe.</em>
 </p>
 
 ## Step 7: Confirm the result
