@@ -516,6 +516,11 @@ const sidebars = {
                   id: 'Sensor/Radars/AS-611Bn/FAQ',
                   label: 'FAQ and Troubleshooting',
                 },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/AS-611Bn_Product_Documents',
+                  label: 'AS-611Bn Product Documents',
+                },
               ],
             },
 
@@ -548,6 +553,11 @@ const sidebars = {
                 { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/UART_and_USB', label: 'UART and USB' },
                 { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/Command_and_Data_Reference', label: 'Command and Data Reference' },
                 { type: 'doc', id: 'Sensor/Radars/AS-613_Radar/FAQ', label: 'FAQ and Troubleshooting' },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/AS-613_Product_Documents',
+                  label: 'AS-613 Product Documents',
+                },
               ],
             },
 
@@ -581,6 +591,11 @@ const sidebars = {
                 { type: 'doc', id: 'Sensor/Radars/AS-614/UART_and_USB', label: 'UART and USB-C' },
                 { type: 'doc', id: 'Sensor/Radars/AS-614/Command_and_Data_Reference', label: 'Command and Data Reference' },
                 { type: 'doc', id: 'Sensor/Radars/AS-614/FAQ', label: 'FAQ and Troubleshooting' },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/AS-614_Product_Documents',
+                  label: 'AS-614 Product Documents',
+                },
               ],
             },
 
@@ -607,6 +622,11 @@ const sidebars = {
                   type: 'doc',
                   id: 'Sensor/Radars/AS-BW/Quick_Start',
                   label: 'Quick Start',
+                },
+                {
+                  type: 'doc',
+                  id: 'Product_Documents/AS-BW_Product_Documents',
+                  label: 'AS-BW Product Documents',
                 },
               ],
             },

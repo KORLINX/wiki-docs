@@ -39,6 +39,11 @@
   border-radius: 12px;
   clip-path: inset(0 round 12px);
 }
+.productImageLarge {
+  width: 140%;
+  height: calc(140% - 12px);
+  max-height: 360px;
+}
 
 .eyebrow {
   margin: 0 0 28px;
@@ -167,6 +172,7 @@
   .intro { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .productVisual { height: 180px; margin-bottom: 24px; padding-bottom: 0; }
   .productImage { height: 100%; }
+  .productImageLarge { width: 125%; height: 125%; }
   .grid { grid-template-columns: 1fr; }
   .metadata { margin-bottom: 24px; }
 }

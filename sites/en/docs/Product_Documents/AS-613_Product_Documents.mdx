@@ -1,0 +1,48 @@
+---
+title: AS-613 Product Documents
+description: View and download available AS-613 radar product documents.
+slug: /Product_Documents/AS-613-Product-Documents
+hide_title: true
+hide_table_of_contents: true
+---
+
+import DocumentGrid, {DocumentIntro} from '@site/src/components/DocumentGrid';
+
+<DocumentIntro
+  productName="AS-613"
+  technology="60 GHz multi-channel FMCW radar"
+  image="/img/Sensor/Radars/product-documents/as-613-transparent.png"
+  imageAlt="AS-613 60 GHz radar module"
+  imageVariant="large"
+  description="Product documents for the AS-613 position and vital-sign detection radar module."
+/>
+
+<DocumentGrid id="as-613-files" label="AS-613 product documents" documents={[
+  {
+    title: 'Reference Schematic',
+    description: 'AS-613 V2 reference schematic in PDF format.',
+    viewUrl: '/downloads/radars/as-613/AS-613_V2_Reference_Schematic.pdf',
+    downloadUrl: '/downloads/radars/as-613/AS-613_V2_Reference_Schematic.pdf',
+  },
+  {
+    title: 'PCB Design Package',
+    description: 'AS-613 V2 PCB, Gerber, and pick-and-place files.',
+    downloadUrl: '/downloads/radars/as-613/AS-613_V2_PCB_Design_Package_260922.zip',
+  },
+  {
+    title: '3D Model',
+    description: 'AS-613 V2 STEP model for mechanical integration and enclosure planning.',
+    downloadUrl: '/downloads/radars/as-613/AS-613_V2_3D_Model.step',
+  },
+  {
+    title: 'Mechanical Drawing — PDF',
+    description: 'AS-613 V2 dimensional drawing in PDF format.',
+    viewUrl: '/downloads/radars/as-613/AS-613_V2_Mechanical_Drawing.pdf',
+    downloadUrl: '/downloads/radars/as-613/AS-613_V2_Mechanical_Drawing.pdf',
+  },
+  {
+    title: 'Mechanical Drawing — DXF',
+    description: 'AS-613 V2 dimensional drawing in DXF format.',
+    downloadUrl: '/downloads/radars/as-613/AS-613_V2_Mechanical_Drawing.dxf',
+  },
+]} />

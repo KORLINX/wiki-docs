@@ -1,0 +1,48 @@
+---
+title: AS-611Bn Product Documents
+description: View and download available AS-611Bn radar product documents.
+slug: /Product_Documents/AS-611Bn-Product-Documents
+hide_title: true
+hide_table_of_contents: true
+---
+
+import DocumentGrid, {DocumentIntro} from '@site/src/components/DocumentGrid';
+
+<DocumentIntro
+  productName="AS-611Bn"
+  technology="60 GHz pulsed radar"
+  image="/img/Sensor/Radars/product-documents/as-611bn-transparent.png"
+  imageAlt="AS-611Bn 60 GHz radar module"
+  imageVariant="large"
+  description="Product documents for the AS-611Bn distance and vital-sign detection radar module."
+/>
+
+<DocumentGrid id="as-611bn-files" label="AS-611Bn product documents" documents={[
+  {
+    title: 'Reference Schematic',
+    description: 'AS-611Bn reference schematic in PDF format.',
+    viewUrl: '/downloads/radars/as-611bn/AS-611Bn_Reference_Schematic.pdf',
+    downloadUrl: '/downloads/radars/as-611bn/AS-611Bn_Reference_Schematic.pdf',
+  },
+  {
+    title: 'PCB Design Package',
+    description: 'PCB source, Gerber, and pick-and-place files.',
+    downloadUrl: '/downloads/radars/as-611bn/AS-611Bn_PCB_Design_Package_240426.zip',
+  },
+  {
+    title: '3D Model',
+    description: 'STEP model for mechanical integration and enclosure planning.',
+    downloadUrl: '/downloads/radars/as-611bn/AS-611Bn_3D_Model.step',
+  },
+  {
+    title: 'Mechanical Drawing — PDF',
+    description: 'AS-611Bn dimensional drawing in PDF format.',
+    viewUrl: '/downloads/radars/as-611bn/AS-611Bn_Mechanical_Drawing.pdf',
+    downloadUrl: '/downloads/radars/as-611bn/AS-611Bn_Mechanical_Drawing.pdf',
+  },
+  {
+    title: 'Mechanical Drawing — DXF',
+    description: 'AS-611Bn dimensional drawing in DXF format.',
+    downloadUrl: '/downloads/radars/as-611bn/AS-611Bn_Mechanical_Drawing.dxf',
+  },
+]} />
