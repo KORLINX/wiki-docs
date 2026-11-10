@@ -63,6 +63,7 @@ export function DocumentIntro({
   technology = 'LTE-M / NB-IoT',
   image,
   imageAlt,
+  imageVariant,
   description = 'An industrial cellular modem for sensors, controllers, and embedded systems.',
 }) {
   const productImages = {
@@ -85,7 +86,12 @@ export function DocumentIntro({
       </div>
       {imageSrc && (
         <div className={styles.productVisual}>
-          <img className={styles.productImage} src={imageHref} alt={imageAlt || `${productName} product`} decoding="async" />
+          <img
+            className={`${styles.productImage} ${imageVariant === 'large' ? styles.productImageLarge : ''}`}
+            src={imageHref}
+            alt={imageAlt || `${productName} product`}
+            decoding="async"
+          />
         </div>
       )}
     </header>
