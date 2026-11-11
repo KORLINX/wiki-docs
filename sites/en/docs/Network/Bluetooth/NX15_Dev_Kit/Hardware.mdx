@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: NX15 Dev Kit Hardware
-description: Hardware overview of the KORLINX NX15 Dev Kit, including USB Type-C, FTDI USB-to-UART, SWD debugging, sensors, buttons, LEDs, headers, battery connector, and charger IC.
+description: Hardware overview of the KORLINX NX15 Dev Kit, including USB Type-C, USB-to-UART, SWD debugging, sensors, buttons, LEDs, headers, battery connector, and charger IC.
 keywords:
   [
     NX15 Dev Kit,
@@ -9,7 +9,7 @@ keywords:
     hardware overview,
     USB Type-C,
     SWD,
-    FTDI FT234XD,
+    USB-to-UART,
     LSM6DS3TR-C,
     SHTC3,
     BQ25100,
@@ -46,7 +46,7 @@ The NX15 Dev Kit combines the NX15 Series BLE module with development-friendly h
 | Block | Contents | Purpose |
 | --- | --- | --- |
 | Core Module | NX15 Series BLE module | Main wireless and processing module used on the Dev Kit |
-| USB & Debugging | USB Type-C, FTDI FT234XD, SWD header, ESD/TVS protection | PC connection, serial communication, firmware programming, and debugging |
+| USB & Debugging | USB Type-C, USB-to-UART bridge, SWD header, ESD/TVS protection | PC connection, serial communication, firmware programming, and debugging |
 | LED & Switch | RGB LED, charge/power LEDs, reset button, user button | Firmware status indication and user input testing |
 | Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor | Motion, orientation, temperature, and humidity example development |
 | Headers | J3 and J4 headers | Selected signal access for prototyping and external connection |
@@ -70,7 +70,7 @@ The NX15 Dev Kit combines the NX15 Series BLE module with development-friendly h
 | External Flash | Optional external Flash depending on NX15 module model |
 | RF Output Power | TX up to +8 dBm |
 | Development Interface | USB Type-C |
-| USB-to-UART | FTDI FT234XD |
+| USB-to-UART | Onboard USB-to-UART bridge |
 | Debug Interface | SWD header |
 | On-board Sensors | LSM6DS3TR-C 6-axis IMU, SHTC3 temperature/humidity sensor |
 | Buttons | Reset button, user button |
@@ -89,7 +89,7 @@ The module-level values in this table describe the NX15 module used on the Dev K
 
 - **Development-ready board:** Provides the essential hardware needed to evaluate the NX15 Series BLE module.
 - **USB Type-C connection:** Allows convenient PC connection for development and testing.
-- **USB-to-UART interface:** Uses FTDI FT234XD for serial communication during development.
+- **USB-to-UART interface:** Provides serial communication during development.
 - **SWD debugging:** Provides SWD access for programming, debugging, and firmware validation.
 - **Onboard sensors:** Includes LSM6DS3TR-C 6-axis IMU and SHTC3 temperature/humidity sensor for example applications.
 - **User input and status output:** Provides reset/user buttons, RGB LED, charge LED, and power LED.
@@ -105,7 +105,7 @@ The NX15 Dev Kit includes USB and debugging hardware for firmware development, s
 | Hardware | Purpose |
 | --- | --- |
 | USB Type-C | Main PC connection during development |
-| FTDI FT234XD | USB-to-UART communication interface |
+| USB-to-UART bridge | Serial communication interface |
 | SWD header | Firmware programming and debugging interface |
 | ESD / TVS protection | Protection for USB and external interface areas |
 

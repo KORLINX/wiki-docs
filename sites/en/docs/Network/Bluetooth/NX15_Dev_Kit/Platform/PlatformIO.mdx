@@ -3,7 +3,7 @@ title: How to Use NX15 with PlatformIO
 sidebar_label: PlatformIO
 sidebar_position: 5
 description: Install KORLINX PlatformIO support for NX15, build an Arduino Blink application, and upload it through J-Link over SWD.
-keywords: [KORLINX NX15, NX15 PlatformIO, DEV-NX15, nRF54L15, ArduinoCore Zephyr, J-Link, SWD, FTDI]
+keywords: [KORLINX NX15, NX15 PlatformIO, DEV-NX15, nRF54L15, ArduinoCore Zephyr, J-Link, SWD, USB-to-UART]
 ---
 
 # How to Use NX15 with PlatformIO
@@ -29,7 +29,7 @@ Create a PlatformIO project that switches the NX15 user LED on and off every 500
 The development setup uses two host connections:
 
 - **J-Link over SWD** for firmware upload.
-- **USB Type-C through the onboard FTDI USB-to-UART bridge** for board power and `Serial` communication.
+- **USB Type-C through the onboard USB-to-UART bridge** for board power and `Serial` communication.
 
 ## Before you begin
 
@@ -53,7 +53,7 @@ The development setup uses two host connections:
 - [PlatformIO IDE](https://docs.platformio.org/en/latest/integration/ide/vscode.html).
 - Git for installing the KORLINX platform from GitHub.
 - SEGGER J-Link software if required by the host setup.
-- FTDI drivers or serial-port permissions where required.
+- USB-to-UART drivers or serial-port permissions where required.
 
 ## Step 1: Install PlatformIO IDE
 
@@ -238,7 +238,7 @@ This follows the Blink example supplied by KORLINX-PlatformIO 1.1.0. PlatformIO 
 
 1. Disconnect the NX15 Dev Kit and J-Link from USB before wiring the SWD signals.
 2. Connect the probe signals to the corresponding NX15 pads.
-3. Connect the NX15 Dev Kit to the host through USB Type-C for power and FTDI serial communication.
+3. Connect the NX15 Dev Kit to the host through USB Type-C for power and USB serial communication.
 4. Connect the J-Link probe to the host through USB.
 
 `VTref` senses the board's 3.3 V I/O level. Power the board through its intended input unless the documentation for the exact probe and board setup explicitly permits probe-supplied target power.
@@ -321,7 +321,7 @@ pio device list
 Open **PlatformIO: Serial Monitor**, or run:
 
 ```bash
-pio device monitor --port YOUR_FTDI_PORT --baud 115200
+pio device monitor --port YOUR_SERIAL_PORT --baud 115200
 ```
 
 <img
@@ -331,10 +331,10 @@ pio device monitor --port YOUR_FTDI_PORT --baud 115200
 />
 
 <p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-  <em>Upload and Monitor programs NX15 through J-Link and displays the FTDI Serial output.</em>
+  <em>Upload and Monitor programs NX15 through J-Link and displays the USB serial output.</em>
 </p>
 
-Replace `YOUR_FTDI_PORT` with the FTDI port reported by the operating system. The FTDI connection carries serial data; firmware upload continues to use J-Link over SWD.
+Replace `YOUR_SERIAL_PORT` with the USB serial port reported by the operating system. This connection carries serial data; firmware upload continues to use J-Link over SWD.
 
 ## NX15 code examples
 
@@ -372,10 +372,10 @@ pio run -d examples/arduino-blink -e nx15
 pio run -d examples/arduino-blink -e nx15 -t upload
 ```
 
-Replace `arduino-blink` with another project name from the table. For an example that prints output, open the NX15 FTDI port at 115200 baud:
+Replace `arduino-blink` with another project name from the table. For an example that prints output, open the NX15 USB serial port at 115200 baud:
 
 ```bash
-pio device monitor --port YOUR_FTDI_PORT --baud 115200
+pio device monitor --port YOUR_SERIAL_PORT --baud 115200
 ```
 
 ## Troubleshooting
@@ -392,7 +392,7 @@ pio device monitor --port YOUR_FTDI_PORT --baud 115200
 | The wrong probe is selected | Add the required J-Link serial number as `upload_port` |
 | First upload takes longer | The first upload writes the loader and sketch; later uploads can skip matching flash |
 | `pio debug` fails | Interactive PlatformIO debugging is not supported for NX15 in release 1.1.0 |
-| Serial Monitor is blank | Select the FTDI port, use 115200 baud, and confirm host serial permissions |
+| Serial Monitor is blank | Select the USB serial port, use 115200 baud, and confirm host serial permissions |
 
 </div>
 
