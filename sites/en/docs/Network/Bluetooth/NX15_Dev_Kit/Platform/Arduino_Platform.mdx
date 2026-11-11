@@ -28,7 +28,7 @@ Install the NX15 core, compile a sketch that switches the red user LED on and of
 The NX15 workflow uses two host connections:
 
 - **J-Link over SWD** programs the Arduino loader and sketch.
-- **USB Type-C through FTDI** powers the Dev Kit and provides the `Serial` connection.
+- **USB Type-C through the onboard USB-to-UART interface** powers the Dev Kit and provides the `Serial` connection.
 
 ## Supported host platforms
 
@@ -50,7 +50,7 @@ A bare NX15 module additionally needs a carrier, suitable power design, and acce
 
 :::tip
 Use data-capable USB cables
-The NX15 Dev Kit and J-Link each connect to the host through USB. Use data-capable cables for both devices. A charge-only cable can power a device without exposing the FTDI port or debug probe to the host.
+The NX15 Dev Kit and J-Link each connect to the host through USB. Use data-capable cables for both devices. A charge-only cable can power a device without exposing the USB serial port or debug probe to the host.
 :::
 
 ### Required software
@@ -58,7 +58,7 @@ The NX15 Dev Kit and J-Link each connect to the host through USB. Use data-capab
 - [Arduino IDE](https://www.arduino.cc/en/software).
 - **KORLINX Zephyr Boards** version **0.2.0**, the version tested with this guide.
 - SEGGER J-Link software when using a J-Link probe.
-- FTDI serial drivers if required by the host operating system.
+- USB-to-UART drivers if required by the host operating system.
 
 A complete host OS compatibility matrix is not stated in the release notes.
 
@@ -122,7 +122,7 @@ When using a J-Link probe, also install the [SEGGER J-Link Software and Document
 
 ## Step 3: Connect NX15 to J-Link through SWD
 
-Uploading to NX15 requires a programming connection in addition to the board's USB connection. This guide uses a **SEGGER J-Link probe connected through SWD**. The USB Type-C connection provides board power and access to the onboard **FTDI FT234XD USB-to-UART** interface.
+Uploading to NX15 requires a programming connection in addition to the board's USB connection. This guide uses a **SEGGER J-Link probe connected through SWD**. The USB Type-C connection provides board power and access to the onboard **USB-to-UART interface**.
 
 ![NX15 Dev Kit connected to a SEGGER J-Link probe through SWD](/img/bluetooth/nx15/arduino/Connect-NX15-to-J-Link-through-SWD.png)
 
@@ -152,15 +152,15 @@ Connect the J-Link probe to the labeled NX15 SWD pads as follows:
 
 1. Disconnect the NX15 Dev Kit and J-Link probe from USB before making the SWD connections.
 2. Connect each J-Link signal to the corresponding NX15 pad shown in the table. Check the pinout of the specific J-Link cable or adapter before wiring it.
-3. Connect the NX15 Dev Kit to the host through USB Type-C to power the board and enable the FTDI serial interface.
+3. Connect the NX15 Dev Kit to the host through USB Type-C to power the board and enable the USB-to-UART interface.
 4. Connect the J-Link probe to the host through USB.
 5. Check that both USB connections are secure before uploading a sketch.
 
-The J-Link `VTref` connection senses the board's 3.3 V I/O level. Power the board through its intended power input; do not configure the probe to supply target power unless the hardware documentation for the exact probe and board setup explicitly permits it. See the [NX15 SWD preparation guide](./nRF_Connect_SDK.mdx#step-4--identify-the-nx15-swd-connections) for additional connection precautions.
+The J-Link `VTref` connection senses the board's 3.3 V I/O level. Power the board through its intended power input; do not configure the probe to supply target power unless the hardware documentation for the exact probe and board setup explicitly permits it. See the [NX15 SWD preparation guide](./nRF_Connect_SDK.mdx#step-5--identify-the-nx15-swd-connections) for additional connection precautions.
 
 :::note
 Programming and serial communication
-A visible FTDI port confirms USB-to-UART enumeration. It does not by itself establish a serial firmware-upload path. Use the programming method specified by the validated NX15 core. The NX40 UF2/DFU bootloader procedure is not an NX15 procedure.
+A visible USB serial port confirms USB-to-UART enumeration. It does not by itself establish a serial firmware-upload path. Use the programming method specified by the validated NX15 core. The NX40 UF2/DFU bootloader procedure is not an NX15 procedure.
 :::
 
 ## Step 4: Select the board and uploader
@@ -170,16 +170,16 @@ A visible FTDI port confirms USB-to-UART enumeration. It does not by itself esta
    - **Debug:** `Standard`
    - **Link mode:** `Dynamic`
 3. Confirm that the J-Link connected in Step 3 remains connected to the host and NX15 SWD interface.
-4. Select the FTDI port when using Serial Monitor. The FTDI port is not the J-Link programming connection.
+4. Select the USB serial port when using Serial Monitor. This port is not the J-Link programming connection.
 
 <img
   src="/img/bluetooth/nx15/arduino/select-nx15-board-and-port.png"
-  alt="Arduino IDE dialog with KORLINX NX15 and the FTDI USB serial port selected"
+  alt="Arduino IDE dialog with KORLINX NX15 and the USB serial port selected"
   style={{ width: '70%', height: 'auto', display: 'block', marginInline: 'auto' }}
 />
 
 <p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-  <em>Select KORLINX NX15 and the FTDI USB serial port used by Serial Monitor.</em>
+  <em>Select KORLINX NX15 and the USB serial port used by Serial Monitor.</em>
 </p>
 
 Use **Debug** mode when loader diagnostics are needed. Use **Static** link mode only when the application specifically requires it; it produces a different upload artifact from the default Dynamic mode.
@@ -240,7 +240,7 @@ If it stays unchanged, check the programmed image, selected board, GPIO mapping,
 
 ## Optional: Verify UART output
 
-Create a separate sketch named `nx15_uart`. Core 0.2.0 routes `Serial` through the onboard FT234XD USB-to-UART interface:
+Create a separate sketch named `nx15_uart`. Core 0.2.0 routes `Serial` through the onboard USB-to-UART interface:
 
 ```cpp
 void setup() {
@@ -253,7 +253,7 @@ void loop() {
 }
 ```
 
-Program the sketch using the confirmed workflow. Open **Tools > Serial Monitor** on the FTDI port and select **115200 baud**. Expected application text:
+Program the sketch using the confirmed workflow. Open **Tools > Serial Monitor** on the USB serial port and select **115200 baud**. Expected application text:
 
 ```text
 KORLINX NX15 Arduino is running
@@ -268,7 +268,7 @@ The screenshot below shows the expected message repeated in Arduino IDE Serial M
 />
 
 <p style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-  <em>The FTDI Serial Monitor displays the NX15 test message approximately once per second.</em>
+  <em>The USB Serial Monitor displays the NX15 test message approximately once per second.</em>
 </p>
 
 ## Arduino pin aliases in core 0.2.0
@@ -284,7 +284,7 @@ Use symbolic names in sketches where the core provides them. These mappings come
 | `LED_GREEN` | Green user LED | Arduino pin 19 / P2.03, active-high |
 | `LED_RUN` | Run LED | Arduino pin 14 / P2.01, active-high |
 | `PIN_BUTTON1` | User button | Arduino pin 7 / P1.10, active-low |
-| `Serial` | Onboard FT234XD USB-to-UART | RX pin 21 / P1.12; TX pin 22 / P1.13 |
+| `Serial` | Onboard USB-to-UART interface | RX pin 21 / P1.12; TX pin 22 / P1.13 |
 | `Wire` | I²C | SDA pin 6 / P2.02; SCL pin 23 / P1.15 |
 | `A0`–`A4` | Core analog aliases; J3 exposes A0 and A1 | A0=P1.04, A1=P1.05, A2=P1.06, A3=P1.07, A4=P1.11 |
 | `A5` / `PIN_VBAT` | Battery-divider input | P1.14; not a general external analog input |
@@ -326,9 +326,9 @@ Open an example directory to review its source and project files. Confirm the re
 | Arduino IDE cannot access J-Link | Check both USB data cables, SEGGER software, host permissions, and the J-Link USB connection |
 | Probe cannot detect the target | Check target power, 3V3/VTref, common ground, SWDIO, SWDCLK, NRESET, and nRF54L15 support |
 | Upload fails when several probes are connected | Disconnect unused debug probes and retry with only the intended J-Link attached |
-| FTDI port appears but upload fails | Confirm the programming interface and core upload recipe |
+| USB serial port appears but upload fails | Confirm the programming interface and core upload recipe |
 | Programming succeeds but no LED blinks | Check target, image, pin mapping, polarity, and reset |
-| Serial Monitor is blank | Check FTDI port, baud rate, UART object, pin routing, and flow control |
+| Serial Monitor is blank | Check the USB serial port, baud rate, UART object, pin routing, and flow control |
 | Sensor example fails | Check exact sensor, library compatibility, bus routing, and power |
 
 
