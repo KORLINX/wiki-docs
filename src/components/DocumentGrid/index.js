@@ -2,45 +2,27 @@ import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
-function DocumentIcon({title}) {
-  const paths = /PCB Footprint|Schematic|Gerber/.test(title)
-    ? <><rect x="3" y="3" width="18" height="18" rx="2" /><rect x="9" y="9" width="6" height="6" rx="1" /><path d="M6 3v4h6v2M3 12h6M15 12h6M12 15v6M15 6h3v3M6 16v2h3" /><circle cx="6" cy="12" r="1" /><circle cx="18" cy="12" r="1" /></>
-    : title === 'BOM'
-      ? <><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M3 15h18M9 3v18" /></>
-    : title === '3D Model'
-    ? <><path d="m12 3 9 5v8l-9 5-9-5V8l9-5Z" /><path d="m3 8 9 5 9-5M12 13v8M7.5 5.5l9 5" /></>
-    : title === 'Product Datasheet'
-      ? <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6M8 12h8M8 16h8M8 19h4" /></>
-      : title === 'User Manual'
-        ? <><path d="M12 5v16M12 5C9 3 5 3 2 4v15c3-1 7-1 10 2 3-3 7-3 10-2V4c-3-1-7-1-10 1Z" /></>
-        : /Certificat/.test(title)
-          ? <><circle cx="12" cy="9" r="6" /><path d="m8 14-1 8 5-3 5 3-1-8M9.5 9l1.5 1.5 3.5-3.5" /></>
-          : <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6M8 12h8M8 16h8" /></>;
-
-  return (
-    <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-      {paths}
-    </svg>
-  );
+function getDocumentType(title, downloadUrl) {
+  if (/KiCad/i.test(title)) return 'KiCad';
+  if (/Altium/i.test(title)) return 'Altium';
+  return downloadUrl?.split(/[?#]/)[0].split('.').pop()?.toUpperCase() || 'Document';
 }
 
-function DocumentBlock({title, description, viewUrl, downloadUrl, index}) {
+function DocumentBlock({title, description, viewUrl, downloadUrl}) {
   const downloadHref = useBaseUrl(downloadUrl || '/');
   const viewHref = useBaseUrl(viewUrl || '/');
   const available = Boolean(viewUrl || downloadUrl);
-  const format = downloadUrl?.split('.').pop().toUpperCase();
+  const documentType = getDocumentType(title, downloadUrl);
 
   return (
     <article className={styles.document}>
-      <div className={styles.metadata}>
-        <span className={styles.number}>{String(index + 1).padStart(2, '0')}</span>
-        <DocumentIcon title={title} />
-      </div>
+      <div className={styles.documentContent}>
         <span className={available ? styles.available : styles.unavailable}>
-          {available ? `${format || 'Document'} · Available` : 'Not available'}
+          {available ? documentType : 'Not available'}
         </span>
-      <h2>{title}</h2>
-      <p>{description}</p>
+        <h2>{title}</h2>
+        {description && <p className={styles.description}>{description}</p>}
+      </div>
       <div className={styles.actions}>
         {viewUrl && (
           <a className={styles.view} href={viewHref} target="_blank" rel="noopener noreferrer" aria-label={`View ${title} (opens in a new tab)`}>
@@ -107,7 +89,7 @@ export default function DocumentGrid({documents, id = 'product-files', label = '
         <span>{availableDocuments.length} documents available</span>
       </div>
       <div className={styles.grid}>
-        {availableDocuments.map((document, index) => <DocumentBlock key={document.title} {...document} index={index} />)}
+        {availableDocuments.map((document) => <DocumentBlock key={document.title} {...document} />)}
       </div>
     </section>
   );

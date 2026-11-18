@@ -953,5 +953,6 @@ body.korlinx-home-page .korlinx-home-search [class*='searchLoading'] {
 .theme-doc-markdown .product-document-model-separator {
   margin: 32px 0 0;
   border: 0;
-  border-top: 1px solid var(--ifm-color-emphasis-300);
+  height: 1px;
+  background: url('/img/product-documents/dashed-separator.svg') center / 100% 1px no-repeat;
 }
