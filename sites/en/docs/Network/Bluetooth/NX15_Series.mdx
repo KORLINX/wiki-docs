@@ -129,10 +129,10 @@ import styles from './NX15_Series.module.css';
         </p>
 
         <div className={styles.featureList}>
-          <span>Chip / u.FL Antenna</span>
-          <span>Optional SPI Flash</span>
           <span>Compact Integration</span>
           <span>Hardware Design</span>
+          <span>Production Guidance</span>
+          <span>Module Documentation</span>
         </div>
 
         <span className={styles.cardLink}>
@@ -154,174 +154,11 @@ import styles from './NX15_Series.module.css';
     <h2>NX15 Module Variants</h2>
 
     <p>
-      Select the antenna and external Flash configuration
-      that matches your hardware requirements.
+      See the canonical SoC, module, and model values in{' '}
+      <Link to="/docs/Network/Bluetooth/NX15_Module/NX15-Module_Specifications#model-options">
+        NX15 Module Specifications
+      </Link>{'.'}
     </p>
-  </div>
-
-  {/* Desktop / Tablet */}
-  <div className={styles.variantDesktop}>
-    <table className={styles.variantTable}>
-      <thead>
-        <tr>
-          <th>Model</th>
-          <th>Antenna</th>
-          <th>Flash</th>
-          <th>Use When</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td><strong>NX15i32</strong></td>
-          <td>Chip antenna</td>
-          <td>32 Mbit SPI Flash</td>
-          <td>
-            You need compact antenna integration and external Flash
-          </td>
-        </tr>
-
-        <tr>
-          <td><strong>NX15E32</strong></td>
-          <td>u.FL connector</td>
-          <td>32 Mbit SPI Flash</td>
-          <td>
-            You need an external antenna and external Flash
-          </td>
-        </tr>
-
-        <tr>
-          <td><strong>NX15i00</strong></td>
-          <td>Chip antenna</td>
-          <td>None</td>
-          <td>
-            You need compact module integration without external Flash
-          </td>
-        </tr>
-
-        <tr>
-          <td><strong>NX15E00</strong></td>
-          <td>u.FL connector</td>
-          <td>None</td>
-          <td>
-            You need an external antenna without external Flash
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-
-  {/* Mobile */}
-  <div className={styles.variantMobile}>
-
-    <div className={styles.variantCard}>
-      <div className={styles.variantCardHeader}>
-        <h3>NX15i32</h3>
-        <span className={styles.variantBadge}>32 Mbit Flash</span>
-      </div>
-
-      <div className={styles.variantMeta}>
-        <div>
-          <span>Antenna</span>
-          <strong>Chip antenna</strong>
-        </div>
-
-        <div>
-          <span>Flash</span>
-          <strong>32 Mbit SPI Flash</strong>
-        </div>
-      </div>
-
-      <div className={styles.variantUse}>
-        <span>Recommended when</span>
-        <p>
-          You need compact antenna integration and external Flash.
-        </p>
-      </div>
-    </div>
-
-
-    <div className={styles.variantCard}>
-      <div className={styles.variantCardHeader}>
-        <h3>NX15E32</h3>
-        <span className={styles.variantBadge}>32 Mbit Flash</span>
-      </div>
-
-      <div className={styles.variantMeta}>
-        <div>
-          <span>Antenna</span>
-          <strong>u.FL connector</strong>
-        </div>
-
-        <div>
-          <span>Flash</span>
-          <strong>32 Mbit SPI Flash</strong>
-        </div>
-      </div>
-
-      <div className={styles.variantUse}>
-        <span>Recommended when</span>
-        <p>
-          You need an external antenna and external Flash.
-        </p>
-      </div>
-    </div>
-
-
-    <div className={styles.variantCard}>
-      <div className={styles.variantCardHeader}>
-        <h3>NX15i00</h3>
-        <span className={styles.variantBadgeSecondary}>No Flash</span>
-      </div>
-
-      <div className={styles.variantMeta}>
-        <div>
-          <span>Antenna</span>
-          <strong>Chip antenna</strong>
-        </div>
-
-        <div>
-          <span>Flash</span>
-          <strong>None</strong>
-        </div>
-      </div>
-
-      <div className={styles.variantUse}>
-        <span>Recommended when</span>
-        <p>
-          You need compact module integration without external Flash.
-        </p>
-      </div>
-    </div>
-
-
-    <div className={styles.variantCard}>
-      <div className={styles.variantCardHeader}>
-        <h3>NX15E00</h3>
-        <span className={styles.variantBadgeSecondary}>No Flash</span>
-      </div>
-
-      <div className={styles.variantMeta}>
-        <div>
-          <span>Antenna</span>
-          <strong>u.FL connector</strong>
-        </div>
-
-        <div>
-          <span>Flash</span>
-          <strong>None</strong>
-        </div>
-      </div>
-
-      <div className={styles.variantUse}>
-        <span>Recommended when</span>
-        <p>
-          You need an external antenna without external Flash.
-        </p>
-      </div>
-    </div>
-
   </div>
 </section>
 

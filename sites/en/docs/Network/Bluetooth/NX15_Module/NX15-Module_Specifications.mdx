@@ -55,9 +55,26 @@ NX15-specific RF, current, and voltage measurements are not available. Values id
 
 ---
 
-## Selecting a Model
+## Model Options
 
-The antenna and additional-Flash combinations are summarized once on the [NX15 Module Overview](./NX15-Module_Overview#model-options). After selecting a model, use this page to check the shared electrical, RF, mechanical, memory, and interface specifications.
+The NX15 Series includes chip-antenna and u.FL external-antenna variants, with or without 32 Mbit SPI Flash.
+
+<img
+  src="/img/bluetooth/nx15/module-integration/NX15-model-lineup.png"
+  alt="NX15i and NX15E module lineup"
+  className="blog-first-image"
+/>
+
+<div className="spec-table-wrapper">
+
+| Model | Antenna | Flash | GPIO | Primary Use |
+| --- | --- | --- | --- | --- |
+| NX15i32 | Chip antenna | 32 Mbit SPI Flash | 25 | Compact form factor with external Flash |
+| NX15E32 | u.FL connector | 32 Mbit SPI Flash | 25 | External antenna for flexible antenna placement |
+| NX15i00 | Chip antenna | None | 25 | Compact IoT node with full GPIO access |
+| NX15E00 | u.FL connector | None | 25 | External antenna with full GPIO access |
+
+</div>
 
 For antenna-specific integration requirements, continue to the [NX15 Module Antenna](./NX15-Module_Antenna) page.
 
