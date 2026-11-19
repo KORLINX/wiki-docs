@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2000 2000" role="img" aria-labelledby="title desc">
+  <title id="title">NX40 Dev Kit J3 and J4 pin map</title>
+  <desc id="desc">NX40 Dev Kit pin illustration with pin 1 marked at P0.22 on J4 and GND on J3.</desc>
+  <image width="2000" height="2000" xlink:href="NX40_Pin_List.png" />
+  <g font-family="Arial, sans-serif" font-size="32" font-weight="700" text-anchor="middle">
+    <circle cx="608" cy="548" r="30" fill="#ff5757" stroke="#ffffff" stroke-width="5" />
+    <text x="608" y="559" fill="#ffffff">1</text>
+    <circle cx="1422" cy="548" r="30" fill="#ff5757" stroke="#ffffff" stroke-width="5" />
+    <text x="1422" y="559" fill="#ffffff">1</text>
+  </g>
+</svg>
