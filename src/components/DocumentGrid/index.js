@@ -13,17 +13,15 @@ function DocumentBlock({title, description, viewUrl, downloadUrl}) {
   const viewHref = useBaseUrl(viewUrl || '/');
   const available = Boolean(viewUrl || downloadUrl);
   const documentType = getDocumentType(title, downloadUrl);
-  const showDocumentType = !['KiCad', 'Altium'].includes(documentType);
+  const displayTitle = title.replace(/\s*[—-]\s*(KiCad|Altium)\s*$/i, '');
 
   return (
     <article className={styles.document}>
       <div className={styles.documentContent}>
-        {(!available || showDocumentType) && (
-          <span className={available ? styles.available : styles.unavailable}>
-            {available ? documentType : 'Not available'}
-          </span>
-        )}
-        <h2>{title}</h2>
+        <span className={available ? styles.available : styles.unavailable}>
+          {available ? documentType : 'Not available'}
+        </span>
+        <h2>{displayTitle}</h2>
         {description && <p className={styles.description}>{description}</p>}
       </div>
       <div className={styles.actions}>
